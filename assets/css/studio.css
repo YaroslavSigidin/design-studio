@@ -2789,6 +2789,10 @@ body::after {
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
+  .hero-badge {
+    display: none;
+  }
+
   .promo-strip {
     top: 84px;
     left: 7px;
