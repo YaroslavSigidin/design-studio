@@ -28,16 +28,20 @@ const initHeroSearch = () => {
     launch.style.top = `${rect.top + rect.height / 2}px`;
     launch.innerHTML = `
       <span class="hero-send-glow" aria-hidden="true"></span>
+      <span class="hero-send-burst" aria-hidden="true"></span>
       <span class="hero-send-ring" aria-hidden="true"></span>
       <span class="hero-send-trail" aria-hidden="true"></span>
+      <span class="hero-send-trail hero-send-trail--soft" aria-hidden="true"></span>
       <span class="hero-send-spark hero-send-spark--one" aria-hidden="true"></span>
       <span class="hero-send-spark hero-send-spark--two" aria-hidden="true"></span>
       <span class="hero-send-spark hero-send-spark--three" aria-hidden="true"></span>
+      <span class="hero-send-spark hero-send-spark--four" aria-hidden="true"></span>
+      <span class="hero-send-spark hero-send-spark--five" aria-hidden="true"></span>
       <span class="hero-send-plane-flight" aria-hidden="true">${planeSvg}</span>
     `;
 
     document.body.appendChild(launch);
-    window.setTimeout(() => launch.remove(), 1500);
+    window.setTimeout(() => launch.remove(), 1650);
   };
 
   const formatMoney = value => `${new Intl.NumberFormat("ru-RU").format(value * 1000)} ₽`;
