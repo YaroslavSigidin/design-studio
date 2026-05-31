@@ -97,6 +97,7 @@ const pickProjects = manifest => {
 
 const SKELETON_CARDS_COUNT = 6;
 const MOBILE_CASES_LIMIT = 8;
+const DESKTOP_CASES_LIMIT = 9;
 const EXTRA_PLACEHOLDER_CASE = {
   id: "placeholder-case",
   category: "web",
@@ -217,10 +218,12 @@ const initCasesFilter = (grid, tabsRoot) => {
   let expanded = false;
   const moreWrap = qs("#studioCasesMore");
   const moreButton = qs("#studioCasesMoreButton");
-  const isMobileLimited = () => window.matchMedia("(max-width: 640px)").matches;
+  const isCompactViewport = () => window.matchMedia("(max-width: 640px)").matches;
+  const getLimit = () => (isCompactViewport() ? MOBILE_CASES_LIMIT : DESKTOP_CASES_LIMIT);
 
   const applyFilter = () => {
     let visibleCount = 0;
+    const limit = getLimit();
 
     qsa(".project-card", grid).forEach(card => {
       const matches = matchesProjectFilter(card, activeFilter);
@@ -230,11 +233,11 @@ const initCasesFilter = (grid, tabsRoot) => {
       }
 
       visibleCount += 1;
-      const shouldHideByLimit = isMobileLimited() && !expanded && visibleCount > MOBILE_CASES_LIMIT;
+      const shouldHideByLimit = !expanded && visibleCount > limit;
       card.hidden = shouldHideByLimit;
     });
 
-    const shouldShowMore = isMobileLimited() && visibleCount > MOBILE_CASES_LIMIT && !expanded;
+    const shouldShowMore = visibleCount > limit && !expanded;
     if (moreWrap) moreWrap.hidden = !shouldShowMore;
   };
 
@@ -253,7 +256,10 @@ const initCasesFilter = (grid, tabsRoot) => {
     applyFilter();
   });
 
-  window.addEventListener("resize", applyFilter);
+  window.addEventListener("resize", () => {
+    expanded = false;
+    applyFilter();
+  });
   applyFilter();
   grid.dataset.filterBound = "true";
 };

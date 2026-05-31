@@ -76,6 +76,7 @@ const SERVICES = [
 
 window.SERVICES = SERVICES;
 const MOBILE_SERVICES_LIMIT = 8;
+const DESKTOP_SERVICES_LIMIT = 9;
 
 const formatRub = value => new Intl.NumberFormat("ru-RU").format(value);
 
@@ -165,18 +166,19 @@ const initServices = () => {
   grid.innerHTML = SERVICES.map(serviceCardTemplate).join("");
 
   let expanded = false;
-  const isMobileLimited = () => window.matchMedia("(max-width: 900px)").matches;
+  const isCompactViewport = () => window.matchMedia("(max-width: 900px)").matches;
+  const getLimit = () => (isCompactViewport() ? MOBILE_SERVICES_LIMIT : DESKTOP_SERVICES_LIMIT);
 
   const applyMobileLimit = () => {
     const cards = [...grid.querySelectorAll(".studio-service-card")];
-    const shouldLimit = isMobileLimited();
+    const limit = getLimit();
 
     cards.forEach((card, index) => {
-      card.hidden = shouldLimit && !expanded && index >= MOBILE_SERVICES_LIMIT;
+      card.hidden = !expanded && index >= limit;
     });
 
     if (moreWrap) {
-      moreWrap.hidden = !(shouldLimit && cards.length > MOBILE_SERVICES_LIMIT && !expanded);
+      moreWrap.hidden = !(cards.length > limit && !expanded);
     }
   };
 
@@ -186,7 +188,7 @@ const initServices = () => {
   });
 
   window.addEventListener("resize", () => {
-    if (!isMobileLimited()) expanded = false;
+    expanded = false;
     applyMobileLimit();
   });
 

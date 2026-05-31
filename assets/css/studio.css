@@ -1334,15 +1334,20 @@ body::after {
 }
 
 .studio-cases-more__button {
-  min-height: 52px;
-  padding: 0 24px;
+  min-height: 60px;
+  min-width: 320px;
+  padding: 0 30px;
   border: none;
-  border-radius: 999px;
+  border-radius: 20px;
   background: #000;
   color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   font-family: "Schibsted Grotesk", sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   letter-spacing: -0.02em;
   cursor: pointer;
   box-shadow: 0 16px 28px rgba(16, 30, 48, 0.18);
@@ -1546,18 +1551,38 @@ body::after {
 }
 
 .studio-services-more__button {
-  min-height: 52px;
-  padding: 0 24px;
+  min-height: 60px;
+  min-width: 360px;
+  padding: 0 30px;
   border: none;
-  border-radius: 999px;
+  border-radius: 20px;
   background: #000;
   color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   font-family: "Schibsted Grotesk", sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   letter-spacing: -0.02em;
   cursor: pointer;
   box-shadow: 0 16px 28px rgba(16, 30, 48, 0.18);
+}
+
+.list-more-button__icon {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 22px;
+}
+
+.list-more-button__icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .studio-service-card {
@@ -2670,6 +2695,8 @@ body::after {
     width: 100%;
     min-height: 56px;
     font-size: 16px;
+    min-width: 0;
+    border-radius: 20px;
   }
 
   .studio-services-more {
@@ -2681,6 +2708,8 @@ body::after {
     width: 100%;
     min-height: 56px;
     font-size: 16px;
+    min-width: 0;
+    border-radius: 20px;
   }
 
   .promo-strip__close {

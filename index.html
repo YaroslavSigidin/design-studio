@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260531-mobile-services-fix" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260531-more-buttons-desktop" />
   </head>
   <body>
     <div class="hero-page">
@@ -197,7 +197,12 @@
         <div class="projects-grid" id="projects-grid"></div>
         <div class="studio-cases-more" id="studioCasesMore" hidden>
           <button class="studio-cases-more__button" id="studioCasesMoreButton" type="button">
-            Посмотреть все
+            <span>Посмотреть все</span>
+            <span class="list-more-button__icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <path d="M5 7.5 10 12.5l5-5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
           </button>
         </div>
       </div>
@@ -209,7 +214,12 @@
         <div class="studio-services-grid" id="studioServicesGrid"></div>
         <div class="studio-services-more" id="studioServicesMore" hidden>
           <button class="studio-services-more__button" id="studioServicesMoreButton" type="button">
-            Показать все услуги
+            <span>Показать все услуги</span>
+            <span class="list-more-button__icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none">
+                <path d="M5 7.5 10 12.5l5-5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
           </button>
         </div>
       </div>
@@ -457,9 +467,9 @@
     <script src="./assets/js/hero-pong.js?v=20260530-hero-pong-lite" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
     <script src="./assets/js/hero.js?v=20260530-final-step-modal" defer></script>
-    <script src="./assets/js/services.js?v=20260531-mobile-services-fix" defer></script>
+    <script src="./assets/js/services.js?v=20260531-more-buttons-desktop" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260530-brief-modal-service-picker" defer></script>
-    <script src="./assets/js/cases.js?v=20260531-mobile-cases-width" defer></script>
+    <script src="./assets/js/cases.js?v=20260531-more-buttons-desktop" defer></script>
     <script>
       (function () {
         const escapeHtml = value =>
