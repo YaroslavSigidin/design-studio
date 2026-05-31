@@ -438,7 +438,7 @@
     <script src="./assets/js/hero.js?v=20260530-final-step-modal" defer></script>
     <script src="./assets/js/services.js?v=20260530-cases-hotfix" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260530-brief-modal-service-picker" defer></script>
-    <script src="./assets/js/cases.js?v=20260530-cases-placeholder-card" defer></script>
+    <script src="./assets/js/cases.js?v=20260531-pages-image-fix" defer></script>
     <script>
       (function () {
         const escapeHtml = value =>
@@ -447,6 +447,38 @@
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;");
+
+        const resolveWithinBase = (value, basePath) => {
+          const normalizedBase = String(basePath || "/").replace(/\/?$/, "/");
+          const raw = String(value || "").trim().replace(/^\/+/, "");
+          return new URL(raw, window.location.origin + normalizedBase).toString();
+        };
+
+        const normalizeAssetUrl = (url, cfg) => {
+          const raw = String(url || "").trim();
+          if (!raw) return "";
+          if (/^https?:\/\//i.test(raw) || raw.startsWith("data:")) return raw;
+
+          const assetBasePath = cfg?.assetBasePath || cfg?.basePath || "/";
+          return raw.startsWith("/")
+            ? resolveWithinBase(raw, assetBasePath)
+            : new URL(raw, window.location.href).toString();
+        };
+
+        const normalizeStudioUrl = (url, cfg) => {
+          const raw = String(url || "").trim();
+          if (!raw) return "";
+          if (/^https?:\/\//i.test(raw)) return raw;
+
+          const basePath = cfg?.basePath || "/";
+          if (raw.startsWith("/local/studio/")) {
+            return resolveWithinBase(raw.slice("/local/studio/".length), basePath);
+          }
+          if (raw.startsWith("/")) {
+            return resolveWithinBase(raw, basePath);
+          }
+          return new URL(raw, window.location.href).toString();
+        };
 
         const renderFallbackCases = async () => {
           const grid = document.getElementById("projects-grid");
@@ -471,11 +503,11 @@
 
             if (!projects.length) throw new Error("manifest empty");
 
-            const caseBase = cfg.casePageBase || "./case.html";
+            const caseBase = normalizeStudioUrl(cfg.casePageBase || "./case.html", cfg);
             grid.innerHTML = projects
               .map(project => {
                 const href =
-                  project.studioCaseUrl ||
+                  normalizeStudioUrl(project.studioCaseUrl || "", cfg) ||
                   (project.id ? caseBase + "?slug=" + encodeURIComponent(project.id) : "");
                 const category = project.category || "web";
                 const tagLabel = category === "uxui" ? "UX/UI" : "WEB";
@@ -485,7 +517,7 @@
                     href ? `data-case-url="${escapeHtml(href)}" tabindex="0"` : ""
                   }>
                     <img
-                      src="${escapeHtml(project.image || project.cover || "")}"
+                      src="${escapeHtml(normalizeAssetUrl(project.image || project.cover || "", cfg))}"
                       alt="${escapeHtml(project.title || "")}"
                       loading="lazy"
                       decoding="async"

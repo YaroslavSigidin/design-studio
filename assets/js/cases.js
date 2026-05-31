@@ -48,17 +48,21 @@ const matchesProjectFilter = (card, filter) => {
 
 const isAbsoluteUrl = value => /^https?:\/\//i.test(value || "");
 
+const resolveWithinBase = (value, basePath) => {
+  const normalizedBase = String(basePath || "/").replace(/\/?$/, "/");
+  const raw = String(value || "").trim().replace(/^\/+/, "");
+  return new URL(raw, `${window.location.origin}${normalizedBase}`).toString();
+};
+
 const normalizeAssetUrl = (url, cfg) => {
   const raw = String(url || "").trim();
   if (!raw) return "";
   if (isAbsoluteUrl(raw) || raw.startsWith("data:")) return raw;
 
   const assetBasePath = cfg?.assetBasePath || cfg?.basePath || "/";
-  if (raw.startsWith("/")) {
-    return `${assetBasePath.replace(/\/+$/, "")}/${raw.replace(/^\/+/, "")}`;
-  }
-
-  return raw;
+  return raw.startsWith("/")
+    ? resolveWithinBase(raw, assetBasePath)
+    : new URL(raw, window.location.href).toString();
 };
 
 const normalizeStudioUrl = (url, cfg) => {
@@ -68,10 +72,12 @@ const normalizeStudioUrl = (url, cfg) => {
 
   const basePath = cfg?.basePath || "/";
   if (raw.startsWith("/local/studio/")) {
-    const suffix = raw.slice("/local/studio/".length);
-    return `${basePath.replace(/\/+$/, "")}/${suffix}`;
+    return resolveWithinBase(raw.slice("/local/studio/".length), basePath);
   }
-  return raw;
+  if (raw.startsWith("/")) {
+    return resolveWithinBase(raw, basePath);
+  }
+  return new URL(raw, window.location.href).toString();
 };
 
 const getCaseHref = (project, cfg) => {
