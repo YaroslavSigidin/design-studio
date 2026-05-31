@@ -1,0 +1,393 @@
+const escapeHtml = value =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+const loadJson = async url => {
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`${url} → ${res.status}`);
+  return res.json();
+};
+
+const getSlug = () => new URLSearchParams(window.location.search).get("slug")?.trim() || "";
+
+const getTagLabel = category => (category === "uxui" ? "UX/UI" : "WEB");
+
+const isAbsoluteUrl = value => /^https?:\/\//i.test(value || "");
+
+const normalizeStudioUrl = (url, cfg) => {
+  const raw = String(url || "").trim();
+  if (!raw) return "";
+  if (isAbsoluteUrl(raw)) return raw;
+
+  const basePath = cfg?.basePath || "/";
+  if (raw.startsWith("/local/studio/")) {
+    const suffix = raw.slice("/local/studio/".length);
+    return `${basePath.replace(/\/+$/, "")}/${suffix}`;
+  }
+
+  if (raw.startsWith("/")) {
+    return `${basePath.replace(/\/+$/, "")}/${raw.replace(/^\/+/, "")}`;
+  }
+
+  return raw;
+};
+
+const normalizeAssetUrl = (url, cfg) => {
+  const raw = String(url || "").trim();
+  if (!raw) return "";
+  if (isAbsoluteUrl(raw) || raw.startsWith("data:")) return raw;
+
+  const assetBasePath = cfg?.assetBasePath || cfg?.basePath || "/";
+  if (raw.startsWith("/")) {
+    return `${assetBasePath.replace(/\/+$/, "")}/${raw.replace(/^\/+/, "")}`;
+  }
+
+  return raw;
+};
+
+const normalizeCaseHref = (project, cfg) => {
+  if (project?.studioCaseUrl) return normalizeStudioUrl(project.studioCaseUrl, cfg);
+  const slug = project?.id || project?.caseKey || "";
+  if (!slug) return cfg?.studioCases || "./#cases";
+  const caseBase = cfg?.casePageBase || "./case.html";
+  return `${caseBase}?slug=${encodeURIComponent(slug)}`;
+};
+
+const renderList = items =>
+  items.length
+    ? `<ul class="case-list">${items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
+    : "";
+
+const renderTags = tags =>
+  tags.length
+    ? `<div class="case-tags">${tags.map(tag => `<span class="case-tag">${escapeHtml(tag)}</span>`).join("")}</div>`
+    : "";
+
+const renderChapters = chapters =>
+  chapters.length
+    ? `<div class="case-chapters">${chapters
+        .map(
+          chapter => `
+        <article class="case-chapter">
+          <p class="case-chapter-label">${escapeHtml(chapter.label)}</p>
+          <h3 class="case-chapter-title">${escapeHtml(chapter.title)}</h3>
+          <p class="case-chapter-text">${escapeHtml(chapter.text)}</p>
+        </article>`
+        )
+        .join("")}</div>`
+    : "";
+
+const renderGallery = images =>
+  images.length
+    ? `<section class="case-block case-block--gallery">
+        <p class="case-eyebrow">Галерея</p>
+        <h2 class="case-block-title">Визуальные материалы</h2>
+        <div class="case-gallery">${images
+          .map(
+            (src, index) => `
+          <figure class="case-gallery-item">
+            <img src="${escapeHtml(src)}" alt="" loading="${index < 2 ? "eager" : "lazy"}" decoding="async" />
+          </figure>`
+          )
+          .join("")}</div>
+      </section>`
+    : "";
+
+const renderGalleryChunk = (images, startIndex = 0) =>
+  images.length
+    ? `<section class="case-block case-block--gallery case-block--inline-gallery">
+        <div class="case-gallery">${images
+          .map(
+            (src, index) => `
+          <figure class="case-gallery-item">
+            <img src="${escapeHtml(src)}" alt="" loading="${startIndex + index < 2 ? "eager" : "lazy"}" decoding="async" />
+          </figure>`
+          )
+          .join("")}</div>
+      </section>`
+    : "";
+
+const interleaveBlocksWithGallery = (blocks, images) => {
+  const contentBlocks = blocks.filter(Boolean);
+  const gallery = images.filter(Boolean);
+
+  if (!contentBlocks.length) return renderGallery(gallery);
+  if (!gallery.length) return contentBlocks.join("");
+
+  const slots = contentBlocks.length;
+  const perSlotBase = Math.floor(gallery.length / slots);
+  let remainder = gallery.length % slots;
+  let cursor = 0;
+  const html = [];
+
+  contentBlocks.forEach(block => {
+    html.push(block);
+    const take = perSlotBase + (remainder > 0 ? 1 : 0);
+    if (remainder > 0) remainder -= 1;
+    if (take <= 0) return;
+
+    const chunk = gallery.slice(cursor, cursor + take);
+    html.push(renderGalleryChunk(chunk, cursor));
+    cursor += take;
+  });
+
+  if (cursor < gallery.length) {
+    html.push(renderGalleryChunk(gallery.slice(cursor), cursor));
+  }
+
+  return html.join("");
+};
+
+const renderLiveLinks = links =>
+  links.length
+    ? `<div class="case-live-links">${links
+        .map(
+          link =>
+            `<a href="${escapeHtml(link.url)}" target="_blank" rel="noreferrer noopener">${escapeHtml(link.label || "Сайт")}</a>`
+        )
+        .join("")}</div>`
+    : "";
+
+const renderCaseNavigationArrows = (projects, currentIndex, cfg) => {
+  if (!projects.length || currentIndex < 0) return "";
+
+  const prevIndex = (currentIndex - 1 + projects.length) % projects.length;
+  const nextIndex = (currentIndex + 1) % projects.length;
+  const prevProject = projects[prevIndex];
+  const nextProject = projects[nextIndex];
+
+  return `
+    <nav class="case-side-nav" aria-label="Навигация по кейсам">
+      <a class="case-side-arrow case-side-arrow--left" href="${escapeHtml(normalizeCaseHref(prevProject, cfg))}" aria-label="Предыдущий кейс">
+        <span aria-hidden="true">‹</span>
+      </a>
+      <a class="case-side-arrow case-side-arrow--right" href="${escapeHtml(normalizeCaseHref(nextProject, cfg))}" aria-label="Следующий кейс">
+        <span aria-hidden="true">›</span>
+      </a>
+    </nav>
+  `;
+};
+
+const renderRelatedCases = (projects, currentProject, cfg) => {
+  const related = projects
+    .filter(item => (item.id || item.caseKey) !== (currentProject.id || currentProject.caseKey))
+    .slice(0, 6);
+
+  if (!related.length) return "";
+
+  return `
+    <section class="case-related">
+      <p class="case-eyebrow">Другие проекты</p>
+      <h2 class="case-block-title">Смотрите другие кейсы</h2>
+      <div class="case-related-grid">
+        ${related
+          .map(
+            item => `
+          <a class="case-related-card" href="${escapeHtml(normalizeCaseHref(item, cfg))}">
+            <img src="${escapeHtml(normalizeAssetUrl(item.image || "", cfg))}" alt="${escapeHtml(item.title || "Кейс")}" loading="lazy" decoding="async" />
+            <div class="case-related-content">
+              <span class="case-related-tag">${escapeHtml(getTagLabel(item.category))}</span>
+              <h3>${escapeHtml(item.title || "")}</h3>
+              <p>${escapeHtml(item.subtitle || "")}</p>
+            </div>
+          </a>`
+          )
+          .join("")}
+      </div>
+    </section>
+  `;
+};
+
+const renderBottomLeadForm = () => `
+  <section class="case-lead-form">
+    <div class="case-lead-form__inner">
+      <h2>Обсудить проект</h2>
+      <form class="case-lead-form__form">
+        <input type="text" name="name" placeholder="Имя" required />
+        <input type="tel" name="phone" placeholder="Номер телефона" required />
+        <input type="text" name="telegram" placeholder="Telegram" required />
+        <button type="submit">Отправить</button>
+      </form>
+    </div>
+  </section>
+`;
+
+const renderCaseFooter = () => `
+  <footer class="case-page-footer">
+    <div class="case-page-footer__inner">
+      <div class="case-page-footer__brand">
+        <a href="./">Согласовано</a>
+        <p>Дизайн-студия полного цикла: интерфейсы, сайты, брендинг и сопровождение запуска.</p>
+      </div>
+      <div class="case-page-footer__links">
+        <a href="./#cases">Кейсы</a>
+        <a href="./#services">Услуги</a>
+        <a href="./#contacts">Контакты</a>
+      </div>
+    </div>
+    <div class="case-page-footer__bottom">© 2026 Согласовано. Все права защищены.</div>
+  </footer>
+`;
+
+const renderCase = (project, projects, currentIndex, cfg) => {
+  const study = project.study || {};
+  const tags = study.tags?.length ? study.tags : project.tags || [];
+  const whatDone = study.whatDone?.length ? study.whatDone : [];
+  const metrics = study.metrics?.length ? study.metrics : [];
+  const chapters = study.storyChapters || [];
+  const gallery = Array.isArray(project.gallery)
+    ? project.gallery.map(image => normalizeAssetUrl(image, cfg)).filter(Boolean)
+    : [];
+  const heroImage = normalizeAssetUrl(project.image || gallery[0] || "", cfg);
+  const title = study.title || project.title;
+  const subtitle = study.subtitle || project.subtitle || project.description || "";
+  const introBlock = study.task
+    ? `<section class="case-block">
+        <p class="case-eyebrow">Задача</p>
+        <h2 class="case-block-title">Цель проекта</h2>
+        <p class="case-text">${escapeHtml(study.task)}</p>
+      </section>`
+    : project.description
+      ? `<section class="case-block">
+          <p class="case-eyebrow">О проекте</p>
+          <h2 class="case-block-title">Контекст</h2>
+          <p class="case-text">${escapeHtml(project.description)}</p>
+        </section>`
+      : "";
+
+  const solutionBlock = whatDone.length
+    ? `<section class="case-block">
+        <p class="case-eyebrow">Что сделано</p>
+        <h2 class="case-block-title">Решение</h2>
+        ${renderList(whatDone)}
+      </section>`
+    : "";
+
+  const metricsBlock = metrics.length
+    ? `<section class="case-block">
+        <p class="case-eyebrow">Результаты</p>
+        <h2 class="case-block-title">Метрики</h2>
+        <div class="case-metrics">${metrics
+          .map(metric => `<div class="case-metric">${escapeHtml(metric)}</div>`)
+          .join("")}</div>
+      </section>`
+    : "";
+
+  const processBlock = chapters.length
+    ? `<section class="case-block">
+        <p class="case-eyebrow">Процесс</p>
+        <h2 class="case-block-title">Как работали над проектом</h2>
+        ${renderChapters(chapters)}
+      </section>`
+    : "";
+
+  const bodyContent = interleaveBlocksWithGallery(
+    [introBlock, solutionBlock, metricsBlock, processBlock],
+    gallery
+  );
+
+  document.title = `${title} — Согласовано`;
+
+  return `
+    <nav class="case-breadcrumbs" aria-label="Хлебные крошки">
+      <a href="${escapeHtml(cfg.studioHome || "./")}">Согласовано</a>
+      <span aria-hidden="true">/</span>
+      <a href="${escapeHtml(cfg.studioCases || "./#cases")}">Кейсы</a>
+      <span aria-hidden="true">/</span>
+      <span>${escapeHtml(title)}</span>
+    </nav>
+
+    ${renderCaseNavigationArrows(projects, currentIndex, cfg)}
+
+    <article class="case-article">
+      <header class="case-hero">
+        <div class="case-hero-media">
+          ${heroImage ? `<img src="${escapeHtml(heroImage)}" alt="${escapeHtml(title)}" width="1200" height="630" decoding="async" />` : ""}
+        </div>
+        <div class="case-hero-copy">
+          <span class="case-category">${escapeHtml(getTagLabel(project.category))}</span>
+          <h1 class="case-title">${escapeHtml(title)}</h1>
+          <p class="case-lead">${escapeHtml(subtitle)}</p>
+          ${renderTags(tags)}
+          ${renderLiveLinks(project.liveLinks || [])}
+        </div>
+      </header>
+
+      <div class="case-body">
+        ${bodyContent}
+      </div>
+
+      <footer class="case-footer">
+        <a class="case-back" href="${escapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
+        <a class="case-brief" href="${escapeHtml(cfg.studioHome || "./")}">Оставить бриф</a>
+      </footer>
+    </article>
+
+    ${renderRelatedCases(projects, project, cfg)}
+    ${renderBottomLeadForm()}
+    ${renderCaseFooter()}
+  `;
+};
+
+const renderNotFound = (slug, cfg) => {
+  document.title = "Кейс не найден — Согласовано";
+  return `
+    <div class="case-empty">
+      <h1>Кейс не найден</h1>
+      <p>Страница «${escapeHtml(slug)}» недоступна или ещё не подключена.</p>
+      <a class="case-back" href="${escapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
+    </div>
+  `;
+};
+
+const initCasePage = async () => {
+  const root = document.getElementById("case-main");
+  const loading = document.querySelector("[data-case-loading]");
+  const cfg = window.STUDIO_CONFIG || {};
+  const slug = getSlug();
+
+  if (!root) return;
+
+  if (!slug) {
+    if (loading) loading.remove();
+    root.innerHTML = renderNotFound("", cfg);
+    return;
+  }
+
+  try {
+    const manifest = await loadJson(cfg.manifest || "./data/cases.manifest.json");
+    const projects = manifest.projects || [];
+    const project = projects.find(
+      item => item.id === slug || item.caseKey === slug
+    );
+    const currentIndex = projects.findIndex(item => item.id === slug || item.caseKey === slug);
+
+    if (loading) loading.remove();
+
+    if (!project) {
+      root.innerHTML = renderNotFound(slug, cfg);
+      return;
+    }
+
+    root.innerHTML = renderCase(project, projects, currentIndex, cfg);
+  } catch (err) {
+    if (loading) loading.remove();
+    root.innerHTML = `
+      <div class="case-empty">
+        <h1>Не удалось загрузить кейс</h1>
+        <p>${escapeHtml(err.message || err)}</p>
+        <a class="case-back" href="${escapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
+      </div>
+    `;
+    console.error("[studio case]", err);
+  }
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initCasePage);
+} else {
+  initCasePage();
+}

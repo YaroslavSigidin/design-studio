@@ -1,0 +1,200 @@
+const initHeroSearch = () => {
+  const editor = document.querySelector("[data-hero-search-editor]");
+  const submitButton = document.querySelector("[data-hero-submit]");
+  const serviceTabs = [...document.querySelectorAll("[data-brief-chip]")];
+  const budgetRange = document.querySelector("[data-hero-budget-range]");
+  const budgetLabel = document.querySelector("[data-hero-budget-label]");
+  const deadlineRange = document.querySelector("[data-hero-deadline-range]");
+  const deadlineLabel = document.querySelector("[data-hero-deadline-label]");
+
+  const finalModal = document.getElementById("heroFinalModal");
+  const finalForm = document.getElementById("heroFinalForm");
+  const finalCommentField = finalForm?.querySelector('textarea[name="comment"]');
+  const finalNameField = finalForm?.querySelector('input[name="name"]');
+  const finalPhoneField = finalForm?.querySelector('input[name="phone"]');
+  const finalSubmitButton = finalForm?.querySelector(".hero-final-submit");
+
+  if (!editor || !submitButton) return;
+
+  const planeSvg =
+    '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 8.9 14.8 3.3c.6-.3 1.2.3.9.9l-3.1 10c-.2.6-.9.8-1.3.3l-2.3-2.6-2.5 2.2c-.4.4-1 .2-1.1-.3l-.9-3.2-2.3-.7c-.7-.2-.7-1 .1-1.3z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 3.4 8.6 10" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>';
+
+  const createFlightPlane = () => {
+    const rect = submitButton.getBoundingClientRect();
+    const plane = document.createElement("span");
+    plane.className = "hero-send-plane-flight";
+    plane.innerHTML = planeSvg;
+    plane.style.left = `${rect.left + rect.width / 2}px`;
+    plane.style.top = `${rect.top + rect.height / 2}px`;
+    document.body.appendChild(plane);
+    window.setTimeout(() => plane.remove(), 920);
+  };
+
+  const formatMoney = value => `${new Intl.NumberFormat("ru-RU").format(value * 1000)} ₽`;
+
+  const getDeclension = (value, [one, two, five]) => {
+    const mod10 = value % 10;
+    const mod100 = value % 100;
+    if (mod100 >= 11 && mod100 <= 14) return five;
+    if (mod10 === 1) return one;
+    if (mod10 >= 2 && mod10 <= 4) return two;
+    return five;
+  };
+
+  const formatDeadline = value => {
+    const days = Number(value);
+    if (days < 14) return `${days} ${getDeclension(days, ["день", "дня", "дней"])}`;
+    if (days < 60) {
+      const weeks = Math.round(days / 7);
+      return `${weeks} ${getDeclension(weeks, ["неделя", "недели", "недель"])}`;
+    }
+    const months = Math.round((days / 30) * 10) / 10;
+    return `${String(months).replace(".0", "")} мес`;
+  };
+
+  const setRangeProgress = input => {
+    if (!input) return;
+    const min = Number(input.min || 0);
+    const maxValue = Number(input.max || 100);
+    const value = Number(input.value || min);
+    const progress = ((value - min) * 100) / (maxValue - min || 1);
+    input.style.setProperty("--range-progress", `${Math.max(0, Math.min(progress, 100))}%`);
+  };
+
+  const update = () => {
+    if (budgetRange && budgetLabel) {
+      budgetLabel.textContent = formatMoney(Number(budgetRange.value));
+      setRangeProgress(budgetRange);
+    }
+    if (deadlineRange && deadlineLabel) {
+      deadlineLabel.textContent = formatDeadline(Number(deadlineRange.value));
+      setRangeProgress(deadlineRange);
+    }
+  };
+
+  const resetHeroForm = () => {
+    editor.value = "";
+    serviceTabs.forEach((tab, index) => tab.classList.toggle("is-active", index === 0));
+    if (budgetRange) budgetRange.value = "150";
+    if (deadlineRange) deadlineRange.value = "30";
+    update();
+  };
+
+  const closeFinalModal = () => {
+    if (!finalModal) return;
+    finalModal.classList.remove("is-open");
+    finalModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  };
+
+  const openFinalModal = comment => {
+    if (!finalModal || !finalCommentField) return;
+    finalCommentField.value = comment;
+    finalModal.classList.add("is-open");
+    finalModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    window.setTimeout(() => finalNameField?.focus(), 20);
+  };
+
+  const handleSend = () => {
+    const text = editor.value.trim();
+    if (!text) {
+      submitButton.classList.add("is-invalid");
+      window.setTimeout(() => submitButton.classList.remove("is-invalid"), 360);
+      editor.focus();
+      return;
+    }
+
+    submitButton.classList.add("is-sending");
+    createFlightPlane();
+
+    window.setTimeout(() => {
+      submitButton.classList.remove("is-sending");
+      openFinalModal(text);
+    }, 680);
+  };
+
+  const handleFinalSubmit = event => {
+    event.preventDefault();
+    if (!finalForm) return;
+
+    if (!finalNameField?.value.trim()) {
+      finalNameField?.focus();
+      return;
+    }
+    if (!finalPhoneField?.value.trim()) {
+      finalPhoneField?.focus();
+      return;
+    }
+
+    if (finalSubmitButton) finalSubmitButton.textContent = "Отправлено";
+
+    window.setTimeout(() => {
+      if (finalSubmitButton) finalSubmitButton.textContent = "Отправить";
+      finalForm.reset();
+      closeFinalModal();
+      resetHeroForm();
+    }, 800);
+  };
+
+  const insertSuggestion = tab => {
+    const key = (tab.textContent || "").trim();
+    const current = editor.value.trim();
+    if (!current) {
+      editor.value = key;
+      editor.focus();
+      editor.setSelectionRange(editor.value.length, editor.value.length);
+      return;
+    }
+
+    const values = current
+      .split(",")
+      .map(value => value.trim())
+      .filter(Boolean);
+
+    if (!values.includes(key)) {
+      editor.value = `${values.join(", ")}, ${key}`;
+      editor.focus();
+      editor.setSelectionRange(editor.value.length, editor.value.length);
+    }
+  };
+
+  editor.addEventListener("input", update);
+  budgetRange?.addEventListener("input", update);
+  deadlineRange?.addEventListener("input", update);
+  serviceTabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      serviceTabs.forEach(item => item.classList.remove("is-active"));
+      tab.classList.add("is-active");
+      insertSuggestion(tab);
+      update();
+    });
+  });
+
+  submitButton.addEventListener("click", handleSend);
+  finalForm?.addEventListener("submit", handleFinalSubmit);
+
+  finalModal?.addEventListener("click", event => {
+    if (event.target.closest("[data-close-hero-final]")) {
+      closeFinalModal();
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && finalModal?.classList.contains("is-open")) {
+      closeFinalModal();
+    }
+  });
+
+  window.addEventListener("beforeunload", () => {
+    document.body.style.overflow = "";
+  });
+
+  update();
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initHeroSearch);
+} else {
+  initHeroSearch();
+}

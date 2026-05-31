@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Согласовано — дизайн-студия полного цикла</title>
+    <meta
+      name="description"
+      content="Согласовано — дизайн-студия полного цикла. UX/UI, сайты, брендинг и продуктовый дизайн под задачи вашего бизнеса."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260530-phone-chip-cluster" />
+  </head>
+  <body>
+    <div class="hero-page">
+      <div class="hero-pong-layer" aria-hidden="true" data-hero-pong-layer>
+        <div class="hero-paddle hero-paddle--player" data-pong-player></div>
+        <div class="hero-paddle hero-paddle--ai" data-pong-ai></div>
+        <div class="hero-pong-ball" data-pong-ball></div>
+      </div>
+      <div class="hero-layout">
+        <header class="hero-nav" data-floating-header>
+          <div class="hero-nav-inner">
+            <a class="hero-logo" href="#">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path
+                  d="M3 3h6v6H3V3Zm8 0h6v6h-6V3ZM3 11h6v6H3v-6Zm8 4h6v2h-6v-2Z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span>Согласовано</span>
+            </a>
+
+            <ul class="hero-menu">
+              <li><a href="#cases">Кейсы</a></li>
+              <li><a href="#services">Услуги</a></li>
+              <li><a href="#discuss-project">Обсудить проект</a></li>
+              <li><a href="#contacts">Контакты</a></li>
+            </ul>
+
+            <div class="hero-nav-actions">
+              <a class="hero-btn hero-btn--dark" href="#" data-open-brief-modal>Заказать дизайн</a>
+              <button class="hero-menu-toggle" type="button" aria-label="Открыть меню" data-header-toggle>
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path
+                    d="M3.5 5.5h13M3.5 10h13M3.5 14.5h13"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-mobile-sheet" data-header-sheet>
+            <a href="#cases">Кейсы</a>
+            <a href="#services">Услуги</a>
+            <a href="#discuss-project">Обсудить проект</a>
+            <a href="#contacts">Контакты</a>
+            <div class="hero-mobile-sheet-actions">
+              <a class="hero-btn hero-btn--dark" href="#" data-open-brief-modal>Заказать дизайн</a>
+            </div>
+          </div>
+        </header>
+
+        <aside class="promo-strip" aria-label="Промо-акция">
+          <div class="promo-strip__timer">
+            <p class="promo-strip__label">До конца акции:</p>
+            <p class="promo-strip__value" data-promo-timer>20ч:10м:46с</p>
+          </div>
+          <div class="promo-strip__offer">Скидка 10%<br />на лендинг</div>
+        </aside>
+
+        <main class="hero-main">
+          <div class="hero-content">
+            <div class="hero-header">
+              <div class="hero-badge">
+                <span class="hero-badge-dark">
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M8 1.5l1.76 3.57 3.94.57-2.85 2.78.67 3.92L8 10.67l-3.52 1.85.67-3.92-2.85-2.78 3.94-.57L8 1.5z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  AI-бриф
+                </span>
+                <span class="hero-badge-light">Опишите задачу — получите первичную оценку</span>
+              </div>
+
+              <h1 class="hero-title" data-reveal-heading>Дизайн-студия полного цикла</h1>
+
+              <p class="hero-subtitle">
+                От исследования и концепции до интерфейсов, сайтов и передачи в разработку
+              </p>
+            </div>
+
+            <div class="hero-search-wrap">
+              <div class="hero-search">
+                <div class="hero-search-input-wrap">
+                  <textarea
+                    class="hero-search-editor"
+                    data-hero-search-editor
+                    aria-label="Мне нужен(а)...."
+                    data-placeholder="Мне нужен(а)...."
+                    placeholder="Мне нужен(а)...."
+                    rows="2"
+                    maxlength="3000"
+                  ></textarea>
+                  <button type="button" class="hero-search-submit" aria-label="Отправить бриф" data-hero-submit>
+                    <span>Отправить</span>
+                  </button>
+                </div>
+
+                <div class="hero-search-bottom">
+                  <div class="hero-search-actions">
+                    <button type="button" class="hero-chip is-active" data-brief-chip>
+                      Презентация
+                    </button>
+                    <button type="button" class="hero-chip" data-brief-chip>
+                      Многостраничный сайт
+                    </button>
+                    <button type="button" class="hero-chip" data-brief-chip>
+                      Лендинг
+                    </button>
+                    <button type="button" class="hero-chip" data-brief-chip>
+                      UX/UI продукта
+                    </button>
+                    <button type="button" class="hero-chip" data-brief-chip>
+                      Брендинг
+                    </button>
+                    <button type="button" class="hero-chip" data-brief-chip>
+                      Логотипы
+                    </button>
+                    <button type="button" class="hero-chip" data-brief-chip>
+                      Айдентика
+                    </button>
+                    <button type="button" class="hero-chip" data-brief-chip>
+                      Дизайн-система
+                    </button>
+                    <button type="button" class="hero-chip" data-brief-chip>
+                      Редизайн сайта
+                    </button>
+                    <button type="button" class="hero-chip" data-brief-chip>
+                      Баннеры и креативы
+                    </button>
+                  </div>
+                </div>
+                <div class="hero-search-sliders">
+                  <label class="hero-range-control">
+                    <div class="hero-range-head">
+                      <span>Бюджет</span>
+                      <strong data-hero-budget-label>150 000 ₽</strong>
+                    </div>
+                    <input type="range" min="5" max="500" step="5" value="150" data-hero-budget-range />
+                  </label>
+                  <label class="hero-range-control">
+                    <div class="hero-range-head">
+                      <span>Срок</span>
+                      <strong data-hero-deadline-label>30 дней</strong>
+                    </div>
+                    <input type="range" min="1" max="180" step="1" value="30" data-hero-deadline-range />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <section class="section studio-cases" id="cases">
+      <div class="container">
+        <p class="section-subtitle">Портфолио</p>
+        <h2 class="section-title" data-reveal-heading>Наши кейсы</h2>
+        <div class="tabs" id="projectTabs">
+          <button class="tab-button active" type="button" data-filter="all">Все проекты</button>
+          <button class="tab-button" type="button" data-filter="uxui">UX/UI проекты</button>
+          <button class="tab-button" type="button" data-filter="web">Web-сайты</button>
+          <button class="tab-button" type="button" data-filter="logo">Логотипы</button>
+          <button class="tab-button" type="button" data-filter="identity">Айдентика</button>
+          <button class="tab-button" type="button" data-filter="branding">Брендинг</button>
+          <button class="tab-button" type="button" data-filter="presentation">Презентации</button>
+        </div>
+        <p class="studio-cases-status" data-cases-status>Загрузка кейсов…</p>
+      </div>
+      <div class="portfolio-grid-bleed">
+        <div class="projects-grid" id="projects-grid"></div>
+      </div>
+    </section>
+
+    <section class="section studio-services" id="services">
+      <div class="container">
+        <p class="section-subtitle">Услуги</p>
+        <h2 class="section-title" data-reveal-heading>Все наши услуги</h2>
+        <div class="studio-services-grid" id="studioServicesGrid"></div>
+      </div>
+    </section>
+
+    <section class="section studio-discuss" id="discuss-project">
+      <div class="studio-discuss__inner">
+        <h2 data-reveal-heading>Обсудить проект</h2>
+        <form class="studio-discuss__form">
+          <input type="text" name="name" placeholder="Имя" required />
+          <input type="tel" name="phone" placeholder="Номер телефона" required />
+          <input type="text" name="telegram" placeholder="Telegram" required />
+          <button type="submit">Отправить</button>
+        </form>
+      </div>
+    </section>
+
+    <footer class="studio-footer" id="contacts">
+      <div class="studio-footer__card">
+        <span class="studio-footer__tape studio-footer__tape--left" aria-hidden="true"></span>
+        <span class="studio-footer__tape studio-footer__tape--right" aria-hidden="true"></span>
+
+        <div class="studio-footer__top">
+          <div class="studio-footer__brand">
+            <a class="studio-footer__logo" href="#">Согласовано</a>
+            <p>
+              Дизайн-студия полного цикла. Проектируем интерфейсы, сайты и цифровые продукты, чтобы
+              ваш бизнес рос быстрее.
+            </p>
+          </div>
+
+          <div class="studio-footer__columns">
+            <div class="studio-footer__column">
+              <h3>Ресурсы</h3>
+              <a href="#cases">Кейсы</a>
+              <a href="#services">Услуги</a>
+              <a href="#" data-open-brief-modal>Оставить бриф</a>
+              <a href="#discuss-project">Обсудить проект</a>
+            </div>
+
+            <div class="studio-footer__column">
+              <h3>Студия</h3>
+              <a href="#">Процесс</a>
+              <a href="#">О студии</a>
+              <a href="#">FAQ</a>
+              <a href="#">Партнерство</a>
+            </div>
+
+            <div class="studio-footer__column">
+              <h3>Контакты</h3>
+              <a href="mailto:hello@soglasovano.design">hello@soglasovano.design</a>
+              <a href="tel:+79990000000">+7 (999) 000-00-00</a>
+              <a href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram</a>
+              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="studio-footer__bottom">
+        <div class="studio-footer__bottom-left">
+          <span>© 2026 Согласовано. Все права защищены.</span>
+          <a href="#">Политика конфиденциальности</a>
+          <a href="#">Условия использования</a>
+        </div>
+        <div class="studio-footer__social">
+          <a href="https://www.linkedin.com" target="_blank" rel="nofollow noopener" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M7.2 9.6V18M7.2 6a1.2 1.2 0 1 0 0 2.4A1.2 1.2 0 0 0 7.2 6Zm4.8 12v-4.8c0-1.7 1-2.4 2.2-2.4s2.2.7 2.2 2.4V18M12 18V9.6"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+          <a href="https://x.com" target="_blank" rel="nofollow noopener" aria-label="X">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M4.5 4.5h3.3l3.8 5.1 4.4-5.1h3L13.1 11l6.4 8.5h-3.3l-4.3-5.7-4.9 5.7H4l6.8-7.9L4.5 4.5Z"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <div class="top-contact-cluster">
+      <a class="top-phone-chip" href="tel:+79619710515" aria-label="Позвонить +7 961 971 05 15">+7 961 971 05 15</a>
+      <div class="top-mini-contacts" aria-label="Контакты">
+        <a class="top-mini-contact-btn" href="https://vk.com" target="_blank" rel="noreferrer" aria-label="VK">
+          <img src="./assets/icons/vk-logo-white.svg" alt="" />
+        </a>
+        <a class="top-mini-contact-btn top-mini-contact-btn--max" href="#" aria-label="MAX">
+          <img src="./assets/icons/max-logo-white.svg" alt="" />
+        </a>
+      </div>
+    </div>
+
+    <div class="brief-modal" id="briefModal" aria-hidden="true">
+      <div class="brief-modal__overlay" data-close-brief-modal></div>
+      <section
+        class="brief-modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="briefModalTitle"
+      >
+        <header class="brief-modal__header">
+          <div>
+            <p class="brief-modal__eyebrow">Быстрая заявка</p>
+            <h2 class="brief-modal__title" id="briefModalTitle">Заказать дизайн</h2>
+          </div>
+          <button
+            class="brief-modal__close"
+            type="button"
+            aria-label="Закрыть окно"
+            data-close-brief-modal
+          >
+            ×
+          </button>
+        </header>
+
+        <form class="brief-form" id="briefForm">
+          <div class="brief-grid brief-grid--stack">
+            <label class="brief-field">
+              <span>Ваше имя</span>
+              <input type="text" name="name" placeholder="Как к вам обращаться" required />
+            </label>
+            <label class="brief-field">
+              <span>Контакт для связи</span>
+              <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required />
+            </label>
+          </div>
+
+          <div class="brief-section">
+            <p class="brief-section__title">Выберите услугу</p>
+            <div class="brief-quick-services" data-quick-services></div>
+            <input type="hidden" name="service" id="briefServiceValue" />
+          </div>
+
+          <div class="brief-range-grid">
+            <label class="brief-field brief-field--range">
+              <div class="brief-range-head">
+                <span>Бюджет</span>
+                <strong data-brief-budget-label>150 000 ₽</strong>
+              </div>
+              <input type="range" name="budget" min="5" max="500" step="5" value="150" data-brief-budget-range />
+            </label>
+
+            <label class="brief-field brief-field--range">
+              <div class="brief-range-head">
+                <span>Сроки запуска</span>
+                <strong data-brief-deadline-label>30 дней</strong>
+              </div>
+              <input
+                type="range"
+                name="deadline"
+                min="1"
+                max="180"
+                step="1"
+                value="30"
+                data-brief-deadline-range
+              />
+            </label>
+          </div>
+
+          <label class="brief-field brief-field--full">
+            <span>Комментарий к задаче</span>
+            <textarea
+              name="comment"
+              rows="4"
+              placeholder="Опишите цели, что уже готово и какой результат ожидаете"
+            ></textarea>
+          </label>
+
+          <div class="brief-modal__actions">
+            <p class="brief-modal__hint">Ответим в течение 15 минут в рабочее время.</p>
+            <button class="brief-modal__submit" type="submit">Отправить задачу</button>
+          </div>
+        </form>
+
+        <div class="brief-success" id="briefSuccess" hidden>
+          <h3>Заявка отправлена</h3>
+          <p>Спасибо! Мы получили данные и скоро свяжемся с вами для уточнения деталей.</p>
+        </div>
+      </section>
+    </div>
+
+    <div class="hero-final-modal" id="heroFinalModal" aria-hidden="true">
+      <div class="hero-final-modal__overlay" data-close-hero-final></div>
+      <section class="hero-final-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="heroFinalTitle">
+        <header class="hero-final-modal__header">
+          <h2 id="heroFinalTitle">Последний шаг</h2>
+          <button type="button" class="hero-final-modal__close" aria-label="Закрыть" data-close-hero-final>
+            ×
+          </button>
+        </header>
+
+        <form class="hero-final-form" id="heroFinalForm">
+          <label class="hero-final-field">
+            <span>Имя</span>
+            <input type="text" name="name" placeholder="Ваше имя" required />
+          </label>
+
+          <label class="hero-final-field">
+            <span>Номер телефона</span>
+            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required />
+          </label>
+
+          <label class="hero-final-field hero-final-field--full">
+            <span>Комментарий</span>
+            <textarea name="comment" rows="4" required></textarea>
+          </label>
+
+          <button type="submit" class="hero-final-submit">Отправить</button>
+        </form>
+      </section>
+    </div>
+
+    <aside class="video-orb is-pending" data-video-orb>
+      <button type="button" class="video-orb__close" aria-label="Скрыть видеокружок" data-video-orb-close>
+        <svg class="video-orb__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+        </svg>
+      </button>
+      <button type="button" class="video-orb__sound" aria-label="Включить звук" data-video-orb-sound></button>
+      <button type="button" class="video-orb__tap" aria-label="Пауза/воспроизведение" data-video-orb-toggle>
+        <video
+          class="video-orb__media"
+          data-video-orb-media
+          src="./assets/video/dlya-saita.mp4"
+          loop
+          muted
+          playsinline
+          preload="metadata"
+        ></video>
+      </button>
+    </aside>
+
+    <script src="./assets/js/config.js?v=20260530-cases-hotfix" defer></script>
+    <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
+    <script src="./assets/js/promo-strip.js?v=20260530-promo-strip" defer></script>
+    <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
+    <script src="./assets/js/header.js?v=20260530-floating-header" defer></script>
+    <script src="./assets/js/hero-pong.js?v=20260530-hero-pong-lite" defer></script>
+    <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
+    <script src="./assets/js/hero.js?v=20260530-final-step-modal" defer></script>
+    <script src="./assets/js/services.js?v=20260530-cases-hotfix" defer></script>
+    <script src="./assets/js/brief-modal.js?v=20260530-brief-modal-service-picker" defer></script>
+    <script src="./assets/js/cases.js?v=20260530-cases-placeholder-card" defer></script>
+    <script>
+      (function () {
+        const escapeHtml = value =>
+          String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+
+        const renderFallbackCases = async () => {
+          const grid = document.getElementById("projects-grid");
+          const status = document.querySelector("[data-cases-status]");
+          const tabsRoot = document.getElementById("projectTabs");
+          if (!grid || grid.children.length > 0) return;
+
+          if (status) {
+            status.hidden = false;
+            status.textContent = "Загрузка кейсов...";
+          }
+
+          const cfg = window.STUDIO_CONFIG || {};
+          const manifestUrl =
+            cfg.manifest || "./data/cases.manifest.json?v=20260530-cases-fallback";
+
+          try {
+            const res = await fetch(manifestUrl, { cache: "no-store" });
+            if (!res.ok) throw new Error("manifest " + res.status);
+            const manifest = await res.json();
+            const projects = Array.isArray(manifest?.projects) ? manifest.projects : [];
+
+            if (!projects.length) throw new Error("manifest empty");
+
+            const caseBase = cfg.casePageBase || "./case.html";
+            grid.innerHTML = projects
+              .map(project => {
+                const href =
+                  project.studioCaseUrl ||
+                  (project.id ? caseBase + "?slug=" + encodeURIComponent(project.id) : "");
+                const category = project.category || "web";
+                const tagLabel = category === "uxui" ? "UX/UI" : "WEB";
+                const searchText = `${project.title || ""} ${project.subtitle || ""} ${project.description || ""}`.toLowerCase();
+                return `
+                  <article class="project-card" data-category="${escapeHtml(category)}" data-search="${escapeHtml(searchText)}" ${
+                    href ? `data-case-url="${escapeHtml(href)}" tabindex="0"` : ""
+                  }>
+                    <img
+                      src="${escapeHtml(project.image || project.cover || "")}"
+                      alt="${escapeHtml(project.title || "")}"
+                      loading="lazy"
+                      decoding="async"
+                      width="1200"
+                      height="630"
+                    />
+                    <div class="content">
+                      <span class="tag">${tagLabel}</span>
+                      <h3>${escapeHtml(project.title || "")}</h3>
+                      <p>${escapeHtml(project.subtitle || "")}</p>
+                    </div>
+                  </article>
+                `;
+              })
+              .join("");
+
+            grid.addEventListener("click", event => {
+              const card = event.target.closest(".project-card");
+              if (!card) return;
+              const href = card.dataset.caseUrl;
+              if (href) window.location.href = href;
+            });
+
+            grid.addEventListener("keydown", event => {
+              if (event.key !== "Enter" && event.key !== " ") return;
+              const card = event.target.closest(".project-card");
+              if (!card) return;
+              event.preventDefault();
+              const href = card.dataset.caseUrl;
+              if (href) window.location.href = href;
+            });
+
+            if (tabsRoot && tabsRoot.dataset.fallbackBound !== "true") {
+              const applyFilter = filter => {
+                grid.querySelectorAll(".project-card").forEach(card => {
+                  const category = card.dataset.category || "";
+                  const search = String(card.dataset.search || "").toLowerCase();
+                  const matches =
+                    filter === "all" ||
+                    (filter === "uxui" && category === "uxui") ||
+                    (filter === "web" && category === "web") ||
+                    (filter === "logo" && /логотип|logo/.test(search)) ||
+                    (filter === "identity" && /айдентик|identity|фирменн/.test(search)) ||
+                    (filter === "branding" && /брендинг|бренд|branding/.test(search)) ||
+                    (filter === "presentation" && /презентац|presentation/.test(search));
+                  card.hidden = !matches;
+                });
+              };
+
+              tabsRoot.querySelectorAll(".tab-button").forEach(tab => {
+                tab.addEventListener("click", () => {
+                  tabsRoot.querySelectorAll(".tab-button").forEach(item => item.classList.remove("active"));
+                  tab.classList.add("active");
+                  applyFilter(tab.dataset.filter || "all");
+                });
+              });
+
+              const activeTab =
+                tabsRoot.querySelector(".tab-button.active") || tabsRoot.querySelector(".tab-button");
+              applyFilter(activeTab?.dataset.filter || "all");
+              tabsRoot.dataset.fallbackBound = "true";
+            }
+
+            if (status) status.hidden = true;
+          } catch (err) {
+            if (status) {
+              status.hidden = false;
+              status.textContent = "Не удалось загрузить кейсы: " + (err?.message || err);
+            }
+            console.error("[studio cases inline fallback]", err);
+          }
+        };
+
+        window.setTimeout(renderFallbackCases, 260);
+      })();
+    </script>
+  </body>
+</html>
