@@ -2789,6 +2789,10 @@ body::after {
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
+  .hero-pong-layer {
+    display: none;
+  }
+
   .hero-badge {
     display: none;
   }
