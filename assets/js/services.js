@@ -75,6 +75,7 @@ const SERVICES = [
 ];
 
 window.SERVICES = SERVICES;
+const MOBILE_SERVICES_LIMIT = 8;
 
 const formatRub = value => new Intl.NumberFormat("ru-RU").format(value);
 
@@ -158,8 +159,38 @@ const serviceCardTemplate = service => {
 
 const initServices = () => {
   const grid = document.getElementById("studioServicesGrid");
+  const moreWrap = document.getElementById("studioServicesMore");
+  const moreButton = document.getElementById("studioServicesMoreButton");
   if (!grid) return;
   grid.innerHTML = SERVICES.map(serviceCardTemplate).join("");
+
+  let expanded = false;
+  const isMobileLimited = () => window.matchMedia("(max-width: 640px)").matches;
+
+  const applyMobileLimit = () => {
+    const cards = [...grid.querySelectorAll(".studio-service-card")];
+    const shouldLimit = isMobileLimited();
+
+    cards.forEach((card, index) => {
+      card.hidden = shouldLimit && !expanded && index >= MOBILE_SERVICES_LIMIT;
+    });
+
+    if (moreWrap) {
+      moreWrap.hidden = !(shouldLimit && cards.length > MOBILE_SERVICES_LIMIT && !expanded);
+    }
+  };
+
+  moreButton?.addEventListener("click", () => {
+    expanded = true;
+    applyMobileLimit();
+  });
+
+  window.addEventListener("resize", () => {
+    if (!isMobileLimited()) expanded = false;
+    applyMobileLimit();
+  });
+
+  applyMobileLimit();
 };
 
 if (document.readyState === "loading") {
