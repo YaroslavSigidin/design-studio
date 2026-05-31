@@ -601,8 +601,7 @@ body::after {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  min-width: 56px;
+  min-width: 60px;
   height: 38px;
   border: none;
   border-radius: 9px;
