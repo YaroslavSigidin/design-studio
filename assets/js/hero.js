@@ -22,13 +22,22 @@ const initHeroSearch = () => {
 
   const createFlightPlane = () => {
     const rect = submitButton.getBoundingClientRect();
-    const plane = document.createElement("span");
-    plane.className = "hero-send-plane-flight";
-    plane.innerHTML = planeSvg;
-    plane.style.left = `${rect.left + rect.width / 2}px`;
-    plane.style.top = `${rect.top + rect.height / 2}px`;
-    document.body.appendChild(plane);
-    window.setTimeout(() => plane.remove(), 920);
+    const launch = document.createElement("span");
+    launch.className = "hero-send-launch";
+    launch.style.left = `${rect.left + rect.width / 2}px`;
+    launch.style.top = `${rect.top + rect.height / 2}px`;
+    launch.innerHTML = `
+      <span class="hero-send-glow" aria-hidden="true"></span>
+      <span class="hero-send-ring" aria-hidden="true"></span>
+      <span class="hero-send-trail" aria-hidden="true"></span>
+      <span class="hero-send-spark hero-send-spark--one" aria-hidden="true"></span>
+      <span class="hero-send-spark hero-send-spark--two" aria-hidden="true"></span>
+      <span class="hero-send-spark hero-send-spark--three" aria-hidden="true"></span>
+      <span class="hero-send-plane-flight" aria-hidden="true">${planeSvg}</span>
+    `;
+
+    document.body.appendChild(launch);
+    window.setTimeout(() => launch.remove(), 1500);
   };
 
   const formatMoney = value => `${new Intl.NumberFormat("ru-RU").format(value * 1000)} ₽`;
@@ -112,7 +121,7 @@ const initHeroSearch = () => {
     window.setTimeout(() => {
       submitButton.classList.remove("is-sending");
       openFinalModal(text);
-    }, 680);
+    }, 980);
   };
 
   const handleFinalSubmit = event => {
