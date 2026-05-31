@@ -165,7 +165,7 @@ const initServices = () => {
   grid.innerHTML = SERVICES.map(serviceCardTemplate).join("");
 
   let expanded = false;
-  const isMobileLimited = () => window.matchMedia("(max-width: 640px)").matches;
+  const isMobileLimited = () => window.matchMedia("(max-width: 900px)").matches;
 
   const applyMobileLimit = () => {
     const cards = [...grid.querySelectorAll(".studio-service-card")];
