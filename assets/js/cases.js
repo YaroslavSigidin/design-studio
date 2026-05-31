@@ -96,6 +96,7 @@ const pickProjects = manifest => {
 };
 
 const SKELETON_CARDS_COUNT = 6;
+const MOBILE_CASES_LIMIT = 8;
 const EXTRA_PLACEHOLDER_CASE = {
   id: "placeholder-case",
   category: "web",
@@ -213,11 +214,28 @@ const initCasesFilter = (grid, tabsRoot) => {
   if (!grid || !tabsRoot || grid.dataset.filterBound === "true") return;
 
   let activeFilter = "all";
+  let expanded = false;
+  const moreWrap = qs("#studioCasesMore");
+  const moreButton = qs("#studioCasesMoreButton");
+  const isMobileLimited = () => window.matchMedia("(max-width: 640px)").matches;
 
   const applyFilter = () => {
+    let visibleCount = 0;
+
     qsa(".project-card", grid).forEach(card => {
-      card.hidden = !matchesProjectFilter(card, activeFilter);
+      const matches = matchesProjectFilter(card, activeFilter);
+      if (!matches) {
+        card.hidden = true;
+        return;
+      }
+
+      visibleCount += 1;
+      const shouldHideByLimit = isMobileLimited() && !expanded && visibleCount > MOBILE_CASES_LIMIT;
+      card.hidden = shouldHideByLimit;
     });
+
+    const shouldShowMore = isMobileLimited() && visibleCount > MOBILE_CASES_LIMIT && !expanded;
+    if (moreWrap) moreWrap.hidden = !shouldShowMore;
   };
 
   qsa(".tab-button", tabsRoot).forEach(tab => {
@@ -225,10 +243,17 @@ const initCasesFilter = (grid, tabsRoot) => {
       qsa(".tab-button", tabsRoot).forEach(item => item.classList.remove("active"));
       tab.classList.add("active");
       activeFilter = tab.dataset.filter || "all";
+      expanded = false;
       applyFilter();
     });
   });
 
+  moreButton?.addEventListener("click", () => {
+    expanded = true;
+    applyFilter();
+  });
+
+  window.addEventListener("resize", applyFilter);
   applyFilter();
   grid.dataset.filterBound = "true";
 };
