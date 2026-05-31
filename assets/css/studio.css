@@ -413,11 +413,15 @@ body::after {
   border: none;
   border-radius: 16px;
   overflow: hidden;
-  pointer-events: none;
+  pointer-events: auto;
   height: 58px;
   box-shadow:
     0 8px 18px rgba(12, 28, 47, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.promo-strip.is-hidden {
+  display: none;
 }
 
 .promo-strip__timer,
@@ -474,6 +478,29 @@ body::after {
   color: #000;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+}
+
+.promo-strip__close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.08);
+  color: #111;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.promo-strip__close:hover {
+  background: rgba(0, 0, 0, 0.14);
 }
 
 .top-contact-cluster {
@@ -2414,7 +2441,7 @@ body::after {
   }
 
   .promo-strip {
-    top: 10px;
+    top: 84px;
     left: 7px;
     width: calc(100vw - 14px);
     height: 50px;
@@ -2462,13 +2489,21 @@ body::after {
 
   .hero-nav {
     width: calc(100% - 14px);
-    top: 66px;
+    top: 10px;
   }
 
   .hero-nav-inner {
     gap: 10px;
     min-height: 64px;
     padding: 10px;
+  }
+
+  .promo-strip__close {
+    top: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
   }
 
   .hero-logo {

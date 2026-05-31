@@ -1,6 +1,16 @@
 const initPromoStrip = () => {
+  const strip = document.querySelector("[data-promo-strip]");
   const timerNode = document.querySelector("[data-promo-timer]");
-  if (!timerNode) return;
+  const closeButton = document.querySelector("[data-promo-close]");
+  const storageKey = "studio-promo-dismissed";
+  if (!strip || !timerNode) return;
+
+  try {
+    if (window.localStorage.getItem(storageKey) === "true") {
+      strip.classList.add("is-hidden");
+      return;
+    }
+  } catch {}
 
   let remainingSeconds = 20 * 3600 + 10 * 60 + 46;
 
@@ -20,6 +30,13 @@ const initPromoStrip = () => {
     remainingSeconds = remainingSeconds > 0 ? remainingSeconds - 1 : 20 * 3600 + 10 * 60 + 46;
     render();
   }, 1000);
+
+  closeButton?.addEventListener("click", () => {
+    strip.classList.add("is-hidden");
+    try {
+      window.localStorage.setItem(storageKey, "true");
+    } catch {}
+  });
 };
 
 if (document.readyState === "loading") {
