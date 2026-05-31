@@ -372,15 +372,15 @@
 .case-gallery {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .case-gallery-item {
   margin: 0;
   overflow: hidden;
   border-radius: 14px;
-  background: #f8f8f8;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: transparent;
+  border: none;
 }
 
 .case-gallery-item img {
