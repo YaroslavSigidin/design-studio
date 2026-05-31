@@ -1,7 +1,37 @@
 const SERVICES = [
-  { title: "Лендинг под продукт", price: 80000, oldPrice: 99000, badge: "Хит", rating: 4.9, reviews: 52 },
-  { title: "Многостраничный сайт", price: 140000, oldPrice: 165000, badge: "-15%", rating: 4.8, reviews: 41 },
-  { title: "UX/UI цифрового продукта", price: 190000, oldPrice: 220000, badge: "Премиум", rating: 5.0, reviews: 28 },
+  {
+    title: "UX/UI для платформы",
+    price: 190000,
+    oldPrice: 220000,
+    badge: "Флагман",
+    rating: 5.0,
+    reviews: 28,
+    featured: true,
+    accent: "midnight",
+    bullets: ["Сценарии и CJM", "Личный кабинет и роли", "Передача в разработку"]
+  },
+  {
+    title: "Лендинг",
+    price: 80000,
+    oldPrice: 99000,
+    badge: "Хит",
+    rating: 4.9,
+    reviews: 52,
+    featured: true,
+    accent: "lime",
+    bullets: ["Сильный первый экран", "Структура под конверсию", "Адаптив под mobile"]
+  },
+  {
+    title: "Многостраничный сайт",
+    price: 140000,
+    oldPrice: 165000,
+    badge: "-15%",
+    rating: 4.8,
+    reviews: 41,
+    featured: true,
+    accent: "sky",
+    bullets: ["Карта разделов", "Единая дизайн-система", "SEO-ready структура"]
+  },
   { title: "Мобильное приложение", price: 220000, oldPrice: 255000, badge: "Топ", rating: 4.9, reviews: 34 },
   { title: "Брендинг и айдентика", price: 95000, oldPrice: 112000, badge: "Новое", rating: 4.7, reviews: 22 },
   { title: "Презентация для бизнеса", price: 45000, oldPrice: 55000, badge: "Быстро", rating: 4.8, reviews: 63 },
@@ -88,10 +118,19 @@ const serviceCardTemplate = service => {
   const oldPriceMarkup = !isFree && Number(service.oldPrice) > 0
     ? `<p class="studio-service-old-price">${formatRub(service.oldPrice)} ₽</p>`
     : "";
-  const cardClassName = `studio-service-card${service.dark ? " studio-service-card--dark" : ""}`;
+  const cardClassName = `studio-service-card${service.dark ? " studio-service-card--dark" : ""}${
+    service.featured ? " studio-service-card--featured" : ""
+  }${service.accent ? ` studio-service-card--${service.accent}` : ""}`;
   const orderButtonClassName = `studio-service-order${
     service.alwaysVisibleCta ? " studio-service-order--always-visible" : ""
   }`;
+  const bulletMarkup = Array.isArray(service.bullets) && service.bullets.length
+    ? `
+      <ul class="studio-service-bullets">
+        ${service.bullets.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+    `
+    : "";
   return `
     <article class="${cardClassName}">
       <div class="studio-service-meta">
@@ -104,6 +143,7 @@ const serviceCardTemplate = service => {
         ${oldPriceMarkup}
       </div>
       <p class="studio-service-installment">${escapeHtml(pricingDetail)}</p>
+      ${bulletMarkup}
       <button
         type="button"
         class="${orderButtonClassName}"

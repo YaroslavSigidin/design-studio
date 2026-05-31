@@ -1432,6 +1432,103 @@ body::after {
   text-align: left;
   box-shadow: 0 10px 20px rgba(27, 56, 91, 0.12);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+}
+
+.studio-service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.studio-service-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.studio-service-card--featured {
+  gap: 12px;
+  min-height: 320px;
+  padding: 22px;
+  border-radius: 28px;
+  box-shadow: 0 24px 44px rgba(52, 107, 168, 0.18);
+}
+
+.studio-service-card--featured .studio-service-badge {
+  height: 30px;
+  padding: 0 13px;
+  border-radius: 11px;
+  font-size: 15px;
+}
+
+.studio-service-card--featured .studio-service-reviews {
+  font-size: 15px;
+  color: rgba(17, 17, 17, 0.58);
+}
+
+.studio-service-card--featured .studio-service-title {
+  max-width: 14ch;
+  font-size: clamp(28px, 2vw, 40px);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+}
+
+.studio-service-card--featured .studio-service-price {
+  font-size: clamp(42px, 3vw, 56px);
+  line-height: 0.95;
+  letter-spacing: -0.08em;
+}
+
+.studio-service-card--featured .studio-service-old-price {
+  font-size: 18px;
+}
+
+.studio-service-card--featured .studio-service-installment {
+  font-size: 18px;
+  color: rgba(17, 17, 17, 0.72);
+}
+
+.studio-service-card--lime {
+  background:
+    radial-gradient(circle at top right, rgba(219, 255, 110, 0.85), rgba(219, 255, 110, 0) 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 228, 0.98));
+}
+
+.studio-service-card--sky {
+  background:
+    radial-gradient(circle at top right, rgba(169, 215, 255, 0.78), rgba(169, 215, 255, 0) 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(239, 247, 255, 0.98));
+}
+
+.studio-service-card--midnight {
+  border-color: rgba(10, 20, 34, 0.22);
+  background:
+    radial-gradient(circle at top right, rgba(108, 149, 255, 0.3), rgba(108, 149, 255, 0) 30%),
+    linear-gradient(160deg, #172435 0%, #0d1520 60%, #091019 100%);
+  box-shadow: 0 28px 48px rgba(8, 17, 30, 0.3);
+}
+
+.studio-service-card--midnight .studio-service-badge {
+  background: #dbff6e;
+  color: #0c1117;
+}
+
+.studio-service-card--midnight .studio-service-title,
+.studio-service-card--midnight .studio-service-price {
+  color: #ffffff;
+}
+
+.studio-service-card--midnight .studio-service-reviews,
+.studio-service-card--midnight .studio-service-installment,
+.studio-service-card--midnight .studio-service-old-price {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.studio-service-card--midnight .studio-service-order {
+  background: #dbff6e;
+  color: #0b0f14;
 }
 
 .studio-service-card--dark {
@@ -1535,6 +1632,59 @@ body::after {
   color: #666;
 }
 
+.studio-service-bullets {
+  display: grid;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.studio-service-bullets li {
+  position: relative;
+  padding-left: 30px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #223247;
+}
+
+.studio-service-bullets li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #111111;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.studio-service-card--featured .studio-service-bullets {
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.studio-service-card--featured .studio-service-bullets li {
+  font-size: 16px;
+  line-height: 1.42;
+}
+
+.studio-service-card--midnight .studio-service-bullets li {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.studio-service-card--midnight .studio-service-bullets li::before {
+  background: #dbff6e;
+  color: #10161d;
+}
+
 .studio-service-order {
   margin-top: auto;
   width: 100%;
@@ -1565,6 +1715,17 @@ body::after {
   transform: translateY(-2px);
   box-shadow: 0 16px 30px rgba(27, 56, 91, 0.18);
   border-color: rgba(28, 52, 81, 0.2);
+}
+
+.studio-service-card--featured:hover,
+.studio-service-card--featured:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 52px rgba(36, 90, 150, 0.22);
+}
+
+.studio-service-card--midnight:hover,
+.studio-service-card--midnight:focus-within {
+  box-shadow: 0 34px 58px rgba(8, 17, 30, 0.38);
 }
 
 .studio-service-card:hover .studio-service-order,
@@ -2453,6 +2614,25 @@ body::after {
     opacity: 1;
     transform: none;
     pointer-events: auto;
+  }
+
+  .studio-service-card--featured {
+    min-height: 292px;
+    padding: 18px;
+  }
+
+  .studio-service-card--featured .studio-service-title {
+    max-width: none;
+    font-size: 26px;
+  }
+
+  .studio-service-card--featured .studio-service-price {
+    font-size: 40px;
+  }
+
+  .studio-service-card--featured .studio-service-installment,
+  .studio-service-card--featured .studio-service-bullets li {
+    font-size: 15px;
   }
 
   .studio-discuss__inner {
