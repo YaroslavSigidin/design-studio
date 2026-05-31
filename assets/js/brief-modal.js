@@ -232,8 +232,21 @@ const initBriefModal = () => {
       return;
     }
 
+    window.STUDIO_CONTACT?.openLeadChannel({
+      source: "Модальное окно брифа",
+      service: serviceHidden.value,
+      name: form.querySelector('input[name="name"]')?.value.trim() || "",
+      phone: phoneInput?.value.trim() || "",
+      budget: budgetLabel?.textContent || "",
+      deadline: deadlineLabel?.textContent || "",
+      comment: form.querySelector('textarea[name="comment"]')?.value.trim() || ""
+    });
+
     form.hidden = true;
     success.hidden = false;
+    success.querySelector("h3").textContent = "Открываем чат";
+    success.querySelector("p").textContent =
+      "Текст заявки скопирован, сейчас откроется Telegram с готовым сообщением.";
 
     window.setTimeout(() => {
       close();

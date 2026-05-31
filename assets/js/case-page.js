@@ -205,10 +205,10 @@ const renderBottomLeadForm = () => `
   <section class="case-lead-form">
     <div class="case-lead-form__inner">
       <h2>Обсудить проект</h2>
-      <form class="case-lead-form__form">
-        <input type="text" name="name" placeholder="Имя" required />
-        <input type="tel" name="phone" placeholder="Номер телефона" required />
-        <input type="text" name="telegram" placeholder="Telegram" required />
+      <form class="case-lead-form__form" data-case-title="${escapeHtml(document.title.replace(" — Согласовано", ""))}">
+        <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
+        <input type="tel" name="phone" placeholder="Телефон" autocomplete="tel" inputmode="tel" />
+        <input type="text" name="contact" placeholder="Telegram / email" autocomplete="email" required />
         <button type="submit">Отправить</button>
       </form>
     </div>
@@ -221,6 +221,11 @@ const renderCaseFooter = () => `
       <div class="case-page-footer__brand">
         <a href="./">Согласовано</a>
         <p>Дизайн-студия полного цикла: интерфейсы, сайты, брендинг и сопровождение запуска.</p>
+        <div class="case-page-footer__contacts">
+          <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram</a>
+          <a data-contact-link="phone" href="tel:+79619710515">Позвонить</a>
+          <a data-contact-link="email" href="mailto:sigidingo@gmail.com">Email</a>
+        </div>
       </div>
       <div class="case-page-footer__links">
         <a href="./#cases">Кейсы</a>

@@ -12,6 +12,7 @@ const initHeroSearch = () => {
   const finalCommentField = finalForm?.querySelector('textarea[name="comment"]');
   const finalNameField = finalForm?.querySelector('input[name="name"]');
   const finalPhoneField = finalForm?.querySelector('input[name="phone"]');
+  const finalContactField = finalForm?.querySelector('input[name="contact"]');
   const finalSubmitButton = finalForm?.querySelector(".hero-final-submit");
 
   if (!editor || !submitButton) return;
@@ -122,12 +123,22 @@ const initHeroSearch = () => {
       finalNameField?.focus();
       return;
     }
-    if (!finalPhoneField?.value.trim()) {
-      finalPhoneField?.focus();
+    if (!finalPhoneField?.value.trim() && !finalContactField?.value.trim()) {
+      (finalContactField || finalPhoneField)?.focus();
       return;
     }
 
-    if (finalSubmitButton) finalSubmitButton.textContent = "Отправлено";
+    window.STUDIO_CONTACT?.openLeadChannel({
+      source: "AI-бриф",
+      name: finalNameField.value.trim(),
+      phone: finalPhoneField?.value.trim() || "",
+      contact: finalContactField?.value.trim() || "",
+      budget: budgetLabel?.textContent || "",
+      deadline: deadlineLabel?.textContent || "",
+      comment: finalCommentField?.value.trim() || ""
+    });
+
+    if (finalSubmitButton) finalSubmitButton.textContent = "Открываем чат";
 
     window.setTimeout(() => {
       if (finalSubmitButton) finalSubmitButton.textContent = "Отправить";

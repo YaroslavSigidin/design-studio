@@ -27,7 +27,7 @@
       <div class="hero-layout">
         <header class="hero-nav" data-floating-header>
           <div class="hero-nav-inner">
-            <a class="hero-logo" href="#">
+            <a class="hero-logo" href="./">
               <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
                 <path
                   d="M3 3h6v6H3V3Zm8 0h6v6h-6V3ZM3 11h6v6H3v-6Zm8 4h6v2h-6v-2Z"
@@ -45,7 +45,7 @@
             </ul>
 
             <div class="hero-nav-actions">
-              <a class="hero-btn hero-btn--dark" href="#" data-open-brief-modal>Заказать дизайн</a>
+              <a class="hero-btn hero-btn--dark" href="./#discuss-project" data-open-brief-modal>Заказать дизайн</a>
               <button class="hero-menu-toggle" type="button" aria-label="Открыть меню" data-header-toggle>
                 <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path
@@ -65,7 +65,7 @@
             <a href="#discuss-project">Обсудить проект</a>
             <a href="#contacts">Контакты</a>
             <div class="hero-mobile-sheet-actions">
-              <a class="hero-btn hero-btn--dark" href="#" data-open-brief-modal>Заказать дизайн</a>
+              <a class="hero-btn hero-btn--dark" href="./#discuss-project" data-open-brief-modal>Заказать дизайн</a>
             </div>
           </div>
         </header>
@@ -207,9 +207,9 @@
       <div class="studio-discuss__inner">
         <h2 data-reveal-heading>Обсудить проект</h2>
         <form class="studio-discuss__form">
-          <input type="text" name="name" placeholder="Имя" required />
-          <input type="tel" name="phone" placeholder="Номер телефона" required />
-          <input type="text" name="telegram" placeholder="Telegram" required />
+          <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
+          <input type="tel" name="phone" placeholder="Телефон" autocomplete="tel" inputmode="tel" />
+          <input type="text" name="contact" placeholder="Telegram / email" autocomplete="email" required />
           <button type="submit">Отправить</button>
         </form>
       </div>
@@ -222,7 +222,7 @@
 
         <div class="studio-footer__top">
           <div class="studio-footer__brand">
-            <a class="studio-footer__logo" href="#">Согласовано</a>
+            <a class="studio-footer__logo" href="./">Согласовано</a>
             <p>
               Дизайн-студия полного цикла. Проектируем интерфейсы, сайты и цифровые продукты, чтобы
               ваш бизнес рос быстрее.
@@ -234,24 +234,24 @@
               <h3>Ресурсы</h3>
               <a href="#cases">Кейсы</a>
               <a href="#services">Услуги</a>
-              <a href="#" data-open-brief-modal>Оставить бриф</a>
+              <a href="./#discuss-project" data-open-brief-modal>Оставить бриф</a>
               <a href="#discuss-project">Обсудить проект</a>
             </div>
 
             <div class="studio-footer__column">
               <h3>Студия</h3>
-              <a href="#">Процесс</a>
-              <a href="#">О студии</a>
-              <a href="#">FAQ</a>
-              <a href="#">Партнерство</a>
+              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Процесс работы</a>
+              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">О студии</a>
+              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">FAQ</a>
+              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Партнерство</a>
             </div>
 
             <div class="studio-footer__column">
               <h3>Контакты</h3>
-              <a href="mailto:hello@soglasovano.design">hello@soglasovano.design</a>
-              <a href="tel:+79990000000">+7 (999) 000-00-00</a>
-              <a href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram</a>
-              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a data-contact-link="email" href="mailto:sigidingo@gmail.com" data-contact-email>sigidingo@gmail.com</a>
+              <a data-contact-link="phone" href="tel:+79619710515" data-contact-phone>+7 961 971-05-15</a>
+              <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram: <span data-contact-handle>@sigidingo</span></a>
+              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Написать Ярославу</a>
             </div>
           </div>
         </div>
@@ -260,43 +260,24 @@
       <div class="studio-footer__bottom">
         <div class="studio-footer__bottom-left">
           <span>© 2026 Согласовано. Все права защищены.</span>
-          <a href="#">Политика конфиденциальности</a>
-          <a href="#">Условия использования</a>
+          <a data-contact-link="email" href="mailto:sigidingo@gmail.com">Политика конфиденциальности</a>
+          <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Условия использования</a>
         </div>
         <div class="studio-footer__social">
-          <a href="https://www.linkedin.com" target="_blank" rel="nofollow noopener" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M7.2 9.6V18M7.2 6a1.2 1.2 0 1 0 0 2.4A1.2 1.2 0 0 0 7.2 6Zm4.8 12v-4.8c0-1.7 1-2.4 2.2-2.4s2.2.7 2.2 2.4V18M12 18V9.6"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
-          <a href="https://x.com" target="_blank" rel="nofollow noopener" aria-label="X">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M4.5 4.5h3.3l3.8 5.1 4.4-5.1h3L13.1 11l6.4 8.5h-3.3l-4.3-5.7-4.9 5.7H4l6.8-7.9L4.5 4.5Z"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
+          <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="nofollow noopener" aria-label="Telegram">TG</a>
+          <a data-contact-link="email" href="mailto:sigidingo@gmail.com" aria-label="Email">Mail</a>
         </div>
       </div>
     </footer>
 
     <div class="top-contact-cluster">
-      <a class="top-phone-chip" href="tel:+79619710515" aria-label="Позвонить +7 961 971 05 15">+7 961 971 05 15</a>
+      <a class="top-phone-chip" data-contact-link="phone" href="tel:+79619710515" aria-label="Позвонить Ярославу" data-contact-phone>+7 961 971 05 15</a>
       <div class="top-mini-contacts" aria-label="Контакты">
-        <a class="top-mini-contact-btn" href="https://vk.com" target="_blank" rel="noreferrer" aria-label="VK">
-          <img src="./assets/icons/vk-logo-white.svg" alt="" />
+        <a class="top-mini-contact-btn top-mini-contact-btn--telegram" data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noreferrer" aria-label="Telegram">
+          <span>TG</span>
         </a>
-        <a class="top-mini-contact-btn top-mini-contact-btn--max" href="#" aria-label="MAX">
-          <img src="./assets/icons/max-logo-white.svg" alt="" />
+        <a class="top-mini-contact-btn top-mini-contact-btn--mail" data-contact-link="email" href="mailto:sigidingo@gmail.com" aria-label="Email">
+          <span>Mail</span>
         </a>
       </div>
     </div>
@@ -328,11 +309,11 @@
           <div class="brief-grid brief-grid--stack">
             <label class="brief-field">
               <span>Ваше имя</span>
-              <input type="text" name="name" placeholder="Как к вам обращаться" required />
+              <input type="text" name="name" placeholder="Как к вам обращаться" autocomplete="name" required />
             </label>
             <label class="brief-field">
               <span>Контакт для связи</span>
-              <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required />
+              <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel" required />
             </label>
           </div>
 
@@ -403,12 +384,17 @@
         <form class="hero-final-form" id="heroFinalForm">
           <label class="hero-final-field">
             <span>Имя</span>
-            <input type="text" name="name" placeholder="Ваше имя" required />
+            <input type="text" name="name" placeholder="Ваше имя" autocomplete="name" required />
           </label>
 
           <label class="hero-final-field">
             <span>Номер телефона</span>
-            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required />
+            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel" />
+          </label>
+
+          <label class="hero-final-field">
+            <span>Telegram или email</span>
+            <input type="text" name="contact" placeholder="@sigidingo / email@example.com" autocomplete="email" required />
           </label>
 
           <label class="hero-final-field hero-final-field--full">
@@ -442,6 +428,7 @@
     </aside>
 
     <script src="./assets/js/config.js?v=20260530-cases-hotfix" defer></script>
+    <script src="./assets/js/contact.js?v=20260531-mobile-contact-routing" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
     <script src="./assets/js/promo-strip.js?v=20260530-promo-strip" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>

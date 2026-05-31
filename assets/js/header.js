@@ -23,7 +23,7 @@ const initFloatingHeader = () => {
     openMenu();
   });
 
-  header.querySelectorAll('.hero-mobile-sheet a[href^="#"]').forEach(link => {
+  header.querySelectorAll(".hero-mobile-sheet a").forEach(link => {
     link.addEventListener("click", closeMenu);
   });
 

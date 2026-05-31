@@ -18,5 +18,17 @@ window.STUDIO_CONFIG = {
   manifest: joinPath(studioBasePath, "data/cases.manifest.json"),
   studioHome: studioBasePath,
   studioCases: `${studioBasePath}#cases`,
-  casePageBase: joinPath(studioBasePath, "case.html")
+  casePageBase: joinPath(studioBasePath, "case.html"),
+  contacts: {
+    name: "Ярослав Сигидин",
+    telegramHandle: "sigidingo",
+    telegramUrl: "https://t.me/sigidingo",
+    phoneDisplay: "+7 961 971-05-15",
+    phoneHref: "tel:+79619710515",
+    email: "sigidingo@gmail.com",
+    emailHref: "mailto:sigidingo@gmail.com"
+  },
+  leadChannel: {
+    type: "telegram"
+  }
 };
