@@ -312,15 +312,15 @@ const renderCase = (project, projects, currentIndex, cfg) => {
 
     <article class="case-article">
       <header class="case-hero">
-        <div class="case-hero-media">
-          ${heroImage ? `<img src="${escapeHtml(heroImage)}" alt="${escapeHtml(title)}" width="1200" height="630" decoding="async" />` : ""}
-        </div>
         <div class="case-hero-copy">
           <span class="case-category">${escapeHtml(getTagLabel(project.category))}</span>
           <h1 class="case-title">${escapeHtml(title)}</h1>
           <p class="case-lead">${escapeHtml(subtitle)}</p>
           ${renderTags(tags)}
           ${renderLiveLinks(project.liveLinks || [])}
+        </div>
+        <div class="case-hero-media">
+          ${heroImage ? `<img src="${escapeHtml(heroImage)}" alt="${escapeHtml(title)}" width="1200" height="630" decoding="async" />` : ""}
         </div>
       </header>
 
