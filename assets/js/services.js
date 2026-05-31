@@ -75,8 +75,7 @@ const SERVICES = [
 ];
 
 window.SERVICES = SERVICES;
-const MOBILE_SERVICES_LIMIT = 8;
-const DESKTOP_SERVICES_LIMIT = 9;
+const SERVICES_VISIBLE_LIMIT = 9;
 
 const formatRub = value => new Intl.NumberFormat("ru-RU").format(value);
 
@@ -166,12 +165,9 @@ const initServices = () => {
   grid.innerHTML = SERVICES.map(serviceCardTemplate).join("");
 
   let expanded = false;
-  const isCompactViewport = () => window.matchMedia("(max-width: 900px)").matches;
-  const getLimit = () => (isCompactViewport() ? MOBILE_SERVICES_LIMIT : DESKTOP_SERVICES_LIMIT);
-
   const applyMobileLimit = () => {
     const cards = [...grid.querySelectorAll(".studio-service-card")];
-    const limit = getLimit();
+    const limit = SERVICES_VISIBLE_LIMIT;
 
     cards.forEach((card, index) => {
       card.hidden = !expanded && index >= limit;

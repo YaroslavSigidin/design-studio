@@ -96,8 +96,7 @@ const pickProjects = manifest => {
 };
 
 const SKELETON_CARDS_COUNT = 6;
-const MOBILE_CASES_LIMIT = 8;
-const DESKTOP_CASES_LIMIT = 9;
+const CASES_VISIBLE_LIMIT = 9;
 const EXTRA_PLACEHOLDER_CASE = {
   id: "placeholder-case",
   category: "web",
@@ -218,12 +217,9 @@ const initCasesFilter = (grid, tabsRoot) => {
   let expanded = false;
   const moreWrap = qs("#studioCasesMore");
   const moreButton = qs("#studioCasesMoreButton");
-  const isCompactViewport = () => window.matchMedia("(max-width: 640px)").matches;
-  const getLimit = () => (isCompactViewport() ? MOBILE_CASES_LIMIT : DESKTOP_CASES_LIMIT);
-
   const applyFilter = () => {
     let visibleCount = 0;
-    const limit = getLimit();
+    const limit = CASES_VISIBLE_LIMIT;
 
     qsa(".project-card", grid).forEach(card => {
       const matches = matchesProjectFilter(card, activeFilter);
