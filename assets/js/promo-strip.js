@@ -3,14 +3,27 @@ const initPromoStrip = () => {
   const timerNode = document.querySelector("[data-promo-timer]");
   const closeButton = document.querySelector("[data-promo-close]");
   const storageKey = "studio-promo-dismissed";
+  const desktopMedia = window.matchMedia("(min-width: 1101px)");
   if (!strip || !timerNode) return;
 
-  try {
-    if (window.localStorage.getItem(storageKey) === "true") {
-      strip.classList.add("is-hidden");
-      return;
+  const syncVisibility = () => {
+    if (desktopMedia.matches) {
+      strip.classList.remove("is-hidden");
+      return true;
     }
-  } catch {}
+
+    try {
+      if (window.localStorage.getItem(storageKey) === "true") {
+        strip.classList.add("is-hidden");
+        return false;
+      }
+    } catch {}
+
+    strip.classList.remove("is-hidden");
+    return true;
+  };
+
+  if (!syncVisibility()) return;
 
   let remainingSeconds = 20 * 3600 + 10 * 60 + 46;
 
@@ -34,9 +47,21 @@ const initPromoStrip = () => {
   closeButton?.addEventListener("click", () => {
     strip.classList.add("is-hidden");
     try {
-      window.localStorage.setItem(storageKey, "true");
+      if (!desktopMedia.matches) {
+        window.localStorage.setItem(storageKey, "true");
+      }
     } catch {}
   });
+
+  const handleMediaChange = () => {
+    syncVisibility();
+  };
+
+  if (typeof desktopMedia.addEventListener === "function") {
+    desktopMedia.addEventListener("change", handleMediaChange);
+  } else if (typeof desktopMedia.addListener === "function") {
+    desktopMedia.addListener(handleMediaChange);
+  }
 };
 
 if (document.readyState === "loading") {
