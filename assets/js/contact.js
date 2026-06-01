@@ -71,6 +71,37 @@ const initStudioContacts = () => {
     });
   };
 
+  const fallbackCopyText = value => {
+    const field = document.createElement("textarea");
+    field.value = value;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    field.style.pointerEvents = "none";
+    document.body.appendChild(field);
+    field.select();
+    field.setSelectionRange(0, field.value.length);
+    let copied = false;
+    try {
+      copied = document.execCommand("copy");
+    } catch {
+      copied = false;
+    }
+    field.remove();
+    return copied;
+  };
+
+  const copyText = async value => {
+    if (!value) return false;
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(value);
+        return true;
+      } catch {}
+    }
+    return fallbackCopyText(value);
+  };
+
   bindContactLink('[data-contact-link="telegram"]', contacts.telegramUrl);
   bindContactLink('[data-contact-link="phone"]', contacts.phoneHref);
   bindContactLink('[data-contact-link="email"]', contacts.emailHref);
@@ -80,6 +111,25 @@ const initStudioContacts = () => {
   bindText("[data-contact-email]", contacts.email);
   bindText("[data-contact-name]", contacts.name);
   bindText("[data-contact-handle]", `@${String(contacts.telegramHandle || "").replace(/^@/, "")}`);
+
+  document.querySelectorAll("[data-copy-phone-chip]").forEach(node => {
+    let resetTimer = 0;
+    node.addEventListener("click", async event => {
+      event.preventDefault();
+      const value = String(contacts.phoneDisplay || contacts.phone || node.textContent || "").trim();
+      const copied = await copyText(value);
+      node.classList.toggle("is-copied", copied);
+      if (copied) {
+        const previousLabel = node.getAttribute("aria-label") || "";
+        node.setAttribute("aria-label", "Номер скопирован");
+        window.clearTimeout(resetTimer);
+        resetTimer = window.setTimeout(() => {
+          node.classList.remove("is-copied");
+          if (previousLabel) node.setAttribute("aria-label", previousLabel);
+        }, 1400);
+      }
+    });
+  });
 
   window.STUDIO_CONTACT = {
     buildLeadUrl: payload => {
