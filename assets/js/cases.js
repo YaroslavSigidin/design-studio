@@ -18,7 +18,7 @@ const loadJson = async (url, timeoutMs = 2500) => {
   return res.json();
 };
 
-const getTagLabel = category => (category === "uxui" ? "UX/UI" : "WEB");
+const getTagLabel = category => (category === "uxui" ? "UX/UI" : "Site");
 
 const buildProjectSearchText = project =>
   [

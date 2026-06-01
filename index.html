@@ -550,7 +550,7 @@
                   normalizeStudioUrl(project.studioCaseUrl || "", cfg) ||
                   (project.id ? caseBase + "?slug=" + encodeURIComponent(project.id) : "");
                 const category = project.category || "web";
-                const tagLabel = category === "uxui" ? "UX/UI" : "WEB";
+                const tagLabel = category === "uxui" ? "UX/UI" : "Site";
                 const searchText = `${project.title || ""} ${project.subtitle || ""} ${project.description || ""}`.toLowerCase();
                 return `
                   <article class="project-card" data-category="${escapeHtml(category)}" data-search="${escapeHtml(searchText)}" ${

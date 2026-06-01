@@ -13,7 +13,7 @@ const loadJson = async url => {
 
 const getSlug = () => new URLSearchParams(window.location.search).get("slug")?.trim() || "";
 
-const getTagLabel = category => (category === "uxui" ? "UX/UI" : "WEB");
+const getTagLabel = category => (category === "uxui" ? "UX/UI" : "Site");
 
 const isAbsoluteUrl = value => /^https?:\/\//i.test(value || "");
 
