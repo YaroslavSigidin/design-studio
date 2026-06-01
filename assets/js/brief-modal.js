@@ -47,7 +47,9 @@ const initBriefModal = () => {
 
     quickServices.innerHTML = `
       <div class="brief-selected-services">${selectedMarkup}</div>
-      <button type="button" class="brief-service-add" aria-label="Добавить услугу" data-toggle-service-dropdown>+</button>
+      <button type="button" class="brief-service-add" aria-label="Добавить услугу" data-toggle-service-dropdown>
+        <span aria-hidden="true">+</span>
+      </button>
       <div class="brief-service-dropdown">${dropdownMarkup}</div>
     `;
 
