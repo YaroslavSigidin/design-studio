@@ -187,118 +187,6 @@ const serviceCardTemplate = service => {
   `;
 };
 
-const serviceActionMarkup = (label, serviceValue) => `
-  <button
-    type="button"
-    class="studio-services-alt__action"
-    data-open-brief-modal
-    data-service="${escapeHtml(serviceValue)}"
-  >
-    ${escapeHtml(label)}
-  </button>
-`;
-
-const renderAltServices = () => {
-  const root = document.getElementById("studioServicesAltGrid");
-  if (!root) return;
-
-  const site = SERVICES.find(item => item.title === "Сайт");
-  const platform = SERVICES.find(item => item.title === "WEB-платформа");
-  const app = SERVICES.find(item => item.title === "Мобильное приложение");
-  const brand = SERVICES.find(item => item.title === "Дизайн для бренда");
-  const business = SERVICES.find(item => item.title === "Услуги для бизнеса");
-  const review = SERVICES.find(item => item.title === "Разбор проекта");
-
-  if (!site || !platform || !app || !brand || !business || !review) return;
-
-  const siteVariants = site.variants || [];
-  const brandVariants = brand.variants || [];
-
-  root.innerHTML = `
-    <article class="studio-services-alt__hero">
-      <div class="studio-services-alt__eyebrow">Основной спрос</div>
-      <h3 class="studio-services-alt__hero-title">Сайты, которые реально продают услугу, продукт или компанию</h3>
-      <p class="studio-services-alt__hero-copy">
-        В одном блоке сразу видны оба формата. Это убирает путаницу и показывает, с чего обычно начинается работа со студией.
-      </p>
-      <div class="studio-services-alt__plans">
-        ${siteVariants
-          .map(
-            item => `
-              <div class="studio-services-alt__plan">
-                <div class="studio-services-alt__plan-label">${escapeHtml(item.label)}</div>
-                <div class="studio-services-alt__plan-price">${escapeHtml(getPriceText(item))}</div>
-                <div class="studio-services-alt__plan-copy">${escapeHtml(item.detail)}</div>
-                ${serviceActionMarkup("Выбрать", item.serviceValue)}
-              </div>
-            `
-          )
-          .join("")}
-      </div>
-    </article>
-
-    <article class="studio-services-alt__platform">
-      <div class="studio-services-alt__eyebrow">UX/UI</div>
-      <h3 class="studio-services-alt__card-title">${escapeHtml(platform.title)}</h3>
-      <div class="studio-services-alt__card-price">${escapeHtml(getPriceText(platform))}</div>
-      <p class="studio-services-alt__card-copy">${escapeHtml(platform.detail)}</p>
-      <ul class="studio-services-alt__list">
-        ${(platform.bullets || []).map(item => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-      ${serviceActionMarkup("Обсудить платформу", platform.title)}
-    </article>
-
-    <article class="studio-services-alt__support studio-services-alt__support--app">
-      <div class="studio-services-alt__eyebrow">Следующий уровень</div>
-      <h3 class="studio-services-alt__card-title">${escapeHtml(app.title)}</h3>
-      <div class="studio-services-alt__card-price">${escapeHtml(getPriceText(app))}</div>
-      <p class="studio-services-alt__card-copy">${escapeHtml(app.detail)}</p>
-      ${serviceActionMarkup("Обсудить приложение", app.title)}
-    </article>
-
-    <article class="studio-services-alt__support studio-services-alt__support--brand">
-      <div class="studio-services-alt__eyebrow">Усиление образа</div>
-      <h3 class="studio-services-alt__card-title">${escapeHtml(brand.title)}</h3>
-      <div class="studio-services-alt__micro-prices">
-        ${brandVariants
-          .map(
-            item => `
-              <div class="studio-services-alt__micro-price">
-                <span>${escapeHtml(item.label)}</span>
-                <strong>${escapeHtml(getPriceText(item))}</strong>
-              </div>
-            `
-          )
-          .join("")}
-      </div>
-      <p class="studio-services-alt__card-copy">${escapeHtml(brand.detail)}</p>
-      ${serviceActionMarkup("Обсудить бренд", brand.title)}
-    </article>
-
-    <article class="studio-services-alt__support studio-services-alt__support--business">
-      <div class="studio-services-alt__eyebrow">Точечные задачи</div>
-      <h3 class="studio-services-alt__card-title">${escapeHtml(business.title)}</h3>
-      <div class="studio-services-alt__card-price">${escapeHtml(getPriceText(business))}</div>
-      <div class="studio-services-alt__chips">
-        ${(business.catalog || []).map(item => `<span>${escapeHtml(item)}</span>`).join("")}
-      </div>
-      ${serviceActionMarkup("Собрать пакет", business.title)}
-    </article>
-
-    <article class="studio-services-alt__review">
-      <div>
-        <div class="studio-services-alt__eyebrow">Вход в работу</div>
-        <h3 class="studio-services-alt__card-title">${escapeHtml(review.title)}</h3>
-        <p class="studio-services-alt__card-copy">${escapeHtml(review.detail)}</p>
-      </div>
-      <div class="studio-services-alt__review-side">
-        <div class="studio-services-alt__review-price">${escapeHtml(getPriceText(review))}</div>
-        ${serviceActionMarkup("Получить разбор", review.title)}
-      </div>
-    </article>
-  `;
-};
-
 const updateServiceCard = card => {
   const raw = card.dataset.service;
   if (!raw) return;
@@ -368,7 +256,6 @@ const initServices = () => {
   });
 
   applyMobileLimit();
-  renderAltServices();
 };
 
 if (document.readyState === "loading") {
