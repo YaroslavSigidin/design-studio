@@ -2315,26 +2315,26 @@ body::after {
 .studio-services-alt-grid {
   display: grid;
   gap: 16px;
-  width: min(820px, 100%);
-  margin: 0 auto;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   text-align: left;
 }
 
-.studio-services-alt__row {
+.studio-services-alt__hero,
+.studio-services-alt__platform,
+.studio-services-alt__support,
+.studio-services-alt__review {
   position: relative;
   overflow: hidden;
-  display: grid;
-  grid-template-columns: minmax(220px, 0.9fr) minmax(220px, 1fr) auto;
-  gap: 22px;
-  align-items: center;
-  padding: 24px 26px;
-  border-radius: 28px;
+  border-radius: 30px;
   border: 1px solid rgba(22, 43, 67, 0.12);
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 18px 36px rgba(27, 56, 91, 0.12);
 }
 
-.studio-services-alt__row::before {
+.studio-services-alt__hero::before,
+.studio-services-alt__platform::before,
+.studio-services-alt__support::before,
+.studio-services-alt__review::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -2342,26 +2342,80 @@ body::after {
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
 }
 
-.studio-services-alt__row--site {
+.studio-services-alt__hero,
+.studio-services-alt__platform {
+  min-height: 420px;
+  padding: 28px;
+}
+
+.studio-services-alt__support {
+  min-height: 280px;
+  padding: 24px;
+}
+
+.studio-services-alt__review {
+  grid-column: 1 / -1;
+  min-height: 210px;
+  padding: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(220px, 0.8fr);
+  gap: 24px;
+  align-items: end;
   background:
-    radial-gradient(circle at top right, rgba(219, 255, 110, 0.5), rgba(219, 255, 110, 0) 28%),
+    radial-gradient(circle at top right, rgba(108, 149, 255, 0.2), rgba(108, 149, 255, 0) 28%),
+    linear-gradient(160deg, #172435 0%, #0d1520 60%, #091019 100%);
+  border-color: rgba(10, 20, 34, 0.2);
+}
+
+.studio-services-alt__hero {
+  grid-column: span 7;
+  background:
+    radial-gradient(circle at top right, rgba(219, 255, 110, 0.74), rgba(219, 255, 110, 0) 34%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 228, 0.98));
 }
 
-.studio-services-alt__row--platform {
+.studio-services-alt__platform {
+  grid-column: span 5;
   background:
-    radial-gradient(circle at top right, rgba(108, 149, 255, 0.2), rgba(108, 149, 255, 0) 26%),
+    radial-gradient(circle at top right, rgba(108, 149, 255, 0.28), rgba(108, 149, 255, 0) 32%),
     linear-gradient(160deg, #172435 0%, #0d1520 60%, #091019 100%);
   border-color: rgba(10, 20, 34, 0.22);
 }
 
+.studio-services-alt__support {
+  grid-column: span 4;
+}
+
+.studio-services-alt__support--app {
+  background:
+    radial-gradient(circle at top right, rgba(169, 215, 255, 0.7), rgba(169, 215, 255, 0) 35%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(239, 247, 255, 0.98));
+}
+
+.studio-services-alt__support--brand {
+  background:
+    radial-gradient(circle at top right, rgba(255, 191, 135, 0.72), rgba(255, 191, 135, 0) 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 244, 233, 0.98));
+}
+
+.studio-services-alt__support--business {
+  background:
+    radial-gradient(circle at top right, rgba(198, 214, 255, 0.7), rgba(198, 214, 255, 0) 35%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 248, 255, 0.98));
+}
+
 .studio-services-alt__eyebrow,
-.studio-services-alt__title,
-.studio-services-alt__copy,
-.studio-services-alt__price,
-.studio-services-alt__variants,
-.studio-services-alt__body,
-.studio-services-alt__cta {
+.studio-services-alt__card-title,
+.studio-services-alt__card-copy,
+.studio-services-alt__card-price,
+.studio-services-alt__hero-title,
+.studio-services-alt__hero-copy,
+.studio-services-alt__review-price,
+.studio-services-alt__plans,
+.studio-services-alt__list,
+.studio-services-alt__chips,
+.studio-services-alt__micro-prices,
+.studio-services-alt__review-side {
   position: relative;
   z-index: 1;
 }
@@ -2380,117 +2434,163 @@ body::after {
   letter-spacing: -0.01em;
 }
 
-.studio-services-alt__row--platform .studio-services-alt__eyebrow,
-.studio-services-alt__row--review .studio-services-alt__eyebrow {
+.studio-services-alt__platform .studio-services-alt__eyebrow,
+.studio-services-alt__review .studio-services-alt__eyebrow {
   background: rgba(219, 255, 110, 0.14);
   color: #dbff6e;
 }
 
-.studio-services-alt__title {
+.studio-services-alt__hero-title,
+.studio-services-alt__card-title {
   margin: 18px 0 0;
   font-family: "Fustat", sans-serif;
   line-height: 0.98;
   letter-spacing: -0.05em;
+}
+
+.studio-services-alt__hero-title {
+  max-width: 12ch;
+  font-size: clamp(34px, 3vw, 54px);
+}
+
+.studio-services-alt__card-title {
   font-size: clamp(28px, 2.2vw, 42px);
   color: #0f172a;
 }
 
-.studio-services-alt__row--platform .studio-services-alt__title,
-.studio-services-alt__row--review .studio-services-alt__title {
+.studio-services-alt__platform .studio-services-alt__card-title,
+.studio-services-alt__review .studio-services-alt__card-title {
   color: #ffffff;
 }
 
-.studio-services-alt__copy {
+.studio-services-alt__hero-copy,
+.studio-services-alt__card-copy {
   margin: 14px 0 0;
   font-family: "Inter", sans-serif;
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: 17px;
+  line-height: 1.46;
   color: #546274;
 }
 
-.studio-services-alt__row--platform .studio-services-alt__copy,
-.studio-services-alt__row--review .studio-services-alt__copy {
+.studio-services-alt__platform .studio-services-alt__card-copy,
+.studio-services-alt__review .studio-services-alt__card-copy {
   color: rgba(255, 255, 255, 0.74);
 }
 
-.studio-services-alt__body {
-  display: grid;
-  gap: 14px;
-}
-
-.studio-services-alt__body--split {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.studio-services-alt__price {
+.studio-services-alt__card-price,
+.studio-services-alt__review-price {
+  margin-top: 16px;
   font-family: "Schibsted Grotesk", sans-serif;
-  font-size: clamp(32px, 2.4vw, 46px);
+  font-size: clamp(30px, 2.5vw, 52px);
   font-weight: 700;
   line-height: 0.96;
   letter-spacing: -0.07em;
   color: #111827;
 }
 
-.studio-services-alt__row--platform .studio-services-alt__price,
-.studio-services-alt__row--review .studio-services-alt__price {
+.studio-services-alt__platform .studio-services-alt__card-price,
+.studio-services-alt__review .studio-services-alt__review-price {
   color: #ffffff;
 }
 
-.studio-services-alt__variants {
+.studio-services-alt__plans {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+  margin-top: 24px;
 }
 
-.studio-services-alt__variant {
-  padding: 16px;
-  border-radius: 22px;
+.studio-services-alt__plan {
+  padding: 18px;
+  border-radius: 24px;
   background: rgba(255, 255, 255, 0.76);
   border: 1px solid rgba(17, 27, 43, 0.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.studio-services-alt__variant-label {
+.studio-services-alt__plan-label {
   font-family: "Schibsted Grotesk", sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: #516072;
 }
 
-.studio-services-alt__variant-price {
+.studio-services-alt__plan-price {
   margin-top: 10px;
   font-family: "Fustat", sans-serif;
-  font-size: clamp(28px, 2.2vw, 40px);
+  font-size: clamp(32px, 2.6vw, 46px);
   font-weight: 700;
   line-height: 0.94;
   letter-spacing: -0.07em;
   color: #111827;
 }
 
-.studio-services-alt__variant-copy {
+.studio-services-alt__plan-copy {
   margin-top: 12px;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.45;
   color: #5b6676;
 }
 
-.studio-services-alt__mini {
+.studio-services-alt__list {
   display: grid;
-  gap: 6px;
-  padding: 14px 16px;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.studio-services-alt__list li {
+  position: relative;
+  padding-left: 28px;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.studio-services-alt__list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #dbff6e;
+  color: #0f172a;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.studio-services-alt__micro-prices {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.studio-services-alt__micro-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.72);
   border: 1px solid rgba(17, 27, 43, 0.08);
 }
 
-.studio-services-alt__mini span {
+.studio-services-alt__micro-price span {
   font-family: "Schibsted Grotesk", sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: #5b6676;
 }
 
-.studio-services-alt__mini strong {
+.studio-services-alt__micro-price strong {
   font-family: "Schibsted Grotesk", sans-serif;
   font-size: 18px;
   font-weight: 700;
@@ -2498,13 +2598,14 @@ body::after {
   color: #111827;
 }
 
-.studio-services-alt__tags {
+.studio-services-alt__chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-top: 18px;
 }
 
-.studio-services-alt__tags span {
+.studio-services-alt__chips span {
   min-height: 32px;
   padding: 0 12px;
   border-radius: 999px;
@@ -2516,17 +2617,13 @@ body::after {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: -0.01em;
-.studio-services-alt__row--platform .studio-services-alt__tags span,
-.studio-services-alt__row--review .studio-services-alt__tags span {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.92);
 }
 
-.studio-services-alt__row--platform .studio-services-alt__tags span::before,
-.studio-services-alt__row--review .studio-services-alt__tags span::before {
-  content: "✓";
-  margin-right: 8px;
-  color: #dbff6e;
+.studio-services-alt__review-side {
+  display: grid;
+  gap: 16px;
+  justify-items: end;
+  align-self: stretch;
 }
 
 .studio-services-alt__action {
@@ -2555,8 +2652,8 @@ body::after {
   filter: brightness(1.04);
 }
 
-.studio-services-alt__row--platform .studio-services-alt__action,
-.studio-services-alt__row--review .studio-services-alt__action {
+.studio-services-alt__platform .studio-services-alt__action,
+.studio-services-alt__review .studio-services-alt__action {
   background: #dbff6e;
   color: #0f172a;
 }
@@ -3452,8 +3549,23 @@ body::after {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .studio-services-alt__row {
+  .studio-services-alt-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .studio-services-alt__hero,
+  .studio-services-alt__platform,
+  .studio-services-alt__support,
+  .studio-services-alt__review {
+    grid-column: auto;
+  }
+
+  .studio-services-alt__review {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .studio-services-alt__review-side {
+    justify-items: start;
   }
 }
 
@@ -3473,9 +3585,17 @@ body::after {
     font-size: 16px;
   }
 
-  .studio-services-alt__row {
+  .studio-services-alt__hero,
+  .studio-services-alt__platform,
+  .studio-services-alt__support,
+  .studio-services-alt__review {
     padding: 22px;
     border-radius: 24px;
+  }
+
+  .studio-services-alt__hero-title,
+  .studio-services-alt__card-title {
+    font-size: 34px;
   }
 }
 
@@ -3607,29 +3727,41 @@ body::after {
 
   .studio-services-alt-grid {
     gap: 14px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .studio-services-alt__row {
+  .studio-services-alt__hero,
+  .studio-services-alt__platform,
+  .studio-services-alt__support,
+  .studio-services-alt__review {
+    min-height: 0;
     padding: 20px;
     border-radius: 24px;
   }
 
-  .studio-services-alt__title {
+  .studio-services-alt__hero-title,
+  .studio-services-alt__card-title {
+    max-width: none;
     font-size: 32px;
   }
 
-  .studio-services-alt__copy {
+  .studio-services-alt__hero-copy,
+  .studio-services-alt__card-copy {
     font-size: 15px;
   }
 
-  .studio-services-alt__variants,
-  .studio-services-alt__body--split {
+  .studio-services-alt__plans {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .studio-services-alt__variant-price,
-  .studio-services-alt__price {
+  .studio-services-alt__plan-price,
+  .studio-services-alt__card-price,
+  .studio-services-alt__review-price {
     font-size: 42px;
+  }
+
+  .studio-services-alt__review-side {
+    justify-items: stretch;
   }
 
   .studio-services-alt__action {
