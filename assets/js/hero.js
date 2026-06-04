@@ -17,9 +17,6 @@ const initHeroSearch = () => {
 
   if (!editor || !submitButton) return;
 
-  const planeSvg =
-    '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 8.9 14.8 3.3c.6-.3 1.2.3.9.9l-3.1 10c-.2.6-.9.8-1.3.3l-2.3-2.6-2.5 2.2c-.4.4-1 .2-1.1-.3l-.9-3.2-2.3-.7c-.7-.2-.7-1 .1-1.3z" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 3.4 8.6 10" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>';
-
   const createFlightPlane = () => {
     const rect = submitButton.getBoundingClientRect();
     const launch = document.createElement("span");
@@ -30,14 +27,6 @@ const initHeroSearch = () => {
       <span class="hero-send-glow" aria-hidden="true"></span>
       <span class="hero-send-burst" aria-hidden="true"></span>
       <span class="hero-send-ring" aria-hidden="true"></span>
-      <span class="hero-send-trail" aria-hidden="true"></span>
-      <span class="hero-send-trail hero-send-trail--soft" aria-hidden="true"></span>
-      <span class="hero-send-spark hero-send-spark--one" aria-hidden="true"></span>
-      <span class="hero-send-spark hero-send-spark--two" aria-hidden="true"></span>
-      <span class="hero-send-spark hero-send-spark--three" aria-hidden="true"></span>
-      <span class="hero-send-spark hero-send-spark--four" aria-hidden="true"></span>
-      <span class="hero-send-spark hero-send-spark--five" aria-hidden="true"></span>
-      <span class="hero-send-plane-flight" aria-hidden="true">${planeSvg}</span>
     `;
 
     document.body.appendChild(launch);
