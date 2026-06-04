@@ -4,21 +4,32 @@ const initBriefModal = () => {
   const quickServices = modal?.querySelector("[data-quick-services]");
   const serviceHidden = document.getElementById("briefServiceValue");
   const success = document.getElementById("briefSuccess");
-  const budgetRange = form?.querySelector("[data-brief-budget-range]");
+  const budgetInput = form?.querySelector("[data-brief-budget-input]");
   const budgetLabel = form?.querySelector("[data-brief-budget-label]");
-  const deadlineRange = form?.querySelector("[data-brief-deadline-range]");
+  const budgetOptions = Array.from(form?.querySelectorAll("[data-brief-budget-options] .brief-choice-option") || []);
+  const deadlineInput = form?.querySelector("[data-brief-deadline-input]");
   const deadlineLabel = form?.querySelector("[data-brief-deadline-label]");
+  const deadlineOptions = Array.from(form?.querySelectorAll("[data-brief-deadline-options] .brief-choice-option") || []);
   const phoneInput = form?.querySelector('input[name="phone"]');
   if (!modal || !form || !quickServices || !serviceHidden || !success) return;
 
   const serviceNames = [...new Set((window.SERVICES || []).map(item => item.title))];
   const serviceOptions = [...serviceNames, "Другое"];
+  const defaultBudget = budgetInput?.value || "100 000–200 000 ₽";
+  const defaultDeadline = deadlineInput?.value || "3–4 недели";
+
   let selectedServices = [];
   let isServiceDropdownOpen = false;
   let lastFocusedElement = null;
 
   const lockScroll = locked => {
     document.body.style.overflow = locked ? "hidden" : "";
+  };
+
+  const getServiceCountLabel = count => {
+    if (count % 10 === 1 && count % 100 !== 11) return `${count} услуга`;
+    if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14)) return `${count} услуги`;
+    return `${count} услуг`;
   };
 
   const syncServiceHidden = () => {
@@ -31,26 +42,33 @@ const initBriefModal = () => {
   };
 
   const renderServicePicker = () => {
-    const selectedMarkup = selectedServices
-      .map(
-        item =>
-          `<button type="button" class="brief-service-chip is-active" data-value="${item}" data-remove-service>${item}</button>`
-      )
+    const summaryText = selectedServices.length ? selectedServices.join(", ") : "Выберите одну или несколько услуг";
+    const badgeMarkup =
+      selectedServices.length > 1
+        ? `<span class="brief-service-badge">${getServiceCountLabel(selectedServices.length)}</span>`
+        : "";
+
+    const optionsMarkup = serviceOptions
+      .map(item => {
+        const isActive = selectedServices.includes(item);
+        return `<button type="button" class="brief-service-chip${isActive ? " is-active" : ""}" data-value="${item}" data-toggle-service>${item}</button>`;
+      })
       .join("");
 
-    const availableOptions = serviceOptions.filter(item => !selectedServices.includes(item));
-    const dropdownMarkup = availableOptions.length
-      ? availableOptions
-          .map(item => `<button type="button" class="brief-service-option" data-value="${item}">${item}</button>`)
-          .join("")
-      : `<p class="brief-service-empty">Все услуги уже добавлены</p>`;
-
     quickServices.innerHTML = `
-      <div class="brief-selected-services">${selectedMarkup}</div>
-      <button type="button" class="brief-service-add" aria-label="Добавить услугу" data-toggle-service-dropdown>
-        <span aria-hidden="true">+</span>
+      <button type="button" class="brief-service-trigger" aria-expanded="${isServiceDropdownOpen ? "true" : "false"}" data-toggle-service-dropdown>
+        <span class="brief-service-summary">
+          ${badgeMarkup}
+          <span class="brief-service-summary-text">${summaryText}</span>
+        </span>
+        <svg class="brief-service-caret" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
       </button>
-      <div class="brief-service-dropdown">${dropdownMarkup}</div>
+      <div class="brief-service-dropdown">
+        <div class="brief-service-options">${optionsMarkup}</div>
+        <button type="button" class="brief-service-option-done" data-close-service-dropdown>Готово</button>
+      </div>
     `;
 
     quickServices.classList.toggle("is-dropdown-open", isServiceDropdownOpen);
@@ -64,18 +82,24 @@ const initBriefModal = () => {
   };
 
   const addService = value => {
-    if (!value) return;
-    if (selectedServices.includes(value)) return;
+    if (!value || selectedServices.includes(value)) return;
     selectedServices = [...selectedServices, value];
-    closeServiceDropdown();
     renderServicePicker();
   };
 
   const removeService = value => {
-    if (!value) return;
-    if (selectedServices.length <= 1) return;
+    if (!value || selectedServices.length <= 1) return;
     selectedServices = selectedServices.filter(item => item !== value);
     renderServicePicker();
+  };
+
+  const toggleService = value => {
+    if (!value) return;
+    if (selectedServices.includes(value)) {
+      removeService(value);
+      return;
+    }
+    addService(value);
   };
 
   const formatRuPhone = input => {
@@ -112,45 +136,16 @@ const initBriefModal = () => {
     phoneInput.addEventListener("blur", () => {
       if (getPhoneDigits(phoneInput.value).length <= 1) phoneInput.value = "";
     });
-  };
+  }
 
-  const formatMoney = value => `${new Intl.NumberFormat("ru-RU").format(value * 1000)} ₽`;
-  const getDeclension = (value, [one, two, five]) => {
-    const mod10 = value % 10;
-    const mod100 = value % 100;
-    if (mod100 >= 11 && mod100 <= 14) return five;
-    if (mod10 === 1) return one;
-    if (mod10 >= 2 && mod10 <= 4) return two;
-    return five;
-  };
-  const formatDeadline = value => {
-    const days = Number(value);
-    if (days < 14) return `${days} ${getDeclension(days, ["день", "дня", "дней"])}`;
-    if (days < 60) {
-      const weeks = Math.round(days / 7);
-      return `${weeks} ${getDeclension(weeks, ["неделя", "недели", "недель"])}`;
-    }
-    const months = Math.round((days / 30) * 10) / 10;
-    return `${String(months).replace(".0", "")} мес`;
-  };
-  const setRangeProgress = input => {
-    if (!input) return;
-    const min = Number(input.min || 0);
-    const maxValue = Number(input.max || 100);
-    const value = Number(input.value || min);
-    const progress = ((value - min) * 100) / (maxValue - min || 1);
-    input.style.setProperty("--range-progress", `${Math.max(0, Math.min(progress, 100))}%`);
-  };
-
-  const updateRanges = () => {
-    if (budgetRange && budgetLabel) {
-      budgetLabel.textContent = formatMoney(Number(budgetRange.value));
-      setRangeProgress(budgetRange);
-    }
-    if (deadlineRange && deadlineLabel) {
-      deadlineLabel.textContent = formatDeadline(Number(deadlineRange.value));
-      setRangeProgress(deadlineRange);
-    }
+  const setChoice = (options, input, label, value) => {
+    if (!input || !label) return;
+    const nextValue = String(value || "").trim();
+    input.value = nextValue;
+    label.textContent = nextValue;
+    options.forEach(option => {
+      option.classList.toggle("is-active", option.dataset.value === nextValue);
+    });
   };
 
   const open = presetService => {
@@ -163,8 +158,6 @@ const initBriefModal = () => {
     const initialService = preset || serviceNames[0] || "Другое";
     setServices([initialService]);
     closeServiceDropdown();
-    renderServicePicker();
-    updateRanges();
     success.hidden = true;
     form.hidden = false;
     modal.querySelector('input[name="name"]')?.focus();
@@ -197,15 +190,14 @@ const initBriefModal = () => {
       return;
     }
 
-    const option = event.target.closest(".brief-service-option");
-    if (option) {
-      addService(option.dataset.value || "");
+    if (event.target.closest("[data-close-service-dropdown]")) {
+      closeServiceDropdown();
       return;
     }
 
-    const remove = event.target.closest("[data-remove-service]");
-    if (remove) {
-      removeService(remove.dataset.value || "");
+    const option = event.target.closest("[data-toggle-service]");
+    if (option) {
+      toggleService(option.dataset.value || "");
       return;
     }
 
@@ -239,8 +231,8 @@ const initBriefModal = () => {
       service: serviceHidden.value,
       name: form.querySelector('input[name="name"]')?.value.trim() || "",
       phone: phoneInput?.value.trim() || "",
-      budget: budgetLabel?.textContent || "",
-      deadline: deadlineLabel?.textContent || "",
+      budget: budgetInput?.value || "",
+      deadline: deadlineInput?.value || "",
       comment: form.querySelector('textarea[name="comment"]')?.value.trim() || ""
     });
 
@@ -253,19 +245,29 @@ const initBriefModal = () => {
     window.setTimeout(() => {
       close();
       form.reset();
-      if (budgetRange) budgetRange.value = "150";
-      if (deadlineRange) deadlineRange.value = "30";
+      setChoice(budgetOptions, budgetInput, budgetLabel, defaultBudget);
+      setChoice(deadlineOptions, deadlineInput, deadlineLabel, defaultDeadline);
       setServices([serviceNames[0] || "Другое"]);
       closeServiceDropdown();
-      updateRanges();
       form.hidden = false;
       success.hidden = true;
     }, 1400);
   });
 
-  budgetRange?.addEventListener("input", updateRanges);
-  deadlineRange?.addEventListener("input", updateRanges);
-  updateRanges();
+  budgetOptions.forEach(option => {
+    option.addEventListener("click", () => {
+      setChoice(budgetOptions, budgetInput, budgetLabel, option.dataset.value || "");
+    });
+  });
+
+  deadlineOptions.forEach(option => {
+    option.addEventListener("click", () => {
+      setChoice(deadlineOptions, deadlineInput, deadlineLabel, option.dataset.value || "");
+    });
+  });
+
+  setChoice(budgetOptions, budgetInput, budgetLabel, defaultBudget);
+  setChoice(deadlineOptions, deadlineInput, deadlineLabel, defaultDeadline);
 };
 
 if (document.readyState === "loading") {

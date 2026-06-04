@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260601-phone-copy-chip" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260604-brief-form-compact" />
   </head>
   <body>
     <div class="hero-page">
@@ -370,30 +370,34 @@
             <input type="hidden" name="service" id="briefServiceValue" />
           </div>
 
-          <div class="brief-range-grid">
-            <label class="brief-field brief-field--range">
-              <div class="brief-range-head">
+          <div class="brief-choice-grid">
+            <div class="brief-choice-card">
+              <div class="brief-choice-head">
                 <span>Бюджет</span>
-                <strong data-brief-budget-label>150 000 ₽</strong>
+                <strong data-brief-budget-label>100 000–200 000 ₽</strong>
               </div>
-              <input type="range" name="budget" min="5" max="500" step="5" value="150" data-brief-budget-range />
-            </label>
+              <div class="brief-choice-options" data-brief-budget-options>
+                <button type="button" class="brief-choice-option" data-value="до 100 000 ₽">до 100k</button>
+                <button type="button" class="brief-choice-option is-active" data-value="100 000–200 000 ₽">100–200k</button>
+                <button type="button" class="brief-choice-option" data-value="200 000–400 000 ₽">200–400k</button>
+                <button type="button" class="brief-choice-option" data-value="от 400 000 ₽">400k+</button>
+              </div>
+              <input type="hidden" name="budget" value="100 000–200 000 ₽" data-brief-budget-input />
+            </div>
 
-            <label class="brief-field brief-field--range">
-              <div class="brief-range-head">
+            <div class="brief-choice-card">
+              <div class="brief-choice-head">
                 <span>Сроки запуска</span>
-                <strong data-brief-deadline-label>30 дней</strong>
+                <strong data-brief-deadline-label>3–4 недели</strong>
               </div>
-              <input
-                type="range"
-                name="deadline"
-                min="1"
-                max="180"
-                step="1"
-                value="30"
-                data-brief-deadline-range
-              />
-            </label>
+              <div class="brief-choice-options" data-brief-deadline-options>
+                <button type="button" class="brief-choice-option" data-value="1–2 недели">1–2 недели</button>
+                <button type="button" class="brief-choice-option is-active" data-value="3–4 недели">3–4 недели</button>
+                <button type="button" class="brief-choice-option" data-value="1–2 месяца">1–2 месяца</button>
+                <button type="button" class="brief-choice-option" data-value="2+ месяца">2+ месяца</button>
+              </div>
+              <input type="hidden" name="deadline" value="3–4 недели" data-brief-deadline-input />
+            </div>
           </div>
 
           <label class="brief-field brief-field--full">
@@ -484,7 +488,7 @@
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
     <script src="./assets/js/hero.js?v=20260531-plane-launch-refine" defer></script>
     <script src="./assets/js/services.js?v=20260531-more-buttons-desktop" defer></script>
-    <script src="./assets/js/brief-modal.js?v=20260601-brief-ui-refresh" defer></script>
+    <script src="./assets/js/brief-modal.js?v=20260604-brief-form-compact" defer></script>
     <script src="./assets/js/cases.js?v=20260531-more-buttons-desktop" defer></script>
     <script>
       (function () {
