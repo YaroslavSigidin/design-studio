@@ -165,30 +165,29 @@ const initServices = () => {
   grid.innerHTML = SERVICES.map(serviceCardTemplate).join("");
 
   let expanded = false;
-  const applyMobileLimit = () => {
+  const applyVisibleLimit = () => {
     const cards = [...grid.querySelectorAll(".studio-service-card")];
     const limit = SERVICES_VISIBLE_LIMIT;
 
     cards.forEach((card, index) => {
-      card.hidden = !expanded && index >= limit;
+      const shouldHide = !expanded && index >= limit;
+      card.hidden = shouldHide;
+      card.style.display = shouldHide ? "none" : "";
     });
 
     if (moreWrap) {
-      moreWrap.hidden = !(cards.length > limit && !expanded);
+      const shouldHideButton = !(cards.length > limit && !expanded);
+      moreWrap.hidden = shouldHideButton;
+      moreWrap.style.display = shouldHideButton ? "none" : "";
     }
   };
 
   moreButton?.addEventListener("click", () => {
     expanded = true;
-    applyMobileLimit();
+    applyVisibleLimit();
   });
 
-  window.addEventListener("resize", () => {
-    expanded = false;
-    applyMobileLimit();
-  });
-
-  applyMobileLimit();
+  applyVisibleLimit();
 };
 
 if (document.readyState === "loading") {
