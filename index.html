@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260604-brief-form-minimal" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260604-brief-service-select-fix" />
   </head>
   <body>
     <div class="hero-page">
@@ -345,8 +345,11 @@
             </label>
           </div>
 
-          <div class="brief-quick-services" data-quick-services></div>
-          <input type="hidden" name="service" id="briefServiceValue" />
+          <label class="brief-field brief-field--bare brief-field--service">
+            <select name="service" id="briefServiceValue" required>
+              <option value="">Выберите услугу</option>
+            </select>
+          </label>
 
           <div class="brief-range-grid">
             <label class="brief-field brief-field--range">
@@ -460,7 +463,7 @@
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
     <script src="./assets/js/hero.js?v=20260531-plane-launch-refine" defer></script>
     <script src="./assets/js/services.js?v=20260604-services-limit-fix" defer></script>
-    <script src="./assets/js/brief-modal.js?v=20260604-brief-form-minimal" defer></script>
+    <script src="./assets/js/brief-modal.js?v=20260604-brief-service-select-fix" defer></script>
     <script src="./assets/js/cases.js?v=20260531-more-buttons-desktop" defer></script>
     <script>
       (function () {

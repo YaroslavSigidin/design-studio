@@ -1,64 +1,26 @@
 const initBriefModal = () => {
   const modal = document.getElementById("briefModal");
   const form = document.getElementById("briefForm");
-  const quickServices = modal?.querySelector("[data-quick-services]");
-  const serviceHidden = document.getElementById("briefServiceValue");
+  const serviceSelect = document.getElementById("briefServiceValue");
   const success = document.getElementById("briefSuccess");
   const budgetRange = form?.querySelector("[data-brief-budget-range]");
   const budgetLabel = form?.querySelector("[data-brief-budget-label]");
   const deadlineRange = form?.querySelector("[data-brief-deadline-range]");
   const deadlineLabel = form?.querySelector("[data-brief-deadline-label]");
   const phoneInput = form?.querySelector('input[name="phone"]');
-  if (!modal || !form || !quickServices || !serviceHidden || !success) return;
+  if (!modal || !form || !serviceSelect || !success) return;
 
   const serviceNames = [...new Set((window.SERVICES || []).map(item => item.title))];
-  const serviceOptions = [...serviceNames, "Другое"];
-  let selectedService = "";
-  let isServiceDropdownOpen = false;
   let lastFocusedElement = null;
+
+  serviceSelect.innerHTML = [
+    '<option value="">Выберите услугу</option>',
+    ...serviceNames.map(item => `<option value="${String(item).replace(/"/g, "&quot;")}">${item}</option>`),
+    '<option value="Другое">Другое</option>'
+  ].join("");
 
   const lockScroll = locked => {
     document.body.style.overflow = locked ? "hidden" : "";
-  };
-
-  const syncServiceHidden = () => {
-    serviceHidden.value = selectedService;
-  };
-
-  const closeServiceDropdown = () => {
-    isServiceDropdownOpen = false;
-    quickServices.classList.remove("is-dropdown-open");
-  };
-
-  const renderServicePicker = () => {
-    const summaryText = selectedService || "Выберите услугу";
-    const optionsMarkup = serviceOptions
-      .map(item => {
-        const isActive = selectedService === item;
-        return `<button type="button" class="brief-service-chip${isActive ? " is-active" : ""}" data-value="${item}" data-select-service>${item}</button>`;
-      })
-      .join("");
-
-    quickServices.innerHTML = `
-      <button type="button" class="brief-service-trigger" aria-expanded="${isServiceDropdownOpen ? "true" : "false"}" data-toggle-service-dropdown>
-        <span class="brief-service-summary-text">${summaryText}</span>
-        <svg class="brief-service-caret" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <div class="brief-service-dropdown">
-        <div class="brief-service-options">${optionsMarkup}</div>
-      </div>
-    `;
-
-    quickServices.classList.toggle("is-dropdown-open", isServiceDropdownOpen);
-    syncServiceHidden();
-  };
-
-  const setService = value => {
-    selectedService = String(value || "").trim();
-    closeServiceDropdown();
-    renderServicePicker();
   };
 
   const formatRuPhone = input => {
@@ -145,7 +107,9 @@ const initBriefModal = () => {
     lockScroll(true);
 
     const preset = presetService?.trim() || "";
-    setService(preset || serviceNames[0] || "Другое");
+    serviceSelect.value = preset && [...serviceSelect.options].some(option => option.value === preset)
+      ? preset
+      : serviceNames[0] || "Другое";
     success.hidden = true;
     form.hidden = false;
     updateRanges();
@@ -170,23 +134,6 @@ const initBriefModal = () => {
     if (event.target.closest("[data-close-brief-modal]")) {
       event.preventDefault();
       close();
-      return;
-    }
-
-    if (event.target.closest("[data-toggle-service-dropdown]")) {
-      isServiceDropdownOpen = !isServiceDropdownOpen;
-      quickServices.classList.toggle("is-dropdown-open", isServiceDropdownOpen);
-      return;
-    }
-
-    const option = event.target.closest("[data-select-service]");
-    if (option) {
-      setService(option.dataset.value || "");
-      return;
-    }
-
-    if (!event.target.closest(".brief-quick-services")) {
-      closeServiceDropdown();
     }
   });
 
@@ -198,8 +145,10 @@ const initBriefModal = () => {
 
   form.addEventListener("submit", event => {
     event.preventDefault();
-    if (!serviceHidden.value) {
-      setService(serviceNames[0] || "Другое");
+
+    if (!serviceSelect.value) {
+      serviceSelect.focus();
+      return;
     }
 
     if (!phoneInput?.value.trim()) {
@@ -214,7 +163,7 @@ const initBriefModal = () => {
 
     window.STUDIO_CONTACT?.openLeadChannel({
       source: "Модальное окно брифа",
-      service: serviceHidden.value,
+      service: serviceSelect.value,
       name: form.querySelector('input[name="name"]')?.value.trim() || "",
       phone: phoneInput?.value.trim() || "",
       budget: budgetLabel?.textContent || "",
@@ -233,8 +182,7 @@ const initBriefModal = () => {
       form.reset();
       if (budgetRange) budgetRange.value = "150";
       if (deadlineRange) deadlineRange.value = "30";
-      setService(serviceNames[0] || "Другое");
-      closeServiceDropdown();
+      serviceSelect.value = serviceNames[0] || "Другое";
       updateRanges();
       form.hidden = false;
       success.hidden = true;
@@ -244,7 +192,7 @@ const initBriefModal = () => {
   budgetRange?.addEventListener("input", updateRanges);
   deadlineRange?.addEventListener("input", updateRanges);
 
-  setService(serviceNames[0] || "Другое");
+  serviceSelect.value = serviceNames[0] || "Другое";
   updateRanges();
 };
 
