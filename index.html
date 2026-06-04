@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260604-brief-form-compact" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260604-brief-form-minimal" />
   </head>
   <body>
     <div class="hero-page">
@@ -332,76 +332,49 @@
           <div>
             <p class="brief-modal__eyebrow">Быстрая заявка</p>
             <h2 class="brief-modal__title" id="briefModalTitle">Заказать дизайн</h2>
-            <p class="brief-modal__lede">
-              Коротко опишите задачу. Мы соберём вводные, предложим формат работы и сразу переведём диалог в удобный чат.
-            </p>
           </div>
-          <button
-            class="brief-modal__close"
-            type="button"
-            aria-label="Закрыть окно"
-            data-close-brief-modal
-          >
-            ×
-          </button>
         </header>
-
-        <div class="brief-modal__meta" aria-hidden="true">
-          <span class="brief-modal__meta-item">2 минуты на заполнение</span>
-          <span class="brief-modal__meta-item">Ответ в рабочее время за 15 минут</span>
-          <span class="brief-modal__meta-item">Без длинных созвонов на старте</span>
-        </div>
 
         <form class="brief-form" id="briefForm">
           <div class="brief-grid brief-grid--stack">
-            <label class="brief-field">
-              <span>Ваше имя</span>
+            <label class="brief-field brief-field--bare">
               <input type="text" name="name" placeholder="Как к вам обращаться" autocomplete="name" required />
             </label>
-            <label class="brief-field">
-              <span>Контакт для связи</span>
+            <label class="brief-field brief-field--bare">
               <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel" required />
             </label>
           </div>
 
-          <div class="brief-section">
-            <p class="brief-section__title">Выберите услугу</p>
-            <div class="brief-quick-services" data-quick-services></div>
-            <input type="hidden" name="service" id="briefServiceValue" />
-          </div>
+          <div class="brief-quick-services" data-quick-services></div>
+          <input type="hidden" name="service" id="briefServiceValue" />
 
-          <div class="brief-choice-grid">
-            <div class="brief-choice-card">
-              <div class="brief-choice-head">
+          <div class="brief-range-grid">
+            <label class="brief-field brief-field--range">
+              <div class="brief-range-head">
                 <span>Бюджет</span>
-                <strong data-brief-budget-label>100 000–200 000 ₽</strong>
+                <strong data-brief-budget-label>150 000 ₽</strong>
               </div>
-              <div class="brief-choice-options" data-brief-budget-options>
-                <button type="button" class="brief-choice-option" data-value="до 100 000 ₽">до 100k</button>
-                <button type="button" class="brief-choice-option is-active" data-value="100 000–200 000 ₽">100–200k</button>
-                <button type="button" class="brief-choice-option" data-value="200 000–400 000 ₽">200–400k</button>
-                <button type="button" class="brief-choice-option" data-value="от 400 000 ₽">400k+</button>
-              </div>
-              <input type="hidden" name="budget" value="100 000–200 000 ₽" data-brief-budget-input />
-            </div>
+              <input type="range" name="budget" min="5" max="500" step="5" value="150" data-brief-budget-range />
+            </label>
 
-            <div class="brief-choice-card">
-              <div class="brief-choice-head">
+            <label class="brief-field brief-field--range">
+              <div class="brief-range-head">
                 <span>Сроки запуска</span>
-                <strong data-brief-deadline-label>3–4 недели</strong>
+                <strong data-brief-deadline-label>30 дней</strong>
               </div>
-              <div class="brief-choice-options" data-brief-deadline-options>
-                <button type="button" class="brief-choice-option" data-value="1–2 недели">1–2 недели</button>
-                <button type="button" class="brief-choice-option is-active" data-value="3–4 недели">3–4 недели</button>
-                <button type="button" class="brief-choice-option" data-value="1–2 месяца">1–2 месяца</button>
-                <button type="button" class="brief-choice-option" data-value="2+ месяца">2+ месяца</button>
-              </div>
-              <input type="hidden" name="deadline" value="3–4 недели" data-brief-deadline-input />
-            </div>
+              <input
+                type="range"
+                name="deadline"
+                min="1"
+                max="180"
+                step="1"
+                value="30"
+                data-brief-deadline-range
+              />
+            </label>
           </div>
 
-          <label class="brief-field brief-field--full">
-            <span>Комментарий к задаче</span>
+          <label class="brief-field brief-field--bare brief-field--full">
             <textarea
               name="comment"
               rows="4"
@@ -410,7 +383,6 @@
           </label>
 
           <div class="brief-modal__actions">
-            <p class="brief-modal__hint">Ответим в течение 15 минут в рабочее время.</p>
             <button class="brief-modal__submit" type="submit">Отправить задачу</button>
           </div>
         </form>
@@ -488,7 +460,7 @@
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
     <script src="./assets/js/hero.js?v=20260531-plane-launch-refine" defer></script>
     <script src="./assets/js/services.js?v=20260531-more-buttons-desktop" defer></script>
-    <script src="./assets/js/brief-modal.js?v=20260604-brief-form-compact" defer></script>
+    <script src="./assets/js/brief-modal.js?v=20260604-brief-form-minimal" defer></script>
     <script src="./assets/js/cases.js?v=20260531-more-buttons-desktop" defer></script>
     <script>
       (function () {

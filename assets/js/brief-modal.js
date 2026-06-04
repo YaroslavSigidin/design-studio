@@ -4,21 +4,16 @@ const initBriefModal = () => {
   const quickServices = modal?.querySelector("[data-quick-services]");
   const serviceHidden = document.getElementById("briefServiceValue");
   const success = document.getElementById("briefSuccess");
-  const budgetInput = form?.querySelector("[data-brief-budget-input]");
+  const budgetRange = form?.querySelector("[data-brief-budget-range]");
   const budgetLabel = form?.querySelector("[data-brief-budget-label]");
-  const budgetOptions = Array.from(form?.querySelectorAll("[data-brief-budget-options] .brief-choice-option") || []);
-  const deadlineInput = form?.querySelector("[data-brief-deadline-input]");
+  const deadlineRange = form?.querySelector("[data-brief-deadline-range]");
   const deadlineLabel = form?.querySelector("[data-brief-deadline-label]");
-  const deadlineOptions = Array.from(form?.querySelectorAll("[data-brief-deadline-options] .brief-choice-option") || []);
   const phoneInput = form?.querySelector('input[name="phone"]');
   if (!modal || !form || !quickServices || !serviceHidden || !success) return;
 
   const serviceNames = [...new Set((window.SERVICES || []).map(item => item.title))];
   const serviceOptions = [...serviceNames, "Другое"];
-  const defaultBudget = budgetInput?.value || "100 000–200 000 ₽";
-  const defaultDeadline = deadlineInput?.value || "3–4 недели";
-
-  let selectedServices = [];
+  let selectedService = "";
   let isServiceDropdownOpen = false;
   let lastFocusedElement = null;
 
@@ -26,14 +21,8 @@ const initBriefModal = () => {
     document.body.style.overflow = locked ? "hidden" : "";
   };
 
-  const getServiceCountLabel = count => {
-    if (count % 10 === 1 && count % 100 !== 11) return `${count} услуга`;
-    if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14)) return `${count} услуги`;
-    return `${count} услуг`;
-  };
-
   const syncServiceHidden = () => {
-    serviceHidden.value = selectedServices.join(", ");
+    serviceHidden.value = selectedService;
   };
 
   const closeServiceDropdown = () => {
@@ -42,32 +31,23 @@ const initBriefModal = () => {
   };
 
   const renderServicePicker = () => {
-    const summaryText = selectedServices.length ? selectedServices.join(", ") : "Выберите одну или несколько услуг";
-    const badgeMarkup =
-      selectedServices.length > 1
-        ? `<span class="brief-service-badge">${getServiceCountLabel(selectedServices.length)}</span>`
-        : "";
-
+    const summaryText = selectedService || "Выберите услугу";
     const optionsMarkup = serviceOptions
       .map(item => {
-        const isActive = selectedServices.includes(item);
-        return `<button type="button" class="brief-service-chip${isActive ? " is-active" : ""}" data-value="${item}" data-toggle-service>${item}</button>`;
+        const isActive = selectedService === item;
+        return `<button type="button" class="brief-service-chip${isActive ? " is-active" : ""}" data-value="${item}" data-select-service>${item}</button>`;
       })
       .join("");
 
     quickServices.innerHTML = `
       <button type="button" class="brief-service-trigger" aria-expanded="${isServiceDropdownOpen ? "true" : "false"}" data-toggle-service-dropdown>
-        <span class="brief-service-summary">
-          ${badgeMarkup}
-          <span class="brief-service-summary-text">${summaryText}</span>
-        </span>
+        <span class="brief-service-summary-text">${summaryText}</span>
         <svg class="brief-service-caret" viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
       <div class="brief-service-dropdown">
         <div class="brief-service-options">${optionsMarkup}</div>
-        <button type="button" class="brief-service-option-done" data-close-service-dropdown>Готово</button>
       </div>
     `;
 
@@ -75,31 +55,10 @@ const initBriefModal = () => {
     syncServiceHidden();
   };
 
-  const setServices = values => {
-    const normalized = [...new Set((values || []).map(item => String(item || "").trim()).filter(Boolean))];
-    selectedServices = normalized;
+  const setService = value => {
+    selectedService = String(value || "").trim();
+    closeServiceDropdown();
     renderServicePicker();
-  };
-
-  const addService = value => {
-    if (!value || selectedServices.includes(value)) return;
-    selectedServices = [...selectedServices, value];
-    renderServicePicker();
-  };
-
-  const removeService = value => {
-    if (!value || selectedServices.length <= 1) return;
-    selectedServices = selectedServices.filter(item => item !== value);
-    renderServicePicker();
-  };
-
-  const toggleService = value => {
-    if (!value) return;
-    if (selectedServices.includes(value)) {
-      removeService(value);
-      return;
-    }
-    addService(value);
   };
 
   const formatRuPhone = input => {
@@ -138,14 +97,45 @@ const initBriefModal = () => {
     });
   }
 
-  const setChoice = (options, input, label, value) => {
-    if (!input || !label) return;
-    const nextValue = String(value || "").trim();
-    input.value = nextValue;
-    label.textContent = nextValue;
-    options.forEach(option => {
-      option.classList.toggle("is-active", option.dataset.value === nextValue);
-    });
+  const formatMoney = value => `${new Intl.NumberFormat("ru-RU").format(value * 1000)} ₽`;
+  const getDeclension = (value, [one, two, five]) => {
+    const mod10 = value % 10;
+    const mod100 = value % 100;
+    if (mod100 >= 11 && mod100 <= 14) return five;
+    if (mod10 === 1) return one;
+    if (mod10 >= 2 && mod10 <= 4) return two;
+    return five;
+  };
+
+  const formatDeadline = value => {
+    const days = Number(value);
+    if (days < 14) return `${days} ${getDeclension(days, ["день", "дня", "дней"])}`;
+    if (days < 60) {
+      const weeks = Math.round(days / 7);
+      return `${weeks} ${getDeclension(weeks, ["неделя", "недели", "недель"])}`;
+    }
+    const months = Math.round((days / 30) * 10) / 10;
+    return `${String(months).replace(".0", "")} мес`;
+  };
+
+  const setRangeProgress = input => {
+    if (!input) return;
+    const min = Number(input.min || 0);
+    const maxValue = Number(input.max || 100);
+    const value = Number(input.value || min);
+    const progress = ((value - min) * 100) / (maxValue - min || 1);
+    input.style.setProperty("--range-progress", `${Math.max(0, Math.min(progress, 100))}%`);
+  };
+
+  const updateRanges = () => {
+    if (budgetRange && budgetLabel) {
+      budgetLabel.textContent = formatMoney(Number(budgetRange.value));
+      setRangeProgress(budgetRange);
+    }
+    if (deadlineRange && deadlineLabel) {
+      deadlineLabel.textContent = formatDeadline(Number(deadlineRange.value));
+      setRangeProgress(deadlineRange);
+    }
   };
 
   const open = presetService => {
@@ -155,11 +145,10 @@ const initBriefModal = () => {
     lockScroll(true);
 
     const preset = presetService?.trim() || "";
-    const initialService = preset || serviceNames[0] || "Другое";
-    setServices([initialService]);
-    closeServiceDropdown();
+    setService(preset || serviceNames[0] || "Другое");
     success.hidden = true;
     form.hidden = false;
+    updateRanges();
     modal.querySelector('input[name="name"]')?.focus();
   };
 
@@ -190,14 +179,9 @@ const initBriefModal = () => {
       return;
     }
 
-    if (event.target.closest("[data-close-service-dropdown]")) {
-      closeServiceDropdown();
-      return;
-    }
-
-    const option = event.target.closest("[data-toggle-service]");
+    const option = event.target.closest("[data-select-service]");
     if (option) {
-      toggleService(option.dataset.value || "");
+      setService(option.dataset.value || "");
       return;
     }
 
@@ -214,7 +198,9 @@ const initBriefModal = () => {
 
   form.addEventListener("submit", event => {
     event.preventDefault();
-    if (!serviceHidden.value) setServices([serviceNames[0] || "Другое"]);
+    if (!serviceHidden.value) {
+      setService(serviceNames[0] || "Другое");
+    }
 
     if (!phoneInput?.value.trim()) {
       phoneInput?.focus();
@@ -231,8 +217,8 @@ const initBriefModal = () => {
       service: serviceHidden.value,
       name: form.querySelector('input[name="name"]')?.value.trim() || "",
       phone: phoneInput?.value.trim() || "",
-      budget: budgetInput?.value || "",
-      deadline: deadlineInput?.value || "",
+      budget: budgetLabel?.textContent || "",
+      deadline: deadlineLabel?.textContent || "",
       comment: form.querySelector('textarea[name="comment"]')?.value.trim() || ""
     });
 
@@ -245,29 +231,21 @@ const initBriefModal = () => {
     window.setTimeout(() => {
       close();
       form.reset();
-      setChoice(budgetOptions, budgetInput, budgetLabel, defaultBudget);
-      setChoice(deadlineOptions, deadlineInput, deadlineLabel, defaultDeadline);
-      setServices([serviceNames[0] || "Другое"]);
+      if (budgetRange) budgetRange.value = "150";
+      if (deadlineRange) deadlineRange.value = "30";
+      setService(serviceNames[0] || "Другое");
       closeServiceDropdown();
+      updateRanges();
       form.hidden = false;
       success.hidden = true;
     }, 1400);
   });
 
-  budgetOptions.forEach(option => {
-    option.addEventListener("click", () => {
-      setChoice(budgetOptions, budgetInput, budgetLabel, option.dataset.value || "");
-    });
-  });
+  budgetRange?.addEventListener("input", updateRanges);
+  deadlineRange?.addEventListener("input", updateRanges);
 
-  deadlineOptions.forEach(option => {
-    option.addEventListener("click", () => {
-      setChoice(deadlineOptions, deadlineInput, deadlineLabel, option.dataset.value || "");
-    });
-  });
-
-  setChoice(budgetOptions, budgetInput, budgetLabel, defaultBudget);
-  setChoice(deadlineOptions, deadlineInput, deadlineLabel, defaultDeadline);
+  setService(serviceNames[0] || "Другое");
+  updateRanges();
 };
 
 if (document.readyState === "loading") {
