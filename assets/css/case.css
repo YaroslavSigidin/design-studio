@@ -228,13 +228,19 @@
 }
 
 .case-tag {
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: #ffffff;
-  font-family: "Inter", sans-serif;
+  border: 1px solid rgba(25, 43, 66, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.94));
+  box-shadow:
+    0 8px 20px rgba(43, 72, 108, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  font-family: "Schibsted Grotesk", sans-serif;
   font-size: 13px;
-  color: #000000;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1f2f45;
+  white-space: nowrap;
 }
 
 .case-live-links {
@@ -658,6 +664,27 @@
 
   .case-title {
     font-size: clamp(34px, 11vw, 44px);
+  }
+
+  .case-tags {
+    flex-wrap: nowrap;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: calc(100% + 2px);
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .case-tags::-webkit-scrollbar {
+    display: none;
+  }
+
+  .case-tag {
+    flex: 0 0 auto;
+    padding: 9px 16px;
+    font-size: 14px;
   }
 
   .case-lead,
