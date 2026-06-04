@@ -534,7 +534,7 @@ body::after {
   height: 22px;
   border: none;
   border-radius: 999px;
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 0;
@@ -3166,6 +3166,7 @@ body::after {
   }
 
   .promo-strip__close {
+    display: inline-flex;
     top: 4px;
     right: 4px;
     width: 20px;
