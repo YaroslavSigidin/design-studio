@@ -128,7 +128,7 @@ const initHeroSearch = () => {
     }, 980);
   };
 
-  const handleFinalSubmit = event => {
+  const handleFinalSubmit = async event => {
     event.preventDefault();
     if (!finalForm) return;
 
@@ -141,7 +141,7 @@ const initHeroSearch = () => {
       return;
     }
 
-    window.STUDIO_CONTACT?.openLeadChannel({
+    const result = await window.STUDIO_CONTACT?.submitLead({
       source: "AI-бриф",
       name: finalNameField.value.trim(),
       phone: finalPhoneField?.value.trim() || "",
@@ -151,14 +151,20 @@ const initHeroSearch = () => {
       comment: finalCommentField?.value.trim() || ""
     });
 
-    if (finalSubmitButton) finalSubmitButton.textContent = "Открываем чат";
+    if (finalSubmitButton) {
+      finalSubmitButton.textContent = result?.ok && result.mode === "crm" ? "Отправлено в amoCRM" : "Открываем чат";
+      finalSubmitButton.disabled = true;
+    }
 
     window.setTimeout(() => {
-      if (finalSubmitButton) finalSubmitButton.textContent = "Отправить";
+      if (finalSubmitButton) {
+        finalSubmitButton.textContent = "Отправить";
+        finalSubmitButton.disabled = false;
+      }
       finalForm.reset();
       closeFinalModal();
       resetHeroForm();
-    }, 800);
+    }, result?.mode === "crm" ? 1200 : 800);
   };
 
   const insertSuggestion = tab => {

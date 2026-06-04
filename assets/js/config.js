@@ -28,6 +28,12 @@ window.STUDIO_CONFIG = {
     email: "sigidingo@gmail.com",
     emailHref: "mailto:sigidingo@gmail.com"
   },
+  crm: {
+    provider: "amocrm",
+    endpoint: "",
+    timeoutMs: 12000,
+    allowFallback: true
+  },
   leadChannel: {
     type: "telegram"
   }

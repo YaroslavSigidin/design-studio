@@ -57,6 +57,67 @@ const initStudioContacts = () => {
     return false;
   };
 
+  const submitToCrm = async payload => {
+    const endpoint = String(cfg.crm?.endpoint || "").trim();
+    if (!endpoint) {
+      return { ok: false, mode: "crm-unconfigured" };
+    }
+
+    const controller = new AbortController();
+    const timeoutMs = Number(cfg.crm?.timeoutMs || 12000);
+    const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          ...payload,
+          page: window.location.href,
+          referer: document.referrer || "",
+          userAgent: navigator.userAgent,
+          submittedAt: new Date().toISOString()
+        }),
+        signal: controller.signal
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data?.ok === false) {
+        throw new Error(data?.error || `CRM request failed with ${response.status}`);
+      }
+
+      return {
+        ok: true,
+        mode: "crm",
+        data
+      };
+    } finally {
+      window.clearTimeout(timeoutId);
+    }
+  };
+
+  const submitLead = async payload => {
+    try {
+      const crmResult = await submitToCrm(payload);
+      if (crmResult.ok) return crmResult;
+    } catch (error) {
+      if (!cfg.crm?.allowFallback) {
+        return {
+          ok: false,
+          mode: "crm-error",
+          error: error instanceof Error ? error.message : "CRM error"
+        };
+      }
+    }
+
+    const opened = openLeadChannel(payload);
+    return opened
+      ? { ok: true, mode: "fallback" }
+      : { ok: false, mode: "fallback-error", error: "Не удалось открыть канал связи" };
+  };
+
   const bindContactLink = (selector, value) => {
     if (!value) return;
     document.querySelectorAll(selector).forEach(node => {
@@ -138,10 +199,11 @@ const initStudioContacts = () => {
       return channelType === "telegram" ? buildTelegramUrl(message) : buildMailtoUrl(message);
     },
     openLeadChannel,
+    submitLead,
     formatPayload
   };
 
-  document.addEventListener("submit", event => {
+  document.addEventListener("submit", async event => {
     const form = event.target;
     if (!(form instanceof HTMLFormElement)) return;
 
@@ -169,13 +231,41 @@ const initStudioContacts = () => {
       return;
     }
 
-    openLeadChannel({
+    const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+    const previousLabel =
+      submitButton instanceof HTMLButtonElement
+        ? submitButton.textContent
+        : submitButton instanceof HTMLInputElement
+          ? submitButton.value
+          : "";
+
+    if (submitButton) submitButton.disabled = true;
+    if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправляем…";
+    if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправляем…";
+
+    const result = await submitLead({
       source: form.matches(".case-lead-form__form") ? "Кейс" : "Блок «Обсудить проект»",
       name,
       phone,
       contact,
       comment: form.dataset.caseTitle || ""
     });
+
+    if (result.ok && result.mode === "crm") {
+      form.reset();
+      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";
+      if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправлено";
+      window.setTimeout(() => {
+        if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
+        if (submitButton instanceof HTMLInputElement) submitButton.value = previousLabel || "Отправить";
+        if (submitButton) submitButton.disabled = false;
+      }, 1800);
+      return;
+    }
+
+    if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
+    if (submitButton instanceof HTMLInputElement) submitButton.value = previousLabel || "Отправить";
+    if (submitButton) submitButton.disabled = false;
   });
 };
 

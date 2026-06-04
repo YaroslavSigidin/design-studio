@@ -18,7 +18,7 @@ const initBriefModal = () => {
 
   const serviceNames = [...new Set((window.SERVICES || []).map(item => item.title))];
   const services = [...serviceNames, "Другое"];
-  let currentService = serviceNames[0] || "Другое";
+  let currentService = "";
   let isMenuOpen = false;
   let lastFocusedElement = null;
 
@@ -44,9 +44,9 @@ const initBriefModal = () => {
   };
 
   const syncServiceValue = value => {
-    currentService = value || services[0] || "Другое";
+    currentService = value || "";
     serviceInput.value = currentService;
-    serviceLabel.textContent = currentService;
+    serviceLabel.textContent = currentService || "Выберите услугу";
     renderServiceMenu();
   };
 
@@ -148,7 +148,7 @@ const initBriefModal = () => {
     lockScroll(true);
 
     const preset = presetService?.trim() || "";
-    syncServiceValue(services.includes(preset) ? preset : services[0] || "Другое");
+    syncServiceValue(services.includes(preset) ? preset : "");
     closeMenu();
     success.hidden = true;
     form.hidden = false;
@@ -203,7 +203,7 @@ const initBriefModal = () => {
     }
   });
 
-  form.addEventListener("submit", event => {
+  form.addEventListener("submit", async event => {
     event.preventDefault();
 
     if (!serviceInput.value) {
@@ -221,7 +221,7 @@ const initBriefModal = () => {
       return;
     }
 
-    window.STUDIO_CONTACT?.openLeadChannel({
+    const result = await window.STUDIO_CONTACT?.submitLead({
       source: "Модальное окно брифа",
       service: serviceInput.value,
       name: form.querySelector('input[name="name"]')?.value.trim() || "",
@@ -233,26 +233,32 @@ const initBriefModal = () => {
 
     form.hidden = true;
     success.hidden = false;
-    success.querySelector("h3").textContent = "Открываем чат";
-    success.querySelector("p").textContent =
-      "Текст заявки скопирован, сейчас откроется Telegram с готовым сообщением.";
+    if (result?.ok && result.mode === "crm") {
+      success.querySelector("h3").textContent = "Заявка отправлена";
+      success.querySelector("p").textContent =
+        "Заявка уже в amoCRM. Можно закрыть окно, мы свяжемся с вами дальше по процессу.";
+    } else {
+      success.querySelector("h3").textContent = "Открываем чат";
+      success.querySelector("p").textContent =
+        "Текст заявки скопирован, сейчас откроется Telegram с готовым сообщением.";
+    }
 
     window.setTimeout(() => {
       close();
       form.reset();
       if (budgetRange) budgetRange.value = "150";
       if (deadlineRange) deadlineRange.value = "30";
-      syncServiceValue(services[0] || "Другое");
+      syncServiceValue("");
       updateRanges();
       form.hidden = false;
       success.hidden = true;
-    }, 1400);
+    }, result?.mode === "crm" ? 1600 : 1400);
   });
 
   budgetRange?.addEventListener("input", updateRanges);
   deadlineRange?.addEventListener("input", updateRanges);
 
-  syncServiceValue(services[0] || "Другое");
+  syncServiceValue("");
   updateRanges();
 };
 

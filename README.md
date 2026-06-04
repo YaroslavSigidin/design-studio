@@ -30,6 +30,35 @@ open http://127.0.0.1:8766/
 .github/workflows/deploy.yml
 ```
 
+## amoCRM
+
+Для безопасной интеграции с amoCRM в репозитории добавлен отдельный backend-слой:
+
+```text
+amocrm-proxy/
+```
+
+Это сделано потому, что GitHub Pages не может безопасно хранить токены amoCRM на фронтенде.
+
+Минимальная схема:
+
+1. В amoCRM создать приватную интеграцию.
+2. Сгенерировать долгосрочный токен.
+3. Запустить или задеплоить `amocrm-proxy`.
+4. Прописать URL backend endpoint в `assets/js/config.js`:
+
+```js
+crm: {
+  endpoint: "https://your-backend.example.com/api/leads"
+}
+```
+
+Детали по env и запуску описаны в:
+
+```text
+amocrm-proxy/README.md
+```
+
 ## Примечание по обновлению кейсов
 
 Текущий `data/cases.manifest.json` уже содержит контент кейсов и ссылки на нужные изображения, которые включены в этот репозиторий.
