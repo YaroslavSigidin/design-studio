@@ -509,6 +509,9 @@
           const grid = document.getElementById("projects-grid");
           const status = document.querySelector("[data-cases-status]");
           const tabsRoot = document.getElementById("projectTabs");
+          const moreWrap = document.getElementById("studioCasesMore");
+          const moreButton = document.getElementById("studioCasesMoreButton");
+          const visibleLimit = 9;
           if (!grid || grid.children.length > 0) return;
 
           if (status) {
@@ -576,7 +579,10 @@
             });
 
             if (tabsRoot && tabsRoot.dataset.fallbackBound !== "true") {
+              let expanded = false;
               const applyFilter = filter => {
+                let visibleCount = 0;
+
                 grid.querySelectorAll(".project-card").forEach(card => {
                   const category = card.dataset.category || "";
                   const search = String(card.dataset.search || "").toLowerCase();
@@ -588,16 +594,35 @@
                     (filter === "identity" && /айдентик|identity|фирменн/.test(search)) ||
                     (filter === "branding" && /брендинг|бренд|branding/.test(search)) ||
                     (filter === "presentation" && /презентац|presentation/.test(search));
-                  card.hidden = !matches;
+
+                  if (!matches) {
+                    card.hidden = true;
+                    return;
+                  }
+
+                  visibleCount += 1;
+                  card.hidden = !expanded && visibleCount > visibleLimit;
                 });
+
+                if (moreWrap) {
+                  moreWrap.hidden = expanded || visibleCount <= visibleLimit;
+                }
               };
 
               tabsRoot.querySelectorAll(".tab-button").forEach(tab => {
                 tab.addEventListener("click", () => {
                   tabsRoot.querySelectorAll(".tab-button").forEach(item => item.classList.remove("active"));
                   tab.classList.add("active");
+                  expanded = false;
                   applyFilter(tab.dataset.filter || "all");
                 });
+              });
+
+              moreButton?.addEventListener("click", () => {
+                expanded = true;
+                const activeTab =
+                  tabsRoot.querySelector(".tab-button.active") || tabsRoot.querySelector(".tab-button");
+                applyFilter(activeTab?.dataset.filter || "all");
               });
 
               const activeTab =
