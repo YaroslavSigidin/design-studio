@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-06-06T16:45:00Z",
+  "generatedAt": "2026-06-06T18:35:00Z",
   "source": "bundled",
   "studioCaseBase": "./case.html",
-  "totalProjects": 29,
-  "withCaseStudy": 29,
+  "totalProjects": 30,
+  "withCaseStudy": 30,
   "projects": [
     {
       "id": "visiflow",
@@ -2424,6 +2424,72 @@
         "UI Kit",
         "Landing UX",
         "E-commerce"
+      ]
+    },
+    {
+      "id": "pifagor-i-synovya",
+      "caseKey": "pifagor-i-synovya",
+      "title": "Пифагор и Сыновья",
+      "subtitle": "Многостраничный сайт для компании по финансовому управлению и безопасности бизнеса",
+      "category": "web",
+      "description": "Сайт для B2B-финансового консалтинга с понятной подачей услуг, кейсов, блога и акцентом на практическую пользу для собственников бизнеса.",
+      "image": "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/1950.png",
+      "gallery": [
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/1950.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/1958.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/1966.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/1974.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/1982.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/1990.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/1998.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2006.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2014.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2021.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2028.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2034.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2040.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2045.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2049.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2052.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/PIFAGOR-I-SYNOVYA/2054.png"
+      ],
+      "studioCaseUrl": "./case.html?slug=pifagor-i-synovya",
+      "legacyCaseUrl": "/case-pifagor-i-synovya",
+      "hasCaseStudy": true,
+      "study": {
+        "title": "Пифагор и Сыновья",
+        "subtitle": "Многостраничный сайт для B2B-финансового консалтинга",
+        "tags": [
+          "Многостраничный сайт",
+          "Под ключ"
+        ],
+        "task": "Собрать сайт для B2B-финансового консалтинга, который объясняет сложные услуги простым языком, показывает не абстрактную экспертность, а конкретную пользу для бизнеса, объединяет ключевые направления компании и усиливает доверие через цифры, реальные кейсы, отзывы клиентов и опыт команды.",
+        "whatDone": [
+          "Собрали многостраничную структуру с услугами, финансовым аудитом, кейсами, командой, блогом и формой консультации.",
+          "Упростили подачу сложной финансовой тематики и сместили акцент с абстрактной экспертности на конкретную пользу для собственников бизнеса.",
+          "Выстроили сайт вокруг доказательств: цифр, опыта, кейсов по кредитованию, снижению нагрузки и росту оборота.",
+          "Подготовили и собрали проект под ключ на Tilda."
+        ],
+        "metrics": [
+          "Финансовая платформа для роста бизнеса и порядка в цифрах.",
+          "Понятный сценарий выбора для собственников и руководителей.",
+          "Акцент на доказательствах вместо декларативной экспертности."
+        ]
+      },
+      "tags": [
+        "Многостраничный сайт",
+        "Под ключ"
+      ],
+      "liveLinks": [],
+      "tools": [
+        "Figma",
+        "Tilda"
+      ],
+      "technologies": [
+        "Tilda",
+        "Multi-page architecture",
+        "B2B consulting",
+        "Financial audit content"
       ]
     }
   ]
