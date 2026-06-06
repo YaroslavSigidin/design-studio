@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-06-06T16:00:00Z",
+  "generatedAt": "2026-06-06T16:45:00Z",
   "source": "bundled",
   "studioCaseBase": "./case.html",
-  "totalProjects": 28,
-  "withCaseStudy": 28,
+  "totalProjects": 29,
+  "withCaseStudy": 29,
   "projects": [
     {
       "id": "visiflow",
@@ -2245,6 +2245,100 @@
         "SEO copywriting",
         "Responsive Design",
         "Brand system",
+        "Code implementation"
+      ]
+    },
+    {
+      "id": "diplomat-hotel",
+      "caseKey": "diplomat-hotel",
+      "title": "Diplomat Hotel",
+      "subtitle": "Многостраничный сайт для бутик-отеля премиум-класса в центре Санкт-Петербурга",
+      "category": "web",
+      "description": "Многостраничный сайт для премиального бутик-отеля с акцентом на деловой стиль, историческую эстетику и быстрый переход к бронированию.",
+      "image": "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2058.png",
+      "gallery": [
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2056.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2057.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2058.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2059.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2060.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2061.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2062.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2063.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2064.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2065.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2066.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2067.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2068.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2069.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2070.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2071.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2072.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2073.png",
+        "/assets/images/%D1%81%D0%B0%D0%B9%D1%82%D1%8B/DIPLOMAT/2074.png"
+      ],
+      "studioCaseUrl": "./case.html?slug=diplomat-hotel",
+      "legacyCaseUrl": "/case-diplomat-hotel",
+      "hasCaseStudy": true,
+      "study": {
+        "title": "Diplomat Hotel",
+        "subtitle": "Многостраничный сайт для бутик-отеля премиум-класса",
+        "tags": [
+          "Многостраничный сайт",
+          "Аналитика",
+          "Брендинг"
+        ],
+        "task": "Создать многостраничный сайт для Diplomat Hotel с понятной структурой, быстрым сценарием перехода к бронированию и визуальной системой, которая передаёт эстетику \"под старину\" через современный интерфейс.",
+        "whatDone": [
+          "Собрал многостраничный сайт более чем на 20 страниц с 4-10 смысловыми блоками на каждой ключевой странице.",
+          "Провёл анализ конкурентов и целевой аудитории, чтобы выстроить понятный пользовательский путь и сократить дистанцию до бронирования.",
+          "Подготовил user flow, site map, moodboard, wireframes и фирменную систему с упором на строгую премиальную атмосферу и долговечный стиль.",
+          "Разработал дизайн-концепцию и финальный дизайн-макет, полностью готовый к кодовой реализации."
+        ],
+        "metrics": [
+          "Структура сайта помогает быстрее перейти от знакомства с отелем к выбору номера и бронированию.",
+          "Визуальная система передаёт образ статусного отеля без перегруженного люкса и лишней декоративности.",
+          "Многостраничная архитектура охватывает номера, ресторан, конференц-зал, услуги и спецпредложения в едином сценарии."
+        ]
+      },
+      "storyChapters": [
+        {
+          "title": "О клиенте",
+          "body": "Бутик-отель премиум-класса в центре Санкт-Петербурга"
+        },
+        {
+          "title": "Задачи",
+          "body": "Построить понятный путь к бронированию и образ отеля \"на века\""
+        },
+        {
+          "title": "Реализация",
+          "body": "Аналитика, бренд-система и многостраничная структура"
+        },
+        {
+          "title": "Результат",
+          "body": "Более 20 страниц с единым строгим премиальным стилем"
+        }
+      ],
+      "tags": [
+        "Многостраничный сайт",
+        "Аналитика",
+        "Брендинг"
+      ],
+      "liveLinks": [],
+      "tools": [
+        "Figma",
+        "Code"
+      ],
+      "technologies": [
+        "Multi-page architecture",
+        "Competitive analysis",
+        "Target audience analysis",
+        "User Flow",
+        "Site Map",
+        "MoodBoard",
+        "Wireframes",
+        "Brand system",
+        "Design concept",
         "Code implementation"
       ]
     },
