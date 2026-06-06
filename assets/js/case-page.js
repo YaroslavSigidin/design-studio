@@ -6,7 +6,7 @@ const escapeHtml = value =>
     .replace(/"/g, "&quot;");
 
 const loadJson = async url => {
-  const res = await fetch(url, { cache: "no-store" });
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`${url} → ${res.status}`);
   return res.json();
 };
@@ -252,6 +252,7 @@ const renderCase = (project, projects, currentIndex, cfg) => {
   const heroImage = normalizeAssetUrl(project.image || gallery[0] || "", cfg);
   const title = study.title || project.title;
   const subtitle = study.subtitle || project.subtitle || project.description || "";
+  const slug = project.id || project.caseKey || "";
   const introBlock = study.task
     ? `<section class="case-block">
         <p class="case-eyebrow">Задача</p>
@@ -298,6 +299,14 @@ const renderCase = (project, projects, currentIndex, cfg) => {
   );
 
   document.title = `${title} — Согласовано`;
+  window.__studioSeo?.applyCaseSeo({
+    title,
+    description: subtitle,
+    image: heroImage,
+    slug,
+    tags,
+    category: getTagLabel(project.category)
+  });
 
   return `
     <nav class="case-breadcrumbs" aria-label="Хлебные крошки">
@@ -320,7 +329,7 @@ const renderCase = (project, projects, currentIndex, cfg) => {
           ${renderLiveLinks(project.liveLinks || [])}
         </div>
         <div class="case-hero-media">
-          ${heroImage ? `<img src="${escapeHtml(heroImage)}" alt="${escapeHtml(title)}" width="1200" height="630" decoding="async" />` : ""}
+          ${heroImage ? `<img src="${escapeHtml(heroImage)}" alt="${escapeHtml(title)}" width="1200" height="630" decoding="async" fetchpriority="high" />` : ""}
         </div>
       </header>
 
@@ -342,6 +351,12 @@ const renderCase = (project, projects, currentIndex, cfg) => {
 
 const renderNotFound = (slug, cfg) => {
   document.title = "Кейс не найден — Согласовано";
+  window.__studioSeo?.applySeo({
+    title: "Кейс не найден — Согласовано",
+    description: `Кейс «${slug}» не найден или ещё не опубликован.`,
+    pathname: `case.html?slug=${encodeURIComponent(slug)}`,
+    robots: "noindex,nofollow"
+  });
   return `
     <div class="case-empty">
       <h1>Кейс не найден</h1>
