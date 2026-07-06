@@ -1,0 +1,26 @@
+name: Deploy Timeweb
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Timeweb via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.TIMEWEB_HOST }}
+          username: ${{ secrets.TIMEWEB_USER }}
+          key: ${{ secrets.TIMEWEB_SSH_KEY }}
+          script_stop: true
+          script: |
+            cd ~/public_html
+            git fetch --all --prune
+            git reset --hard origin/main
+            git clean -fd
+            git rev-parse --short HEAD
