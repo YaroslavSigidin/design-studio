@@ -11,16 +11,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to Timeweb via SSH
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: 92.53.96.132
-          username: ca568679
-          key: ${{ secrets.TIMEWEB_SSH_KEY }}
-          script_stop: true
-          script: |
-            cd /home/c/ca568679/public_html
-            git fetch --all --prune
-            git reset --hard origin/main
-            git clean -fd
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare SSH key
+        shell: bash
+        run: |
+          if [ -z "${{ secrets.TIMEWEB_SSH_KEY }}" ]; then
+            echo "::error::TIMEWEB_SSH_KEY secret is empty."
+            exit 1
+          fi
+
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.TIMEWEB_SSH_KEY }}" | tr -d '\r' > ~/.ssh/timeweb_deploy
+          chmod 600 ~/.ssh/timeweb_deploy
+
+          if ! ssh-keygen -y -f ~/.ssh/timeweb_deploy >/dev/null 2>&1; then
+            echo "::error::TIMEWEB_SSH_KEY is invalid. Paste the full private key from Timeweb, including BEGIN and END lines."
+            exit 1
+          fi
+
+      - name: Add Timeweb host
+        shell: bash
+        run: |
+          ssh-keyscan -H 92.53.96.132 >> ~/.ssh/known_hosts
+
+      - name: Deploy to Timeweb
+        shell: bash
+        run: |
+          if ! ssh -i ~/.ssh/timeweb_deploy -o BatchMode=yes ca568679@92.53.96.132 '
+            cd /home/c/ca568679/public_html &&
+            git fetch --all --prune &&
+            git reset --hard origin/main &&
+            git clean -fd &&
             git rev-parse --short HEAD
+          '; then
+            echo "::error::SSH connection to Timeweb failed. Recreate TIMEWEB_SSH_KEY from the private key printed by cat ~/.ssh/github_actions_deploy on Timeweb and paste it into GitHub Secrets as a multi-line value."
+            exit 1
+          fi
