@@ -14,12 +14,12 @@ jobs:
       - name: Deploy to Timeweb via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ${{ secrets.TIMEWEB_HOST }}
-          username: ${{ secrets.TIMEWEB_USER }}
+          host: 92.53.96.132
+          username: ca568679
           key: ${{ secrets.TIMEWEB_SSH_KEY }}
           script_stop: true
           script: |
-            cd ~/public_html
+            cd /home/c/ca568679/public_html
             git fetch --all --prune
             git reset --hard origin/main
             git clean -fd
