@@ -51,10 +51,10 @@ window.STUDIO_CONFIG = {
     priceRange: "$$"
   },
   crm: {
-    provider: "amocrm",
-    endpoint: "",
+    provider: "telegram-bot",
+    endpoint: joinPath(studioBasePath, "telegram-lead.php"),
     timeoutMs: 12000,
-    allowFallback: true
+    allowFallback: false
   },
   leadChannel: {
     type: "telegram"

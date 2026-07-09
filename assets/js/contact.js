@@ -60,7 +60,11 @@ const initStudioContacts = () => {
   const submitToCrm = async payload => {
     const endpoint = String(cfg.crm?.endpoint || "").trim();
     if (!endpoint) {
-      return { ok: false, mode: "crm-unconfigured" };
+      return {
+        ok: false,
+        mode: "crm-unconfigured",
+        error: "Серверная отправка заявок еще не настроена."
+      };
     }
 
     const controller = new AbortController();
@@ -90,7 +94,7 @@ const initStudioContacts = () => {
 
       return {
         ok: true,
-        mode: "crm",
+        mode: "server",
         data
       };
     } finally {
@@ -251,10 +255,11 @@ const initStudioContacts = () => {
       comment: form.dataset.caseTitle || ""
     });
 
-    if (result.ok && result.mode === "crm") {
+    if (result.ok) {
       form.reset();
-      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";
-      if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправлено";
+      const successLabel = result.mode === "fallback" ? "Чат открыт" : "Отправлено";
+      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = successLabel;
+      if (submitButton instanceof HTMLInputElement) submitButton.value = successLabel;
       window.setTimeout(() => {
         if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
         if (submitButton instanceof HTMLInputElement) submitButton.value = previousLabel || "Отправить";
@@ -263,6 +268,7 @@ const initStudioContacts = () => {
       return;
     }
 
+    window.alert(result?.error || "Не удалось отправить заявку. Попробуйте еще раз.");
     if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
     if (submitButton instanceof HTMLInputElement) submitButton.value = previousLabel || "Отправить";
     if (submitButton) submitButton.disabled = false;
