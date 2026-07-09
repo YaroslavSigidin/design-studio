@@ -66,8 +66,9 @@ jobs:
           add_candidate(raw)
 
           trimmed = raw.strip().strip('"').strip("'")
+          compact = re.sub(r"\s+", "", trimmed)
           try:
-              decoded = base64.b64decode(trimmed, validate=True).decode("utf-8")
+              decoded = base64.b64decode(compact, validate=True).decode("utf-8")
           except Exception:
               decoded = None
           if decoded:
