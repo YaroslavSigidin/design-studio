@@ -5,6 +5,12 @@ const escapeHtml = value =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
+const truncateText = (value, maxLength = 190) => {
+  const normalized = String(value || "").replace(/\s+/g, " ").trim();
+  if (normalized.length <= maxLength) return normalized;
+  return `${normalized.slice(0, maxLength - 1).trim()}…`;
+};
+
 const loadJson = async url => {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${url} → ${res.status}`);
@@ -83,7 +89,7 @@ const renderChapters = chapters =>
         .join("")}</div>`
     : "";
 
-const renderGallery = images =>
+const renderGallery = (images, title) =>
   images.length
     ? `<section class="case-block case-block--gallery">
         <p class="case-eyebrow">Галерея</p>
@@ -92,32 +98,32 @@ const renderGallery = images =>
           .map(
             (src, index) => `
           <figure class="case-gallery-item">
-            <img src="${escapeHtml(src)}" alt="" loading="${index < 2 ? "eager" : "lazy"}" decoding="async" />
+            <img src="${escapeHtml(src)}" alt="${escapeHtml(`${title} — экран проекта ${index + 1}`)}" loading="${index < 2 ? "eager" : "lazy"}" decoding="async" />
           </figure>`
           )
           .join("")}</div>
       </section>`
     : "";
 
-const renderGalleryChunk = (images, startIndex = 0) =>
+const renderGalleryChunk = (images, title, startIndex = 0) =>
   images.length
     ? `<section class="case-block case-block--gallery case-block--inline-gallery">
         <div class="case-gallery">${images
           .map(
             (src, index) => `
           <figure class="case-gallery-item">
-            <img src="${escapeHtml(src)}" alt="" loading="${startIndex + index < 2 ? "eager" : "lazy"}" decoding="async" />
+            <img src="${escapeHtml(src)}" alt="${escapeHtml(`${title} — экран проекта ${startIndex + index + 1}`)}" loading="${startIndex + index < 2 ? "eager" : "lazy"}" decoding="async" />
           </figure>`
           )
           .join("")}</div>
       </section>`
     : "";
 
-const interleaveBlocksWithGallery = (blocks, images) => {
+const interleaveBlocksWithGallery = (blocks, images, title) => {
   const contentBlocks = blocks.filter(Boolean);
   const gallery = images.filter(Boolean);
 
-  if (!contentBlocks.length) return renderGallery(gallery);
+  if (!contentBlocks.length) return renderGallery(gallery, title);
   if (!gallery.length) return contentBlocks.join("");
 
   const slots = contentBlocks.length;
@@ -133,12 +139,12 @@ const interleaveBlocksWithGallery = (blocks, images) => {
     if (take <= 0) return;
 
     const chunk = gallery.slice(cursor, cursor + take);
-    html.push(renderGalleryChunk(chunk, cursor));
+    html.push(renderGalleryChunk(chunk, title, cursor));
     cursor += take;
   });
 
   if (cursor < gallery.length) {
-    html.push(renderGalleryChunk(gallery.slice(cursor), cursor));
+    html.push(renderGalleryChunk(gallery.slice(cursor), title, cursor));
   }
 
   return html.join("");
@@ -252,6 +258,7 @@ const renderCase = (project, projects, currentIndex, cfg) => {
   const heroImage = normalizeAssetUrl(project.image || gallery[0] || "", cfg);
   const title = study.title || project.title;
   const subtitle = study.subtitle || project.subtitle || project.description || "";
+  const seoDescription = truncateText(study.task || project.description || subtitle, 190);
   const slug = project.id || project.caseKey || "";
   const introBlock = study.task
     ? `<section class="case-block">
@@ -295,14 +302,15 @@ const renderCase = (project, projects, currentIndex, cfg) => {
 
   const bodyContent = interleaveBlocksWithGallery(
     [introBlock, solutionBlock, metricsBlock, processBlock],
-    gallery
+    gallery,
+    title
   );
 
-  document.title = `${title} — Согласовано`;
+  document.title = `${title} — кейс студии Согласовано`;
   window.__studioSeo?.applyCaseSeo({
     title,
-    description: subtitle,
-    image: heroImage,
+    description: seoDescription,
+    image: project.image || project.gallery?.[0] || "",
     slug,
     tags,
     category: getTagLabel(project.category)

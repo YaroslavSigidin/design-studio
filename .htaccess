@@ -1,4 +1,9 @@
+Options +FollowSymLinks
 RewriteEngine On
 RewriteBase /
+
+RewriteCond %{HTTP_HOST} ^www\.soglasovano\.online$ [NC]
+RewriteRule ^(.*)$ https://soglasovano.online/$1 [R=301,L]
+
 RewriteCond %{HTTP:X-HTTPS} !1
-RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+RewriteRule ^(.*)$ https://soglasovano.online/$1 [R=301,L]

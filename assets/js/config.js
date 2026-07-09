@@ -13,6 +13,13 @@ const joinPath = (base, suffix) => `${base.replace(/\/+$/, "")}/${suffix.replace
 const studioBasePath = detectStudioBasePath();
 
 window.STUDIO_CONFIG = {
+  siteUrl: "https://soglasovano.online",
+  siteName: "Согласовано",
+  locale: "ru_RU",
+  defaultTitle: "Согласовано — дизайн-студия полного цикла",
+  defaultDescription:
+    "UX/UI, сайты, брендинг и продуктовый дизайн для бизнеса. Проектируем понятные интерфейсы, сильные лендинги и дизайн-системы под запуск.",
+  shareImage: "/assets/images/og-cover.png",
   basePath: studioBasePath,
   assetBasePath: studioBasePath,
   manifest: joinPath(studioBasePath, "data/cases.manifest.json"),
@@ -20,6 +27,7 @@ window.STUDIO_CONFIG = {
   studioCases: `${studioBasePath}#cases`,
   casePageBase: joinPath(studioBasePath, "case.html"),
   contacts: {
+    organizationName: "Согласовано",
     name: "Ярослав Сигидин",
     telegramHandle: "sigidingo",
     telegramUrl: "https://t.me/sigidingo",
@@ -27,6 +35,20 @@ window.STUDIO_CONFIG = {
     phoneHref: "tel:+79619710515",
     email: "sigidingo@gmail.com",
     emailHref: "mailto:sigidingo@gmail.com"
+  },
+  socialProfiles: ["https://t.me/sigidingo"],
+  seo: {
+    serviceTypes: [
+      "UX/UI дизайн",
+      "Дизайн лендингов",
+      "Дизайн многостраничных сайтов",
+      "Продуктовый дизайн",
+      "Брендинг и айдентика",
+      "Дизайн-системы",
+      "Презентации для бизнеса"
+    ],
+    areaServed: ["RU", "CIS", "Worldwide"],
+    priceRange: "$$"
   },
   crm: {
     provider: "amocrm",

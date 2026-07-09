@@ -1,16 +1,25 @@
 {
-  "name": "Согласовано",
+  "name": "Согласовано — дизайн-студия полного цикла",
   "short_name": "Согласовано",
-  "start_url": "/design-studio/",
+  "description": "UX/UI, сайты, брендинг и продуктовый дизайн для бизнеса.",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "ru-RU",
   "display": "standalone",
   "background_color": "#dcefff",
   "theme_color": "#dcefff",
   "icons": [
     {
-      "src": "/design-studio/assets/images/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "src": "/assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

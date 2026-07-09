@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Host: soglasovano.online
 Sitemap: https://soglasovano.online/sitemap.xml
