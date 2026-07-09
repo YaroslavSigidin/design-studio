@@ -1,0 +1,16 @@
+{
+  "name": "Согласовано",
+  "short_name": "Согласовано",
+  "start_url": "/design-studio/",
+  "display": "standalone",
+  "background_color": "#dcefff",
+  "theme_color": "#dcefff",
+  "icons": [
+    {
+      "src": "/design-studio/assets/images/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
