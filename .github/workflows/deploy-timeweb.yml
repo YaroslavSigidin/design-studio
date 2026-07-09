@@ -66,12 +66,25 @@ jobs:
           add_candidate(raw)
 
           trimmed = raw.strip().strip('"').strip("'")
+          base64_candidates = []
+
           compact = re.sub(r"\s+", "", trimmed)
-          try:
-              decoded = base64.b64decode(compact, validate=True).decode("utf-8")
-          except Exception:
-              decoded = None
-          if decoded:
+          if compact:
+              base64_candidates.append(compact)
+
+          base64_lines = []
+          for line in trimmed.splitlines():
+              line = line.strip()
+              if re.fullmatch(r"[A-Za-z0-9+/=]+", line) and len(line) >= 16:
+                  base64_lines.append(line)
+          if base64_lines:
+              base64_candidates.append("".join(base64_lines))
+
+          for base64_candidate in base64_candidates:
+              try:
+                  decoded = base64.b64decode(base64_candidate, validate=True).decode("utf-8")
+              except Exception:
+                  continue
               add_candidate(decoded)
 
           for candidate in candidates:
