@@ -231,18 +231,17 @@ const initBriefModal = () => {
       comment: form.querySelector('textarea[name="comment"]')?.value.trim() || ""
     });
 
-    if (!result?.ok) {
-      window.alert(result?.error || "Не удалось отправить заявку. Попробуйте еще раз.");
-      return;
-    }
-
     form.hidden = true;
     success.hidden = false;
-    success.querySelector("h3").textContent = result.mode === "fallback" ? "Чат открыт" : "Заявка отправлена";
-    success.querySelector("p").textContent =
-      result.mode === "fallback"
-        ? "Текст заявки скопирован, сейчас откроется Telegram с готовым сообщением."
-        : "Заявка уже отправлена в рабочий Telegram-чат. Мы увидим ее и свяжемся с вами.";
+    if (result?.ok && result.mode === "crm") {
+      success.querySelector("h3").textContent = "Заявка отправлена";
+      success.querySelector("p").textContent =
+        "Заявка уже в amoCRM. Можно закрыть окно, мы свяжемся с вами дальше по процессу.";
+    } else {
+      success.querySelector("h3").textContent = "Открываем чат";
+      success.querySelector("p").textContent =
+        "Текст заявки скопирован, сейчас откроется Telegram с готовым сообщением.";
+    }
 
     window.setTimeout(() => {
       close();
@@ -253,7 +252,7 @@ const initBriefModal = () => {
       updateRanges();
       form.hidden = false;
       success.hidden = true;
-    }, result?.mode === "fallback" ? 1400 : 1600);
+    }, result?.mode === "crm" ? 1600 : 1400);
   });
 
   budgetRange?.addEventListener("input", updateRanges);

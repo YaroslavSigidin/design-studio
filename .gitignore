@@ -3,4 +3,3 @@ Thumbs.db
 .env
 *.local
 amocrm-proxy/.env
-telegram-lead.config.php
