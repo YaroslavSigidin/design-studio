@@ -1,7 +1,6 @@
 const initFloatingHeader = () => {
   const header = document.querySelector("[data-floating-header]");
   const toggleButton = document.querySelector("[data-header-toggle]");
-  const heroPage = document.querySelector(".hero-page");
   if (!header || !toggleButton) return;
 
   const closeMenu = () => {
@@ -41,17 +40,6 @@ const initFloatingHeader = () => {
   window.addEventListener("resize", () => {
     if (window.innerWidth > 1100) closeMenu();
   });
-
-  if (heroPage) {
-    const syncFloatingChips = () => {
-      const heroBottom = heroPage.getBoundingClientRect().bottom;
-      document.body.classList.toggle("has-scrolled-past-hero", heroBottom <= 0);
-    };
-
-    syncFloatingChips();
-    window.addEventListener("scroll", syncFloatingChips, { passive: true });
-    window.addEventListener("resize", syncFloatingChips);
-  }
 };
 
 if (document.readyState === "loading") {

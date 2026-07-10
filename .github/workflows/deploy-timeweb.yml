@@ -1,0 +1,122 @@
+name: Deploy Timeweb
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare SSH key
+        shell: bash
+        env:
+          TIMEWEB_SSH_KEY: ${{ secrets.TIMEWEB_SSH_KEY }}
+        run: |
+          if [ -z "${TIMEWEB_SSH_KEY}" ]; then
+            echo "::error::TIMEWEB_SSH_KEY secret is empty."
+            exit 1
+          fi
+
+          mkdir -p ~/.ssh
+          python3 <<'PY'
+          import base64
+          import os
+          import pathlib
+          import re
+          import subprocess
+          import sys
+
+          raw = os.environ["TIMEWEB_SSH_KEY"]
+          key_path = pathlib.Path.home() / ".ssh" / "timeweb_deploy"
+
+          def normalize(value: str) -> str:
+              value = value.strip()
+              if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
+                  value = value[1:-1].strip()
+              value = value.replace("\r", "")
+              if "\\n" in value:
+                  value = value.replace("\\n", "\n")
+              match = re.search(
+                  r"-----BEGIN OPENSSH PRIVATE KEY-----.*?-----END OPENSSH PRIVATE KEY-----",
+                  value,
+                  re.S,
+              )
+              if match:
+                  value = match.group(0)
+              if not value.endswith("\n"):
+                  value += "\n"
+              return value
+
+          candidates = []
+          seen = set()
+
+          def add_candidate(value: str) -> None:
+              normalized = normalize(value)
+              if normalized not in seen:
+                  seen.add(normalized)
+                  candidates.append(normalized)
+
+          add_candidate(raw)
+
+          trimmed = raw.strip().strip('"').strip("'")
+          base64_candidates = []
+
+          compact = re.sub(r"\s+", "", trimmed)
+          if compact:
+              base64_candidates.append(compact)
+
+          base64_lines = []
+          for line in trimmed.splitlines():
+              line = line.strip()
+              if re.fullmatch(r"[A-Za-z0-9+/=]+", line) and len(line) >= 16:
+                  base64_lines.append(line)
+          if base64_lines:
+              base64_candidates.append("".join(base64_lines))
+
+          for base64_candidate in base64_candidates:
+              try:
+                  decoded = base64.b64decode(base64_candidate, validate=True).decode("utf-8")
+              except Exception:
+                  continue
+              add_candidate(decoded)
+
+          for candidate in candidates:
+              key_path.write_text(candidate)
+              key_path.chmod(0o600)
+              result = subprocess.run(
+                  ["ssh-keygen", "-y", "-f", str(key_path)],
+                  stdout=subprocess.DEVNULL,
+                  stderr=subprocess.DEVNULL,
+              )
+              if result.returncode == 0:
+                  sys.exit(0)
+
+          print("::error::TIMEWEB_SSH_KEY is invalid. Paste the full private key from Timeweb, including BEGIN and END lines.")
+          sys.exit(1)
+          PY
+
+      - name: Add Timeweb host
+        shell: bash
+        run: |
+          ssh-keyscan -H 92.53.96.132 >> ~/.ssh/known_hosts
+
+      - name: Deploy to Timeweb
+        shell: bash
+        run: |
+          if ! ssh -i ~/.ssh/timeweb_deploy -o BatchMode=yes ca568679@92.53.96.132 '
+            cd /home/c/ca568679/public_html &&
+            git fetch --all --prune &&
+            git reset --hard origin/main &&
+            git clean -fd &&
+            git rev-parse --short HEAD
+          '; then
+            echo "::error::SSH connection to Timeweb failed. Recreate TIMEWEB_SSH_KEY from the private key printed by cat ~/.ssh/github_actions_deploy on Timeweb and paste it into GitHub Secrets as a multi-line value."
+            exit 1
+          fi

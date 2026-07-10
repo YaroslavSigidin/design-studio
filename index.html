@@ -1,46 +1,21 @@
 <!DOCTYPE html>
-<html lang="ru" data-seo-page="home">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-    <meta name="theme-color" content="#dcefff" />
-    <meta name="author" content="Ярослав Сигидин" />
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta name="format-detection" content="telephone=no" />
+    <meta name="robots" content="noindex,nofollow" />
     <title>Согласовано — дизайн-студия полного цикла</title>
     <meta
       name="description"
-      content="UX/UI, сайты, брендинг и продуктовый дизайн для бизнеса. Согласовано проектирует понятные интерфейсы, сильные лендинги и дизайн-системы под запуск."
+      content="Согласовано — дизайн-студия полного цикла. UX/UI, сайты, брендинг и продуктовый дизайн под задачи вашего бизнеса."
     />
-    <link rel="canonical" href="https://soglasovano.online/" />
-    <link rel="alternate" hreflang="ru-RU" href="https://soglasovano.online/" />
-    <link rel="alternate" hreflang="x-default" href="https://soglasovano.online/" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Согласовано — дизайн-студия полного цикла" />
-    <meta property="og:description" content="UX/UI, сайты, брендинг и продуктовый дизайн для бизнеса. От структуры и смыслов до handoff в разработку." />
-    <meta property="og:url" content="https://soglasovano.online/" />
-    <meta property="og:site_name" content="Согласовано" />
-    <meta property="og:locale" content="ru_RU" />
-    <meta property="og:image" content="https://soglasovano.online/assets/images/og-cover.png" />
-    <meta property="og:image:alt" content="Согласовано — дизайн-студия полного цикла" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Согласовано — дизайн-студия полного цикла" />
-    <meta name="twitter:description" content="Сайты, интерфейсы и брендинг под реальные бизнес-задачи." />
-    <meta name="twitter:image" content="https://soglasovano.online/assets/images/og-cover.png" />
-    <meta name="twitter:image:alt" content="Согласовано — дизайн-студия полного цикла" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg" />
-    <link rel="apple-touch-icon" href="./assets/images/apple-touch-icon.png" />
-    <link rel="manifest" href="./site.webmanifest" />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260703-ux-overhaul" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260604-brief-dropdown-tune" />
   </head>
   <body>
     <div class="hero-page">
@@ -95,6 +70,17 @@
           </div>
         </header>
 
+        <aside class="promo-strip" aria-label="Промо-акция" data-promo-strip>
+          <div class="promo-strip__timer">
+            <p class="promo-strip__label">До конца акции:</p>
+            <p class="promo-strip__value" data-promo-timer>20ч:10м:46с</p>
+          </div>
+          <div class="promo-strip__offer">Скидка 10%<br />на лендинг</div>
+          <button class="promo-strip__close" type="button" aria-label="Закрыть предложение" data-promo-close>
+            <span aria-hidden="true">×</span>
+          </button>
+        </aside>
+
         <main class="hero-main">
           <div class="hero-content">
             <div class="hero-header">
@@ -108,65 +94,30 @@
                   </svg>
                   Реально быстро
                 </span>
-                <span class="hero-badge-light">Без визуального шума и хаоса в handoff</span>
+                <span class="hero-badge-light">Реально качественно</span>
               </div>
 
-              <p class="hero-kicker">UX/UI · WEB · BRANDING · PRODUCT DESIGN</p>
-              <h1 class="hero-title" data-reveal-heading>Делаем дизайн, который упрощает выбор, ускоряет запуск и не ломается в разработке</h1>
+              <h1 class="hero-title" data-reveal-heading>Дизайн-студия полного цикла</h1>
 
               <p class="hero-subtitle">
-                Проектируем сайты, продукты и брендинг для команд, которым нужен не просто красивый макет, а понятная структура, сильный первый экран и внятный результат для бизнеса.
+                От исследования и концепции до интерфейсов, сайтов и передачи в разработку
               </p>
-
-              <div class="hero-proof-grid" aria-label="Ключевые преимущества студии">
-                <article class="hero-proof-card">
-                  <strong>От брифа до handoff</strong>
-                  <span>Берем на себя структуру, смыслы, визуал и передачу в разработку.</span>
-                </article>
-                <article class="hero-proof-card">
-                  <strong>Фокус на конверсии</strong>
-                  <span>Сильные CTA, понятная подача ценности и интерфейсы без лишнего трения.</span>
-                </article>
-                <article class="hero-proof-card">
-                  <strong>B2B и сложные сценарии</strong>
-                  <span>Кабинеты, платформы, сервисы, презентации и продуктовые flow.</span>
-                </article>
-              </div>
-
-              <div class="hero-stats" aria-label="Показатели студии">
-                <div class="hero-stat">
-                  <strong>30+</strong>
-                  <span>кейсов в студийной базе</span>
-                </div>
-                <div class="hero-stat">
-                  <strong>3 этапа</strong>
-                  <span>исследование, дизайн, запуск</span>
-                </div>
-                <div class="hero-stat">
-                  <strong>1 команда</strong>
-                  <span>без потери контекста между задачами</span>
-                </div>
-              </div>
             </div>
 
             <div class="hero-search-wrap">
               <div class="hero-search">
-                <div class="hero-search-intro">
-                  <p class="hero-search-title">Коротко опишите задачу</p>
-                  <p class="hero-search-copy">Например: нужен лендинг для запуска сервиса, редизайн B2B-кабинета или бренд для нового продукта.</p>
-                </div>
                 <div class="hero-search-input-wrap">
                   <textarea
                     class="hero-search-editor"
                     data-hero-search-editor
-                    aria-label="Опишите проект"
-                    data-placeholder="Нужен лендинг для SaaS-продукта с упором на демо-заявки"
-                    placeholder="Нужен лендинг для SaaS-продукта с упором на демо-заявки"
+                    aria-label="Мне нужен(а)...."
+                    data-placeholder="Мне нужен(а)...."
+                    placeholder="Мне нужен(а)...."
                     rows="2"
                     maxlength="3000"
                   ></textarea>
                   <button type="button" class="hero-search-submit" aria-label="Отправить бриф" data-hero-submit>
-                    <span>Обсудить задачу</span>
+                    <span>Отправить</span>
                   </button>
                 </div>
 
@@ -227,59 +178,6 @@
       </div>
     </div>
 
-    <section class="section studio-about" id="about-studio">
-      <div class="container studio-about__grid">
-        <div class="studio-about__copy">
-          <p class="section-subtitle">О студии</p>
-          <h2 class="section-title" data-reveal-heading>Не продаем «просто дизайн». Собираем рабочую систему под запуск.</h2>
-          <p>
-            Согласовано помогает собрать проект от первого смысла до финальной передачи в разработку:
-            прорабатываем структуру, сценарии, визуальный язык и логику экранов так, чтобы сайт или продукт
-            было проще запускать, защищать внутри команды и масштабировать дальше.
-          </p>
-          <p>
-            Подходим одинаково внимательно и к лендингам, и к сложным кабинетам: важны ясность,
-            управляемость и ощущение, что бизнес наконец говорит с пользователем понятным языком.
-          </p>
-        </div>
-        <div class="studio-about__aside">
-          <div class="studio-highlight">
-            <span class="studio-highlight__label">Подходит, если вам нужно</span>
-            <ul class="studio-highlight__list">
-              <li>пересобрать первый экран и повысить конверсию</li>
-              <li>упростить сложный продуктовый сценарий</li>
-              <li>собрать единый визуальный язык для сайта и продукта</li>
-              <li>сдать дизайн разработке без бесконечных уточнений</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section studio-process" id="process">
-      <div class="container">
-        <p class="section-subtitle">Процесс</p>
-        <h2 class="section-title" data-reveal-heading>Как строим работу по проекту</h2>
-        <div class="studio-process__grid">
-          <article class="studio-process__card">
-            <span class="studio-process__step">01</span>
-            <h3>Разбираем задачу</h3>
-            <p>Фиксируем цель, ограничения, сценарии, контент и критерии успеха до первого экрана.</p>
-          </article>
-          <article class="studio-process__card">
-            <span class="studio-process__step">02</span>
-            <h3>Собираем каркас</h3>
-            <p>Делаем структуру, логику блоков, навигацию, CTA и ключевые пользовательские пути.</p>
-          </article>
-          <article class="studio-process__card">
-            <span class="studio-process__step">03</span>
-            <h3>Доводим до запуска</h3>
-            <p>Упаковываем визуал, готовим адаптив, состояния, комментарии и handoff для разработки.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <section class="section studio-cases" id="cases">
       <div class="container">
         <p class="section-subtitle">Портфолио</p>
@@ -316,7 +214,7 @@
         <div class="studio-services-grid" id="studioServicesGrid"></div>
         <div class="studio-services-more" id="studioServicesMore" hidden>
           <button class="studio-services-more__button" id="studioServicesMoreButton" type="button">
-            <span>Все услуги</span>
+            <span>Показать все услуги</span>
             <span class="list-more-button__icon" aria-hidden="true">
               <svg viewBox="0 0 20 20" fill="none">
                 <path d="M5 7.5 10 12.5l5-5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
@@ -330,41 +228,12 @@
     <section class="section studio-discuss" id="discuss-project">
       <div class="studio-discuss__inner">
         <h2 data-reveal-heading>Обсудить проект</h2>
-        <p class="studio-discuss__copy">
-          Напишите задачу в свободной форме. Если проект еще сырой, этого достаточно:
-          поможем структурировать объем, этапы и формат запуска.
-        </p>
         <form class="studio-discuss__form">
           <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
           <input type="tel" name="phone" placeholder="Телефон" autocomplete="tel" inputmode="tel" />
           <input type="text" name="contact" placeholder="Telegram / email" autocomplete="email" required />
           <button type="submit">Отправить</button>
         </form>
-      </div>
-    </section>
-
-    <section class="section studio-faq" id="faq">
-      <div class="container">
-        <p class="section-subtitle">FAQ</p>
-        <h2 class="section-title" data-reveal-heading>Частые вопросы перед стартом</h2>
-        <div class="studio-faq__list">
-          <details class="studio-faq__item">
-            <summary>С чего начинается работа?</summary>
-            <p>С короткого брифа и созвона: уточняем задачу, объем, сроки, ограничения и желаемый результат.</p>
-          </details>
-          <details class="studio-faq__item">
-            <summary>Можно прийти без четкого ТЗ?</summary>
-            <p>Да. Если у вас есть только идея, продукт или набор материалов, поможем собрать рамку проекта и приоритеты.</p>
-          </details>
-          <details class="studio-faq__item">
-            <summary>Передаете ли материалы разработчикам?</summary>
-            <p>Да. Подготавливаем адаптив, состояния, комментарии и логику экранов так, чтобы handoff был предсказуемым.</p>
-          </details>
-          <details class="studio-faq__item">
-            <summary>Берете только сайты?</summary>
-            <p>Нет. Работаем с сайтами, кабинетами, B2B-сервисами, брендингом, презентациями и дизайн-системами.</p>
-          </details>
-        </div>
       </div>
     </section>
 
@@ -393,9 +262,9 @@
 
             <div class="studio-footer__column">
               <h3>Студия</h3>
-              <a href="#process">Процесс работы</a>
-              <a href="#about-studio">О студии</a>
-              <a href="#faq">FAQ</a>
+              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Процесс работы</a>
+              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">О студии</a>
+              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">FAQ</a>
               <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Партнерство</a>
             </div>
 
@@ -413,8 +282,8 @@
       <div class="studio-footer__bottom">
         <div class="studio-footer__bottom-left">
           <span>© 2026 Согласовано. Все права защищены.</span>
-          <a href="./privacy.html">Политика конфиденциальности</a>
-          <a href="./terms.html">Условия использования</a>
+          <a data-contact-link="email" href="mailto:sigidingo@gmail.com">Политика конфиденциальности</a>
+          <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Условия использования</a>
         </div>
         <div class="studio-footer__social">
           <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="nofollow noopener" aria-label="Telegram">TG</a>
@@ -422,6 +291,29 @@
         </div>
       </div>
     </footer>
+
+    <div class="top-contact-cluster">
+      <a
+        class="top-phone-chip"
+        data-contact-link="phone"
+        href="tel:+79619710515"
+        aria-label="Скопировать номер Ярослава"
+        data-contact-phone
+        data-copy-phone-chip
+      >+7 961 971 05 15</a>
+      <div class="top-mini-contacts" aria-label="Контакты">
+        <a class="top-mini-contact-btn top-mini-contact-btn--vk" data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer" aria-label="VK">
+          <span class="top-mini-contact-btn__icon" aria-hidden="true">
+            <img src="./assets/icons/custom/vk-logo-white.svg" alt="" />
+          </span>
+        </a>
+        <a class="top-mini-contact-btn top-mini-contact-btn--max" data-contact-link="phone" href="tel:+79619710515" aria-label="MAX">
+          <span class="top-mini-contact-btn__icon" aria-hidden="true">
+            <img src="./assets/icons/custom/max-logo-white.svg" alt="" />
+          </span>
+        </a>
+      </div>
+    </div>
 
     <div class="brief-modal" id="briefModal" aria-hidden="true">
       <div class="brief-modal__overlay" data-close-brief-modal></div>
@@ -560,12 +452,12 @@
       </button>
     </aside>
 
-    <script src="./assets/js/config.js?v=20260703-ux-overhaul" defer></script>
-    <script src="./assets/js/seo.js?v=20260703-ux-overhaul" defer></script>
+    <script src="./assets/js/config.js?v=20260604-amocrm" defer></script>
     <script src="./assets/js/contact.js?v=20260604-amocrm" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
+    <script src="./assets/js/promo-strip.js?v=20260531-mobile-header-promo" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
-    <script src="./assets/js/header.js?v=20260709-floating-chips-on-scroll" defer></script>
+    <script src="./assets/js/header.js?v=20260530-floating-header" defer></script>
     <script src="./assets/js/hero-pong.js?v=20260530-hero-pong-lite" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
     <script src="./assets/js/hero.js?v=20260605-rings-only" defer></script>

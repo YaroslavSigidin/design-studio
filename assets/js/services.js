@@ -75,7 +75,7 @@ const SERVICES = [
 ];
 
 window.SERVICES = SERVICES;
-const SERVICES_VISIBLE_LIMIT = 3;
+const SERVICES_VISIBLE_LIMIT = 9;
 
 const formatRub = value => new Intl.NumberFormat("ru-RU").format(value);
 
@@ -134,6 +134,10 @@ const serviceCardTemplate = service => {
     : "";
   return `
     <article class="${cardClassName}">
+      <div class="studio-service-meta">
+        <span class="studio-service-badge">${escapeHtml(service.badge)}</span>
+        <span class="studio-service-reviews">Заказали: ${escapeHtml(service.reviews)} раз</span>
+      </div>
       <h3 class="studio-service-title">${escapeHtml(service.title)}</h3>
       <div class="studio-service-prices">
         <p class="studio-service-price">${escapeHtml(priceValue)}</p>
