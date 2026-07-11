@@ -886,6 +886,16 @@ body::after {
   text-wrap: balance;
 }
 
+.hero-title--wordmark {
+  width: min(100%, 860px);
+}
+
+.hero-title--wordmark img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .hero-subtitle {
   margin: 0;
   width: min(680px, 100%);
