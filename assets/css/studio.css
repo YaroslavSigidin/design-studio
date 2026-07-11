@@ -267,20 +267,24 @@ body::after {
 .hero-logo {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
   padding: 8px 10px;
   border-radius: 10px;
-  font-family: "Schibsted Grotesk", sans-serif;
-  font-weight: 600;
-  font-size: 20px;
-  letter-spacing: -0.8px;
   text-decoration: none;
   color: #000;
 }
 
-.hero-logo svg {
-  width: 18px;
-  height: 18px;
+.brand-wordmark {
+  display: block;
+  height: 28px;
+  width: auto;
+}
+
+.brand-wordmark--footer {
+  height: clamp(36px, 4vw, 44px);
+}
+
+.hero-logo .brand-wordmark {
+  height: 28px;
 }
 
 .hero-logo:hover {
@@ -2882,8 +2886,11 @@ body::after {
   }
 
   .hero-logo {
-    font-size: 18px;
-    letter-spacing: -0.6px;
+    padding: 8px 10px;
+  }
+
+  .hero-logo .brand-wordmark {
+    height: 24px;
   }
 
   .hero-menu {
@@ -3187,7 +3194,10 @@ body::after {
   .hero-logo {
     min-height: 44px;
     padding: 10px 12px;
-    font-size: 17px;
+  }
+
+  .hero-logo .brand-wordmark {
+    height: 22px;
   }
 
   .hero-nav-actions .hero-btn--dark {
@@ -3487,12 +3497,12 @@ body::after {
 }
 
 .studio-footer__logo {
-  font-family: "Fustat", sans-serif;
-  font-size: clamp(32px, 4vw, 40px);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: #0a0a0a;
+  display: inline-flex;
   text-decoration: none;
+}
+
+.studio-footer__logo .brand-wordmark {
+  height: clamp(36px, 4vw, 44px);
 }
 
 .studio-footer__brand p {

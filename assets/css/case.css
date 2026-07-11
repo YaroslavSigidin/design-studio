@@ -528,12 +528,12 @@
 }
 
 .case-page-footer__brand a {
-  font-family: "Schibsted Grotesk", sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: #111;
+  display: inline-flex;
   text-decoration: none;
+}
+
+.case-page-footer__brand .brand-wordmark {
+  height: 36px;
 }
 
 .case-page-footer__brand p {

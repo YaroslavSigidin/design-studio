@@ -204,6 +204,17 @@ const renderRelatedCases = (projects, currentProject, cfg) => {
   `;
 };
 
+const BRAND_WORDMARK = `
+  <img
+    class="brand-wordmark brand-wordmark--footer"
+    src="./assets/images/brand/soglasovano-wordmark.svg"
+    alt="Согласовано"
+    width="993"
+    height="242"
+    decoding="async"
+  />
+`;
+
 const renderBottomLeadForm = () => `
   <section class="case-lead-form">
     <div class="case-lead-form__inner">
@@ -222,7 +233,7 @@ const renderCaseFooter = () => `
   <footer class="case-page-footer">
     <div class="case-page-footer__inner">
       <div class="case-page-footer__brand">
-        <a href="./">Согласовано</a>
+        <a href="./" aria-label="Согласовано">${BRAND_WORDMARK}</a>
         <p>Дизайн-студия полного цикла: интерфейсы, сайты, брендинг и сопровождение запуска.</p>
         <div class="case-page-footer__contacts">
           <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram</a>
