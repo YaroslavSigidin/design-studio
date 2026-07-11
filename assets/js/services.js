@@ -134,10 +134,6 @@ const serviceCardTemplate = service => {
     : "";
   return `
     <article class="${cardClassName}">
-      <div class="studio-service-meta">
-        <span class="studio-service-badge">${escapeHtml(service.badge)}</span>
-        <span class="studio-service-reviews">Заказали: ${escapeHtml(service.reviews)} раз</span>
-      </div>
       <h3 class="studio-service-title">${escapeHtml(service.title)}</h3>
       <div class="studio-service-prices">
         <p class="studio-service-price">${escapeHtml(priceValue)}</p>
