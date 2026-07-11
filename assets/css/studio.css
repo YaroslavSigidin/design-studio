@@ -924,9 +924,9 @@ body::after {
 .hero-search {
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 14px;
   width: 100%;
-  min-height: 202px;
+  min-height: 0;
   padding: 14px;
   border-radius: 20px;
   border: 1px solid rgba(32, 56, 86, 0.12);
@@ -964,18 +964,61 @@ body::after {
 
 .hero-search-input-wrap {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 12px;
   min-height: 86px;
-  padding: 10px 10px 10px 16px;
+  padding: 12px 12px 12px 16px;
   border-radius: 14px;
   background: #fff;
-  border: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(17, 42, 72, 0.08);
+  border: 1px solid rgba(32, 56, 86, 0.08);
+  box-shadow: none;
 }
 
 .hero-search-input-wrap:focus-within {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(17, 42, 72, 0.08);
+  border-color: rgba(32, 56, 86, 0.16);
+}
+
+.hero-search-field {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.hero-search-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.hero-suggestion {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: rgba(43, 61, 87, 0.52);
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.16s ease;
+}
+
+.hero-suggestion:hover {
+  color: #111;
+}
+
+.hero-suggestion:focus-visible {
+  outline: 2px solid rgba(17, 42, 72, 0.18);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .hero-search-editor {
@@ -1084,61 +1127,29 @@ body::after {
 }
 
 .hero-search-bottom {
-  align-items: center;
-  gap: 10px;
+  display: none;
 }
 
 .hero-search-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  flex: 1 1 auto;
+  display: none;
 }
 
 .hero-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  padding: 0 11px;
-  border: none;
-  border-radius: 10px;
-  border: 1px solid rgba(28, 52, 81, 0.12);
-  background: #ffffff;
-  color: #2f415b;
-  font-family: "Schibsted Grotesk", sans-serif;
-  font-weight: 500;
-  font-size: 13px;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.hero-chip:hover {
-  background: #f8fbff;
-  color: #000000;
-}
-
-.hero-chip.is-active {
-  background: #000000;
-  color: #ffffff;
-  border-color: #000;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.26);
+  display: none;
 }
 
 .hero-search-sliders {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .hero-range-control {
   min-width: 0;
-  padding: 10px 12px 12px;
-  border-radius: 12px;
+  padding: 0 2px;
+  border-radius: 0;
   border: none;
-  background: rgba(255, 255, 255, 0.88);
+  background: transparent;
 }
 
 .hero-range-head {
@@ -1146,80 +1157,88 @@ body::after {
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .hero-range-head span {
-  font-family: "Schibsted Grotesk", sans-serif;
-  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
   font-size: 12px;
   line-height: 1;
-  color: #2f415b;
+  letter-spacing: 0.01em;
+  color: rgba(43, 61, 87, 0.72);
 }
 
 .hero-range-head strong {
   font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   line-height: 1;
+  letter-spacing: -0.02em;
   color: #111;
 }
 
 .hero-range-control input[type="range"] {
   --range-progress: 0%;
-  height: 11px;
+  height: 20px;
   width: 100%;
   margin: 0;
   border-radius: 999px;
   appearance: none;
   -webkit-appearance: none;
-  background: linear-gradient(
-    to right,
-    #0f1113 0,
-    #0f1113 var(--range-progress),
-    #dee2e6 var(--range-progress),
-    #dee2e6 100%
-  );
+  background: transparent;
+  cursor: pointer;
 }
 
 .hero-range-control input[type="range"]::-webkit-slider-runnable-track {
-  height: 11px;
+  height: 3px;
   border-radius: 999px;
-  background: transparent;
+  background: linear-gradient(
+    to right,
+    #111 0,
+    #111 var(--range-progress),
+    rgba(17, 17, 17, 0.12) var(--range-progress),
+    rgba(17, 17, 17, 0.12) 100%
+  );
 }
 
 .hero-range-control input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 22px;
-  height: 22px;
-  margin-top: -6px;
+  width: 14px;
+  height: 14px;
+  margin-top: -5.5px;
   border-radius: 50%;
-  border: 2px solid #ffffff;
-  background: #f7f7f7;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+  border: 0;
+  background: #111;
+  box-shadow: none;
   cursor: pointer;
+  transition: transform 0.16s ease;
+}
+
+.hero-range-control input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.08);
 }
 
 .hero-range-control input[type="range"]::-moz-range-track {
-  height: 11px;
+  height: 3px;
   border-radius: 999px;
-  background: #dee2e6;
+  background: rgba(17, 17, 17, 0.12);
 }
 
 .hero-range-control input[type="range"]::-moz-range-progress {
-  height: 11px;
+  height: 3px;
   border-radius: 999px;
-  background: #0f1113;
+  background: #111;
 }
 
 .hero-range-control input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  border: 2px solid #ffffff;
-  background: #f7f7f7;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+  border: 0;
+  background: #111;
+  box-shadow: none;
   cursor: pointer;
 }
 
@@ -3237,29 +3256,27 @@ body::after {
     gap: 12px;
   }
 
+  .hero-search-field {
+    gap: 10px;
+  }
+
   .hero-search-editor {
-    min-height: 84px;
+    min-height: 72px;
     font-size: 16px;
+  }
+
+  .hero-search-suggestions {
+    gap: 4px 10px;
+  }
+
+  .hero-suggestion {
+    font-size: 12px;
   }
 
   .hero-search-submit {
     width: 100%;
     min-width: 0;
     min-height: 52px;
-  }
-
-  .hero-chip {
-    min-height: 40px;
-    font-size: 12px;
-    flex: 0 0 auto;
-  }
-
-  .hero-search-actions {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 2px;
-    margin: 0 -2px;
-    scroll-snap-type: x proximity;
   }
 
   .studio-cases .tabs {
@@ -3280,7 +3297,7 @@ body::after {
   }
 
   .hero-range-head strong {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .hero-char-count {

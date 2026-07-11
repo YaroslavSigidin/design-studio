@@ -77,7 +77,6 @@ const initHeroSearch = () => {
 
   const resetHeroForm = () => {
     editor.value = "";
-    serviceTabs.forEach((tab, index) => tab.classList.toggle("is-active", index === 0));
     if (budgetRange) budgetRange.value = "150";
     if (deadlineRange) deadlineRange.value = "30";
     update();
@@ -183,8 +182,6 @@ const initHeroSearch = () => {
   deadlineRange?.addEventListener("input", update);
   serviceTabs.forEach(tab => {
     tab.addEventListener("click", () => {
-      serviceTabs.forEach(item => item.classList.remove("is-active"));
-      tab.classList.add("is-active");
       insertSuggestion(tab);
       update();
     });

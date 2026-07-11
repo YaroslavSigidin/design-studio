@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260711-brand-wordmark" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260711-hero-brief-ui" />
   </head>
   <body>
     <div class="hero-page">
@@ -116,54 +116,27 @@
             <div class="hero-search-wrap">
               <div class="hero-search">
                 <div class="hero-search-input-wrap">
-                  <textarea
-                    class="hero-search-editor"
-                    data-hero-search-editor
-                    aria-label="Мне нужен(а)...."
-                    data-placeholder="Мне нужен(а)...."
-                    placeholder="Мне нужен(а)...."
-                    rows="2"
-                    maxlength="3000"
-                  ></textarea>
+                  <div class="hero-search-field">
+                    <textarea
+                      class="hero-search-editor"
+                      data-hero-search-editor
+                      aria-label="Мне нужен(а)...."
+                      data-placeholder="Мне нужен(а)...."
+                      placeholder="Мне нужен(а)...."
+                      rows="2"
+                      maxlength="3000"
+                    ></textarea>
+                    <div class="hero-search-suggestions" aria-label="Быстрые подсказки">
+                      <button type="button" class="hero-suggestion" data-brief-chip>Презентация</button>
+                      <button type="button" class="hero-suggestion" data-brief-chip>Лендинг</button>
+                      <button type="button" class="hero-suggestion" data-brief-chip>UX/UI продукта</button>
+                    </div>
+                  </div>
                   <button type="button" class="hero-search-submit" aria-label="Отправить бриф" data-hero-submit>
                     <span>Отправить</span>
                   </button>
                 </div>
 
-                <div class="hero-search-bottom">
-                  <div class="hero-search-actions">
-                    <button type="button" class="hero-chip is-active" data-brief-chip>
-                      Презентация
-                    </button>
-                    <button type="button" class="hero-chip" data-brief-chip>
-                      Многостраничный сайт
-                    </button>
-                    <button type="button" class="hero-chip" data-brief-chip>
-                      Лендинг
-                    </button>
-                    <button type="button" class="hero-chip" data-brief-chip>
-                      UX/UI продукта
-                    </button>
-                    <button type="button" class="hero-chip" data-brief-chip>
-                      Брендинг
-                    </button>
-                    <button type="button" class="hero-chip" data-brief-chip>
-                      Логотипы
-                    </button>
-                    <button type="button" class="hero-chip" data-brief-chip>
-                      Айдентика
-                    </button>
-                    <button type="button" class="hero-chip" data-brief-chip>
-                      Дизайн-система
-                    </button>
-                    <button type="button" class="hero-chip" data-brief-chip>
-                      Редизайн сайта
-                    </button>
-                    <button type="button" class="hero-chip" data-brief-chip>
-                      Баннеры и креативы
-                    </button>
-                  </div>
-                </div>
                 <div class="hero-search-sliders">
                   <label class="hero-range-control">
                     <div class="hero-range-head">
@@ -478,7 +451,7 @@
     <script src="./assets/js/header.js?v=20260530-floating-header" defer></script>
     <script src="./assets/js/hero-pong.js?v=20260530-hero-pong-lite" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
-    <script src="./assets/js/hero.js?v=20260605-rings-only" defer></script>
+    <script src="./assets/js/hero.js?v=20260711-hero-brief-ui" defer></script>
     <script src="./assets/js/services.js?v=20260604-services-limit-fix" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260604-amocrm" defer></script>
     <script src="./assets/js/cases.js?v=20260531-more-buttons-desktop" defer></script>
