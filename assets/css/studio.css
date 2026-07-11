@@ -2672,7 +2672,7 @@ body::after {
   left: 0;
   right: 0;
   z-index: 8;
-  display: grid;
+  display: none;
   gap: 8px;
   padding: 10px;
   max-height: 320px;
@@ -2683,6 +2683,10 @@ body::after {
   box-shadow:
     0 28px 56px rgba(12, 18, 28, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+.brief-service-select.is-open .brief-service-select__menu {
+  display: grid;
 }
 
 .brief-service-select__option {

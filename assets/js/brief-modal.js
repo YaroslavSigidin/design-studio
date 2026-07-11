@@ -54,6 +54,7 @@ const initBriefModal = () => {
     isMenuOpen = true;
     serviceSelect.classList.add("is-open");
     serviceMenu.hidden = false;
+    serviceMenu.setAttribute("aria-hidden", "false");
     serviceTrigger.setAttribute("aria-expanded", "true");
   };
 
@@ -61,6 +62,7 @@ const initBriefModal = () => {
     isMenuOpen = false;
     serviceSelect.classList.remove("is-open");
     serviceMenu.hidden = true;
+    serviceMenu.setAttribute("aria-hidden", "true");
     serviceTrigger.setAttribute("aria-expanded", "false");
   };
 
@@ -200,6 +202,12 @@ const initBriefModal = () => {
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && modal.classList.contains("is-open")) {
       close();
+    }
+  });
+
+  form.addEventListener("focusin", event => {
+    if (isMenuOpen && !event.target.closest("[data-brief-service-select]")) {
+      closeMenu();
     }
   });
 
