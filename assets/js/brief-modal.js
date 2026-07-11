@@ -241,14 +241,14 @@ const initBriefModal = () => {
 
     form.hidden = true;
     success.hidden = false;
-    if (result?.ok && result.mode === "crm") {
+    if (result?.ok && (result.mode === "crm" || result.mode === "telegram")) {
       success.querySelector("h3").textContent = "Заявка отправлена";
       success.querySelector("p").textContent =
-        "Заявка уже в amoCRM. Можно закрыть окно, мы свяжемся с вами дальше по процессу.";
+        "Мы получили данные в Telegram-группу и скоро свяжемся с вами.";
     } else {
-      success.querySelector("h3").textContent = "Открываем чат";
+      success.querySelector("h3").textContent = "Не удалось отправить";
       success.querySelector("p").textContent =
-        "Текст заявки скопирован, сейчас откроется Telegram с готовым сообщением.";
+        result?.error || "Попробуйте ещё раз или напишите нам в Telegram.";
     }
 
     window.setTimeout(() => {
@@ -260,7 +260,7 @@ const initBriefModal = () => {
       updateRanges();
       form.hidden = false;
       success.hidden = true;
-    }, result?.mode === "crm" ? 1600 : 1400);
+    }, result?.ok ? 1600 : 2200);
   });
 
   budgetRange?.addEventListener("input", updateRanges);

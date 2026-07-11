@@ -140,7 +140,10 @@ const initHeroSearch = () => {
     });
 
     if (finalSubmitButton) {
-      finalSubmitButton.textContent = result?.ok && result.mode === "crm" ? "Отправлено в amoCRM" : "Открываем чат";
+      finalSubmitButton.textContent =
+        result?.ok && (result.mode === "crm" || result.mode === "telegram")
+          ? "Отправлено"
+          : "Ошибка отправки";
       finalSubmitButton.disabled = true;
     }
 
@@ -149,10 +152,12 @@ const initHeroSearch = () => {
         finalSubmitButton.textContent = "Отправить";
         finalSubmitButton.disabled = false;
       }
-      finalForm.reset();
-      closeFinalModal();
-      resetHeroForm();
-    }, result?.mode === "crm" ? 1200 : 800);
+      if (result?.ok) {
+        finalForm.reset();
+        closeFinalModal();
+        resetHeroForm();
+      }
+    }, result?.ok ? 1200 : 1800);
   };
 
   const insertSuggestion = tab => {

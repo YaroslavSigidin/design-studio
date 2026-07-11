@@ -10,14 +10,20 @@ const config = {
   amoSourceName: String(env.AMO_SOURCE_NAME || "Сайт Согласовано").trim(),
   amoSourceUid: String(env.AMO_SOURCE_UID || "design-studio-site").trim(),
   amoPipelineId: env.AMO_PIPELINE_ID ? Number(env.AMO_PIPELINE_ID) : null,
+  telegramBotToken: String(env.TELEGRAM_BOT_TOKEN || "").trim(),
+  telegramChatId: String(env.TELEGRAM_CHAT_ID || "").trim(),
   allowedOrigins: String(env.ALLOWED_ORIGINS || "")
     .split(",")
     .map(value => value.trim())
     .filter(Boolean)
 };
 
-const hasRealToken = () =>
+const hasRealAmoToken = () =>
   Boolean(config.amoAccessToken) && config.amoAccessToken !== "put-long-lived-token-here";
+
+const hasAmo = () => Boolean(config.amoBaseUrl && hasRealAmoToken());
+
+const hasTelegram = () => Boolean(config.telegramBotToken && config.telegramChatId);
 
 const jsonHeaders = {
   "Content-Type": "application/json; charset=utf-8",
@@ -32,7 +38,7 @@ const parseBody = request =>
       try {
         const raw = Buffer.concat(chunks).toString("utf8");
         resolve(raw ? JSON.parse(raw) : {});
-      } catch (error) {
+      } catch {
         reject(new Error("Некорректный JSON body"));
       }
     });
@@ -92,6 +98,8 @@ const detectEmail = value => {
 
 const buildNoteText = payload => {
   const lines = [
+    "Новая заявка с сайта «Согласовано»",
+    "",
     payload.source ? `Источник: ${payload.source}` : "",
     payload.service ? `Услуга: ${payload.service}` : "",
     payload.name ? `Имя: ${payload.name}` : "",
@@ -238,6 +246,30 @@ const createUnsortedLead = async (payload, request) => {
   };
 };
 
+const sendTelegramMessage = async text => {
+  const response = await fetch(`https://api.telegram.org/bot${config.telegramBotToken}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      chat_id: config.telegramChatId,
+      text,
+      disable_web_page_preview: true
+    })
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data?.ok === false) {
+    const detail = data?.description || `HTTP ${response.status}`;
+    throw new Error(`Telegram: ${detail}`);
+  }
+
+  return {
+    messageId: data?.result?.message_id || null
+  };
+};
+
 const validateLead = payload => {
   const name = sanitizeText(payload.name, 120);
   const phone = sanitizeText(payload.phone, 64);
@@ -246,6 +278,48 @@ const validateLead = payload => {
   if (!name) return "Имя обязательно";
   if (!phone && !contact) return "Нужен телефон или контакт";
   return "";
+};
+
+const submitLead = async (payload, request) => {
+  const errors = [];
+  const result = {
+    telegram: null,
+    amocrm: null
+  };
+
+  if (hasTelegram()) {
+    try {
+      result.telegram = await sendTelegramMessage(buildNoteText(payload));
+    } catch (error) {
+      errors.push(error instanceof Error ? error.message : "Telegram error");
+    }
+  }
+
+  if (hasAmo()) {
+    try {
+      result.amocrm = await createUnsortedLead(payload, request);
+    } catch (error) {
+      errors.push(error instanceof Error ? error.message : "amoCRM error");
+    }
+  }
+
+  if (result.telegram) {
+    return {
+      ok: true,
+      mode: "telegram",
+      result
+    };
+  }
+
+  if (result.amocrm) {
+    return {
+      ok: true,
+      mode: "crm",
+      result
+    };
+  }
+
+  throw new Error(errors.join("; ") || "Lead delivery is not configured");
 };
 
 const server = http.createServer(async (request, response) => {
@@ -262,7 +336,8 @@ const server = http.createServer(async (request, response) => {
       200,
       {
         ok: true,
-        amoConfigured: Boolean(config.amoBaseUrl && hasRealToken()),
+        telegramConfigured: hasTelegram(),
+        amoConfigured: hasAmo(),
         source: config.amoSourceName
       },
       origin
@@ -275,8 +350,8 @@ const server = http.createServer(async (request, response) => {
     return;
   }
 
-  if (!config.amoBaseUrl || !hasRealToken()) {
-    sendJson(response, 500, { ok: false, error: "amoCRM env не настроен" }, origin);
+  if (!hasTelegram() && !hasAmo()) {
+    sendJson(response, 500, { ok: false, error: "Lead delivery env is not configured" }, origin);
     return;
   }
 
@@ -289,16 +364,16 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
-    const result = await createUnsortedLead(body, request);
+    const delivery = await submitLead(body, request);
 
     sendJson(
       response,
       200,
       {
         ok: true,
-        mode: "amocrm",
+        mode: delivery.mode,
         source: config.amoSourceName,
-        result
+        result: delivery.result
       },
       origin
     );
@@ -308,7 +383,7 @@ const server = http.createServer(async (request, response) => {
       502,
       {
         ok: false,
-        error: error instanceof Error ? error.message : "Не удалось отправить заявку в amoCRM"
+        error: error instanceof Error ? error.message : "Не удалось отправить заявку"
       },
       origin
     );
@@ -316,5 +391,7 @@ const server = http.createServer(async (request, response) => {
 });
 
 server.listen(config.port, () => {
-  process.stdout.write(`amoCRM proxy listening on http://127.0.0.1:${config.port}\n`);
+  process.stdout.write(
+    `Lead proxy listening on http://127.0.0.1:${config.port} (telegram: ${hasTelegram()}, amo: ${hasAmo()})\n`
+  );
 });

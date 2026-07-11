@@ -1,22 +1,23 @@
-# amoCRM proxy для сайта "Согласовано"
+# Lead proxy для сайта "Согласовано"
 
-Этот слой нужен потому, что основной сайт живёт на GitHub Pages и не может безопасно хранить `access token` amoCRM в браузере.
+GitHub Pages не может безопасно хранить токены Telegram или amoCRM в браузере, поэтому заявки отправляются через этот backend.
 
-Прокси принимает заявки с сайта и отправляет их в amoCRM через API.
+Сейчас прокси умеет:
 
-## Что требуется в amoCRM
+1. отправлять заявки в Telegram-группу через бота;
+2. опционально дублировать заявки в amoCRM.
 
-1. В аккаунте `sigidingo.amocrm.ru` создать приватную интеграцию в `амоМаркет`.
-2. На вкладке `Ключи` сгенерировать **долгосрочный токен**.
-3. Скопировать:
-   - `AMO_BASE_URL=https://sigidingo.amocrm.ru`
-   - `AMO_ACCESS_TOKEN=<долгосрочный токен>`
-4. При необходимости узнать `pipeline_id`, если заявки должны идти не в дефолтную воронку.
+## Telegram
 
-Почему именно долгосрочный токен:
-- он не требует `refresh_token`;
-- он подходит для небольших интеграций под один аккаунт;
-- это самая простая и устойчивая схема для статического сайта.
+В `.env` нужны:
+
+```env
+TELEGRAM_BOT_TOKEN=your-bot-token
+TELEGRAM_CHAT_ID=-5360826750
+ALLOWED_ORIGINS=https://yaroslavsigidin.github.io,https://yaroslavsigidin.github.io/design-studio,http://127.0.0.1:8766,http://localhost:8766
+```
+
+Бот должен быть добавлен в группу и иметь право писать сообщения.
 
 ## Локальный запуск
 
@@ -52,22 +53,30 @@ curl http://127.0.0.1:8787/health
 }
 ```
 
-## Что делает прокси
+## Деплой на Render
 
-1. Создаёт заявку через `POST /api/v4/leads/unsorted/forms`
-2. Добавляет к созданной сделке note с текстом заявки
-3. Возвращает `200 OK`, если amoCRM принял заявку
+1. Создайте Web Service из репозитория на [Render](https://render.com).
+2. Render подхватит `render.yaml` из корня репозитория.
+3. В Environment добавьте `TELEGRAM_BOT_TOKEN`.
+4. После деплоя URL сервиса должен быть `https://soglasovano-leads.onrender.com`.
 
-## Подключение фронта
+Фронт уже настроен на этот endpoint в `assets/js/config.js`.
 
-После деплоя прокси укажи его URL в:
+## amoCRM (опционально)
 
-`assets/js/config.js`
+Если нужен amoCRM, дополнительно заполните:
 
-Поле:
-
-```js
-crm: {
-  endpoint: "https://your-backend.example.com/api/leads"
-}
+```env
+AMO_BASE_URL=https://sigidingo.amocrm.ru
+AMO_ACCESS_TOKEN=<долгосрочный токен>
+AMO_SOURCE_NAME=Сайт Согласовано
+AMO_SOURCE_UID=design-studio-site
+AMO_PIPELINE_ID=
 ```
+
+Если amoCRM настроен, заявка может уходить и в CRM, и в Telegram.
+
+## Безопасность
+
+- Никогда не коммитьте `.env` и не публикуйте токен бота в репозиторий.
+- Если токен когда-либо попал в чат или git, перевыпустите его через `@BotFather`.

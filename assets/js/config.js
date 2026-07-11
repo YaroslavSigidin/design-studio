@@ -10,6 +10,16 @@ const detectStudioBasePath = () => {
 
 const joinPath = (base, suffix) => `${base.replace(/\/+$/, "")}/${suffix.replace(/^\/+/, "")}`;
 
+const resolveLeadEndpoint = () => {
+  const host = window.location.hostname;
+
+  if (host === "localhost" || host === "127.0.0.1") {
+    return "http://127.0.0.1:8787/api/leads";
+  }
+
+  return "https://soglasovano-leads.onrender.com/api/leads";
+};
+
 const studioBasePath = detectStudioBasePath();
 
 window.STUDIO_CONFIG = {
@@ -29,10 +39,10 @@ window.STUDIO_CONFIG = {
     emailHref: "mailto:sigidingo@gmail.com"
   },
   crm: {
-    provider: "amocrm",
-    endpoint: "",
+    provider: "telegram",
+    endpoint: resolveLeadEndpoint(),
     timeoutMs: 12000,
-    allowFallback: true
+    allowFallback: false
   },
   leadChannel: {
     type: "telegram"

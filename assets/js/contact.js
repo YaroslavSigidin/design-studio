@@ -90,7 +90,7 @@ const initStudioContacts = () => {
 
       return {
         ok: true,
-        mode: "crm",
+        mode: data?.mode === "telegram" ? "telegram" : "crm",
         data
       };
     } finally {
@@ -100,14 +100,14 @@ const initStudioContacts = () => {
 
   const submitLead = async payload => {
     try {
-      const crmResult = await submitToCrm(payload);
-      if (crmResult.ok) return crmResult;
+      const backendResult = await submitToCrm(payload);
+      if (backendResult.ok) return backendResult;
     } catch (error) {
       if (!cfg.crm?.allowFallback) {
         return {
           ok: false,
-          mode: "crm-error",
-          error: error instanceof Error ? error.message : "CRM error"
+          mode: "backend-error",
+          error: error instanceof Error ? error.message : "Backend error"
         };
       }
     }
@@ -252,6 +252,18 @@ const initStudioContacts = () => {
     });
 
     if (result.ok && result.mode === "crm") {
+      form.reset();
+      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";
+      if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправлено";
+      window.setTimeout(() => {
+        if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
+        if (submitButton instanceof HTMLInputElement) submitButton.value = previousLabel || "Отправить";
+        if (submitButton) submitButton.disabled = false;
+      }, 1800);
+      return;
+    }
+
+    if (result.ok && result.mode === "telegram") {
       form.reset();
       if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";
       if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправлено";
