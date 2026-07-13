@@ -146,7 +146,7 @@ const serviceCardTemplate = service => {
     `
     : "";
   return `
-    <article class="${cardClassName}">
+    <article class="${cardClassName}" data-service-card>
       <h3 class="studio-service-title">${escapeHtml(service.title)}</h3>
       <div class="studio-service-prices">
         <p class="studio-service-price">${escapeHtml(priceValue)}</p>
@@ -168,15 +168,10 @@ const serviceCardTemplate = service => {
 
 const initServices = () => {
   const grid = document.getElementById("studioServicesGrid");
-  const moreWrap = document.getElementById("studioServicesMore");
   if (!grid) return;
 
-  grid.innerHTML = getHomeServices().map(serviceCardTemplate).join("");
-
-  if (moreWrap) {
-    moreWrap.hidden = true;
-    moreWrap.style.display = "none";
-  }
+  grid.innerHTML = SERVICES.map(serviceCardTemplate).join("");
+  window.dispatchEvent(new CustomEvent("studio:services-rendered"));
 };
 
 if (document.readyState === "loading") {

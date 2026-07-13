@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-hero-request-refine" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-services-carousel" />
   </head>
   <body>
     <div class="hero-page">
@@ -225,17 +225,31 @@
     <section class="section studio-services" id="services">
       <div class="container">
         <h2 class="section-title" data-reveal-heading>Все наши услуги</h2>
-        <div class="studio-services-grid" id="studioServicesGrid"></div>
-        <div class="studio-services-more" id="studioServicesMore" hidden>
-          <button class="studio-services-more__button" id="studioServicesMoreButton" type="button">
-            <span>Показать все услуги</span>
-            <span class="list-more-button__icon" aria-hidden="true">
-              <svg viewBox="0 0 20 20" fill="none">
-                <path d="M5 7.5 10 12.5l5-5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </button>
+      </div>
+      <div class="studio-services-carousel" data-services-carousel>
+        <button
+          class="studio-services-carousel__nav studio-services-carousel__nav--prev"
+          type="button"
+          aria-label="Предыдущие услуги"
+          data-services-prev
+        >
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M12.5 5 7.5 10l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div class="studio-services-carousel__viewport">
+          <div class="studio-services-grid" id="studioServicesGrid"></div>
         </div>
+        <button
+          class="studio-services-carousel__nav studio-services-carousel__nav--next"
+          type="button"
+          aria-label="Следующие услуги"
+          data-services-next
+        >
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M7.5 5 12.5 10l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
       </div>
     </section>
 
@@ -486,7 +500,8 @@
     <script src="./assets/js/hero-wordmark-scroll.js?v=20260713-hero-wordmark-scroll" defer></script>
     <script src="./assets/js/hero-pong.js?v=20260713-hero-cta" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
-    <script src="./assets/js/services.js?v=20260713-home-services-6" defer></script>
+    <script src="./assets/js/services.js?v=20260713-services-carousel" defer></script>
+    <script src="./assets/js/services-carousel.js?v=20260713-services-carousel" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260713-skeleton-soft" defer></script>
     <script src="./assets/js/cases.js?v=20260713-skeleton-soft" defer></script>

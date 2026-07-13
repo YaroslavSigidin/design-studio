@@ -2464,10 +2464,99 @@ body::after {
   color: #505050;
 }
 
+.studio-services-carousel {
+  --service-card-width: min(360px, 82vw);
+  --services-gap: 14px;
+  position: relative;
+  width: min(1320px, 100%);
+  margin: 8px auto 0;
+  padding: 0 clamp(12px, 2vw, 28px);
+}
+
+.studio-services-carousel__viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.16) 7%,
+    #000 20%,
+    #000 80%,
+    rgba(0, 0, 0, 0.16) 93%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.16) 7%,
+    #000 20%,
+    #000 80%,
+    rgba(0, 0, 0, 0.16) 93%,
+    transparent 100%
+  );
+}
+
 .studio-services-grid {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  gap: var(--services-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 12px max(18px, calc(50% - (var(--service-card-width) * 1.5 + var(--services-gap)))) 20px;
+}
+
+.studio-services-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.studio-services-carousel__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+  box-shadow: 0 10px 22px rgba(14, 28, 48, 0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.22s ease,
+    background 0.22s ease;
+}
+
+.studio-services-carousel__nav svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.studio-services-carousel__nav:hover:not(:disabled) {
+  transform: translateY(calc(-50% - 1px));
+  background: #fff;
+  box-shadow: 0 14px 28px rgba(14, 28, 48, 0.16);
+}
+
+.studio-services-carousel__nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.studio-services-carousel__nav--prev {
+  left: clamp(4px, 1vw, 12px);
+}
+
+.studio-services-carousel__nav--next {
+  right: clamp(4px, 1vw, 12px);
 }
 
 .studio-services-more {
@@ -2514,6 +2603,7 @@ body::after {
 .studio-service-card {
   position: relative;
   display: flex;
+  flex: 0 0 var(--service-card-width);
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
@@ -2524,8 +2614,19 @@ body::after {
   background: rgba(255, 255, 255, 0.96);
   text-align: left;
   box-shadow: 0 10px 20px rgba(27, 56, 91, 0.12);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  scroll-snap-align: center;
+  opacity: var(--service-card-opacity, 1);
+  transform: scale(var(--service-card-scale, 1));
+  transition:
+    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.34s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
+}
+
+.studio-service-card.is-focus {
+  box-shadow: 0 18px 34px rgba(27, 56, 91, 0.18);
 }
 
 .studio-service-card::before {
@@ -3632,8 +3733,8 @@ body::after {
 }
 
 @media (max-width: 1000px) {
-  .studio-services-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .studio-services-carousel {
+    --service-card-width: min(320px, 84vw);
   }
 }
 
@@ -3895,10 +3996,17 @@ body::after {
     width: min(1000px, calc(100% - 32px));
   }
 
-  .studio-cases .projects-grid,
-  .studio-services-grid {
-    grid-template-columns: minmax(0, 1fr);
+  .studio-services-carousel {
+    --service-card-width: min(300px, 88vw);
+    padding: 0 8px;
   }
+
+  .studio-services-carousel__nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .studio-cases .projects-grid {
 
   .studio-cases .project-card {
     border-width: 8px;
