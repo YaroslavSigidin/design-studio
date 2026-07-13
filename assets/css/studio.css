@@ -79,7 +79,7 @@ html {
     transition: none;
   }
 
-  .hero-title--wordmark[data-hero-wordmark],
+  .hero-title[data-hero-wordmark],
   .hero-subtitle[data-hero-scroll-item],
   .hero-cta-wrap[data-hero-scroll-item] {
     opacity: 1;
@@ -958,25 +958,19 @@ body::after {
   text-wrap: balance;
 }
 
-.hero-title--wordmark {
-  width: min(100%, 860px);
+.hero-title[data-hero-wordmark] {
+  max-width: min(100%, 860px);
   transform-origin: center center;
   will-change: transform, opacity;
 }
 
-.hero-title--wordmark[data-hero-wordmark],
+.hero-title[data-hero-wordmark],
 .hero-subtitle[data-hero-scroll-item],
 .hero-cta-wrap[data-hero-scroll-item] {
   opacity: var(--hero-scroll-opacity, 1);
   transform: var(--hero-scroll-transform, none);
   will-change: transform, opacity;
   transform-origin: center center;
-}
-
-.hero-title--wordmark img {
-  display: block;
-  width: 100%;
-  height: auto;
 }
 
 .hero-subtitle {
