@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-footer-ai-brief" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-header-widgets" />
   </head>
   <body>
     <div class="hero-page">
@@ -70,6 +70,40 @@
             </div>
           </div>
         </header>
+
+        <aside class="promo-strip" aria-label="Промо-акция" data-promo-strip data-header-widget>
+          <div class="promo-strip__timer">
+            <p class="promo-strip__label">До конца акции:</p>
+            <p class="promo-strip__value" data-promo-timer>20ч:10м:46с</p>
+          </div>
+          <div class="promo-strip__offer">Скидка 10%<br />на лендинг</div>
+          <button class="promo-strip__close" type="button" aria-label="Закрыть предложение" data-promo-close>
+            <span aria-hidden="true">×</span>
+          </button>
+        </aside>
+
+        <div class="top-contact-cluster" data-header-widget>
+          <a
+            class="top-phone-chip"
+            data-contact-link="phone"
+            href="tel:+79619710515"
+            aria-label="Скопировать номер Ярослава"
+            data-contact-phone
+            data-copy-phone-chip
+          >+7 961 971-05-15</a>
+          <div class="top-mini-contacts" aria-label="Контакты">
+            <a class="top-mini-contact-btn top-mini-contact-btn--vk" data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer" aria-label="VK">
+              <span class="top-mini-contact-btn__icon" aria-hidden="true">
+                <img src="./assets/icons/custom/vk-logo-white.svg" alt="" />
+              </span>
+            </a>
+            <a class="top-mini-contact-btn top-mini-contact-btn--max" data-contact-link="phone" href="tel:+79619710515" aria-label="MAX">
+              <span class="top-mini-contact-btn__icon" aria-hidden="true">
+                <img src="./assets/icons/custom/max-logo-white.svg" alt="" />
+              </span>
+            </a>
+          </div>
+        </div>
 
         <main class="hero-main">
           <div class="hero-content">
@@ -293,34 +327,6 @@
         </a>
       </div>
 
-      <div class="studio-footer__extras">
-        <aside class="promo-strip" aria-label="Промо-акция" data-promo-strip>
-          <div class="promo-strip__timer">
-            <p class="promo-strip__label">До конца акции:</p>
-            <p class="promo-strip__value" data-promo-timer>20ч:10м:46с</p>
-          </div>
-          <div class="promo-strip__offer">Скидка 10%<br />на лендинг</div>
-          <button class="promo-strip__close" type="button" aria-label="Закрыть предложение" data-promo-close>
-            <span aria-hidden="true">×</span>
-          </button>
-        </aside>
-
-        <div class="top-contact-cluster">
-          <div class="top-mini-contacts" aria-label="Контакты">
-            <a class="top-mini-contact-btn top-mini-contact-btn--vk" data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer" aria-label="VK">
-              <span class="top-mini-contact-btn__icon" aria-hidden="true">
-                <img src="./assets/icons/custom/vk-logo-white.svg" alt="" />
-              </span>
-            </a>
-            <a class="top-mini-contact-btn top-mini-contact-btn--max" data-contact-link="phone" href="tel:+79619710515" aria-label="MAX">
-              <span class="top-mini-contact-btn__icon" aria-hidden="true">
-                <img src="./assets/icons/custom/max-logo-white.svg" alt="" />
-              </span>
-            </a>
-          </div>
-        </div>
-      </div>
-
       <div class="studio-footer__bottom">
         <div class="studio-footer__bottom-left">
           <span>© 2026 Согласовано. Все права защищены.</span>
@@ -470,7 +476,8 @@
     <script src="./assets/js/config.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/contact.js?v=20260713-footer-ai-brief" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
-    <script src="./assets/js/promo-strip.js?v=20260713-footer-promo" defer></script>
+    <script src="./assets/js/promo-strip.js?v=20260713-header-promo" defer></script>
+    <script src="./assets/js/header-widgets.js?v=20260713-header-widgets" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
     <script src="./assets/js/hero.js?v=20260713-footer-ai-brief" defer></script>

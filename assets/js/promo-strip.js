@@ -58,6 +58,7 @@ const initPromoStrip = () => {
         window.localStorage.setItem(storageKey, "true");
       }
     } catch {}
+    document.dispatchEvent(new CustomEvent("studio:promo-hidden"));
   });
 
   if (typeof desktopMedia.addEventListener === "function") {
