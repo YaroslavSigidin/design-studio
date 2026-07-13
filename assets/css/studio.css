@@ -987,30 +987,53 @@ body::after {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 60px;
-  min-width: 280px;
-  padding: 0 32px;
-  border: none;
-  border-radius: 20px;
-  background: #000;
+  min-height: 62px;
+  min-width: 300px;
+  padding: 0 36px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #1a1f28 0%, #000000 100%);
   color: #fff;
   font-family: "Schibsted Grotesk", sans-serif;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 16px 28px rgba(16, 30, 48, 0.18);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow:
+    0 18px 34px rgba(8, 16, 28, 0.22),
+    0 6px 14px rgba(8, 16, 28, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transition:
+    background 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero-order-btn:hover {
-  background: #111;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, #f3ff9f 0%, #dcff54 58%, #d4f84a 100%);
+  border-color: rgba(0, 0, 0, 0.06);
+  color: #000;
+  box-shadow:
+    0 20px 40px rgba(203, 249, 63, 0.38),
+    0 8px 18px rgba(12, 28, 47, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 .hero-order-btn:active {
   transform: translateY(0);
+  background: linear-gradient(180deg, #e8f96f 0%, #cbf93f 100%);
+  box-shadow:
+    0 10px 22px rgba(203, 249, 63, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.hero-order-btn:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.85);
+  outline-offset: 3px;
 }
 
 /* AI assistant block */
