@@ -2080,6 +2080,12 @@ body::after {
   opacity: 1;
 }
 
+.studio-cases .tabs:not(.is-ready) .tab-button.active {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
 .studio-cases .tab-button {
   position: relative;
   z-index: 1;

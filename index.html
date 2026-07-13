@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-services-shadows" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-cases-chips" />
   </head>
   <body>
     <div class="hero-page">
@@ -158,7 +158,6 @@
 
     <section class="section studio-cases" id="cases">
       <div class="container">
-        <p class="section-subtitle">Портфолио</p>
         <h2 class="section-title" data-reveal-heading>Наши кейсы</h2>
         <div class="tabs" id="projectTabs" role="tablist" aria-label="Фильтр кейсов">
           <span class="tabs__indicator" data-tabs-indicator aria-hidden="true"></span>
@@ -511,7 +510,7 @@
     <script src="./assets/js/services-carousel.js?v=20260713-services-six-loop" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260713-skeleton-soft" defer></script>
-    <script src="./assets/js/cases.js?v=20260713-cases-tabs" defer></script>
+    <script src="./assets/js/cases.js?v=20260713-cases-chips" defer></script>
     <script>
       (function () {
         const escapeHtml = value =>
@@ -639,10 +638,11 @@
                   (project.id ? caseBase + "?slug=" + encodeURIComponent(project.id) : "");
                 const category = project.category || "web";
                 const tagLabel = category === "uxui" ? "UX/UI" : "Site";
-                const searchText = `${project.title || ""} ${project.subtitle || ""} ${project.description || ""}`.toLowerCase();
+                const searchText = `${project.title || ""} ${project.subtitle || ""} ${project.description || ""} ${(project.tags || []).join(" ")} ${(project.study?.tags || []).join(" ")}`.toLowerCase();
+                const filterTags = [...(project.tags || []), ...(project.study?.tags || [])].join(" ").toLowerCase();
                 const imageSrc = normalizeAssetUrl(project.image || project.cover || "", cfg);
                 return `
-                  <article class="project-card" data-category="${escapeHtml(category)}" data-search="${escapeHtml(searchText)}" ${
+                  <article class="project-card" data-category="${escapeHtml(category)}" data-search="${escapeHtml(searchText)}" data-filter-tags="${escapeHtml(filterTags)}" ${
                     href ? `data-case-url="${escapeHtml(href)}" tabindex="0"` : ""
                   }>
                     ${renderFallbackSkeletonImage(imageSrc, project.title || "")}
@@ -674,7 +674,7 @@
               if (href) window.location.href = href;
             });
 
-            if (tabsRoot && tabsRoot.dataset.fallbackBound !== "true") {
+            if (tabsRoot && tabsRoot.dataset.filterBound !== "true") {
               let expanded = false;
               let activeFilter = "all";
               window.__studioCasesTabs?.initTabsIndicator?.(tabsRoot);
@@ -685,14 +685,15 @@
                 grid.querySelectorAll(".project-card").forEach(card => {
                   const category = card.dataset.category || "";
                   const search = String(card.dataset.search || "").toLowerCase();
+                  const tags = String(card.dataset.filterTags || search).toLowerCase();
                   const matches =
                     filter === "all" ||
                     (filter === "uxui" && category === "uxui") ||
                     (filter === "web" && category === "web") ||
-                    (filter === "logo" && /логотип|logo/.test(search)) ||
-                    (filter === "identity" && /айдентик|identity|фирменн/.test(search)) ||
-                    (filter === "branding" && /брендинг|бренд|branding/.test(search)) ||
-                    (filter === "presentation" && /презентац|presentation/.test(search));
+                    (filter === "logo" && (/логотип|logo/.test(search) || /логотип|logo/.test(tags))) ||
+                    (filter === "identity" && (/айдентик|identity|фирменн/.test(search) || /айдентик|identity|фирменн/.test(tags))) ||
+                    (filter === "branding" && (/брендинг|бренд|branding/.test(search) || /брендинг|бренд|branding/.test(tags))) ||
+                    (filter === "presentation" && (/презентац|presentation/.test(search) || /презентац|presentation/.test(tags)));
 
                   if (!matches) {
                     card.hidden = true;
@@ -752,7 +753,7 @@
               const activeTab =
                 tabsRoot.querySelector(".tab-button.active") || tabsRoot.querySelector(".tab-button");
               applyFilter(activeTab?.dataset.filter || "all");
-              tabsRoot.dataset.fallbackBound = "true";
+              tabsRoot.dataset.filterBound = "true";
             }
 
             if (status) status.hidden = true;

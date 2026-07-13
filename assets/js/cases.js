@@ -35,14 +35,15 @@ const buildProjectSearchText = project =>
 const matchesProjectFilter = (card, filter) => {
   const category = card.dataset.category || "";
   const search = String(card.dataset.search || "").toLowerCase();
+  const tags = String(card.dataset.filterTags || search).toLowerCase();
 
   if (filter === "all") return true;
   if (filter === "uxui") return category === "uxui";
   if (filter === "web") return category === "web";
-  if (filter === "logo") return /логотип|logo/.test(search);
-  if (filter === "identity") return /айдентик|identity|фирменн/.test(search);
-  if (filter === "branding") return /брендинг|бренд|branding/.test(search);
-  if (filter === "presentation") return /презентац|presentation/.test(search);
+  if (filter === "logo") return /логотип|logo/.test(search) || /логотип|logo/.test(tags);
+  if (filter === "identity") return /айдентик|identity|фирменн/.test(search) || /айдентик|identity|фирменн/.test(tags);
+  if (filter === "branding") return /брендинг|бренд|branding/.test(search) || /брендинг|бренд|branding/.test(tags);
+  if (filter === "presentation") return /презентац|presentation/.test(search) || /презентац|presentation/.test(tags);
   return false;
 };
 
@@ -160,6 +161,7 @@ const renderProjectCard = (project, cfg) => {
   const caseHref = getCaseHref(project, cfg);
   const image = normalizeAssetUrl(project.image || project.cover || "", cfg);
   const isPlaceholder = Boolean(project.isPlaceholder);
+  const filterTags = [...(project.tags || []), ...(project.study?.tags || [])].join(" ").toLowerCase();
   const imageMarkup = isPlaceholder
     ? `<div class="project-placeholder-media" aria-hidden="true"></div>`
     : renderSkeletonImage({
@@ -176,6 +178,7 @@ const renderProjectCard = (project, cfg) => {
       data-project-id="${escapeHtml(project.id)}"
       data-category="${escapeHtml(project.category || "web")}"
       data-search="${escapeHtml(buildProjectSearchText(project))}"
+      data-filter-tags="${escapeHtml(filterTags)}"
       ${caseHref ? `data-case-url="${escapeHtml(caseHref)}" tabindex="0"` : ""}
     >
       ${imageMarkup}
@@ -284,6 +287,10 @@ const initTabsIndicator = tabsRoot => {
   window.addEventListener("load", sync, { passive: true });
   tabsRoot.addEventListener("scroll", sync, { passive: true });
   window.setTimeout(sync, 80);
+  window.setTimeout(sync, 320);
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(sync).catch(() => {});
+  }
   tabsRoot.dataset.indicatorBound = "true";
 };
 
@@ -321,7 +328,7 @@ const revealFilteredCards = grid => {
 };
 
 const initCasesFilter = (grid, tabsRoot) => {
-  if (!grid || !tabsRoot || grid.dataset.filterBound === "true") return;
+  if (!grid || !tabsRoot || tabsRoot.dataset.filterBound === "true") return;
 
   let activeFilter = "all";
   let expanded = false;
@@ -409,21 +416,33 @@ const initCasesFilter = (grid, tabsRoot) => {
   });
 
   applyFilter();
-  grid.dataset.filterBound = "true";
+  tabsRoot.dataset.filterBound = "true";
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      updateTabsIndicator(tabsRoot, qs(".tab-button.active", tabsRoot));
+    });
+  });
 };
 
-const renderCasesGrid = (grid, projects, cfg) => {
-  if (!grid) return;
-  grid.classList.add("is-swapping");
-  window.setTimeout(() => {
-    grid.classList.remove("is-loading", "is-swapping");
-    grid.removeAttribute("aria-busy");
-    const items = [...projects, EXTRA_PLACEHOLDER_CASE];
-    grid.innerHTML = items.map(project => renderProjectCard(project, cfg)).join("");
-    bindCardNavigation(grid);
-    window.STUDIO_MEDIA?.initImageSkeletons(grid);
-  }, 120);
-};
+const renderCasesGrid = (grid, projects, cfg) =>
+  new Promise(resolve => {
+    if (!grid) {
+      resolve();
+      return;
+    }
+
+    grid.classList.add("is-swapping");
+    window.setTimeout(() => {
+      grid.classList.remove("is-loading", "is-swapping");
+      grid.removeAttribute("aria-busy");
+      const items = [...projects, EXTRA_PLACEHOLDER_CASE];
+      grid.innerHTML = items.map(project => renderProjectCard(project, cfg)).join("");
+      bindCardNavigation(grid);
+      window.STUDIO_MEDIA?.initImageSkeletons(grid);
+      resolve();
+    }, 120);
+  });
 
 const initCases = async () => {
   const grid = qs("#projects-grid");
@@ -442,7 +461,7 @@ const initCases = async () => {
     const { manifest } = await loadManifestWithFallback(cfg);
     const projects = pickProjects(manifest);
 
-    renderCasesGrid(grid, projects, cfg);
+    await renderCasesGrid(grid, projects, cfg);
     initCasesFilter(grid, tabsRoot);
     grid.dataset.initDone = "true";
 
