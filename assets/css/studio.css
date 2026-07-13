@@ -104,6 +104,12 @@ body {
   color: #000000;
 }
 
+img {
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 body::before,
 body::after {
   content: "";
