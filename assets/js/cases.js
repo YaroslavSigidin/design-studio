@@ -214,24 +214,26 @@ const bindCardNavigation = grid => {
 const updateCasesStackClip = (grid, stack, collapsed) => {
   if (!stack) return;
 
+  const clip = qs("[data-cases-clip]", stack) || qs(".studio-cases-clip", stack);
+
   if (!collapsed) {
     stack.classList.remove("is-collapsed");
-    stack.style.maxHeight = "";
+    if (clip) clip.style.maxHeight = "";
     return;
   }
 
   stack.classList.add("is-collapsed");
 
   const firstBeyond = qs(".project-card--beyond-limit", grid);
-  if (!firstBeyond) {
-    stack.style.maxHeight = "";
+  if (!clip || !firstBeyond) {
+    if (clip) clip.style.maxHeight = "";
     return;
   }
 
-  const stackTop = stack.getBoundingClientRect().top;
-  const beyondTop = firstBeyond.getBoundingClientRect().top - stackTop;
-  const peek = Math.min(156, Math.max(92, firstBeyond.getBoundingClientRect().height * 0.4));
-  stack.style.maxHeight = `${beyondTop + peek}px`;
+  const clipTop = clip.getBoundingClientRect().top;
+  const beyondTop = firstBeyond.getBoundingClientRect().top - clipTop;
+  const peek = Math.min(132, Math.max(72, firstBeyond.getBoundingClientRect().height * 0.34));
+  clip.style.maxHeight = `${beyondTop + peek}px`;
 };
 
 const scheduleCasesStackClip = (grid, stack, collapsed) => {

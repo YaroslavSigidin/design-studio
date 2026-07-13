@@ -1626,7 +1626,11 @@ body::after {
   position: relative;
 }
 
-.studio-cases-stack.is-collapsed {
+.studio-cases-clip {
+  position: relative;
+}
+
+.studio-cases-stack.is-collapsed .studio-cases-clip {
   overflow: hidden;
 }
 
@@ -1635,29 +1639,24 @@ body::after {
 }
 
 .studio-cases-more {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: center;
   margin-top: 18px;
 }
 
 .studio-cases-stack.is-collapsed .studio-cases-more {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 3;
-  margin-top: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  margin-top: 12px;
 }
 
 .studio-cases-more__veil {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 100%;
-  height: clamp(120px, 18vw, 180px);
+  left: 50%;
+  bottom: calc(100% + 8px);
+  width: 100vw;
+  height: clamp(96px, 14vw, 148px);
+  transform: translateX(-50%);
   background: linear-gradient(
     to bottom,
     rgba(220, 239, 255, 0) 0%,
@@ -1666,6 +1665,10 @@ body::after {
     #dcefff 100%
   );
   pointer-events: none;
+}
+
+.studio-cases-stack:not(.is-collapsed) .studio-cases-more__veil {
+  display: none;
 }
 
 .studio-cases-more__button {
