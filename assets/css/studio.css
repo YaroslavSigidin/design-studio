@@ -427,11 +427,15 @@ body::after {
   font-weight: 400;
   font-size: 15px;
   letter-spacing: -0.01em;
-  gap: 8px;
   background: transparent;
   color: #000;
   border-color: rgba(0, 0, 0, 0.18);
   box-shadow: none;
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
 }
 
 .hero-btn__icon {
@@ -455,16 +459,22 @@ body::after {
 }
 
 .hero-btn--dark[data-open-brief-modal]:hover {
-  transform: none;
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.28);
-  box-shadow: none;
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #f3ff9f 0%, #dcff54 58%, #d4f84a 100%);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 12px 28px rgba(203, 249, 63, 0.42),
+    0 4px 12px rgba(12, 28, 47, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  color: #000;
 }
 
 .hero-btn--dark[data-open-brief-modal]:active {
-  transform: none;
-  background: rgba(0, 0, 0, 0.06);
-  box-shadow: none;
+  transform: translateY(0);
+  background: linear-gradient(180deg, #e8f96f 0%, #cbf93f 100%);
+  box-shadow:
+    0 6px 16px rgba(203, 249, 63, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .hero-nav.is-scrolled .hero-btn--dark[data-open-brief-modal] {
