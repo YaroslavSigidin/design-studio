@@ -1002,7 +1002,7 @@ body::after {
   --hero-request-height: 52px;
   position: relative;
   height: var(--hero-request-height);
-  width: 228px;
+  width: 236px;
   max-width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
@@ -1012,10 +1012,10 @@ body::after {
   box-shadow: 0 10px 22px rgba(14, 28, 48, 0.1);
   overflow: hidden;
   transition:
-    width 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-    border-radius 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.52s cubic-bezier(0.22, 1, 0.36, 1),
-    background 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+    width 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+    border-radius 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.62s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hero-request.is-open {
@@ -1029,9 +1029,9 @@ body::after {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   width: 100%;
-  padding: 0;
+  padding: 6px 6px 6px 0;
   border: none;
   background: transparent;
   color: #111;
@@ -1042,8 +1042,10 @@ body::after {
   cursor: pointer;
   opacity: 1;
   visibility: visible;
+  transform: scale(1);
   transition:
-    opacity 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
     visibility 0s linear;
 }
 
@@ -1052,7 +1054,9 @@ body::after {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 10px 0 16px;
+  min-width: 0;
+  height: 100%;
+  padding: 0 8px 0 16px;
   white-space: nowrap;
 }
 
@@ -1060,18 +1064,26 @@ body::after {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 44px;
-  width: 44px;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   background: #000;
   color: #fff;
-  border-left: 1px solid rgba(0, 0, 0, 0.08);
-  transition: background 0.22s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+  transition:
+    background 0.22s ease,
+    transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hero-request__open-chevron svg {
   display: block;
   width: 16px;
   height: 16px;
+}
+
+.hero-request.is-opening .hero-request__open-chevron {
+  transform: translateX(2px);
 }
 
 .hero-request__open:hover .hero-request__open-chevron {
@@ -1082,12 +1094,15 @@ body::after {
   color: #000;
 }
 
-.hero-request.is-open .hero-request__open {
+.hero-request.is-open .hero-request__open,
+.hero-request.is-opening .hero-request__open {
   opacity: 0;
   visibility: hidden;
+  transform: scale(0.985);
   pointer-events: none;
   transition:
-    opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
     visibility 0s linear 0.28s;
 }
 
@@ -1102,18 +1117,62 @@ body::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  transform: translateX(10px) scale(0.99);
   transition:
-    opacity 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.08s,
-    visibility 0s linear 0.52s;
+    opacity 0.46s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
+    transform 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.08s,
+    visibility 0s linear 0.58s;
 }
 
-.hero-request.is-open .hero-request__form {
+.hero-request.is-open .hero-request__form,
+.hero-request.is-opening .hero-request__form {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  transform: none;
   transition:
-    opacity 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.14s,
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.16s,
+    transform 0.62s cubic-bezier(0.16, 1, 0.3, 1) 0.12s,
     visibility 0s linear;
+}
+
+.hero-request.is-open .hero-request__form > *,
+.hero-request.is-opening .hero-request__form > * {
+  opacity: 0;
+  transform: translateX(8px);
+  animation: heroRequestFieldIn 0.46s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-request.is-open .hero-request__form > *:nth-child(1),
+.hero-request.is-opening .hero-request__form > *:nth-child(1) {
+  animation-delay: 0.18s;
+}
+
+.hero-request.is-open .hero-request__form > *:nth-child(2),
+.hero-request.is-opening .hero-request__form > *:nth-child(2) {
+  animation-delay: 0.24s;
+}
+
+.hero-request.is-open .hero-request__form > *:nth-child(3),
+.hero-request.is-opening .hero-request__form > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.hero-request.is-open .hero-request__form > *:nth-child(4),
+.hero-request.is-opening .hero-request__form > *:nth-child(4) {
+  animation-delay: 0.36s;
+}
+
+@keyframes heroRequestFieldIn {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .hero-request__form input {
@@ -1190,7 +1249,7 @@ body::after {
 
 @media (max-width: 899px) {
   .hero-request {
-    width: 218px;
+    width: 224px;
   }
 
   .hero-request.is-open {
@@ -1199,8 +1258,14 @@ body::after {
 
   .hero-request__open {
     font-size: 14px;
-    gap: 7px;
-    padding: 0 12px;
+    padding: 5px 5px 5px 0;
+  }
+
+  .hero-request__open-chevron {
+    flex-basis: 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
   }
 
   .hero-request__form {
@@ -1224,8 +1289,18 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .hero-request,
   .hero-request__open,
-  .hero-request__form {
+  .hero-request__form,
+  .hero-request__open-chevron {
     transition: none;
+    animation: none;
+    transform: none;
+  }
+
+  .hero-request.is-open .hero-request__form > *,
+  .hero-request.is-opening .hero-request__form > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 
   .hero-request.is-open .hero-request__open {

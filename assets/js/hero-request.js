@@ -29,13 +29,16 @@ const initHeroRequest = () => {
   const phoneInput = form?.querySelector('input[name="phone"]');
   if (!root || !toggle || !form) return;
 
+const OPEN_ANIMATION_MS = 640;
+
   const open = () => {
     if (root.classList.contains("is-open")) return;
-    root.classList.add("is-open");
+    root.classList.add("is-opening", "is-open");
     toggle.setAttribute("aria-expanded", "true");
     window.setTimeout(() => {
+      root.classList.remove("is-opening");
       form.querySelector('input[name="name"]')?.focus();
-    }, 520);
+    }, OPEN_ANIMATION_MS);
   };
 
   const close = () => {
