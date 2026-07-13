@@ -35,7 +35,7 @@ const initHeroRequest = () => {
     toggle.setAttribute("aria-expanded", "true");
     window.setTimeout(() => {
       form.querySelector('input[name="name"]')?.focus();
-    }, 340);
+    }, 520);
   };
 
   const close = () => {
