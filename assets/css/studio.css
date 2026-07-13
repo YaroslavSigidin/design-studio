@@ -78,6 +78,12 @@ html {
     transform: none;
     transition: none;
   }
+
+  .hero-nav,
+  .hero-nav-inner,
+  .brand-wordmark {
+    transition: none;
+  }
 }
 
 body {
@@ -253,6 +259,18 @@ body::after {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 12px 26px rgba(14, 28, 48, 0.14);
+  transition:
+    width 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    top 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-nav.is-scrolled {
+  width: min(686px, calc((100% - 28px) * 0.7));
+  top: 10px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(14, 28, 48, 0.11);
 }
 
 .hero-nav-inner {
@@ -262,6 +280,16 @@ body::after {
   gap: 14px;
   min-height: 58px;
   padding: 7px;
+  transition:
+    min-height 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    gap 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-nav.is-scrolled .hero-nav-inner {
+  min-height: 48px;
+  padding: 5px;
+  gap: 10px;
 }
 
 .hero-logo {
@@ -277,6 +305,11 @@ body::after {
   display: block;
   height: 28px;
   width: auto;
+  transition: height 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-nav.is-scrolled .hero-logo .brand-wordmark {
+  height: 24px;
 }
 
 .brand-wordmark--footer {
@@ -408,6 +441,13 @@ body::after {
   transform: none;
   background: rgba(0, 0, 0, 0.06);
   box-shadow: none;
+}
+
+.hero-nav.is-scrolled .hero-btn--dark[data-open-brief-modal] {
+  min-height: 42px;
+  padding: 0 18px;
+  font-size: 14px;
+  border-radius: 11px;
 }
 
 .hero-menu-toggle {
@@ -3069,6 +3109,11 @@ body::after {
     min-width: 0;
   }
 
+  .hero-nav.is-scrolled {
+    width: min(574px, calc((100% - 396px) * 0.7));
+    top: 8px;
+  }
+
   .hero-nav-inner {
     gap: 10px;
     min-height: 54px;
@@ -3159,6 +3204,11 @@ body::after {
   .hero-nav {
     width: min(980px, calc(100% - 20px));
     top: 10px;
+  }
+
+  .hero-nav.is-scrolled {
+    width: min(686px, calc((100% - 20px) * 0.7));
+    top: 8px;
   }
 
   .promo-strip {
@@ -3317,6 +3367,16 @@ body::after {
   .hero-nav {
     width: calc(100% - 14px);
     top: 10px;
+  }
+
+  .hero-nav.is-scrolled {
+    width: calc((100% - 14px) * 0.7);
+    top: 8px;
+  }
+
+  .hero-nav.is-scrolled .hero-nav-inner {
+    min-height: 56px;
+    padding: 8px;
   }
 
   .hero-nav-inner {

@@ -1,7 +1,28 @@
+const initHeaderScroll = header => {
+  const threshold = 32;
+  let ticking = false;
+
+  const update = () => {
+    header.classList.toggle("is-scrolled", window.scrollY > threshold);
+    ticking = false;
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  };
+
+  update();
+  window.addEventListener("scroll", onScroll, { passive: true });
+};
+
 const initFloatingHeader = () => {
   const header = document.querySelector("[data-floating-header]");
   const toggleButton = document.querySelector("[data-header-toggle]");
   if (!header || !toggleButton) return;
+
+  initHeaderScroll(header);
 
   const closeMenu = () => {
     header.classList.remove("is-open");
