@@ -4422,21 +4422,41 @@ body::after {
   align-items: start;
 }
 
-.studio-footer__logo {
-  display: inline-flex;
-  text-decoration: none;
-}
-
-.studio-footer__logo .brand-wordmark {
-  height: clamp(36px, 4vw, 44px);
-}
-
 .studio-footer__brand p {
-  margin: 12px 0 0;
+  margin: 0;
   max-width: 480px;
   color: #5c5c5c;
   font-size: 15px;
   line-height: 1.6;
+}
+
+.studio-footer__wordmark {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: clamp(28px, 4.5vw, 48px) calc(-1 * clamp(10px, 2vw, 18px)) calc(-1 * clamp(6px, 1.2vw, 12px));
+  padding: 0 clamp(10px, 2vw, 18px) clamp(4px, 0.8vw, 10px);
+  text-decoration: none;
+  line-height: 0;
+}
+
+.studio-footer__wordmark .brand-wordmark--footer-signature {
+  display: block;
+  width: min(104%, 980px);
+  height: auto;
+  max-height: clamp(84px, 15vw, 148px);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.studio-footer__wordmark:hover {
+  opacity: 0.82;
+}
+
+.studio-footer__wordmark:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.28);
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
 .studio-footer__columns {
@@ -4616,5 +4636,13 @@ body::after {
 
   .studio-footer__columns {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .studio-footer__wordmark {
+    margin-top: 24px;
+  }
+
+  .studio-footer__wordmark .brand-wordmark--footer-signature {
+    max-height: 92px;
   }
 }
