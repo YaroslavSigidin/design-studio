@@ -148,10 +148,9 @@ const serviceCardTemplate = service => {
     </ul>
   `;
   const metaMarkup =
-    service.badge || service.rating
+    service.rating || service.reviews
       ? `
       <div class="studio-service-meta">
-        ${service.badge ? `<span class="studio-service-badge">${escapeHtml(service.badge)}</span>` : ""}
         ${
           service.rating
             ? `<span class="studio-service-rating" aria-label="Рейтинг ${service.rating}">★ ${service.rating.toFixed(1)}</span>`
@@ -193,7 +192,7 @@ const initServices = () => {
   const grid = document.getElementById("studioServicesGrid");
   if (!grid) return;
 
-  grid.innerHTML = SERVICES.map(serviceCardTemplate).join("");
+  grid.innerHTML = getHomeServices().map(serviceCardTemplate).join("");
   window.dispatchEvent(new CustomEvent("studio:services-rendered"));
 };
 
