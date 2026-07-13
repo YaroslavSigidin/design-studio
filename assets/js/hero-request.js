@@ -25,6 +25,7 @@ const getPhoneDigits = value => String(value || "").replace(/\D/g, "");
 const initHeroRequest = () => {
   const root = document.querySelector("[data-hero-request]");
   const toggle = root?.querySelector("[data-hero-request-toggle]");
+  const collapse = root?.querySelector("[data-hero-request-collapse]");
   const form = root?.querySelector(".hero-request__form");
   const phoneInput = form?.querySelector('input[name="phone"]');
   if (!root || !toggle || !form) return;
@@ -42,13 +43,14 @@ const OPEN_ANIMATION_MS = 640;
   };
 
   const close = () => {
-    if (!root.classList.contains("is-open")) return;
-    root.classList.remove("is-open");
+    if (!root.classList.contains("is-open") && !root.classList.contains("is-opening")) return;
+    root.classList.remove("is-open", "is-opening");
     toggle.setAttribute("aria-expanded", "false");
     toggle.focus();
   };
 
   toggle.addEventListener("click", open);
+  collapse?.addEventListener("click", close);
 
   if (phoneInput) {
     phoneInput.addEventListener("focus", () => {

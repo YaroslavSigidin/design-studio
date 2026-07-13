@@ -1121,7 +1121,7 @@ body::after {
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1.2fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1.2fr) auto;
   gap: 6px;
   align-items: center;
   padding: 5px;
@@ -1156,22 +1156,71 @@ body::after {
 
 .hero-request.is-open .hero-request__form > *:nth-child(1),
 .hero-request.is-opening .hero-request__form > *:nth-child(1) {
-  animation-delay: 0.18s;
+  animation-delay: 0.14s;
 }
 
 .hero-request.is-open .hero-request__form > *:nth-child(2),
 .hero-request.is-opening .hero-request__form > *:nth-child(2) {
-  animation-delay: 0.24s;
+  animation-delay: 0.2s;
 }
 
 .hero-request.is-open .hero-request__form > *:nth-child(3),
 .hero-request.is-opening .hero-request__form > *:nth-child(3) {
-  animation-delay: 0.3s;
+  animation-delay: 0.26s;
 }
 
 .hero-request.is-open .hero-request__form > *:nth-child(4),
 .hero-request.is-opening .hero-request__form > *:nth-child(4) {
-  animation-delay: 0.36s;
+  animation-delay: 0.32s;
+}
+
+.hero-request.is-open .hero-request__form > *:nth-child(5),
+.hero-request.is-opening .hero-request__form > *:nth-child(5) {
+  animation-delay: 0.38s;
+}
+
+.hero-request__collapse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: #000;
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition:
+    background 0.22s ease,
+    transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-request__collapse-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-request__collapse-chevron svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.hero-request__collapse:hover {
+  background: #111;
+}
+
+.hero-request__collapse:hover .hero-request__collapse-chevron {
+  transform: translateX(-2px);
+}
+
+.hero-request__collapse-chevron {
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes heroRequestFieldIn {
@@ -1252,6 +1301,7 @@ body::after {
 }
 
 .hero-request__open:focus-visible,
+.hero-request__collapse:focus-visible,
 .hero-request__form input:focus-visible,
 .hero-request__submit:focus-visible {
   outline: 2px solid #111;
@@ -1280,9 +1330,16 @@ body::after {
   }
 
   .hero-request__form {
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr) minmax(0, 1.05fr) auto;
+    grid-template-columns: auto minmax(0, 0.95fr) minmax(0, 1.05fr) minmax(0, 1.05fr) auto;
     gap: 5px;
     padding: 5px;
+  }
+
+  .hero-request__collapse {
+    flex-basis: 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
   }
 
   .hero-request__form input {

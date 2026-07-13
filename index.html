@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-hero-scroll" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-hero-request-collapse" />
   </head>
   <body>
     <div class="hero-page">
@@ -112,6 +112,24 @@
                     </span>
                   </button>
                   <form class="hero-request__form" id="heroRequestForm">
+                    <button
+                      class="hero-request__collapse"
+                      type="button"
+                      data-hero-request-collapse
+                      aria-label="Свернуть форму"
+                    >
+                      <span class="hero-request__collapse-chevron" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" fill="none">
+                          <path
+                            d="M12.5 5 7.5 10l5 5"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </button>
                     <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
                     <input
                       type="tel"
@@ -484,7 +502,7 @@
     <script src="./assets/js/promo-strip.js?v=20260713-footer-promo" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
-    <script src="./assets/js/hero-request.js?v=20260713-hero-request-open" defer></script>
+    <script src="./assets/js/hero-request.js?v=20260713-hero-request-collapse" defer></script>
     <script src="./assets/js/hero-scroll.js?v=20260713-hero-scroll" defer></script>
     <script src="./assets/js/hero-pong.js?v=20260713-hero-cta" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
