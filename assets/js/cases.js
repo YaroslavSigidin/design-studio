@@ -224,16 +224,23 @@ const updateCasesStackClip = (grid, stack, collapsed) => {
 
   stack.classList.add("is-collapsed");
 
+  const visibleCards = [...qsa(".project-card", grid)].filter(
+    card => !card.hidden && !card.classList.contains("project-card--beyond-limit")
+  );
   const firstBeyond = qs(".project-card--beyond-limit", grid);
-  if (!clip || !firstBeyond) {
+  const lastVisible = visibleCards[visibleCards.length - 1];
+
+  if (!clip || !lastVisible || !firstBeyond) {
     if (clip) clip.style.maxHeight = "";
     return;
   }
 
   const clipTop = clip.getBoundingClientRect().top;
-  const beyondTop = firstBeyond.getBoundingClientRect().top - clipTop;
-  const peek = Math.min(132, Math.max(72, firstBeyond.getBoundingClientRect().height * 0.34));
-  clip.style.maxHeight = `${beyondTop + peek}px`;
+  const lastVisibleBottom = lastVisible.getBoundingClientRect().bottom - clipTop;
+  const beyondHeight = firstBeyond.getBoundingClientRect().height;
+  const peek = Math.min(Math.max(beyondHeight * 0.52, 96), 220);
+
+  clip.style.maxHeight = `${lastVisibleBottom + peek}px`;
 };
 
 const scheduleCasesStackClip = (grid, stack, collapsed) => {

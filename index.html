@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-cases-more-fix" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-cases-clip-soft" />
   </head>
   <body>
     <div class="hero-page">
@@ -221,9 +221,9 @@
             </div>
           </article>
         </div>
+          <div class="studio-cases-more__veil" aria-hidden="true"></div>
           </div>
         <div class="studio-cases-more" id="studioCasesMore" hidden>
-          <div class="studio-cases-more__veil" aria-hidden="true"></div>
           <button class="studio-cases-more__button" id="studioCasesMoreButton" type="button">
             <span>Посмотреть все</span>
             <span class="list-more-button__icon" aria-hidden="true">
@@ -494,7 +494,7 @@
     <script src="./assets/js/services.js?v=20260713-home-services-6" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260713-image-skeleton" defer></script>
-    <script src="./assets/js/cases.js?v=20260713-cases-more-fix" defer></script>
+    <script src="./assets/js/cases.js?v=20260713-cases-clip-soft" defer></script>
     <script>
       (function () {
         const escapeHtml = value =>
@@ -562,16 +562,24 @@
           }
 
           stack.classList.add("is-collapsed");
+
+          const visibleCards = [...grid.querySelectorAll(".project-card")].filter(
+            card => !card.hidden && !card.classList.contains("project-card--beyond-limit")
+          );
           const firstBeyond = grid.querySelector(".project-card--beyond-limit");
-          if (!clip || !firstBeyond) {
+          const lastVisible = visibleCards[visibleCards.length - 1];
+
+          if (!clip || !lastVisible || !firstBeyond) {
             if (clip) clip.style.maxHeight = "";
             return;
           }
 
           const clipTop = clip.getBoundingClientRect().top;
-          const beyondTop = firstBeyond.getBoundingClientRect().top - clipTop;
-          const peek = Math.min(132, Math.max(72, firstBeyond.getBoundingClientRect().height * 0.34));
-          clip.style.maxHeight = `${beyondTop + peek}px`;
+          const lastVisibleBottom = lastVisible.getBoundingClientRect().bottom - clipTop;
+          const beyondHeight = firstBeyond.getBoundingClientRect().height;
+          const peek = Math.min(Math.max(beyondHeight * 0.52, 96), 220);
+
+          clip.style.maxHeight = `${lastVisibleBottom + peek}px`;
         };
 
         const renderFallbackCases = async () => {
