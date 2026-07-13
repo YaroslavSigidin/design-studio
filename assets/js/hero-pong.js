@@ -37,6 +37,7 @@ const initHeroPong = () => {
     ".hero-title",
     ".hero-subtitle",
     ".hero-cta-wrap",
+    ".hero-request",
     ".hero-badge"
   ];
 

@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-header-btn-black-hover" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-hero-request" />
   </head>
   <body>
     <div class="hero-page">
@@ -88,6 +88,38 @@
                 Дизайн-студия полного цикла. Проектируем интерфейсы, сайты и цифровые продукты, чтобы ваш
                 бизнес рос быстрее.
               </p>
+
+              <div class="hero-cta-wrap">
+                <div class="hero-request" data-hero-request>
+                  <button
+                    class="hero-request__open"
+                    type="button"
+                    data-hero-request-toggle
+                    aria-expanded="false"
+                    aria-controls="heroRequestForm"
+                  >
+                    Оставить заявку
+                  </button>
+                  <form class="hero-request__form" id="heroRequestForm">
+                    <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Номер телефона"
+                      autocomplete="tel"
+                      inputmode="tel"
+                    />
+                    <input
+                      type="text"
+                      name="contact"
+                      placeholder="WhatsApp, Telegram"
+                      autocomplete="username"
+                      required
+                    />
+                    <button class="hero-request__submit" type="submit">Отправить</button>
+                  </form>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -434,11 +466,12 @@
     </aside>
 
     <script src="./assets/js/config.js?v=20260711-telegram-leads" defer></script>
-    <script src="./assets/js/contact.js?v=20260711-telegram-leads" defer></script>
+    <script src="./assets/js/contact.js?v=20260713-hero-request" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
     <script src="./assets/js/promo-strip.js?v=20260713-footer-promo" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
+    <script src="./assets/js/hero-request.js?v=20260713-hero-request" defer></script>
     <script src="./assets/js/hero-wordmark-scroll.js?v=20260713-hero-wordmark-scroll" defer></script>
     <script src="./assets/js/hero-pong.js?v=20260713-hero-cta" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
