@@ -422,15 +422,31 @@ body::after {
 .hero-btn--dark[data-open-brief-modal] {
   min-width: auto;
   min-height: 48px;
-  padding: 0 22px;
+  padding: 0 20px;
   border-radius: 13px;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 15px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  gap: 8px;
   background: transparent;
   color: #000;
   border-color: rgba(0, 0, 0, 0.18);
   box-shadow: none;
+}
+
+.hero-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+
+.hero-btn__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hero-btn--dark[data-open-brief-modal]::before,
