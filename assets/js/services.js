@@ -74,8 +74,21 @@ const SERVICES = [
   }
 ];
 
+const SERVICES_HOME_TITLES = [
+  "UX/UI для платформы",
+  "Одностраничный сайт",
+  "Многостраничный сайт",
+  "Мобильное приложение",
+  "Брендинг и айдентика",
+  "Презентация для бизнеса"
+];
+
+const getHomeServices = () => {
+  const byTitle = new Map(SERVICES.map(service => [service.title, service]));
+  return SERVICES_HOME_TITLES.map(title => byTitle.get(title)).filter(Boolean);
+};
+
 window.SERVICES = SERVICES;
-const SERVICES_VISIBLE_LIMIT = 9;
 
 const formatRub = value => new Intl.NumberFormat("ru-RU").format(value);
 
@@ -156,34 +169,14 @@ const serviceCardTemplate = service => {
 const initServices = () => {
   const grid = document.getElementById("studioServicesGrid");
   const moreWrap = document.getElementById("studioServicesMore");
-  const moreButton = document.getElementById("studioServicesMoreButton");
   if (!grid) return;
-  grid.innerHTML = SERVICES.map(serviceCardTemplate).join("");
 
-  let expanded = false;
-  const applyVisibleLimit = () => {
-    const cards = [...grid.querySelectorAll(".studio-service-card")];
-    const limit = SERVICES_VISIBLE_LIMIT;
+  grid.innerHTML = getHomeServices().map(serviceCardTemplate).join("");
 
-    cards.forEach((card, index) => {
-      const shouldHide = !expanded && index >= limit;
-      card.hidden = shouldHide;
-      card.style.display = shouldHide ? "none" : "";
-    });
-
-    if (moreWrap) {
-      const shouldHideButton = !(cards.length > limit && !expanded);
-      moreWrap.hidden = shouldHideButton;
-      moreWrap.style.display = shouldHideButton ? "none" : "";
-    }
-  };
-
-  moreButton?.addEventListener("click", () => {
-    expanded = true;
-    applyVisibleLimit();
-  });
-
-  applyVisibleLimit();
+  if (moreWrap) {
+    moreWrap.hidden = true;
+    moreWrap.style.display = "none";
+  }
 };
 
 if (document.readyState === "loading") {
