@@ -4,7 +4,6 @@ const initSiteMotion = () => {
   const lowEndCpu = typeof navigator.hardwareConcurrency === "number" && navigator.hardwareConcurrency <= 4;
   const targetSelector = [
     ".hero-badge",
-    ".hero-suggestion",
     ".hero-btn",
     ".project-card",
     ".studio-service-card",

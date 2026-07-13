@@ -964,7 +964,7 @@ body::after {
 
 .hero-search-input-wrap {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   gap: 12px;
   min-height: 86px;
   padding: 12px 12px 12px 16px;
@@ -976,49 +976,6 @@ body::after {
 
 .hero-search-input-wrap:focus-within {
   border-color: rgba(32, 56, 86, 0.16);
-}
-
-.hero-search-field {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 8px;
-  min-width: 0;
-}
-
-.hero-search-suggestions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 12px;
-}
-
-.hero-suggestion {
-  display: inline-flex;
-  align-items: center;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  color: rgba(43, 61, 87, 0.52);
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.2;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: color 0.16s ease;
-}
-
-.hero-suggestion:hover {
-  color: #111;
-}
-
-.hero-suggestion:focus-visible {
-  outline: 2px solid rgba(17, 42, 72, 0.18);
-  outline-offset: 2px;
-  border-radius: 4px;
 }
 
 .hero-search-editor {
@@ -3260,21 +3217,9 @@ body::after {
     gap: 12px;
   }
 
-  .hero-search-field {
-    gap: 10px;
-  }
-
   .hero-search-editor {
     min-height: 72px;
     font-size: 16px;
-  }
-
-  .hero-search-suggestions {
-    gap: 4px 10px;
-  }
-
-  .hero-suggestion {
-    font-size: 12px;
   }
 
   .hero-search-submit {

@@ -1,7 +1,6 @@
 const initHeroSearch = () => {
   const editor = document.querySelector("[data-hero-search-editor]");
   const submitButton = document.querySelector("[data-hero-submit]");
-  const serviceTabs = [...document.querySelectorAll("[data-brief-chip]")];
   const budgetRange = document.querySelector("[data-hero-budget-range]");
   const budgetLabel = document.querySelector("[data-hero-budget-label]");
   const deadlineRange = document.querySelector("[data-hero-deadline-range]");
@@ -160,37 +159,9 @@ const initHeroSearch = () => {
     }, result?.ok ? 1200 : 1800);
   };
 
-  const insertSuggestion = tab => {
-    const key = (tab.textContent || "").trim();
-    const current = editor.value.trim();
-    if (!current) {
-      editor.value = key;
-      editor.focus();
-      editor.setSelectionRange(editor.value.length, editor.value.length);
-      return;
-    }
-
-    const values = current
-      .split(",")
-      .map(value => value.trim())
-      .filter(Boolean);
-
-    if (!values.includes(key)) {
-      editor.value = `${values.join(", ")}, ${key}`;
-      editor.focus();
-      editor.setSelectionRange(editor.value.length, editor.value.length);
-    }
-  };
-
   editor.addEventListener("input", update);
   budgetRange?.addEventListener("input", update);
   deadlineRange?.addEventListener("input", update);
-  serviceTabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      insertSuggestion(tab);
-      update();
-    });
-  });
 
   submitButton.addEventListener("click", handleSend);
   finalForm?.addEventListener("submit", handleFinalSubmit);
