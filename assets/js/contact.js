@@ -208,7 +208,8 @@ const initStudioContacts = () => {
     if (!(form instanceof HTMLFormElement)) return;
 
     if (
-      !form.matches(".studio-discuss__form")
+      !form.matches(".studio-discuss__form") &&
+      !form.matches(".hero-request__form")
     ) {
       return;
     }
@@ -245,7 +246,9 @@ const initStudioContacts = () => {
     const result = await submitLead({
       source: form.dataset.caseTitle
         ? "Кейс"
-        : "Блок «Обсудить проект»",
+        : form.matches(".hero-request__form")
+          ? "Hero «Оставить заявку»"
+          : "Блок «Обсудить проект»",
       name,
       phone,
       contact,

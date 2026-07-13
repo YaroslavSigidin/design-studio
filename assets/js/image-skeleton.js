@@ -1,10 +1,3 @@
-const escapeHtml = value =>
-  String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-
 const markImageSkeletonState = (wrapper, state) => {
   wrapper.classList.remove("is-loading", "is-loaded", "is-error");
   wrapper.classList.add(state);
@@ -46,15 +39,15 @@ const renderSkeletonImage = ({
   if (!src) return "";
 
   const attrs = [
-    `src="${escapeHtml(src)}"`,
-    `alt="${escapeHtml(alt)}"`,
+    `src="${window.__studioEscapeHtml(src)}"`,
+    `alt="${window.__studioEscapeHtml(alt)}"`,
     `loading="${eager ? "eager" : loading}"`,
     'decoding="async"'
   ];
 
   if (eager) attrs.push('fetchpriority="high"');
-  if (width) attrs.push(`width="${escapeHtml(width)}"`);
-  if (height) attrs.push(`height="${escapeHtml(height)}"`);
+  if (width) attrs.push(`width="${window.__studioEscapeHtml(width)}"`);
+  if (height) attrs.push(`height="${window.__studioEscapeHtml(height)}"`);
 
   return `
     <div class="media-skeleton${className ? ` ${className}` : ""}">

@@ -22,6 +22,13 @@ const resolveLeadEndpoint = () => {
 
 const studioBasePath = detectStudioBasePath();
 
+window.__studioEscapeHtml = value =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
 window.STUDIO_CONFIG = {
   basePath: studioBasePath,
   assetBasePath: studioBasePath,

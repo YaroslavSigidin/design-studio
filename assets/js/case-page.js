@@ -1,10 +1,3 @@
-const escapeHtml = value =>
-  String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-
 const loadJson = async url => {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`${url} → ${res.status}`);
@@ -61,12 +54,12 @@ const normalizeCaseHref = (project, cfg) => {
 
 const renderList = items =>
   items.length
-    ? `<ul class="case-list">${items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
+    ? `<ul class="case-list">${items.map(item => `<li>${window.__studioEscapeHtml(item)}</li>`).join("")}</ul>`
     : "";
 
 const renderTags = tags =>
   tags.length
-    ? `<div class="case-tags">${tags.map(tag => `<span class="case-tag">${escapeHtml(tag)}</span>`).join("")}</div>`
+    ? `<div class="case-tags">${tags.map(tag => `<span class="case-tag">${window.__studioEscapeHtml(tag)}</span>`).join("")}</div>`
     : "";
 
 const renderChapters = chapters =>
@@ -75,15 +68,15 @@ const renderChapters = chapters =>
         .map(
           chapter => `
         <article class="case-chapter">
-          <p class="case-chapter-label">${escapeHtml(chapter.label)}</p>
-          <h3 class="case-chapter-title">${escapeHtml(chapter.title)}</h3>
-          <p class="case-chapter-text">${escapeHtml(chapter.text)}</p>
+          <p class="case-chapter-label">${window.__studioEscapeHtml(chapter.label)}</p>
+          <h3 class="case-chapter-title">${window.__studioEscapeHtml(chapter.title)}</h3>
+          <p class="case-chapter-text">${window.__studioEscapeHtml(chapter.text)}</p>
         </article>`
         )
         .join("")}</div>`
     : "";
 
-const renderSkeletonImage = attrs => window.STUDIO_MEDIA?.renderSkeletonImage(attrs) || "";
+const renderMediaSkeleton = attrs => window.STUDIO_MEDIA?.renderSkeletonImage(attrs) || "";
 
 const renderGallery = images =>
   images.length
@@ -94,7 +87,7 @@ const renderGallery = images =>
           .map(
             (src, index) => `
           <figure class="case-gallery-item">
-            ${renderSkeletonImage({
+            ${renderMediaSkeleton({
               src,
               className: "media-skeleton--cover",
               eager: index < 2
@@ -112,7 +105,7 @@ const renderGalleryChunk = (images, startIndex = 0) =>
           .map(
             (src, index) => `
           <figure class="case-gallery-item">
-            ${renderSkeletonImage({
+            ${renderMediaSkeleton({
               src,
               className: "media-skeleton--cover",
               eager: startIndex + index < 2
@@ -159,7 +152,7 @@ const renderLiveLinks = links =>
     ? `<div class="case-live-links">${links
         .map(
           link =>
-            `<a href="${escapeHtml(link.url)}" target="_blank" rel="noreferrer noopener">${escapeHtml(link.label || "Сайт")}</a>`
+            `<a href="${window.__studioEscapeHtml(link.url)}" target="_blank" rel="noreferrer noopener">${window.__studioEscapeHtml(link.label || "Сайт")}</a>`
         )
         .join("")}</div>`
     : "";
@@ -174,10 +167,10 @@ const renderCaseNavigationArrows = (projects, currentIndex, cfg) => {
 
   return `
     <nav class="case-side-nav" aria-label="Навигация по кейсам">
-      <a class="case-side-arrow case-side-arrow--left" href="${escapeHtml(normalizeCaseHref(prevProject, cfg))}" aria-label="Предыдущий кейс">
+      <a class="case-side-arrow case-side-arrow--left" href="${window.__studioEscapeHtml(normalizeCaseHref(prevProject, cfg))}" aria-label="Предыдущий кейс">
         <span aria-hidden="true">‹</span>
       </a>
-      <a class="case-side-arrow case-side-arrow--right" href="${escapeHtml(normalizeCaseHref(nextProject, cfg))}" aria-label="Следующий кейс">
+      <a class="case-side-arrow case-side-arrow--right" href="${window.__studioEscapeHtml(normalizeCaseHref(nextProject, cfg))}" aria-label="Следующий кейс">
         <span aria-hidden="true">›</span>
       </a>
     </nav>
@@ -199,16 +192,16 @@ const renderRelatedCases = (projects, currentProject, cfg) => {
         ${related
           .map(
             item => `
-          <a class="case-related-card" href="${escapeHtml(normalizeCaseHref(item, cfg))}">
-            ${renderSkeletonImage({
+          <a class="case-related-card" href="${window.__studioEscapeHtml(normalizeCaseHref(item, cfg))}">
+            ${renderMediaSkeleton({
               src: normalizeAssetUrl(item.image || "", cfg),
               alt: item.title || "Кейс",
               className: "media-skeleton--cover"
             })}
             <div class="case-related-content">
-              <span class="case-related-tag">${escapeHtml(getTagLabel(item.category))}</span>
-              <h3>${escapeHtml(item.title || "")}</h3>
-              <p>${escapeHtml(item.subtitle || "")}</p>
+              <span class="case-related-tag">${window.__studioEscapeHtml(getTagLabel(item.category))}</span>
+              <h3>${window.__studioEscapeHtml(item.title || "")}</h3>
+              <p>${window.__studioEscapeHtml(item.subtitle || "")}</p>
             </div>
           </a>`
           )
@@ -233,7 +226,7 @@ const renderBottomLeadForm = projectTitle => `
   <section class="section studio-discuss studio-discuss--case" id="discuss-project">
     <div class="studio-discuss__inner">
       <h2>Обсудить проект</h2>
-      <form class="studio-discuss__form" data-case-title="${escapeHtml(projectTitle)}">
+      <form class="studio-discuss__form" data-case-title="${window.__studioEscapeHtml(projectTitle)}">
         <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
         <input type="tel" name="phone" placeholder="Телефон" autocomplete="tel" inputmode="tel" />
         <input type="text" name="contact" placeholder="Telegram / email" autocomplete="email" required />
@@ -282,13 +275,13 @@ const renderCase = (project, projects, currentIndex, cfg) => {
     ? `<section class="case-block">
         <p class="case-eyebrow">Задача</p>
         <h2 class="case-block-title">Цель проекта</h2>
-        <p class="case-text">${escapeHtml(study.task)}</p>
+        <p class="case-text">${window.__studioEscapeHtml(study.task)}</p>
       </section>`
     : project.description
       ? `<section class="case-block">
           <p class="case-eyebrow">О проекте</p>
           <h2 class="case-block-title">Контекст</h2>
-          <p class="case-text">${escapeHtml(project.description)}</p>
+          <p class="case-text">${window.__studioEscapeHtml(project.description)}</p>
         </section>`
       : "";
 
@@ -305,7 +298,7 @@ const renderCase = (project, projects, currentIndex, cfg) => {
         <p class="case-eyebrow">Результаты</p>
         <h2 class="case-block-title">Метрики</h2>
         <div class="case-metrics">${metrics
-          .map(metric => `<div class="case-metric">${escapeHtml(metric)}</div>`)
+          .map(metric => `<div class="case-metric">${window.__studioEscapeHtml(metric)}</div>`)
           .join("")}</div>
       </section>`
     : "";
@@ -335,11 +328,11 @@ const renderCase = (project, projects, currentIndex, cfg) => {
 
   return `
     <nav class="case-breadcrumbs" aria-label="Хлебные крошки">
-      <a href="${escapeHtml(cfg.studioHome || "./")}">Согласовано</a>
+      <a href="${window.__studioEscapeHtml(cfg.studioHome || "./")}">Согласовано</a>
       <span aria-hidden="true">/</span>
-      <a href="${escapeHtml(cfg.studioCases || "./#cases")}">Кейсы</a>
+      <a href="${window.__studioEscapeHtml(cfg.studioCases || "./#cases")}">Кейсы</a>
       <span aria-hidden="true">/</span>
-      <span>${escapeHtml(title)}</span>
+      <span>${window.__studioEscapeHtml(title)}</span>
     </nav>
 
     ${renderCaseNavigationArrows(projects, currentIndex, cfg)}
@@ -347,16 +340,16 @@ const renderCase = (project, projects, currentIndex, cfg) => {
     <article class="case-article">
       <header class="case-hero">
         <div class="case-hero-copy">
-          <span class="case-category">${escapeHtml(getTagLabel(project.category))}</span>
-          <h1 class="case-title">${escapeHtml(title)}</h1>
-          <p class="case-lead">${escapeHtml(subtitle)}</p>
+          <span class="case-category">${window.__studioEscapeHtml(getTagLabel(project.category))}</span>
+          <h1 class="case-title">${window.__studioEscapeHtml(title)}</h1>
+          <p class="case-lead">${window.__studioEscapeHtml(subtitle)}</p>
           ${renderTags(tags)}
           ${renderLiveLinks(project.liveLinks || [])}
         </div>
         <div class="case-hero-media">
           ${
             heroImage
-              ? renderSkeletonImage({
+              ? renderMediaSkeleton({
                   src: heroImage,
                   alt: title,
                   width: "1200",
@@ -374,8 +367,8 @@ const renderCase = (project, projects, currentIndex, cfg) => {
       </div>
 
       <footer class="case-footer">
-        <a class="case-back" href="${escapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
-        <a class="case-brief" href="${escapeHtml(cfg.studioHome || "./")}">Оставить бриф</a>
+        <a class="case-back" href="${window.__studioEscapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
+        <a class="case-brief" href="${window.__studioEscapeHtml(cfg.studioHome || "./")}">Оставить бриф</a>
       </footer>
     </article>
 
@@ -396,8 +389,8 @@ const renderNotFound = (slug, cfg) => {
   return `
     <div class="case-empty">
       <h1>Кейс не найден</h1>
-      <p>Страница «${escapeHtml(slug)}» недоступна или ещё не подключена.</p>
-      <a class="case-back" href="${escapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
+      <p>Страница «${window.__studioEscapeHtml(slug)}» недоступна или ещё не подключена.</p>
+      <a class="case-back" href="${window.__studioEscapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
     </div>
   `;
 };
@@ -465,8 +458,8 @@ const initCasePage = async () => {
     root.innerHTML = `
       <div class="case-empty">
         <h1>Не удалось загрузить кейс</h1>
-        <p>${escapeHtml(err.message || err)}</p>
-        <a class="case-back" href="${escapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
+        <p>${window.__studioEscapeHtml(err.message || err)}</p>
+        <a class="case-back" href="${window.__studioEscapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
       </div>
     `;
     console.error("[studio case]", err);

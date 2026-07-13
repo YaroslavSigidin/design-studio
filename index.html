@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-cases-fade" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-header-font-weight" />
   </head>
   <body>
     <div class="hero-page">
@@ -115,6 +115,103 @@
               <p class="hero-subtitle" data-hero-scroll-item>
                 Проектируем интерфейсы, сайты и цифровые продукты, чтобы ваш бизнес рос быстрее.
               </p>
+            </div>
+
+            <div class="hero-search-wrap" data-hero-scroll-item>
+              <div class="hero-search">
+                <div class="hero-search-input-wrap">
+                  <textarea
+                    class="hero-search-editor"
+                    data-hero-search-editor
+                    aria-label="Мне нужен(а)...."
+                    data-placeholder="Мне нужен(а)...."
+                    placeholder="Мне нужен(а)...."
+                    rows="2"
+                    maxlength="3000"
+                  ></textarea>
+                  <button type="button" class="hero-search-submit" aria-label="Отправить бриф" data-hero-submit>
+                    <span>Отправить</span>
+                  </button>
+                </div>
+
+                <div class="hero-search-sliders">
+                  <label class="hero-range-control">
+                    <div class="hero-range-head">
+                      <span>Бюджет</span>
+                      <strong data-hero-budget-label>150 000 ₽</strong>
+                    </div>
+                    <input type="range" min="5" max="500" step="5" value="150" data-hero-budget-range />
+                  </label>
+                  <label class="hero-range-control">
+                    <div class="hero-range-head">
+                      <span>Срок</span>
+                      <strong data-hero-deadline-label>30 дней</strong>
+                    </div>
+                    <input type="range" min="1" max="180" step="1" value="30" data-hero-deadline-range />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-cta-wrap" data-hero-scroll-item>
+              <div class="hero-request" data-hero-request>
+                <button
+                  class="hero-request__open"
+                  type="button"
+                  data-hero-request-toggle
+                  aria-expanded="false"
+                  aria-controls="heroRequestForm"
+                >
+                  <span class="hero-request__open-label">Оставить заявку</span>
+                  <span class="hero-request__open-chevron" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M7.5 5 12.5 10l-5 5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </button>
+                <form class="hero-request__form" id="heroRequestForm">
+                  <button
+                    class="hero-request__collapse"
+                    type="button"
+                    data-hero-request-collapse
+                    aria-label="Свернуть форму"
+                  >
+                    <span class="hero-request__collapse-chevron" aria-hidden="true">
+                      <svg viewBox="0 0 20 20" fill="none">
+                        <path
+                          d="M12.5 5 7.5 10l5 5"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                  <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Номер телефона"
+                    autocomplete="tel"
+                    inputmode="tel"
+                  />
+                  <input
+                    type="text"
+                    name="contact"
+                    placeholder="WhatsApp, Telegram"
+                    autocomplete="username"
+                    required
+                  />
+                  <button class="hero-request__submit" type="submit">Отправить</button>
+                </form>
+              </div>
             </div>
 
           </div>
@@ -248,44 +345,6 @@
               Дизайн-студия полного цикла. Проектируем интерфейсы, сайты и цифровые продукты, чтобы
               ваш бизнес рос быстрее.
             </p>
-
-            <div class="studio-footer__ai-brief">
-              <div class="hero-search-wrap">
-                <div class="hero-search">
-                  <div class="hero-search-input-wrap">
-                    <textarea
-                      class="hero-search-editor"
-                      data-hero-search-editor
-                      aria-label="Мне нужен(а)...."
-                      data-placeholder="Мне нужен(а)...."
-                      placeholder="Мне нужен(а)...."
-                      rows="2"
-                      maxlength="3000"
-                    ></textarea>
-                    <button type="button" class="hero-search-submit" aria-label="Отправить бриф" data-hero-submit>
-                      <span>Отправить</span>
-                    </button>
-                  </div>
-
-                  <div class="hero-search-sliders">
-                    <label class="hero-range-control">
-                      <div class="hero-range-head">
-                        <span>Бюджет</span>
-                        <strong data-hero-budget-label>150 000 ₽</strong>
-                      </div>
-                      <input type="range" min="5" max="500" step="5" value="150" data-hero-budget-range />
-                    </label>
-                    <label class="hero-range-control">
-                      <div class="hero-range-head">
-                        <span>Срок</span>
-                        <strong data-hero-deadline-label>30 дней</strong>
-                      </div>
-                      <input type="range" min="1" max="180" step="1" value="30" data-hero-deadline-range />
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div class="studio-footer__columns">
@@ -473,22 +532,23 @@
       </button>
     </aside>
 
-    <script src="./assets/js/config.js?v=20260711-telegram-leads" defer></script>
-    <script src="./assets/js/contact.js?v=20260713-footer-ai-brief" defer></script>
+    <script src="./assets/js/config.js?v=20260713-escape-html-shared" defer></script>
+    <script src="./assets/js/contact.js?v=20260713-hero-ai-brief" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
     <script src="./assets/js/promo-strip.js?v=20260713-header-promo" defer></script>
     <script src="./assets/js/header-widgets.js?v=20260713-header-widgets" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
-    <script src="./assets/js/hero.js?v=20260713-footer-ai-brief" defer></script>
-    <script src="./assets/js/hero-scroll.js?v=20260713-hero-scroll-footer" defer></script>
+    <script src="./assets/js/hero-request.js?v=20260713-hero-request-collapse" defer></script>
+    <script src="./assets/js/hero.js?v=20260713-hero-ai-brief" defer></script>
+    <script src="./assets/js/hero-scroll.js?v=20260713-hero-scroll-ai" defer></script>
     <script src="./assets/js/hero-pong.js?v=20260713-hero-cta" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
-    <script src="./assets/js/services.js?v=20260713-services-six-only" defer></script>
+    <script src="./assets/js/services.js?v=20260713-escape-html-shared" defer></script>
     <script src="./assets/js/services-carousel.js?v=20260713-services-six-loop" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
-    <script src="./assets/js/image-skeleton.js?v=20260713-skeleton-soft" defer></script>
-    <script src="./assets/js/cases.js?v=20260713-cases-fade" defer></script>
+    <script src="./assets/js/image-skeleton.js?v=20260713-escape-html-shared" defer></script>
+    <script src="./assets/js/cases.js?v=20260713-escape-html-shared" defer></script>
     <script>
       (function () {
         const escapeHtml = value =>

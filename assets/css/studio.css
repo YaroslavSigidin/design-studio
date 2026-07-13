@@ -80,7 +80,9 @@ html {
   }
 
   .hero-title[data-hero-wordmark],
-  .hero-subtitle[data-hero-scroll-item] {
+  .hero-subtitle[data-hero-scroll-item],
+  .hero-search-wrap[data-hero-scroll-item],
+  .hero-cta-wrap[data-hero-scroll-item] {
     opacity: 1;
     transform: none;
   }
@@ -585,7 +587,7 @@ body::after {
   border-left: none;
   font-family: "Schibsted Grotesk", sans-serif;
   font-size: clamp(10px, 0.82vw, 13px);
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.08;
   letter-spacing: -0.01em;
   text-transform: uppercase;
@@ -600,7 +602,7 @@ body::after {
   margin: 0;
   font-family: "Schibsted Grotesk", sans-serif;
   font-size: clamp(9px, 0.66vw, 10px);
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.01em;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.9);
@@ -611,7 +613,7 @@ body::after {
   margin: 0;
   font-family: "Schibsted Grotesk", sans-serif;
   font-size: clamp(15px, 1.14vw, 20px);
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1;
   letter-spacing: -0.015em;
   text-transform: lowercase;
@@ -671,7 +673,7 @@ body::after {
   color: #0f1723;
   text-decoration: none;
   font-family: "Schibsted Grotesk", sans-serif;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 14px;
   letter-spacing: -0.01em;
   backdrop-filter: blur(12px);
@@ -994,7 +996,9 @@ body::after {
 }
 
 .hero-title[data-hero-wordmark],
-.hero-subtitle[data-hero-scroll-item] {
+.hero-subtitle[data-hero-scroll-item],
+.hero-search-wrap[data-hero-scroll-item],
+.hero-cta-wrap[data-hero-scroll-item] {
   opacity: var(--hero-scroll-opacity, 1);
   transform: var(--hero-scroll-transform, none);
   will-change: transform, opacity;
@@ -1019,7 +1023,7 @@ body::after {
   width: 100%;
   max-width: min(980px, calc(100% - 48px));
   margin-inline: auto;
-  margin-top: 32px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 }
@@ -1396,7 +1400,7 @@ body::after {
   width: 100%;
   max-width: 816px;
   margin-inline: auto;
-  margin-top: 36px;
+  margin-top: 28px;
 }
 
 .hero-search {
@@ -4516,17 +4520,6 @@ body::after {
   line-height: 1.6;
 }
 
-.studio-footer__ai-brief {
-  margin-top: 20px;
-  max-width: min(100%, 520px);
-}
-
-.studio-footer__ai-brief .hero-search-wrap {
-  max-width: none;
-  margin-top: 0;
-  margin-inline: 0;
-}
-
 .studio-footer__wordmark {
   display: flex;
   justify-content: center;
@@ -4729,15 +4722,6 @@ body::after {
 
   .studio-footer__brand p {
     font-size: 14px;
-  }
-
-  .studio-footer__ai-brief {
-    margin-top: 16px;
-    max-width: 100%;
-  }
-
-  .studio-footer__ai-brief .hero-search-sliders {
-    grid-template-columns: minmax(0, 1fr);
   }
 
   .studio-footer__columns {

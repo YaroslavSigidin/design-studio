@@ -47,13 +47,6 @@ window.SERVICES = SERVICES;
 
 const formatRub = value => new Intl.NumberFormat("ru-RU").format(value);
 
-const escapeHtml = value =>
-  String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-
 const getPricingDetail = title => {
   const normalized = String(title || "").toLowerCase();
 
@@ -99,27 +92,27 @@ const serviceCardTemplate = service => {
   const bullets = getBullets(service);
   const bulletMarkup = `
     <ul class="studio-service-bullets">
-      ${bullets.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+      ${bullets.map(item => `<li>${window.__studioEscapeHtml(item)}</li>`).join("")}
     </ul>
   `;
   return `
     <article class="${cardClassName}" data-service-card>
       <div class="studio-service-card__body">
-        <h3 class="studio-service-title">${escapeHtml(service.title)}</h3>
+        <h3 class="studio-service-title">${window.__studioEscapeHtml(service.title)}</h3>
         <div class="studio-service-prices">
-          <p class="studio-service-price">${escapeHtml(priceValue)}</p>
+          <p class="studio-service-price">${window.__studioEscapeHtml(priceValue)}</p>
           ${oldPriceMarkup}
         </div>
-        <p class="studio-service-installment">${escapeHtml(pricingDetail)}</p>
+        <p class="studio-service-installment">${window.__studioEscapeHtml(pricingDetail)}</p>
         ${bulletMarkup}
       </div>
       <button
         type="button"
         class="studio-service-order studio-service-order--always-visible"
         data-open-brief-modal
-        data-service="${escapeHtml(service.title)}"
+        data-service="${window.__studioEscapeHtml(service.title)}"
       >
-        ${escapeHtml(service.ctaLabel || "Заказать")}
+        ${window.__studioEscapeHtml(service.ctaLabel || "Заказать")}
       </button>
     </article>
   `;

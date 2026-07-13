@@ -1,13 +1,6 @@
 const qs = (sel, scope = document) => scope.querySelector(sel);
 const qsa = (sel, scope = document) => [...scope.querySelectorAll(sel)];
 
-const escapeHtml = value =>
-  String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-
 const loadJson = async (url, timeoutMs = 2500) => {
   const timeoutPromise = new Promise((_, reject) => {
     window.setTimeout(() => reject(new Error(`${url} → timeout (${timeoutMs}ms)`)), timeoutMs);
@@ -107,7 +100,7 @@ const EXTRA_PLACEHOLDER_CASE = {
   isPlaceholder: true
 };
 
-const renderSkeletonImage = attrs => window.STUDIO_MEDIA?.renderSkeletonImage(attrs) || "";
+const renderMediaSkeleton = attrs => window.STUDIO_MEDIA?.renderSkeletonImage(attrs) || "";
 
 const renderCasesSkeleton = (grid, count = SKELETON_CARDS_COUNT) => {
   if (!grid) return;
@@ -164,7 +157,7 @@ const renderProjectCard = (project, cfg) => {
   const filterTags = [...(project.tags || []), ...(project.study?.tags || [])].join(" ").toLowerCase();
   const imageMarkup = isPlaceholder
     ? `<div class="project-placeholder-media" aria-hidden="true"></div>`
-    : renderSkeletonImage({
+    : renderMediaSkeleton({
         src: image,
         alt: project.title,
         width: "1200",
@@ -175,17 +168,17 @@ const renderProjectCard = (project, cfg) => {
   return `
     <article
       class="project-card${isPlaceholder ? " project-card--placeholder" : ""}"
-      data-project-id="${escapeHtml(project.id)}"
-      data-category="${escapeHtml(project.category || "web")}"
-      data-search="${escapeHtml(buildProjectSearchText(project))}"
-      data-filter-tags="${escapeHtml(filterTags)}"
-      ${caseHref ? `data-case-url="${escapeHtml(caseHref)}" tabindex="0"` : ""}
+      data-project-id="${window.__studioEscapeHtml(project.id)}"
+      data-category="${window.__studioEscapeHtml(project.category || "web")}"
+      data-search="${window.__studioEscapeHtml(buildProjectSearchText(project))}"
+      data-filter-tags="${window.__studioEscapeHtml(filterTags)}"
+      ${caseHref ? `data-case-url="${window.__studioEscapeHtml(caseHref)}" tabindex="0"` : ""}
     >
       ${imageMarkup}
       <div class="content">
         <span class="tag">${isPlaceholder ? "NEW" : tagLabel}</span>
-        <h3>${escapeHtml(project.title)}</h3>
-        <p>${escapeHtml(project.subtitle || "")}</p>
+        <h3>${window.__studioEscapeHtml(project.title)}</h3>
+        <p>${window.__studioEscapeHtml(project.subtitle || "")}</p>
       </div>
     </article>
   `;
