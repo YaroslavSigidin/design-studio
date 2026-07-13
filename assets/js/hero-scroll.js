@@ -1,4 +1,4 @@
-const easeOutCubic = value => 1 - (1 - value) ** 3;
+const easeOutQuint = value => 1 - (1 - value) ** 5;
 
 const clamp01 = value => Math.min(1, Math.max(0, value));
 
@@ -14,48 +14,29 @@ const initHeroScroll = () => {
   if (reducedMotion || saveData) return;
 
   const layers = [
-    {
-      node: wordmark,
-      delay: 0,
-      drive: eased => ({
-        opacity: 1 - eased * 0.96,
-        transform: `translate3d(${(-eased * 42).toFixed(2)}px, ${(-eased * 72).toFixed(2)}px, 0) scale(${(1 - eased * 0.2).toFixed(4)}) rotate(${(-eased * 3.2).toFixed(2)}deg)`
-      })
-    },
-    {
-      node: subtitle,
-      delay: 0.1,
-      drive: eased => ({
-        opacity: 1 - eased * 0.94,
-        transform: `translate3d(${(eased * 28).toFixed(2)}px, ${(eased * 56).toFixed(2)}px, 0) scale(${(1 - eased * 0.08).toFixed(4)})`
-      })
-    },
-    {
-      node: cta,
-      delay: 0.18,
-      drive: eased => ({
-        opacity: 1 - eased * 0.9,
-        transform: `translate3d(0, ${(eased * 104).toFixed(2)}px, 0) scale(${(1 - eased * 0.14).toFixed(4)}) rotate(${(eased * 2.4).toFixed(2)}deg)`
-      })
-    }
+    { node: wordmark, lift: 52, scale: 0.1, fade: 0.94 },
+    { node: subtitle, lift: 40, scale: 0.07, fade: 0.9 },
+    { node: cta, lift: 28, scale: 0.05, fade: 0.86 }
   ];
 
   let ticking = false;
 
-  const applyLayer = (layer, progress) => {
-    const local = clamp01((progress - layer.delay) / (1 - layer.delay));
-    const eased = easeOutCubic(local);
-    const values = layer.drive(eased);
-
-    layer.node.style.setProperty("--hero-scroll-opacity", values.opacity.toFixed(4));
-    layer.node.style.setProperty("--hero-scroll-transform", values.transform);
-  };
-
   const update = () => {
-    const range = Math.max(heroPage.offsetHeight * 0.5, window.innerHeight * 0.4, 300);
-    const progress = clamp01(window.scrollY / range);
+    const range = Math.max(heroPage.offsetHeight * 0.62, window.innerHeight * 0.48, 340);
+    const progress = easeOutQuint(clamp01(window.scrollY / range));
 
-    layers.forEach(layer => applyLayer(layer, progress));
+    layers.forEach(layer => {
+      const opacity = 1 - progress * layer.fade;
+      const translateY = -progress * layer.lift;
+      const scale = 1 - progress * layer.scale;
+
+      layer.node.style.setProperty("--hero-scroll-opacity", opacity.toFixed(4));
+      layer.node.style.setProperty(
+        "--hero-scroll-transform",
+        `translate3d(0, ${translateY.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`
+      );
+    });
+
     ticking = false;
   };
 

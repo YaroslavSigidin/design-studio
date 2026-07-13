@@ -960,7 +960,7 @@ body::after {
 
 .hero-title--wordmark {
   width: min(100%, 860px);
-  transform-origin: center top;
+  transform-origin: center center;
   will-change: transform, opacity;
 }
 
@@ -970,14 +970,7 @@ body::after {
   opacity: var(--hero-scroll-opacity, 1);
   transform: var(--hero-scroll-transform, none);
   will-change: transform, opacity;
-}
-
-.hero-subtitle[data-hero-scroll-item] {
   transform-origin: center center;
-}
-
-.hero-cta-wrap[data-hero-scroll-item] {
-  transform-origin: center bottom;
 }
 
 .hero-title--wordmark img {
