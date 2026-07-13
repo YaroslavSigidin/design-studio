@@ -36,7 +36,7 @@ const initHeroPong = () => {
     "[data-floating-header]",
     ".hero-title",
     ".hero-subtitle",
-    ".hero-search-wrap",
+    ".hero-cta-wrap",
     ".hero-badge"
   ];
 
