@@ -147,27 +147,9 @@ const serviceCardTemplate = service => {
       ${bullets.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
     </ul>
   `;
-  const metaMarkup =
-    service.rating || service.reviews
-      ? `
-      <div class="studio-service-meta">
-        ${
-          service.rating
-            ? `<span class="studio-service-rating" aria-label="Рейтинг ${service.rating}">★ ${service.rating.toFixed(1)}</span>`
-            : ""
-        }
-        ${
-          service.reviews
-            ? `<span class="studio-service-reviews">${service.reviews} отзывов</span>`
-            : ""
-        }
-      </div>
-    `
-      : "";
   return `
     <article class="${cardClassName}" data-service-card>
       <div class="studio-service-card__body">
-        ${metaMarkup}
         <h3 class="studio-service-title">${escapeHtml(service.title)}</h3>
         <div class="studio-service-prices">
           <p class="studio-service-price">${escapeHtml(priceValue)}</p>
