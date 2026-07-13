@@ -23,8 +23,8 @@ const initServicesCarousel = () => {
     const viewportRect = viewport.getBoundingClientRect();
     const centerX = viewportRect.left + viewportRect.width / 2;
     const cardWidth = cards[0].offsetWidth || 360;
-    const focusBand = cardWidth * 0.92;
-    const fadeBand = viewportRect.width * 0.46;
+    const focusBand = cardWidth * 0.88;
+    const fadeBand = viewportRect.width * 0.42;
 
     cards.forEach(card => {
       const rect = card.getBoundingClientRect();
@@ -32,16 +32,13 @@ const initServicesCarousel = () => {
       const distance = Math.abs(cardCenter - centerX);
       let opacity = 1;
       let scale = 1;
-      const focusRatio = Math.min(1, distance / Math.max(focusBand, 1));
 
-      if (distance <= focusBand * 0.35) {
-        scale = 1.028;
+      if (distance <= focusBand * 0.42) {
+        scale = 1.02;
       } else if (distance > focusBand) {
         const fadeProgress = Math.min(1, (distance - focusBand) / Math.max(fadeBand - focusBand, 1));
-        opacity = Math.max(0.04, 1 - fadeProgress * 0.96);
-        scale = Math.max(0.92, 1 - fadeProgress * 0.07);
-      } else {
-        scale = 1 + (1 - focusRatio) * 0.02;
+        opacity = Math.max(0.42, 1 - fadeProgress * 0.58);
+        scale = Math.max(0.97, 1 - fadeProgress * 0.03);
       }
 
       card.style.setProperty("--service-card-opacity", opacity.toFixed(3));

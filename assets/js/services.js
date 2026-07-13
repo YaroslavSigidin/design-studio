@@ -125,6 +125,12 @@ const getPricingDetail = title => {
   return "от 6 500 ₽ за экран";
 };
 
+const getBullets = service => {
+  if (Array.isArray(service.bullets) && service.bullets.length) return service.bullets;
+  if (service.dark) return ["Разбор текущего решения", "План улучшений", "Созвон с командой"];
+  return ["Бриф и структура", "Дизайн и прототип", "Передача в разработку"];
+};
+
 const serviceCardTemplate = service => {
   const pricingDetail = getPricingDetail(service.title);
   const isFree = Number(service.price) === 0;
@@ -135,18 +141,15 @@ const serviceCardTemplate = service => {
   const cardClassName = `studio-service-card${service.dark ? " studio-service-card--dark" : ""}${
     service.featured ? " studio-service-card--featured" : ""
   }${service.accent ? ` studio-service-card--${service.accent}` : ""}`;
-  const orderButtonClassName = `studio-service-order${
-    service.alwaysVisibleCta ? " studio-service-order--always-visible" : ""
-  }`;
-  const bulletMarkup = Array.isArray(service.bullets) && service.bullets.length
-    ? `
-      <ul class="studio-service-bullets">
-        ${service.bullets.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
-      </ul>
-    `
-    : "";
-  const metaMarkup = service.featured
-    ? `
+  const bullets = getBullets(service);
+  const bulletMarkup = `
+    <ul class="studio-service-bullets">
+      ${bullets.map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+    </ul>
+  `;
+  const metaMarkup =
+    service.badge || service.rating
+      ? `
       <div class="studio-service-meta">
         ${service.badge ? `<span class="studio-service-badge">${escapeHtml(service.badge)}</span>` : ""}
         ${
@@ -161,20 +164,22 @@ const serviceCardTemplate = service => {
         }
       </div>
     `
-    : "";
+      : "";
   return `
     <article class="${cardClassName}" data-service-card>
-      ${metaMarkup}
-      <h3 class="studio-service-title">${escapeHtml(service.title)}</h3>
-      <div class="studio-service-prices">
-        <p class="studio-service-price">${escapeHtml(priceValue)}</p>
-        ${oldPriceMarkup}
+      <div class="studio-service-card__body">
+        ${metaMarkup}
+        <h3 class="studio-service-title">${escapeHtml(service.title)}</h3>
+        <div class="studio-service-prices">
+          <p class="studio-service-price">${escapeHtml(priceValue)}</p>
+          ${oldPriceMarkup}
+        </div>
+        <p class="studio-service-installment">${escapeHtml(pricingDetail)}</p>
+        ${bulletMarkup}
       </div>
-      <p class="studio-service-installment">${escapeHtml(pricingDetail)}</p>
-      ${bulletMarkup}
       <button
         type="button"
-        class="${orderButtonClassName}"
+        class="studio-service-order studio-service-order--always-visible"
         data-open-brief-modal
         data-service="${escapeHtml(service.title)}"
       >
