@@ -315,12 +315,15 @@ const initCasesFilter = (grid, tabsRoot) => {
 
 const renderCasesGrid = (grid, projects, cfg) => {
   if (!grid) return;
-  grid.classList.remove("is-loading");
-  grid.removeAttribute("aria-busy");
-  const items = [...projects, EXTRA_PLACEHOLDER_CASE];
-  grid.innerHTML = items.map(project => renderProjectCard(project, cfg)).join("");
-  bindCardNavigation(grid);
-  window.STUDIO_MEDIA?.initImageSkeletons(grid);
+  grid.classList.add("is-swapping");
+  window.setTimeout(() => {
+    grid.classList.remove("is-loading", "is-swapping");
+    grid.removeAttribute("aria-busy");
+    const items = [...projects, EXTRA_PLACEHOLDER_CASE];
+    grid.innerHTML = items.map(project => renderProjectCard(project, cfg)).join("");
+    bindCardNavigation(grid);
+    window.STUDIO_MEDIA?.initImageSkeletons(grid);
+  }, 120);
 };
 
 const initCases = async () => {

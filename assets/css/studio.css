@@ -1933,10 +1933,28 @@ body::after {
 }
 
 .studio-cases .case-skeleton-media {
+  position: relative;
+  overflow: hidden;
   aspect-ratio: 16 / 9;
-  background: linear-gradient(110deg, #edf1f6 8%, #ffffff 18%, #edf1f6 33%);
-  background-size: 220% 100%;
-  animation: caseSkeletonShimmer 1.05s linear infinite;
+  background: #e7edf5;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.studio-cases .case-skeleton-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 28%,
+    rgba(255, 255, 255, 0.24) 44%,
+    rgba(255, 255, 255, 0.48) 50%,
+    rgba(255, 255, 255, 0.24) 56%,
+    transparent 72%
+  );
+  transform: translate3d(-130%, 0, 0);
+  animation: studioSkeletonSweep 2.8s cubic-bezier(0.45, 0.05, 0.2, 1) infinite;
+  will-change: transform;
 }
 
 .studio-cases .case-skeleton .content {
@@ -1948,11 +1966,43 @@ body::after {
 .studio-cases .case-skeleton .tag,
 .studio-cases .case-skeleton h3,
 .studio-cases .case-skeleton p {
+  position: relative;
+  overflow: hidden;
   color: transparent;
-  background: linear-gradient(110deg, #edf1f6 8%, #ffffff 18%, #edf1f6 33%);
-  background-size: 220% 100%;
-  animation: caseSkeletonShimmer 1.05s linear infinite;
+  background: #e7edf5;
+  border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 10px;
+}
+
+.studio-cases .case-skeleton .tag::after,
+.studio-cases .case-skeleton h3::after,
+.studio-cases .case-skeleton p::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 28%,
+    rgba(255, 255, 255, 0.24) 44%,
+    rgba(255, 255, 255, 0.48) 50%,
+    rgba(255, 255, 255, 0.24) 56%,
+    transparent 72%
+  );
+  transform: translate3d(-130%, 0, 0);
+  animation: studioSkeletonSweep 2.8s cubic-bezier(0.45, 0.05, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.studio-cases .case-skeleton .tag::after {
+  animation-delay: -0.35s;
+}
+
+.studio-cases .case-skeleton h3::after {
+  animation-delay: -0.9s;
+}
+
+.studio-cases .case-skeleton p::after {
+  animation-delay: -1.45s;
 }
 
 .studio-cases .case-skeleton .tag {
@@ -1970,19 +2020,20 @@ body::after {
   min-height: 20px;
 }
 
-@keyframes caseSkeletonShimmer {
+@keyframes studioSkeletonSweep {
   0% {
-    background-position: 100% 0;
+    transform: translate3d(-130%, 0, 0);
   }
   100% {
-    background-position: -100% 0;
+    transform: translate3d(130%, 0, 0);
   }
 }
 
 .media-skeleton {
   position: relative;
   overflow: hidden;
-  background: #edf1f6;
+  background: #e7edf5;
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .media-skeleton--cover {
@@ -1993,10 +2044,25 @@ body::after {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(110deg, #edf1f6 8%, #ffffff 18%, #edf1f6 33%);
-  background-size: 220% 100%;
-  animation: caseSkeletonShimmer 1.05s linear infinite;
-  transition: opacity 0.28s ease;
+  background: #e7edf5;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.media-skeleton__shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 28%,
+    rgba(255, 255, 255, 0.24) 44%,
+    rgba(255, 255, 255, 0.48) 50%,
+    rgba(255, 255, 255, 0.24) 56%,
+    transparent 72%
+  );
+  transform: translate3d(-130%, 0, 0);
+  animation: studioSkeletonSweep 2.8s cubic-bezier(0.45, 0.05, 0.2, 1) infinite;
+  will-change: transform;
 }
 
 .media-skeleton img {
@@ -2007,7 +2073,7 @@ body::after {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .media-skeleton.is-loaded img {
@@ -2025,6 +2091,7 @@ body::after {
 
 .studio-cases .project-card > .media-skeleton {
   aspect-ratio: 16 / 9;
+  border-radius: 18px;
 }
 
 .studio-cases .project-card > .media-skeleton img {
@@ -2035,14 +2102,62 @@ body::after {
   display: grid;
   gap: 32px;
   padding: 116px 0 96px;
+  transition:
+    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-page-skeleton.is-dismissing {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
 }
 
 .case-page-skeleton__breadcrumbs,
 .case-page-skeleton__line {
+  position: relative;
+  overflow: hidden;
   border-radius: 12px;
-  background: linear-gradient(110deg, #edf1f6 8%, #ffffff 18%, #edf1f6 33%);
-  background-size: 220% 100%;
-  animation: caseSkeletonShimmer 1.05s linear infinite;
+  background: #e7edf5;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.case-page-skeleton__breadcrumbs::after,
+.case-page-skeleton__line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 28%,
+    rgba(255, 255, 255, 0.24) 44%,
+    rgba(255, 255, 255, 0.48) 50%,
+    rgba(255, 255, 255, 0.24) 56%,
+    transparent 72%
+  );
+  transform: translate3d(-130%, 0, 0);
+  animation: studioSkeletonSweep 2.8s cubic-bezier(0.45, 0.05, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.case-page-skeleton__breadcrumbs::after {
+  animation-delay: -0.2s;
+}
+
+.case-page-skeleton__copy .case-page-skeleton__line:nth-child(1)::after {
+  animation-delay: -0.45s;
+}
+
+.case-page-skeleton__copy .case-page-skeleton__line:nth-child(2)::after {
+  animation-delay: -0.95s;
+}
+
+.case-page-skeleton__copy .case-page-skeleton__line:nth-child(3)::after {
+  animation-delay: -1.35s;
+}
+
+.case-page-skeleton__copy .case-page-skeleton__line:nth-child(4)::after {
+  animation-delay: -1.8s;
 }
 
 .case-page-skeleton__breadcrumbs {
@@ -2087,15 +2202,31 @@ body::after {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.studio-cases .projects-grid {
+  transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.studio-cases .projects-grid.is-swapping {
+  opacity: 0.35;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .media-skeleton__shimmer,
-  .studio-cases .case-skeleton-media,
-  .studio-cases .case-skeleton .tag,
-  .studio-cases .case-skeleton h3,
-  .studio-cases .case-skeleton p,
-  .case-page-skeleton__breadcrumbs,
-  .case-page-skeleton__line {
+  .media-skeleton__shimmer::after,
+  .studio-cases .case-skeleton-media::after,
+  .studio-cases .case-skeleton .tag::after,
+  .studio-cases .case-skeleton h3::after,
+  .studio-cases .case-skeleton p::after,
+  .case-page-skeleton__breadcrumbs::after,
+  .case-page-skeleton__line::after {
     animation: none;
+    display: none;
+  }
+
+  .case-page-skeleton,
+  .case-page-skeleton.is-dismissing,
+  .media-skeleton img,
+  .studio-cases .projects-grid {
+    transition: none;
   }
 }
 

@@ -402,6 +402,29 @@ const renderNotFound = (slug, cfg) => {
   `;
 };
 
+const CASE_LOADING_FADE_MS = 340;
+
+const dismissCaseLoading = loading =>
+  new Promise(resolve => {
+    if (!loading) {
+      resolve();
+      return;
+    }
+
+    loading.classList.add("is-dismissing");
+    loading.setAttribute("aria-busy", "false");
+    window.setTimeout(() => {
+      loading.remove();
+      resolve();
+    }, CASE_LOADING_FADE_MS);
+  });
+
+const revealCaseMain = root => {
+  if (!root) return;
+  root.classList.remove("is-revealed");
+  requestAnimationFrame(() => root.classList.add("is-revealed"));
+};
+
 const initCasePage = async () => {
   const root = document.getElementById("case-main");
   const loading = document.querySelector("[data-case-loading]");
@@ -411,8 +434,9 @@ const initCasePage = async () => {
   if (!root) return;
 
   if (!slug) {
-    if (loading) loading.remove();
+    await dismissCaseLoading(loading);
     root.innerHTML = renderNotFound("", cfg);
+    revealCaseMain(root);
     return;
   }
 
@@ -424,17 +448,20 @@ const initCasePage = async () => {
     );
     const currentIndex = projects.findIndex(item => item.id === slug || item.caseKey === slug);
 
-    if (loading) loading.remove();
-
     if (!project) {
+      await dismissCaseLoading(loading);
       root.innerHTML = renderNotFound(slug, cfg);
+      revealCaseMain(root);
       return;
     }
 
-    root.innerHTML = renderCase(project, projects, currentIndex, cfg);
+    const markup = renderCase(project, projects, currentIndex, cfg);
+    await dismissCaseLoading(loading);
+    root.innerHTML = markup;
+    revealCaseMain(root);
     window.STUDIO_MEDIA?.initImageSkeletons(root);
   } catch (err) {
-    if (loading) loading.remove();
+    await dismissCaseLoading(loading);
     root.innerHTML = `
       <div class="case-empty">
         <h1>Не удалось загрузить кейс</h1>
@@ -443,6 +470,7 @@ const initCasePage = async () => {
       </div>
     `;
     console.error("[studio case]", err);
+    revealCaseMain(root);
   }
 };
 

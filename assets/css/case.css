@@ -145,11 +145,35 @@
 .case-page-skeleton__gallery .media-skeleton--cover {
   aspect-ratio: 16 / 10;
   min-height: 180px;
+  border-radius: 20px;
 }
 
 .case-page-skeleton .case-page-skeleton__hero > .media-skeleton--cover {
   aspect-ratio: 16 / 9;
   min-height: clamp(220px, 42vw, 520px);
+  border-radius: 20px;
+}
+
+.case-main.is-revealed > * {
+  animation: caseContentReveal 0.56s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes caseContentReveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-main.is-revealed > * {
+    animation: none;
+  }
 }
 
 .case-loading,
