@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-range-sliders" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-promo-revert" />
   </head>
   <body>
     <div class="hero-page">
@@ -71,25 +71,16 @@
           </div>
         </header>
 
-        <button class="promo-trigger" type="button" aria-label="Открыть акцию" aria-expanded="false" data-promo-open>
-          <span class="promo-trigger__icon" aria-hidden="true">%</span>
-        </button>
-
-        <div class="promo-modal" data-promo-modal aria-hidden="true">
-          <div class="promo-modal__overlay" data-promo-close></div>
-          <div class="promo-modal__dialog" role="dialog" aria-modal="true" aria-label="Супер акция">
-            <aside class="promo-strip" aria-label="Промо-акция" data-promo-strip>
-              <div class="promo-strip__timer">
-                <p class="promo-strip__label">До конца акции:</p>
-                <p class="promo-strip__value" data-promo-timer>20ч:10м:46с</p>
-              </div>
-              <div class="promo-strip__offer">Скидка 10%<br />на лендинг</div>
-              <button class="promo-strip__close" type="button" aria-label="Закрыть предложение" data-promo-close>
-                <span aria-hidden="true">×</span>
-              </button>
-            </aside>
+        <aside class="promo-strip" aria-label="Промо-акция" data-promo-strip>
+          <div class="promo-strip__timer">
+            <p class="promo-strip__label">До конца акции:</p>
+            <p class="promo-strip__value" data-promo-timer>20ч:10м:46с</p>
           </div>
-        </div>
+          <div class="promo-strip__offer">Скидка 10%<br />на лендинг</div>
+          <button class="promo-strip__close" type="button" aria-label="Закрыть предложение" data-promo-close>
+            <span aria-hidden="true">×</span>
+          </button>
+        </aside>
 
         <main class="hero-main">
           <div class="hero-content">
@@ -492,7 +483,7 @@
     <script src="./assets/js/config.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/contact.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
-    <script src="./assets/js/promo-strip.js?v=20260713-promo-modal" defer></script>
+    <script src="./assets/js/promo-strip.js?v=20260531-mobile-header-promo" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
     <script src="./assets/js/header.js?v=20260530-floating-header" defer></script>
     <script src="./assets/js/hero-pong.js?v=20260530-hero-pong-lite" defer></script>

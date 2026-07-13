@@ -437,87 +437,27 @@ body::after {
   transition: max-height 0.28s ease, padding 0.28s ease;
 }
 
-.promo-trigger {
+.promo-strip {
   position: fixed;
   top: 16px;
   left: 14px;
   z-index: 1400;
-  width: 58px;
-  height: 58px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 16px;
-  background: #ffffff;
-  color: #000000;
-  font-family: "Schibsted Grotesk", sans-serif;
-  font-weight: 800;
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  box-shadow: 0 8px 18px rgba(12, 28, 47, 0.1);
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.promo-trigger:hover {
-  background: #f8f8f8;
-}
-
-.promo-trigger:active {
-  transform: scale(0.97);
-}
-
-.promo-trigger__icon {
-  display: block;
-  transform: translateY(-1px);
-}
-
-.promo-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 4800;
-  display: none;
-}
-
-.promo-modal.is-open {
-  display: block;
-}
-
-.promo-modal__overlay {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at center, rgba(220, 255, 84, 0.16), transparent 42%),
-    rgba(8, 12, 18, 0.52);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.promo-modal__dialog {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(560px, calc(100% - 32px));
-}
-
-.promo-strip {
-  position: relative;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 0;
-  width: 100%;
+  width: min(312px, calc(100vw - 28px));
   border: none;
-  border-radius: 22px;
+  border-radius: 16px;
   overflow: hidden;
   pointer-events: auto;
-  min-height: 124px;
+  height: 58px;
   box-shadow:
-    0 28px 70px rgba(12, 28, 47, 0.28),
-    0 10px 28px rgba(12, 28, 47, 0.16),
+    0 8px 18px rgba(12, 28, 47, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.promo-strip.is-hidden {
+  display: none;
 }
 
 .promo-strip__timer,
@@ -525,7 +465,7 @@ body::after {
   min-height: 100%;
   display: flex;
   align-items: center;
-  padding: 18px 16px;
+  padding: 6px 10px;
 }
 
 .promo-strip__timer {
@@ -540,14 +480,14 @@ body::after {
   background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
   border-left: none;
   font-family: "Schibsted Grotesk", sans-serif;
-  font-size: clamp(16px, 2.2vw, 22px);
+  font-size: clamp(10px, 0.82vw, 13px);
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #000;
   white-space: normal;
-  padding: 16px;
+  padding: 4px;
   justify-content: center;
   text-align: center;
 }
@@ -555,7 +495,7 @@ body::after {
 .promo-strip__label {
   margin: 0;
   font-family: "Schibsted Grotesk", sans-serif;
-  font-size: clamp(11px, 1.2vw, 13px);
+  font-size: clamp(9px, 0.66vw, 10px);
   font-weight: 700;
   letter-spacing: 0.01em;
   text-transform: uppercase;
@@ -566,7 +506,7 @@ body::after {
 .promo-strip__value {
   margin: 0;
   font-family: "Schibsted Grotesk", sans-serif;
-  font-size: clamp(24px, 3.4vw, 34px);
+  font-size: clamp(15px, 1.14vw, 20px);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.015em;
@@ -578,19 +518,19 @@ body::after {
 
 .promo-strip__close {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
   border: none;
   border-radius: 999px;
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 0;
   background: rgba(0, 0, 0, 0.08);
   color: #111;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1;
   cursor: pointer;
 }
@@ -3123,17 +3063,26 @@ body::after {
     font-size: 14px;
   }
 
-  .promo-trigger {
+  .promo-strip {
     top: 12px;
     left: 12px;
-    width: 54px;
+    width: min(238px, calc(100vw - 936px));
+    min-width: 220px;
     height: 54px;
     border-radius: 14px;
-    font-size: 22px;
   }
 
-  .promo-modal__dialog {
-    width: min(520px, calc(100% - 24px));
+  .promo-strip__timer,
+  .promo-strip__offer {
+    padding: 6px 8px;
+  }
+
+  .promo-strip__offer {
+    font-size: 11px;
+  }
+
+  .promo-strip__value {
+    font-size: clamp(14px, 1.3vw, 18px);
   }
 
   .top-contact-cluster {
@@ -3172,11 +3121,13 @@ body::after {
     top: 10px;
   }
 
-  .promo-trigger {
+  .promo-strip {
     top: 10px;
     left: 12px;
-    width: 52px;
-    height: 52px;
+    width: min(292px, calc(100vw - 24px));
+    border-width: 1px;
+    border-radius: 14px;
+    height: 58px;
   }
 
   .top-contact-cluster {
@@ -3206,11 +3157,13 @@ body::after {
 
   .promo-strip__timer,
   .promo-strip__offer {
-    padding: 14px 12px;
+    min-height: 100%;
+    padding: 6px 8px;
   }
 
   .promo-strip__offer {
-    font-size: clamp(14px, 3.8vw, 18px);
+    border-left-width: 0;
+    padding: 4px;
   }
 
   .video-orb {
@@ -3274,22 +3227,15 @@ body::after {
     display: none;
   }
 
-  .promo-trigger {
-    top: 10px;
-    left: 7px;
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    font-size: 20px;
-  }
-
-  .promo-modal__dialog {
-    width: calc(100% - 20px);
-  }
-
   .promo-strip {
-    min-height: 108px;
-    border-radius: 18px;
+    top: 84px;
+    left: 7px;
+    width: calc(100vw - 14px);
+    height: 50px;
+    border-width: 1px;
+    border-radius: 12px;
+    grid-template-columns: 1.1fr 0.9fr;
+    z-index: 1400;
   }
 
   .top-contact-cluster,
@@ -3299,15 +3245,14 @@ body::after {
 
   .promo-strip__timer,
   .promo-strip__offer {
-    padding: 12px 10px;
+    min-height: 100%;
+    padding: 6px 8px;
   }
 
   .promo-strip__offer {
-    padding: 10px;
-  }
-
-  .promo-strip__value {
-    font-size: clamp(20px, 6vw, 28px);
+    border-left: 0;
+    border-top: 0;
+    padding: 4px;
   }
 
   .video-orb {
@@ -3386,11 +3331,12 @@ body::after {
   }
 
   .promo-strip__close {
-    top: 8px;
-    right: 8px;
-    width: 26px;
-    height: 26px;
-    font-size: 18px;
+    display: inline-flex;
+    top: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
   }
 
   .hero-logo {
