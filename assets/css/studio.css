@@ -84,6 +84,14 @@ html {
   .brand-wordmark {
     transition: none;
   }
+
+  .promo-strip.is-scroll-gated,
+  .top-contact-cluster.is-scroll-gated,
+  .promo-strip.is-scroll-revealed,
+  .top-contact-cluster.is-scroll-revealed {
+    transition: none;
+    transform: none;
+  }
 }
 
 body {
@@ -494,6 +502,26 @@ body::after {
   box-shadow:
     0 8px 18px rgba(12, 28, 47, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.promo-strip.is-scroll-gated,
+.top-contact-cluster.is-scroll-gated {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, -10px, 0);
+  transition:
+    opacity 0.45s ease,
+    visibility 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.promo-strip.is-scroll-revealed,
+.top-contact-cluster.is-scroll-revealed {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
 }
 
 .promo-strip.is-hidden {

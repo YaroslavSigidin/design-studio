@@ -6,7 +6,15 @@ const initPromoStrip = () => {
   const desktopMedia = window.matchMedia("(min-width: 1101px)");
   if (!strip || !timerNode) return;
 
+  const isScrollGated = strip.hasAttribute("data-scroll-gated");
+  const isRevealed = () => !strip.classList.contains("is-scroll-gated");
+
   const syncVisibility = () => {
+    if (!isRevealed()) {
+      strip.classList.add("is-hidden");
+      return false;
+    }
+
     if (desktopMedia.matches) {
       strip.classList.remove("is-hidden");
       return true;
@@ -23,8 +31,6 @@ const initPromoStrip = () => {
     return true;
   };
 
-  if (!syncVisibility()) return;
-
   let remainingSeconds = 20 * 3600 + 10 * 60 + 46;
 
   const formatPart = (value, suffix) => `${String(value).padStart(2, "0")}${suffix}`;
@@ -37,12 +43,26 @@ const initPromoStrip = () => {
     timerNode.textContent = `${formatPart(hours, "ч")}:${formatPart(minutes, "м")}:${formatPart(seconds, "с")}`;
   };
 
-  render();
+  const startTimer = () => {
+    if (!syncVisibility()) return;
 
-  window.setInterval(() => {
-    remainingSeconds = remainingSeconds > 0 ? remainingSeconds - 1 : 20 * 3600 + 10 * 60 + 46;
     render();
-  }, 1000);
+    window.setInterval(() => {
+      remainingSeconds = remainingSeconds > 0 ? remainingSeconds - 1 : 20 * 3600 + 10 * 60 + 46;
+      render();
+    }, 1000);
+  };
+
+  const handleMediaChange = () => {
+    if (!isRevealed()) return;
+    syncVisibility();
+  };
+
+  if (isScrollGated) {
+    document.addEventListener("studio:scroll-gate-reveal", startTimer, { once: true });
+  } else {
+    startTimer();
+  }
 
   closeButton?.addEventListener("click", () => {
     strip.classList.add("is-hidden");
@@ -52,10 +72,6 @@ const initPromoStrip = () => {
       }
     } catch {}
   });
-
-  const handleMediaChange = () => {
-    syncVisibility();
-  };
 
   if (typeof desktopMedia.addEventListener === "function") {
     desktopMedia.addEventListener("change", handleMediaChange);
