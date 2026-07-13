@@ -79,6 +79,12 @@ html {
     transition: none;
   }
 
+  .hero-title--wordmark[data-hero-wordmark] {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+
   .hero-nav,
   .hero-nav-inner,
   .brand-wordmark {
@@ -952,6 +958,14 @@ body::after {
 
 .hero-title--wordmark {
   width: min(100%, 860px);
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+}
+
+.hero-title--wordmark[data-hero-wordmark] {
+  opacity: var(--wordmark-opacity, 1);
+  transform: translate3d(0, var(--wordmark-shift, 0px), 0) scale(var(--wordmark-scale, 1));
+  filter: blur(var(--wordmark-blur, 0px));
 }
 
 .hero-title--wordmark img {
