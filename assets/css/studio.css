@@ -79,9 +79,10 @@ html {
     transition: none;
   }
 
-  .hero-title--wordmark[data-hero-wordmark] {
+  .hero-title--wordmark[data-hero-wordmark],
+  .hero-subtitle[data-hero-scroll-item],
+  .hero-cta-wrap[data-hero-scroll-item] {
     opacity: 1;
-    filter: none;
     transform: none;
   }
 
@@ -959,14 +960,24 @@ body::after {
 
 .hero-title--wordmark {
   width: min(100%, 860px);
-  transform-origin: center center;
-  will-change: transform, opacity, filter;
+  transform-origin: center top;
+  will-change: transform, opacity;
 }
 
-.hero-title--wordmark[data-hero-wordmark] {
-  opacity: var(--wordmark-opacity, 1);
-  transform: translate3d(0, var(--wordmark-shift, 0px), 0) scale(var(--wordmark-scale, 1));
-  filter: blur(var(--wordmark-blur, 0px));
+.hero-title--wordmark[data-hero-wordmark],
+.hero-subtitle[data-hero-scroll-item],
+.hero-cta-wrap[data-hero-scroll-item] {
+  opacity: var(--hero-scroll-opacity, 1);
+  transform: var(--hero-scroll-transform, none);
+  will-change: transform, opacity;
+}
+
+.hero-subtitle[data-hero-scroll-item] {
+  transform-origin: center center;
+}
+
+.hero-cta-wrap[data-hero-scroll-item] {
+  transform-origin: center bottom;
 }
 
 .hero-title--wordmark img {
