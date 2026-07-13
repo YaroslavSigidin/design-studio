@@ -1,29 +1,40 @@
 const initPromoStrip = () => {
-  const strip = document.querySelector("[data-promo-strip]");
+  const modal = document.querySelector("[data-promo-modal]");
   const timerNode = document.querySelector("[data-promo-timer]");
-  const closeButton = document.querySelector("[data-promo-close]");
-  const storageKey = "studio-promo-dismissed";
-  const desktopMedia = window.matchMedia("(min-width: 1101px)");
-  if (!strip || !timerNode) return;
+  const openButton = document.querySelector("[data-promo-open]");
+  const closeTargets = document.querySelectorAll("[data-promo-close]");
 
-  const syncVisibility = () => {
-    if (desktopMedia.matches) {
-      strip.classList.remove("is-hidden");
-      return true;
-    }
+  if (!modal || !timerNode || !openButton) return;
 
-    try {
-      if (window.localStorage.getItem(storageKey) === "true") {
-        strip.classList.add("is-hidden");
-        return false;
-      }
-    } catch {}
-
-    strip.classList.remove("is-hidden");
-    return true;
+  const setBodyScroll = locked => {
+    document.body.style.overflow = locked ? "hidden" : "";
   };
 
-  if (!syncVisibility()) return;
+  const openModal = () => {
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    setBodyScroll(true);
+    openButton.setAttribute("aria-expanded", "true");
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    setBodyScroll(false);
+    openButton.setAttribute("aria-expanded", "false");
+    openButton.focus();
+  };
+
+  openButton.addEventListener("click", openModal);
+  closeTargets.forEach(target => {
+    target.addEventListener("click", closeModal);
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && modal.classList.contains("is-open")) {
+      closeModal();
+    }
+  });
 
   let remainingSeconds = 20 * 3600 + 10 * 60 + 46;
 
@@ -43,25 +54,6 @@ const initPromoStrip = () => {
     remainingSeconds = remainingSeconds > 0 ? remainingSeconds - 1 : 20 * 3600 + 10 * 60 + 46;
     render();
   }, 1000);
-
-  closeButton?.addEventListener("click", () => {
-    strip.classList.add("is-hidden");
-    try {
-      if (!desktopMedia.matches) {
-        window.localStorage.setItem(storageKey, "true");
-      }
-    } catch {}
-  });
-
-  const handleMediaChange = () => {
-    syncVisibility();
-  };
-
-  if (typeof desktopMedia.addEventListener === "function") {
-    desktopMedia.addEventListener("change", handleMediaChange);
-  } else if (typeof desktopMedia.addListener === "function") {
-    desktopMedia.addListener(handleMediaChange);
-  }
 };
 
 if (document.readyState === "loading") {

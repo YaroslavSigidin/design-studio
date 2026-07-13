@@ -83,6 +83,8 @@ const renderChapters = chapters =>
         .join("")}</div>`
     : "";
 
+const renderSkeletonImage = attrs => window.STUDIO_MEDIA?.renderSkeletonImage(attrs) || "";
+
 const renderGallery = images =>
   images.length
     ? `<section class="case-block case-block--gallery">
@@ -92,7 +94,11 @@ const renderGallery = images =>
           .map(
             (src, index) => `
           <figure class="case-gallery-item">
-            <img src="${escapeHtml(src)}" alt="" loading="${index < 2 ? "eager" : "lazy"}" decoding="async" />
+            ${renderSkeletonImage({
+              src,
+              className: "media-skeleton--cover",
+              eager: index < 2
+            })}
           </figure>`
           )
           .join("")}</div>
@@ -106,7 +112,11 @@ const renderGalleryChunk = (images, startIndex = 0) =>
           .map(
             (src, index) => `
           <figure class="case-gallery-item">
-            <img src="${escapeHtml(src)}" alt="" loading="${startIndex + index < 2 ? "eager" : "lazy"}" decoding="async" />
+            ${renderSkeletonImage({
+              src,
+              className: "media-skeleton--cover",
+              eager: startIndex + index < 2
+            })}
           </figure>`
           )
           .join("")}</div>
@@ -190,7 +200,11 @@ const renderRelatedCases = (projects, currentProject, cfg) => {
           .map(
             item => `
           <a class="case-related-card" href="${escapeHtml(normalizeCaseHref(item, cfg))}">
-            <img src="${escapeHtml(normalizeAssetUrl(item.image || "", cfg))}" alt="${escapeHtml(item.title || "Кейс")}" loading="lazy" decoding="async" />
+            ${renderSkeletonImage({
+              src: normalizeAssetUrl(item.image || "", cfg),
+              alt: item.title || "Кейс",
+              className: "media-skeleton--cover"
+            })}
             <div class="case-related-content">
               <span class="case-related-tag">${escapeHtml(getTagLabel(item.category))}</span>
               <h3>${escapeHtml(item.title || "")}</h3>
@@ -340,7 +354,18 @@ const renderCase = (project, projects, currentIndex, cfg) => {
           ${renderLiveLinks(project.liveLinks || [])}
         </div>
         <div class="case-hero-media">
-          ${heroImage ? `<img src="${escapeHtml(heroImage)}" alt="${escapeHtml(title)}" width="1200" height="630" decoding="async" fetchpriority="high" />` : ""}
+          ${
+            heroImage
+              ? renderSkeletonImage({
+                  src: heroImage,
+                  alt: title,
+                  width: "1200",
+                  height: "630",
+                  eager: true,
+                  className: "media-skeleton--cover"
+                })
+              : ""
+          }
         </div>
       </header>
 
@@ -407,6 +432,7 @@ const initCasePage = async () => {
     }
 
     root.innerHTML = renderCase(project, projects, currentIndex, cfg);
+    window.STUDIO_MEDIA?.initImageSkeletons(root);
   } catch (err) {
     if (loading) loading.remove();
     root.innerHTML = `

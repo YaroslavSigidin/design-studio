@@ -106,6 +106,8 @@ const EXTRA_PLACEHOLDER_CASE = {
   isPlaceholder: true
 };
 
+const renderSkeletonImage = attrs => window.STUDIO_MEDIA?.renderSkeletonImage(attrs) || "";
+
 const renderCasesSkeleton = (grid, count = SKELETON_CARDS_COUNT) => {
   if (!grid) return;
   grid.classList.add("is-loading");
@@ -160,14 +162,13 @@ const renderProjectCard = (project, cfg) => {
   const isPlaceholder = Boolean(project.isPlaceholder);
   const imageMarkup = isPlaceholder
     ? `<div class="project-placeholder-media" aria-hidden="true"></div>`
-    : `<img
-        src="${escapeHtml(image)}"
-        alt="${escapeHtml(project.title)}"
-        loading="lazy"
-        decoding="async"
-        width="1200"
-        height="630"
-      />`;
+    : renderSkeletonImage({
+        src: image,
+        alt: project.title,
+        width: "1200",
+        height: "630",
+        className: "media-skeleton--cover"
+      });
 
   return `
     <article
@@ -210,11 +211,43 @@ const bindCardNavigation = grid => {
   grid.dataset.navBound = "true";
 };
 
+const updateCasesStackClip = (grid, stack, collapsed) => {
+  if (!stack) return;
+
+  if (!collapsed) {
+    stack.classList.remove("is-collapsed");
+    stack.style.maxHeight = "";
+    return;
+  }
+
+  stack.classList.add("is-collapsed");
+
+  const firstBeyond = qs(".project-card--beyond-limit", grid);
+  if (!firstBeyond) {
+    stack.style.maxHeight = "";
+    return;
+  }
+
+  const stackTop = stack.getBoundingClientRect().top;
+  const beyondTop = firstBeyond.getBoundingClientRect().top - stackTop;
+  const peek = Math.min(156, Math.max(92, firstBeyond.getBoundingClientRect().height * 0.4));
+  stack.style.maxHeight = `${beyondTop + peek}px`;
+};
+
+const scheduleCasesStackClip = (grid, stack, collapsed) => {
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      updateCasesStackClip(grid, stack, collapsed);
+    });
+  });
+};
+
 const initCasesFilter = (grid, tabsRoot) => {
   if (!grid || !tabsRoot || grid.dataset.filterBound === "true") return;
 
   let activeFilter = "all";
   let expanded = false;
+  const stack = qs("#studioCasesStack");
   const moreWrap = qs("#studioCasesMore");
   const moreButton = qs("#studioCasesMoreButton");
   const applyFilter = () => {
@@ -225,16 +258,25 @@ const initCasesFilter = (grid, tabsRoot) => {
       const matches = matchesProjectFilter(card, activeFilter);
       if (!matches) {
         card.hidden = true;
+        card.classList.remove("project-card--beyond-limit");
+        card.removeAttribute("aria-hidden");
         return;
       }
 
       visibleCount += 1;
-      const shouldHideByLimit = !expanded && visibleCount > limit;
-      card.hidden = shouldHideByLimit;
+      const isBeyond = !expanded && visibleCount > limit;
+      card.hidden = false;
+      card.classList.toggle("project-card--beyond-limit", isBeyond);
+      if (isBeyond) {
+        card.setAttribute("aria-hidden", "true");
+      } else {
+        card.removeAttribute("aria-hidden");
+      }
     });
 
     const shouldShowMore = visibleCount > limit && !expanded;
     if (moreWrap) moreWrap.hidden = !shouldShowMore;
+    scheduleCasesStackClip(grid, stack, shouldShowMore);
   };
 
   qsa(".tab-button", tabsRoot).forEach(tab => {
@@ -252,6 +294,8 @@ const initCasesFilter = (grid, tabsRoot) => {
     applyFilter();
   });
 
+  grid.addEventListener("load", () => scheduleCasesStackClip(grid, stack, stack?.classList.contains("is-collapsed")), true);
+
   window.addEventListener("resize", () => {
     expanded = false;
     applyFilter();
@@ -267,6 +311,7 @@ const renderCasesGrid = (grid, projects, cfg) => {
   const items = [...projects, EXTRA_PLACEHOLDER_CASE];
   grid.innerHTML = items.map(project => renderProjectCard(project, cfg)).join("");
   bindCardNavigation(grid);
+  window.STUDIO_MEDIA?.initImageSkeletons(grid);
 };
 
 const initCases = async () => {

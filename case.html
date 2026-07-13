@@ -12,8 +12,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260711-brand-wordmark" />
-    <link rel="stylesheet" href="./assets/css/case.css?v=20260711-brand-wordmark" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-image-skeleton" />
+    <link rel="stylesheet" href="./assets/css/case.css?v=20260713-image-skeleton" />
   </head>
   <body class="studio-case-page">
     <header class="hero-nav" data-floating-header>
@@ -63,13 +63,35 @@
     </header>
 
     <main class="case-main" id="case-main">
-      <p class="case-loading" data-case-loading>Загрузка кейса…</p>
+      <div class="case-page-skeleton" data-case-loading aria-busy="true" aria-label="Загрузка кейса">
+        <div class="case-page-skeleton__breadcrumbs"></div>
+        <div class="case-page-skeleton__hero">
+          <div class="case-page-skeleton__copy">
+            <div class="case-page-skeleton__line case-page-skeleton__line--tag"></div>
+            <div class="case-page-skeleton__line case-page-skeleton__line--title"></div>
+            <div class="case-page-skeleton__line case-page-skeleton__line--lead"></div>
+            <div class="case-page-skeleton__line case-page-skeleton__line--lead-short"></div>
+          </div>
+          <div class="media-skeleton media-skeleton--cover">
+            <div class="media-skeleton__shimmer" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="case-page-skeleton__gallery">
+          <div class="media-skeleton media-skeleton--cover">
+            <div class="media-skeleton__shimmer" aria-hidden="true"></div>
+          </div>
+          <div class="media-skeleton media-skeleton--cover">
+            <div class="media-skeleton__shimmer" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <script src="./assets/js/config.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/contact.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
     <script src="./assets/js/header.js?v=20260530-floating-header" defer></script>
-    <script src="./assets/js/case-page.js?v=20260711-brand-wordmark" defer></script>
+    <script src="./assets/js/image-skeleton.js?v=20260713-image-skeleton" defer></script>
+    <script src="./assets/js/case-page.js?v=20260713-image-skeleton" defer></script>
   </body>
 </html>

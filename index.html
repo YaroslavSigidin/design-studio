@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-remove-suggestions" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-range-sliders" />
   </head>
   <body>
     <div class="hero-page">
@@ -71,16 +71,25 @@
           </div>
         </header>
 
-        <aside class="promo-strip" aria-label="Промо-акция" data-promo-strip>
-          <div class="promo-strip__timer">
-            <p class="promo-strip__label">До конца акции:</p>
-            <p class="promo-strip__value" data-promo-timer>20ч:10м:46с</p>
+        <button class="promo-trigger" type="button" aria-label="Открыть акцию" aria-expanded="false" data-promo-open>
+          <span class="promo-trigger__icon" aria-hidden="true">%</span>
+        </button>
+
+        <div class="promo-modal" data-promo-modal aria-hidden="true">
+          <div class="promo-modal__overlay" data-promo-close></div>
+          <div class="promo-modal__dialog" role="dialog" aria-modal="true" aria-label="Супер акция">
+            <aside class="promo-strip" aria-label="Промо-акция" data-promo-strip>
+              <div class="promo-strip__timer">
+                <p class="promo-strip__label">До конца акции:</p>
+                <p class="promo-strip__value" data-promo-timer>20ч:10м:46с</p>
+              </div>
+              <div class="promo-strip__offer">Скидка 10%<br />на лендинг</div>
+              <button class="promo-strip__close" type="button" aria-label="Закрыть предложение" data-promo-close>
+                <span aria-hidden="true">×</span>
+              </button>
+            </aside>
           </div>
-          <div class="promo-strip__offer">Скидка 10%<br />на лендинг</div>
-          <button class="promo-strip__close" type="button" aria-label="Закрыть предложение" data-promo-close>
-            <span aria-hidden="true">×</span>
-          </button>
-        </aside>
+        </div>
 
         <main class="hero-main">
           <div class="hero-content">
@@ -109,7 +118,7 @@
               </h1>
 
               <p class="hero-subtitle">
-                От исследования и концепции до интерфейсов, сайтов и передачи в разработку
+                Дизайн-студия полного цикла
               </p>
             </div>
 
@@ -166,11 +175,62 @@
           <button class="tab-button" type="button" data-filter="branding">Брендинг</button>
           <button class="tab-button" type="button" data-filter="presentation">Презентации</button>
         </div>
-        <p class="studio-cases-status" data-cases-status>Загрузка кейсов…</p>
+        <p class="studio-cases-status" data-cases-status hidden>Загрузка кейсов…</p>
       </div>
       <div class="portfolio-grid-bleed">
-        <div class="projects-grid" id="projects-grid"></div>
+        <div class="studio-cases-stack" id="studioCasesStack">
+          <div class="projects-grid is-loading" id="projects-grid" aria-busy="true">
+          <article class="project-card case-skeleton" aria-hidden="true">
+            <div class="case-skeleton-media"></div>
+            <div class="content">
+              <span class="tag">&nbsp;</span>
+              <h3>&nbsp;</h3>
+              <p>&nbsp;</p>
+            </div>
+          </article>
+          <article class="project-card case-skeleton" aria-hidden="true">
+            <div class="case-skeleton-media"></div>
+            <div class="content">
+              <span class="tag">&nbsp;</span>
+              <h3>&nbsp;</h3>
+              <p>&nbsp;</p>
+            </div>
+          </article>
+          <article class="project-card case-skeleton" aria-hidden="true">
+            <div class="case-skeleton-media"></div>
+            <div class="content">
+              <span class="tag">&nbsp;</span>
+              <h3>&nbsp;</h3>
+              <p>&nbsp;</p>
+            </div>
+          </article>
+          <article class="project-card case-skeleton" aria-hidden="true">
+            <div class="case-skeleton-media"></div>
+            <div class="content">
+              <span class="tag">&nbsp;</span>
+              <h3>&nbsp;</h3>
+              <p>&nbsp;</p>
+            </div>
+          </article>
+          <article class="project-card case-skeleton" aria-hidden="true">
+            <div class="case-skeleton-media"></div>
+            <div class="content">
+              <span class="tag">&nbsp;</span>
+              <h3>&nbsp;</h3>
+              <p>&nbsp;</p>
+            </div>
+          </article>
+          <article class="project-card case-skeleton" aria-hidden="true">
+            <div class="case-skeleton-media"></div>
+            <div class="content">
+              <span class="tag">&nbsp;</span>
+              <h3>&nbsp;</h3>
+              <p>&nbsp;</p>
+            </div>
+          </article>
+        </div>
         <div class="studio-cases-more" id="studioCasesMore" hidden>
+          <div class="studio-cases-more__veil" aria-hidden="true"></div>
           <button class="studio-cases-more__button" id="studioCasesMoreButton" type="button">
             <span>Посмотреть все</span>
             <span class="list-more-button__icon" aria-hidden="true">
@@ -179,6 +239,7 @@
               </svg>
             </span>
           </button>
+        </div>
         </div>
       </div>
     </section>
@@ -431,7 +492,7 @@
     <script src="./assets/js/config.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/contact.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
-    <script src="./assets/js/promo-strip.js?v=20260531-mobile-header-promo" defer></script>
+    <script src="./assets/js/promo-strip.js?v=20260713-promo-modal" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
     <script src="./assets/js/header.js?v=20260530-floating-header" defer></script>
     <script src="./assets/js/hero-pong.js?v=20260530-hero-pong-lite" defer></script>
@@ -439,7 +500,8 @@
     <script src="./assets/js/hero.js?v=20260713-remove-suggestions" defer></script>
     <script src="./assets/js/services.js?v=20260711-services-clean" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
-    <script src="./assets/js/cases.js?v=20260531-more-buttons-desktop" defer></script>
+    <script src="./assets/js/image-skeleton.js?v=20260713-image-skeleton" defer></script>
+    <script src="./assets/js/cases.js?v=20260713-cases-more" defer></script>
     <script>
       (function () {
         const escapeHtml = value =>
@@ -481,18 +543,58 @@
           return new URL(raw, window.location.href).toString();
         };
 
+        const renderFallbackSkeletonImage = (src, alt) => {
+          const render = window.STUDIO_MEDIA?.renderSkeletonImage;
+          if (!render) {
+            return `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" width="1200" height="630" />`;
+          }
+          return render({
+            src,
+            alt,
+            width: "1200",
+            height: "630",
+            className: "media-skeleton--cover"
+          });
+        };
+
+        const updateFallbackStackClip = (grid, stack, collapsed) => {
+          if (!stack) return;
+
+          if (!collapsed) {
+            stack.classList.remove("is-collapsed");
+            stack.style.maxHeight = "";
+            return;
+          }
+
+          stack.classList.add("is-collapsed");
+          const firstBeyond = grid.querySelector(".project-card--beyond-limit");
+          if (!firstBeyond) {
+            stack.style.maxHeight = "";
+            return;
+          }
+
+          const stackTop = stack.getBoundingClientRect().top;
+          const beyondTop = firstBeyond.getBoundingClientRect().top - stackTop;
+          const peek = Math.min(156, Math.max(92, firstBeyond.getBoundingClientRect().height * 0.4));
+          stack.style.maxHeight = `${beyondTop + peek}px`;
+        };
+
         const renderFallbackCases = async () => {
           const grid = document.getElementById("projects-grid");
+          const stack = document.getElementById("studioCasesStack");
           const status = document.querySelector("[data-cases-status]");
           const tabsRoot = document.getElementById("projectTabs");
           const moreWrap = document.getElementById("studioCasesMore");
           const moreButton = document.getElementById("studioCasesMoreButton");
           const visibleLimit = 9;
-          if (!grid || grid.children.length > 0) return;
+          if (!grid || grid.dataset.initDone === "true") return;
+          if (grid.dataset.initInProgress === "true") {
+            window.setTimeout(renderFallbackCases, 500);
+            return;
+          }
 
           if (status) {
-            status.hidden = false;
-            status.textContent = "Загрузка кейсов...";
+            status.hidden = true;
           }
 
           const cfg = window.STUDIO_CONFIG || {};
@@ -508,6 +610,8 @@
             if (!projects.length) throw new Error("manifest empty");
 
             const caseBase = normalizeStudioUrl(cfg.casePageBase || "./case.html", cfg);
+            grid.classList.remove("is-loading");
+            grid.removeAttribute("aria-busy");
             grid.innerHTML = projects
               .map(project => {
                 const href =
@@ -516,18 +620,12 @@
                 const category = project.category || "web";
                 const tagLabel = category === "uxui" ? "UX/UI" : "Site";
                 const searchText = `${project.title || ""} ${project.subtitle || ""} ${project.description || ""}`.toLowerCase();
+                const imageSrc = normalizeAssetUrl(project.image || project.cover || "", cfg);
                 return `
                   <article class="project-card" data-category="${escapeHtml(category)}" data-search="${escapeHtml(searchText)}" ${
                     href ? `data-case-url="${escapeHtml(href)}" tabindex="0"` : ""
                   }>
-                    <img
-                      src="${escapeHtml(normalizeAssetUrl(project.image || project.cover || "", cfg))}"
-                      alt="${escapeHtml(project.title || "")}"
-                      loading="lazy"
-                      decoding="async"
-                      width="1200"
-                      height="630"
-                    />
+                    ${renderFallbackSkeletonImage(imageSrc, project.title || "")}
                     <div class="content">
                       <span class="tag">${tagLabel}</span>
                       <h3>${escapeHtml(project.title || "")}</h3>
@@ -537,6 +635,8 @@
                 `;
               })
               .join("");
+
+            window.STUDIO_MEDIA?.initImageSkeletons(grid);
 
             grid.addEventListener("click", event => {
               const card = event.target.closest(".project-card");
@@ -573,16 +673,29 @@
 
                   if (!matches) {
                     card.hidden = true;
+                    card.classList.remove("project-card--beyond-limit");
+                    card.removeAttribute("aria-hidden");
                     return;
                   }
 
                   visibleCount += 1;
-                  card.hidden = !expanded && visibleCount > visibleLimit;
+                  const isBeyond = !expanded && visibleCount > visibleLimit;
+                  card.hidden = false;
+                  card.classList.toggle("project-card--beyond-limit", isBeyond);
+                  if (isBeyond) {
+                    card.setAttribute("aria-hidden", "true");
+                  } else {
+                    card.removeAttribute("aria-hidden");
+                  }
                 });
 
-                if (moreWrap) {
-                  moreWrap.hidden = expanded || visibleCount <= visibleLimit;
-                }
+                const shouldShowMore = visibleCount > visibleLimit && !expanded;
+                if (moreWrap) moreWrap.hidden = !shouldShowMore;
+                window.requestAnimationFrame(() => {
+                  window.requestAnimationFrame(() => {
+                    updateFallbackStackClip(grid, stack, shouldShowMore);
+                  });
+                });
               };
 
               tabsRoot.querySelectorAll(".tab-button").forEach(tab => {

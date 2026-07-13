@@ -123,6 +123,35 @@
   right: 16px;
 }
 
+.case-hero-media .media-skeleton,
+.case-gallery-item .media-skeleton,
+.case-related-card .media-skeleton {
+  width: 100%;
+  border-radius: inherit;
+}
+
+.case-gallery-item .media-skeleton {
+  aspect-ratio: 16 / 10;
+}
+
+.case-related-card .media-skeleton {
+  aspect-ratio: 16 / 10;
+}
+
+.case-related-card > .media-skeleton img {
+  border-radius: 0;
+}
+
+.case-page-skeleton__gallery .media-skeleton--cover {
+  aspect-ratio: 16 / 10;
+  min-height: 180px;
+}
+
+.case-page-skeleton .case-page-skeleton__hero > .media-skeleton--cover {
+  aspect-ratio: 16 / 9;
+  min-height: clamp(220px, 42vw, 520px);
+}
+
 .case-loading,
 .case-empty {
   padding: 80px 0;
@@ -171,6 +200,10 @@
   border-radius: 20px;
   background: #f8f8f8;
   border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.case-hero-media .media-skeleton {
+  aspect-ratio: 16 / 9;
 }
 
 .case-hero-media img {
