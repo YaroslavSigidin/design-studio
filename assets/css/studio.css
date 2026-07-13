@@ -991,7 +991,7 @@ body::after {
 /* Hero request expand */
 .hero-cta-wrap {
   width: 100%;
-  max-width: 480px;
+  max-width: min(980px, calc(100% - 48px));
   margin-inline: auto;
   margin-top: 32px;
   display: flex;
@@ -1143,6 +1143,34 @@ body::after {
 .hero-request__submit:focus-visible {
   outline: 2px solid #111;
   outline-offset: 2px;
+}
+
+@media (min-width: 900px) {
+  .hero-request.is-open {
+    width: min(980px, calc(100vw - 96px));
+    border-radius: 16px;
+  }
+
+  .hero-request.is-open .hero-request__form {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1.2fr) auto;
+    align-items: center;
+    gap: 10px;
+    max-height: 76px;
+    padding: 10px 12px 12px;
+  }
+
+  .hero-request__form input {
+    min-height: 48px;
+    min-width: 0;
+  }
+
+  .hero-request__submit {
+    min-width: 148px;
+    min-height: 48px;
+    margin-top: 0;
+    padding: 0 20px;
+    white-space: nowrap;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
