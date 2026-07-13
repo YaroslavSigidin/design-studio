@@ -6,15 +6,7 @@ const initPromoStrip = () => {
   const desktopMedia = window.matchMedia("(min-width: 1101px)");
   if (!strip || !timerNode) return;
 
-  const isScrollGated = strip.hasAttribute("data-scroll-gated");
-  const isRevealed = () => !strip.classList.contains("is-scroll-gated");
-
   const syncVisibility = () => {
-    if (!isRevealed()) {
-      strip.classList.add("is-hidden");
-      return false;
-    }
-
     if (desktopMedia.matches) {
       strip.classList.remove("is-hidden");
       return true;
@@ -54,15 +46,10 @@ const initPromoStrip = () => {
   };
 
   const handleMediaChange = () => {
-    if (!isRevealed()) return;
     syncVisibility();
   };
 
-  if (isScrollGated) {
-    document.addEventListener("studio:scroll-gate-reveal", startTimer, { once: true });
-  } else {
-    startTimer();
-  }
+  startTimer();
 
   closeButton?.addEventListener("click", () => {
     strip.classList.add("is-hidden");
