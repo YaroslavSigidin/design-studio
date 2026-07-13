@@ -4428,13 +4428,15 @@ body::after {
   line-height: 1.6;
 }
 
-.studio-footer__request {
+.studio-footer__ai-brief {
   margin-top: 20px;
-  max-width: 480px;
+  max-width: min(100%, 520px);
 }
 
-.studio-footer__request .hero-request.is-open {
-  width: min(680px, calc(100vw - 64px));
+.studio-footer__ai-brief .hero-search-wrap {
+  max-width: none;
+  margin-top: 0;
+  margin-inline: 0;
 }
 
 .studio-footer__wordmark {
@@ -4641,13 +4643,13 @@ body::after {
     font-size: 14px;
   }
 
-  .studio-footer__request {
+  .studio-footer__ai-brief {
     margin-top: 16px;
     max-width: 100%;
   }
 
-  .studio-footer__request .hero-request.is-open {
-    width: min(100%, calc(100vw - 48px));
+  .studio-footer__ai-brief .hero-search-sliders {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .studio-footer__columns {
