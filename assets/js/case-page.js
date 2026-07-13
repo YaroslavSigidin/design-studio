@@ -229,11 +229,11 @@ const BRAND_WORDMARK = `
   />
 `;
 
-const renderBottomLeadForm = () => `
-  <section class="case-lead-form">
-    <div class="case-lead-form__inner">
+const renderBottomLeadForm = projectTitle => `
+  <section class="section studio-discuss studio-discuss--case" id="discuss-project">
+    <div class="studio-discuss__inner">
       <h2>Обсудить проект</h2>
-      <form class="case-lead-form__form" data-case-title="${escapeHtml(document.title.replace(" — Согласовано", ""))}">
+      <form class="studio-discuss__form" data-case-title="${escapeHtml(projectTitle)}">
         <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
         <input type="tel" name="phone" placeholder="Телефон" autocomplete="tel" inputmode="tel" />
         <input type="text" name="contact" placeholder="Telegram / email" autocomplete="email" required />
@@ -380,7 +380,7 @@ const renderCase = (project, projects, currentIndex, cfg) => {
     </article>
 
     ${renderRelatedCases(projects, project, cfg)}
-    ${renderBottomLeadForm()}
+    ${renderBottomLeadForm(title)}
     ${renderCaseFooter()}
   `;
 };

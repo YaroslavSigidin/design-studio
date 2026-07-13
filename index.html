@@ -41,12 +41,12 @@
             <ul class="hero-menu">
               <li><a href="#cases">Кейсы</a></li>
               <li><a href="#services">Услуги</a></li>
-              <li><a href="#discuss-project">Обсудить проект</a></li>
+              <li><a href="#contacts" data-open-brief-modal>Обсудить проект</a></li>
               <li><a href="#contacts">Контакты</a></li>
             </ul>
 
             <div class="hero-nav-actions">
-              <a class="hero-btn hero-btn--dark" href="./#discuss-project" data-open-brief-modal>Заказать дизайн</a>
+              <a class="hero-btn hero-btn--dark" href="#contacts" data-open-brief-modal>Заказать дизайн</a>
               <button class="hero-menu-toggle" type="button" aria-label="Открыть меню" data-header-toggle>
                 <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path
@@ -63,10 +63,10 @@
           <div class="hero-mobile-sheet" data-header-sheet>
             <a href="#cases">Кейсы</a>
             <a href="#services">Услуги</a>
-            <a href="#discuss-project">Обсудить проект</a>
+            <a href="#contacts" data-open-brief-modal>Обсудить проект</a>
             <a href="#contacts">Контакты</a>
             <div class="hero-mobile-sheet-actions">
-              <a class="hero-btn hero-btn--dark" href="./#discuss-project" data-open-brief-modal>Заказать дизайн</a>
+              <a class="hero-btn hero-btn--dark" href="#contacts" data-open-brief-modal>Заказать дизайн</a>
             </div>
           </div>
         </header>
@@ -253,18 +253,6 @@
       </div>
     </section>
 
-    <section class="section studio-discuss" id="discuss-project">
-      <div class="studio-discuss__inner">
-        <h2 data-reveal-heading>Обсудить проект</h2>
-        <form class="studio-discuss__form">
-          <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
-          <input type="tel" name="phone" placeholder="Телефон" autocomplete="tel" inputmode="tel" />
-          <input type="text" name="contact" placeholder="Telegram / email" autocomplete="email" required />
-          <button type="submit">Отправить</button>
-        </form>
-      </div>
-    </section>
-
     <footer class="studio-footer" id="contacts">
       <div class="studio-footer__card">
         <span class="studio-footer__tape studio-footer__tape--left" aria-hidden="true"></span>
@@ -293,8 +281,8 @@
               <h3>Ресурсы</h3>
               <a href="#cases">Кейсы</a>
               <a href="#services">Услуги</a>
-              <a href="./#discuss-project" data-open-brief-modal>Оставить бриф</a>
-              <a href="#discuss-project">Обсудить проект</a>
+              <a href="#contacts" data-open-brief-modal>Оставить бриф</a>
+              <a href="#contacts" data-open-brief-modal>Обсудить проект</a>
             </div>
 
             <div class="studio-footer__column">
@@ -491,7 +479,7 @@
     </aside>
 
     <script src="./assets/js/config.js?v=20260711-telegram-leads" defer></script>
-    <script src="./assets/js/contact.js?v=20260713-hero-request" defer></script>
+    <script src="./assets/js/contact.js?v=20260713-case-discuss-form" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
     <script src="./assets/js/promo-strip.js?v=20260713-footer-promo" defer></script>
     <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>

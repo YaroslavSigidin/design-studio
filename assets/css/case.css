@@ -525,51 +525,14 @@
   font-size: 14px;
 }
 
-.case-lead-form {
-  margin-top: 56px;
+.studio-discuss--case {
+  padding: 48px 0 0;
+  margin-top: 8px;
 }
 
-.case-lead-form__inner {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 18px;
-  background: #fff;
-  padding: 24px;
-}
-
-.case-lead-form__inner h2 {
-  margin: 0 0 14px;
-  font-family: "Fustat", sans-serif;
-  font-size: clamp(30px, 4vw, 44px);
-  letter-spacing: -0.04em;
-}
-
-.case-lead-form__form {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 10px;
-}
-
-.case-lead-form__form input {
-  height: 44px;
-  border: 1px solid rgba(0, 0, 0, 0.14);
-  border-radius: 10px;
-  padding: 0 12px;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: #111;
-}
-
-.case-lead-form__form button {
-  min-width: 140px;
-  height: 44px;
-  border: none;
-  border-radius: 10px;
-  background: #000;
-  color: #fff;
-  font-family: "Schibsted Grotesk", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
+.studio-discuss--case .studio-discuss__inner {
+  width: 100%;
+  margin: 0;
 }
 
 .case-page-footer {
@@ -685,7 +648,7 @@
     display: none;
   }
 
-  .case-lead-form__form {
+  .studio-discuss--case .studio-discuss__form {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -766,16 +729,11 @@
     justify-content: center;
   }
 
-  .case-lead-form__inner {
+  .studio-discuss--case .studio-discuss__inner {
     padding: 20px 18px;
   }
 
-  .case-lead-form__form {
+  .studio-discuss--case .studio-discuss__form {
     gap: 12px;
-  }
-
-  .case-lead-form__form input,
-  .case-lead-form__form button {
-    min-height: 48px;
   }
 }

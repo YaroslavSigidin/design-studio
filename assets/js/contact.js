@@ -209,7 +209,6 @@ const initStudioContacts = () => {
 
     if (
       !form.matches(".studio-discuss__form") &&
-      !form.matches(".case-lead-form__form") &&
       !form.matches(".hero-request__form")
     ) {
       return;
@@ -245,7 +244,7 @@ const initStudioContacts = () => {
     if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправляем…";
 
     const result = await submitLead({
-      source: form.matches(".case-lead-form__form")
+      source: form.dataset.caseTitle
         ? "Кейс"
         : form.matches(".hero-request__form")
           ? "Hero «Оставить заявку»"
