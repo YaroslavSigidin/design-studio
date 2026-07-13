@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-services-polish" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-cases-tabs" />
   </head>
   <body>
     <div class="hero-page">
@@ -160,7 +160,8 @@
       <div class="container">
         <p class="section-subtitle">Портфолио</p>
         <h2 class="section-title" data-reveal-heading>Наши кейсы</h2>
-        <div class="tabs" id="projectTabs">
+        <div class="tabs" id="projectTabs" role="tablist" aria-label="Фильтр кейсов">
+          <span class="tabs__indicator" data-tabs-indicator aria-hidden="true"></span>
           <button class="tab-button active" type="button" data-filter="all">Все проекты</button>
           <button class="tab-button" type="button" data-filter="uxui">UX/UI проекты</button>
           <button class="tab-button" type="button" data-filter="web">Web-сайты</button>
@@ -511,7 +512,7 @@
     <script src="./assets/js/services-carousel.js?v=20260713-services-polish" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260713-skeleton-soft" defer></script>
-    <script src="./assets/js/cases.js?v=20260713-skeleton-soft" defer></script>
+    <script src="./assets/js/cases.js?v=20260713-cases-tabs" defer></script>
     <script>
       (function () {
         const escapeHtml = value =>
@@ -676,7 +677,10 @@
 
             if (tabsRoot && tabsRoot.dataset.fallbackBound !== "true") {
               let expanded = false;
-              const applyFilter = filter => {
+              let activeFilter = "all";
+              window.__studioCasesTabs?.initTabsIndicator?.(tabsRoot);
+              const applyFilter = (filter, { animate = false } = {}) => {
+                activeFilter = filter;
                 let visibleCount = 0;
 
                 grid.querySelectorAll(".project-card").forEach(card => {
@@ -716,14 +720,26 @@
                     updateFallbackStackClip(grid, stack, shouldShowMore);
                   });
                 });
+
+                if (animate) {
+                  grid.querySelectorAll(".project-card").forEach(card => card.classList.remove("is-filter-reveal"));
+                  grid.querySelectorAll(".project-card").forEach((card, index) => {
+                    if (card.hidden || card.classList.contains("project-card--beyond-limit")) return;
+                    card.style.setProperty("--case-reveal-delay", `${Math.min(index * 42, 360)}ms`);
+                    card.classList.add("is-filter-reveal");
+                  });
+                }
               };
 
               tabsRoot.querySelectorAll(".tab-button").forEach(tab => {
                 tab.addEventListener("click", () => {
-                  tabsRoot.querySelectorAll(".tab-button").forEach(item => item.classList.remove("active"));
-                  tab.classList.add("active");
+                  window.__studioCasesTabs?.setActiveTab?.(tabsRoot, tab);
                   expanded = false;
-                  applyFilter(tab.dataset.filter || "all");
+                  grid.classList.add("is-tab-switching");
+                  window.setTimeout(() => {
+                    applyFilter(tab.dataset.filter || "all", { animate: true });
+                    grid.classList.remove("is-tab-switching");
+                  }, 220);
                 });
               });
 

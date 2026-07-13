@@ -251,15 +251,88 @@ const scheduleCasesStackClip = (grid, stack, collapsed) => {
   });
 };
 
+const TAB_SWITCH_OUT_MS = 220;
+const TAB_SWITCH_IN_MS = 480;
+
+const prefersReducedMotion = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const updateTabsIndicator = (tabsRoot, activeTab) => {
+  const indicator = qs("[data-tabs-indicator]", tabsRoot);
+  if (!indicator || !activeTab) return;
+
+  const tabsRect = tabsRoot.getBoundingClientRect();
+  const tabRect = activeTab.getBoundingClientRect();
+  const x = tabRect.left - tabsRect.left + tabsRoot.scrollLeft;
+  const y = tabRect.top - tabsRect.top + tabsRoot.scrollTop;
+
+  indicator.style.width = `${tabRect.width}px`;
+  indicator.style.height = `${tabRect.height}px`;
+  indicator.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  tabsRoot.classList.add("is-ready");
+};
+
+const initTabsIndicator = tabsRoot => {
+  if (!tabsRoot || tabsRoot.dataset.indicatorBound === "true") return;
+
+  const sync = () => {
+    const activeTab = qs(".tab-button.active", tabsRoot) || qs(".tab-button", tabsRoot);
+    updateTabsIndicator(tabsRoot, activeTab);
+  };
+
+  window.addEventListener("resize", sync, { passive: true });
+  window.addEventListener("load", sync, { passive: true });
+  tabsRoot.addEventListener("scroll", sync, { passive: true });
+  window.setTimeout(sync, 80);
+  tabsRoot.dataset.indicatorBound = "true";
+};
+
+const setActiveTab = (tabsRoot, tab) => {
+  qsa(".tab-button", tabsRoot).forEach(item => {
+    const isActive = item === tab;
+    item.classList.toggle("active", isActive);
+    item.setAttribute("aria-selected", isActive ? "true" : "false");
+  });
+  updateTabsIndicator(tabsRoot, tab);
+};
+
+const revealFilteredCards = grid => {
+  if (!grid) return;
+
+  qsa(".project-card", grid).forEach(card => card.classList.remove("is-filter-reveal"));
+
+  if (prefersReducedMotion()) return;
+
+  const visibleCards = qsa(".project-card", grid).filter(
+    card => !card.hidden && !card.classList.contains("project-card--beyond-limit")
+  );
+
+  visibleCards.forEach((card, index) => {
+    card.style.setProperty("--case-reveal-delay", `${Math.min(index * 42, 360)}ms`);
+    card.classList.add("is-filter-reveal");
+  });
+
+  window.setTimeout(() => {
+    qsa(".project-card.is-filter-reveal", grid).forEach(card => {
+      card.classList.remove("is-filter-reveal");
+      card.style.removeProperty("--case-reveal-delay");
+    });
+  }, TAB_SWITCH_IN_MS + 420);
+};
+
 const initCasesFilter = (grid, tabsRoot) => {
   if (!grid || !tabsRoot || grid.dataset.filterBound === "true") return;
 
   let activeFilter = "all";
   let expanded = false;
+  let switching = false;
   const stack = qs("#studioCasesStack");
   const moreWrap = qs("#studioCasesMore");
   const moreButton = qs("#studioCasesMoreButton");
-  const applyFilter = () => {
+
+  initTabsIndicator(tabsRoot);
+
+  const applyFilter = ({ animate = false } = {}) => {
     let visibleCount = 0;
     const limit = CASES_VISIBLE_LIMIT;
 
@@ -286,21 +359,45 @@ const initCasesFilter = (grid, tabsRoot) => {
     const shouldShowMore = visibleCount > limit && !expanded;
     if (moreWrap) moreWrap.hidden = !shouldShowMore;
     scheduleCasesStackClip(grid, stack, shouldShowMore);
+
+    if (animate) revealFilteredCards(grid);
+  };
+
+  const switchFilter = (tab, nextFilter) => {
+    if (switching || nextFilter === activeFilter) return;
+
+    switching = true;
+    setActiveTab(tabsRoot, tab);
+    expanded = false;
+
+    if (prefersReducedMotion()) {
+      activeFilter = nextFilter;
+      applyFilter();
+      switching = false;
+      return;
+    }
+
+    grid.classList.add("is-tab-switching");
+
+    window.setTimeout(() => {
+      activeFilter = nextFilter;
+      applyFilter({ animate: true });
+      grid.classList.remove("is-tab-switching");
+      switching = false;
+    }, TAB_SWITCH_OUT_MS);
   };
 
   qsa(".tab-button", tabsRoot).forEach(tab => {
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", tab.classList.contains("active") ? "true" : "false");
     tab.addEventListener("click", () => {
-      qsa(".tab-button", tabsRoot).forEach(item => item.classList.remove("active"));
-      tab.classList.add("active");
-      activeFilter = tab.dataset.filter || "all";
-      expanded = false;
-      applyFilter();
+      switchFilter(tab, tab.dataset.filter || "all");
     });
   });
 
   moreButton?.addEventListener("click", () => {
     expanded = true;
-    applyFilter();
+    applyFilter({ animate: true });
   });
 
   grid.addEventListener("load", () => scheduleCasesStackClip(grid, stack, stack?.classList.contains("is-collapsed")), true);
@@ -308,7 +405,9 @@ const initCasesFilter = (grid, tabsRoot) => {
   window.addEventListener("resize", () => {
     expanded = false;
     applyFilter();
+    updateTabsIndicator(tabsRoot, qs(".tab-button.active", tabsRoot));
   });
+
   applyFilter();
   grid.dataset.filterBound = "true";
 };
@@ -393,6 +492,11 @@ const bootstrapCases = () => {
 };
 
 window.__studioInitCases = initCases;
+window.__studioCasesTabs = {
+  updateTabsIndicator,
+  setActiveTab,
+  initTabsIndicator
+};
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", bootstrapCases);

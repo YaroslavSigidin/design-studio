@@ -2054,29 +2054,68 @@ body::after {
 }
 
 .studio-cases .tabs {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
   margin-bottom: 32px;
+  isolation: isolate;
+}
+
+.studio-cases .tabs__indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  min-height: 44px;
+  border-radius: 999px;
+  background: #000;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.24s ease;
+  will-change: transform, width, height;
+}
+
+.studio-cases .tabs.is-ready .tabs__indicator {
+  opacity: 1;
 }
 
 .studio-cases .tab-button {
+  position: relative;
+  z-index: 1;
   min-height: 44px;
   padding: 11px 20px;
   border-radius: 999px;
   border: 1px solid rgba(28, 52, 81, 0.14);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   font-family: "Schibsted Grotesk", sans-serif;
   font-weight: 500;
   font-size: 14px;
   color: #505050;
   cursor: pointer;
+  transition:
+    color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.22s ease;
+}
+
+.studio-cases .tab-button:hover:not(.active) {
+  color: #111;
+  border-color: rgba(28, 52, 81, 0.22);
+  background: rgba(255, 255, 255, 0.98);
 }
 
 .studio-cases .tab-button.active {
-  background: #000;
-  border-color: #000;
+  background: transparent;
+  border-color: transparent;
   color: #fff;
 }
 
@@ -2184,8 +2223,35 @@ body::after {
   border: 10px solid #ffffff;
   background: #ffffff;
   box-shadow: 0 18px 34px rgba(29, 62, 97, 0.2);
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  transition:
+    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
   touch-action: manipulation;
+}
+
+.studio-cases .projects-grid.is-tab-switching .project-card:not([hidden]) {
+  opacity: 0;
+  transform: translateY(10px) scale(0.985);
+  pointer-events: none;
+}
+
+.studio-cases .project-card.is-filter-reveal {
+  animation: caseFilterCardIn 0.46s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--case-reveal-delay, 0ms);
+}
+
+@keyframes caseFilterCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .studio-cases .project-card > img:first-child {
@@ -2589,6 +2655,18 @@ body::after {
   .case-page-skeleton.is-dismissing,
   .media-skeleton img,
   .studio-cases .projects-grid {
+    transition: none;
+  }
+
+  .studio-cases .project-card.is-filter-reveal,
+  .studio-cases .projects-grid.is-tab-switching .project-card:not([hidden]) {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .studio-cases .tabs__indicator {
     transition: none;
   }
 }
