@@ -2701,11 +2701,12 @@ body::after {
   position: relative;
   width: min(1280px, 100%);
   margin: 0 auto;
-  padding: 0 clamp(20px, 3vw, 40px);
+  padding: 8px clamp(20px, 3vw, 40px) 12px;
 }
 
 .studio-services-carousel__viewport {
   overflow: hidden;
+  padding: 38px 0 44px;
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0%,
@@ -2731,10 +2732,11 @@ body::after {
   align-items: stretch;
   gap: var(--services-gap);
   overflow-x: auto;
+  overflow-y: visible;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  padding: 10px max(20px, calc(50% - (var(--service-card-width) / 2))) 18px;
+  padding: 0 max(20px, calc(50% - (var(--service-card-width) / 2)));
 }
 
 .studio-services-grid::-webkit-scrollbar {
@@ -2743,7 +2745,7 @@ body::after {
 
 .studio-services-carousel__nav {
   position: absolute;
-  top: calc(50% + 6px);
+  top: 50%;
   z-index: 3;
   width: 52px;
   height: 52px;
