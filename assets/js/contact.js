@@ -247,7 +247,7 @@ const initStudioContacts = () => {
       source: form.dataset.caseTitle
         ? "Кейс"
         : form.matches(".hero-request__form")
-          ? "Hero «Оставить заявку»"
+          ? "Подвал «Оставить заявку»"
           : "Блок «Обсудить проект»",
       name,
       phone,

@@ -6,8 +6,7 @@ const initHeroScroll = () => {
   const heroPage = document.querySelector(".hero-page");
   const wordmark = document.querySelector("[data-hero-wordmark]");
   const subtitle = document.querySelector(".hero-subtitle[data-hero-scroll-item]");
-  const cta = document.querySelector(".hero-cta-wrap[data-hero-scroll-item]");
-  if (!heroPage || !wordmark || !subtitle || !cta) return;
+  if (!heroPage || !wordmark || !subtitle) return;
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const saveData = navigator.connection?.saveData === true;
@@ -15,8 +14,7 @@ const initHeroScroll = () => {
 
   const layers = [
     { node: wordmark, lift: 52, scale: 0.1, fade: 0.94 },
-    { node: subtitle, lift: 40, scale: 0.07, fade: 0.9 },
-    { node: cta, lift: 28, scale: 0.05, fade: 0.86 }
+    { node: subtitle, lift: 40, scale: 0.07, fade: 0.9 }
   ];
 
   let ticking = false;
