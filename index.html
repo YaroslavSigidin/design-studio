@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-header-widgets" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-cases-fade" />
   </head>
   <body>
     <div class="hero-page">
@@ -488,7 +488,7 @@
     <script src="./assets/js/services-carousel.js?v=20260713-services-six-loop" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260713-skeleton-soft" defer></script>
-    <script src="./assets/js/cases.js?v=20260713-cases-chips" defer></script>
+    <script src="./assets/js/cases.js?v=20260713-cases-fade" defer></script>
     <script>
       (function () {
         const escapeHtml = value =>
@@ -571,7 +571,7 @@
           const clipTop = clip.getBoundingClientRect().top;
           const lastVisibleBottom = lastVisible.getBoundingClientRect().bottom - clipTop;
           const beyondHeight = firstBeyond.getBoundingClientRect().height;
-          const peek = Math.min(Math.max(beyondHeight * 0.52, 96), 220);
+          const peek = Math.min(Math.max(beyondHeight * 0.42, 72), 180);
 
           clip.style.maxHeight = `${lastVisibleBottom + peek}px`;
         };

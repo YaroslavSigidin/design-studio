@@ -241,7 +241,7 @@ const updateCasesStackClip = (grid, stack, collapsed) => {
   const clipTop = clip.getBoundingClientRect().top;
   const lastVisibleBottom = lastVisible.getBoundingClientRect().bottom - clipTop;
   const beyondHeight = firstBeyond.getBoundingClientRect().height;
-  const peek = Math.min(Math.max(beyondHeight * 0.52, 96), 220);
+  const peek = Math.min(Math.max(beyondHeight * 0.42, 72), 180);
 
   clip.style.maxHeight = `${lastVisibleBottom + peek}px`;
 };
