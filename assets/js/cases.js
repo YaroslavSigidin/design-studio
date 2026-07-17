@@ -91,14 +91,6 @@ const pickProjects = manifest => {
 
 const SKELETON_CARDS_COUNT = 6;
 const CASES_VISIBLE_LIMIT = 9;
-const EXTRA_PLACEHOLDER_CASE = {
-  id: "placeholder-case",
-  category: "web",
-  title: "Ваш проект может быть здесь",
-  subtitle: "Запустим дизайн под вашу задачу",
-  tags: ["placeholder"],
-  isPlaceholder: true
-};
 
 const renderMediaSkeleton = attrs => window.STUDIO_MEDIA?.renderSkeletonImage(attrs) || "";
 
@@ -149,12 +141,13 @@ const loadManifestWithFallback = async cfg => {
   }
 };
 
-const renderProjectCard = (project, cfg) => {
+const renderProjectCard = (project, cfg, index = 0) => {
   const tagLabel = getTagLabel(project.category);
   const caseHref = getCaseHref(project, cfg);
   const image = normalizeAssetUrl(project.image || project.cover || "", cfg);
   const isPlaceholder = Boolean(project.isPlaceholder);
   const filterTags = [...(project.tags || []), ...(project.study?.tags || [])].join(" ").toLowerCase();
+  const deferImage = !isPlaceholder && index >= CASES_VISIBLE_LIMIT;
   const imageMarkup = isPlaceholder
     ? `<div class="project-placeholder-media" aria-hidden="true"></div>`
     : renderMediaSkeleton({
@@ -162,7 +155,9 @@ const renderProjectCard = (project, cfg) => {
         alt: project.title,
         width: "1200",
         height: "630",
-        className: "media-skeleton--cover"
+        className: "media-skeleton--cover",
+        defer: deferImage,
+        eager: index < 3
       });
 
   return `
@@ -247,11 +242,117 @@ const scheduleCasesStackClip = (grid, stack, collapsed) => {
   });
 };
 
-const TAB_SWITCH_OUT_MS = 220;
-const TAB_SWITCH_IN_MS = 480;
+const CASES_EXPAND_MS = 320;
+const CASES_EXPAND_ANIMATE_LIMIT = 6;
+
+const updateMoreButtonState = (moreButton, moreWrap, expanded, hasExtra) => {
+  if (!moreWrap || !moreButton) return;
+  moreWrap.hidden = !hasExtra;
+  const label = moreButton.querySelector("[data-cases-more-label]");
+  if (label) label.textContent = expanded ? "Скрыть кейсы" : "Все кейсы";
+  moreButton.classList.toggle("is-expanded", expanded);
+  moreButton.setAttribute("aria-expanded", expanded ? "true" : "false");
+};
+
+const revealExpandedCases = (grid, revealIds = []) => {
+  if (!grid || !revealIds.length || prefersReducedMotion()) return;
+
+  revealIds.slice(0, CASES_EXPAND_ANIMATE_LIMIT).forEach((id, index) => {
+    const card = qs(`.project-card[data-project-id="${CSS.escape(id)}"]`, grid);
+    if (!card || card.hidden) return;
+    card.style.setProperty("--case-expand-delay", `${Math.min(index * 40, 160)}ms`);
+    card.classList.add("is-expand-reveal");
+    window.setTimeout(() => {
+      card.classList.remove("is-expand-reveal");
+      card.style.removeProperty("--case-expand-delay");
+    }, CASES_EXPAND_MS + 220);
+  });
+};
+
+const hydrateCaseCardImages = async (cards = []) => {
+  if (!cards.length || !window.STUDIO_MEDIA?.hydrateDeferredImages) return;
+
+  for (const card of cards) {
+    await window.STUDIO_MEDIA.hydrateDeferredImages(card, { chunkSize: 2 });
+  }
+};
+
+const hydrateVisibleCaseImages = grid => {
+  if (!grid) return Promise.resolve();
+  const visibleCards = qsa(".project-card", grid).filter(
+    card => !card.hidden && !card.classList.contains("project-card--beyond-limit")
+  );
+  return hydrateCaseCardImages(visibleCards);
+};
+
+const hydrateExpandedCaseImages = (grid, revealIds = []) => {
+  if (!grid || !revealIds.length) return Promise.resolve();
+
+  const roots = revealIds
+    .map(id => qs(`.project-card[data-project-id="${CSS.escape(id)}"]`, grid))
+    .filter(Boolean);
+
+  return hydrateCaseCardImages(roots);
+};
+
+const animateCasesStackClip = (grid, stack, collapsed, onDone) => {
+  const clip = qs("[data-cases-clip]", stack) || qs(".studio-cases-clip", stack);
+  if (!stack || !clip || prefersReducedMotion()) {
+    updateCasesStackClip(grid, stack, collapsed);
+    onDone?.();
+    return;
+  }
+
+  // Expanding dozens of image cards with a max-height tween is too expensive.
+  // Drop collapse instantly and let a light veil/card fade carry the motion.
+  if (!collapsed) {
+    stack.classList.remove("is-collapsed");
+    clip.style.maxHeight = "";
+    clip.classList.remove("is-clip-animating");
+    window.requestAnimationFrame(() => onDone?.());
+    return;
+  }
+
+  clip.classList.add("is-clip-animating");
+  const startHeight = clip.getBoundingClientRect().height;
+  stack.classList.add("is-collapsed");
+  updateCasesStackClip(grid, stack, true);
+  const endHeight = clip.getBoundingClientRect().height;
+  clip.style.maxHeight = `${startHeight}px`;
+  window.requestAnimationFrame(() => {
+    clip.style.maxHeight = `${endHeight}px`;
+  });
+
+  let finished = false;
+  const finish = event => {
+    if (event?.propertyName && event.propertyName !== "max-height") return;
+    if (finished) return;
+    finished = true;
+    updateCasesStackClip(grid, stack, true);
+    clip.classList.remove("is-clip-animating");
+    clip.removeEventListener("transitionend", finish);
+    onDone?.();
+  };
+
+  clip.addEventListener("transitionend", finish);
+  window.setTimeout(finish, CASES_EXPAND_MS + 80);
+};
+
+const TAB_SWITCH_OUT_MS = 280;
+const TAB_SWITCH_IN_MS = 620;
+const TAB_SWITCH_STAGGER_MS = 55;
+const TAB_SWITCH_STAGGER_CAP_MS = 420;
 
 const prefersReducedMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const getTabSwitchDirection = (tabsRoot, fromTab, toTab) => {
+  const tabs = qsa(".tab-button", tabsRoot);
+  const fromIndex = tabs.indexOf(fromTab);
+  const toIndex = tabs.indexOf(toTab);
+  if (fromIndex < 0 || toIndex < 0 || fromIndex === toIndex) return "next";
+  return toIndex > fromIndex ? "next" : "prev";
+};
 
 const updateTabsIndicator = (tabsRoot, activeTab) => {
   const indicator = qs("[data-tabs-indicator]", tabsRoot);
@@ -307,8 +408,14 @@ const revealFilteredCards = grid => {
     card => !card.hidden && !card.classList.contains("project-card--beyond-limit")
   );
 
+  // Force reflow so enter animation restarts cleanly after exit.
+  void grid.offsetWidth;
+
   visibleCards.forEach((card, index) => {
-    card.style.setProperty("--case-reveal-delay", `${Math.min(index * 42, 360)}ms`);
+    card.style.setProperty(
+      "--case-reveal-delay",
+      `${Math.min(index * TAB_SWITCH_STAGGER_MS, TAB_SWITCH_STAGGER_CAP_MS)}ms`
+    );
     card.classList.add("is-filter-reveal");
   });
 
@@ -317,7 +424,8 @@ const revealFilteredCards = grid => {
       card.classList.remove("is-filter-reveal");
       card.style.removeProperty("--case-reveal-delay");
     });
-  }, TAB_SWITCH_IN_MS + 420);
+    grid.removeAttribute("data-switch-dir");
+  }, TAB_SWITCH_IN_MS + TAB_SWITCH_STAGGER_CAP_MS + 80);
 };
 
 const initCasesFilter = (grid, tabsRoot) => {
@@ -332,7 +440,7 @@ const initCasesFilter = (grid, tabsRoot) => {
 
   initTabsIndicator(tabsRoot);
 
-  const applyFilter = ({ animate = false } = {}) => {
+  const applyFilter = ({ animate = false, stackAnimate = false, revealIds = [] } = {}) => {
     let visibleCount = 0;
     const limit = CASES_VISIBLE_LIMIT;
 
@@ -356,33 +464,57 @@ const initCasesFilter = (grid, tabsRoot) => {
       }
     });
 
-    const shouldShowMore = visibleCount > limit && !expanded;
-    if (moreWrap) moreWrap.hidden = !shouldShowMore;
-    scheduleCasesStackClip(grid, stack, shouldShowMore);
+    const hasExtra = visibleCount > limit;
+    updateMoreButtonState(moreButton, moreWrap, expanded, hasExtra);
+    hydrateVisibleCaseImages(grid);
 
-    if (animate) revealFilteredCards(grid);
+    if (stackAnimate) {
+      stack?.classList.toggle("is-expanding", expanded);
+      animateCasesStackClip(grid, stack, !expanded, () => {
+        stack?.classList.remove("is-expanding");
+        if (expanded) {
+          revealExpandedCases(grid, revealIds);
+          hydrateExpandedCaseImages(grid, revealIds);
+        }
+      });
+    } else {
+      scheduleCasesStackClip(grid, stack, !expanded);
+    }
+
+    if (animate && !stackAnimate) revealFilteredCards(grid);
   };
 
   const switchFilter = (tab, nextFilter) => {
     if (switching || nextFilter === activeFilter) return;
 
+    const previousTab = qs(".tab-button.active", tabsRoot);
+    const direction = getTabSwitchDirection(tabsRoot, previousTab, tab);
+
     switching = true;
+    tabsRoot.classList.add("is-switching");
     setActiveTab(tabsRoot, tab);
     expanded = false;
 
     if (prefersReducedMotion()) {
       activeFilter = nextFilter;
       applyFilter();
+      tabsRoot.classList.remove("is-switching");
       switching = false;
       return;
     }
 
+    grid.dataset.switchDir = direction;
     grid.classList.add("is-tab-switching");
+    qsa(".project-card.is-filter-reveal", grid).forEach(card => {
+      card.classList.remove("is-filter-reveal");
+      card.style.removeProperty("--case-reveal-delay");
+    });
 
     window.setTimeout(() => {
       activeFilter = nextFilter;
       applyFilter({ animate: true });
       grid.classList.remove("is-tab-switching");
+      tabsRoot.classList.remove("is-switching");
       switching = false;
     }, TAB_SWITCH_OUT_MS);
   };
@@ -396,8 +528,12 @@ const initCasesFilter = (grid, tabsRoot) => {
   });
 
   moreButton?.addEventListener("click", () => {
-    expanded = true;
-    applyFilter({ animate: true });
+    const willExpand = !expanded;
+    const revealIds = willExpand
+      ? qsa(".project-card--beyond-limit", grid).map(card => card.dataset.projectId).filter(Boolean)
+      : [];
+    expanded = willExpand;
+    applyFilter({ stackAnimate: true, revealIds });
   });
 
   grid.addEventListener("load", () => scheduleCasesStackClip(grid, stack, stack?.classList.contains("is-collapsed")), true);
@@ -429,8 +565,8 @@ const renderCasesGrid = (grid, projects, cfg) =>
     window.setTimeout(() => {
       grid.classList.remove("is-loading", "is-swapping");
       grid.removeAttribute("aria-busy");
-      const items = [...projects, EXTRA_PLACEHOLDER_CASE];
-      grid.innerHTML = items.map(project => renderProjectCard(project, cfg)).join("");
+      const items = projects;
+      grid.innerHTML = items.map((project, index) => renderProjectCard(project, cfg, index)).join("");
       bindCardNavigation(grid);
       window.STUDIO_MEDIA?.initImageSkeletons(grid);
       resolve();

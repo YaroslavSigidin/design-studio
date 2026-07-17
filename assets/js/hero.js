@@ -1,11 +1,4 @@
 const initHeroSearch = () => {
-  const editor = document.querySelector("[data-hero-search-editor]");
-  const submitButton = document.querySelector("[data-hero-submit]");
-  const budgetRange = document.querySelector("[data-hero-budget-range]");
-  const budgetLabel = document.querySelector("[data-hero-budget-label]");
-  const deadlineRange = document.querySelector("[data-hero-deadline-range]");
-  const deadlineLabel = document.querySelector("[data-hero-deadline-label]");
-
   const finalModal = document.getElementById("heroFinalModal");
   const finalForm = document.getElementById("heroFinalForm");
   const finalCommentField = finalForm?.querySelector('textarea[name="comment"]');
@@ -13,26 +6,17 @@ const initHeroSearch = () => {
   const finalPhoneField = finalForm?.querySelector('input[name="phone"]');
   const finalContactField = finalForm?.querySelector('input[name="contact"]');
   const finalSubmitButton = finalForm?.querySelector(".hero-final-submit");
+  const finalAttachmentsRoot = document.querySelector("[data-hero-final-attachments]");
+  const finalAttachList = document.querySelector("[data-hero-final-attach-list]");
 
-  if (!editor || !submitButton) return;
+  let activeComposer = null;
 
-  const createFlightPlane = () => {
-    const rect = submitButton.getBoundingClientRect();
-    const launch = document.createElement("span");
-    launch.className = "hero-send-launch";
-    launch.style.left = `${rect.left + rect.width / 2}px`;
-    launch.style.top = `${rect.top + rect.height / 2}px`;
-    launch.innerHTML = `
-      <span class="hero-send-glow" aria-hidden="true"></span>
-      <span class="hero-send-burst" aria-hidden="true"></span>
-      <span class="hero-send-ring" aria-hidden="true"></span>
-    `;
-
-    document.body.appendChild(launch);
-    window.setTimeout(() => launch.remove(), 1650);
-  };
-
-  const formatMoney = value => `${new Intl.NumberFormat("ru-RU").format(value * 1000)} ₽`;
+  const escapeHtml = value =>
+    String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
 
   const getDeclension = (value, [one, two, five]) => {
     const mod10 = value % 10;
@@ -42,6 +26,8 @@ const initHeroSearch = () => {
     if (mod10 >= 2 && mod10 <= 4) return two;
     return five;
   };
+
+  const formatMoney = value => `${new Intl.NumberFormat("ru-RU").format(Number(value) * 1000)} ₽`;
 
   const formatDeadline = value => {
     const days = Number(value);
@@ -60,25 +46,10 @@ const initHeroSearch = () => {
     const maxValue = Number(input.max || 100);
     const value = Number(input.value || min);
     const progress = ((value - min) * 100) / (maxValue - min || 1);
-    input.style.setProperty("--range-progress", `${Math.max(0, Math.min(progress, 100))}%`);
-  };
-
-  const update = () => {
-    if (budgetRange && budgetLabel) {
-      budgetLabel.textContent = formatMoney(Number(budgetRange.value));
-      setRangeProgress(budgetRange);
-    }
-    if (deadlineRange && deadlineLabel) {
-      deadlineLabel.textContent = formatDeadline(Number(deadlineRange.value));
-      setRangeProgress(deadlineRange);
-    }
-  };
-
-  const resetHeroForm = () => {
-    editor.value = "";
-    if (budgetRange) budgetRange.value = "150";
-    if (deadlineRange) deadlineRange.value = "30";
-    update();
+    const progressValue = `${Math.max(0, Math.min(progress, 100))}%`;
+    input.style.setProperty("--range-progress", progressValue);
+    input.closest(".hero-range-track")?.style.setProperty("--range-progress", progressValue);
+    input.closest(".hero-range-control")?.style.setProperty("--range-progress", progressValue);
   };
 
   const closeFinalModal = () => {
@@ -88,36 +59,310 @@ const initHeroSearch = () => {
     document.body.style.overflow = "";
   };
 
-  const openFinalModal = comment => {
-    if (!finalModal || !finalCommentField) return;
-    finalCommentField.value = comment;
-    finalModal.classList.add("is-open");
-    finalModal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    window.setTimeout(() => finalNameField?.focus(), 20);
+  const renderAttachmentMarkup = (items, { removable = true } = {}) =>
+    items
+      .map(item => {
+        const preview =
+          item.type === "photo" && item.previewUrl
+            ? `<img class="hero-attach-item__thumb" src="${item.previewUrl}" alt="" />`
+            : `<span class="hero-attach-item__icon hero-attach-item__icon--${item.type}" aria-hidden="true"></span>`;
+
+        const removeButton = removable
+          ? `<button
+              class="hero-attach-item__remove"
+              type="button"
+              aria-label="Удалить вложение"
+              data-hero-attach-remove
+              data-attach-type="${item.type}"
+              data-attach-index="${item.index}"
+            >×</button>`
+          : "";
+
+        return `
+          <li class="hero-attach-item hero-attach-item--${item.type}">
+            ${preview}
+            <span class="hero-attach-item__label" title="${escapeHtml(item.label)}">${escapeHtml(item.label)}</span>
+            ${removeButton}
+          </li>`;
+      })
+      .join("");
+
+  const initComposer = root => {
+    const editor = root.querySelector("[data-hero-search-editor]");
+    const submitButton = root.querySelector("[data-hero-submit]");
+    const deadlineRange = root.querySelector("[data-hero-deadline-range]");
+    const deadlineLabel = root.querySelector("[data-hero-deadline-label]");
+    const budgetRange = root.querySelector("[data-hero-budget-range]");
+    const budgetLabel = root.querySelector("[data-hero-budget-label]");
+    const attachmentsRoot = root.querySelector("[data-hero-attachments]");
+    const photoButton = attachmentsRoot?.querySelector("[data-hero-attach-photo]");
+    const fileButton = attachmentsRoot?.querySelector("[data-hero-attach-file]");
+    const photoInput = attachmentsRoot?.querySelector("[data-hero-attach-photo-input]");
+    const fileInput = attachmentsRoot?.querySelector("[data-hero-attach-file-input]");
+    const attachList = root.querySelector("[data-hero-attach-list]");
+    const inputWrap = root.querySelector(".hero-search-input-wrap");
+    const rangesRoot = root.querySelector("[data-hero-search-ranges]");
+    const slidersRow = root.querySelector(".hero-search-sliders");
+
+    if (!editor || !submitButton) return null;
+
+    const attachmentState = {
+      photos: [],
+      files: []
+    };
+
+    const api = {
+      removeAttachment: null,
+      resetForm: null,
+      formatAttachmentSummary: null,
+      getAttachments: null,
+      getBudgetLabel: null,
+      getDeadlineLabel: null,
+      revokePhotoPreviews: null
+    };
+
+    const createFlightPlane = () => {
+      const rect = submitButton.getBoundingClientRect();
+      const launch = document.createElement("span");
+      launch.className = "hero-send-launch";
+      launch.style.left = `${rect.left + rect.width / 2}px`;
+      launch.style.top = `${rect.top + rect.height / 2}px`;
+      launch.innerHTML = `
+        <span class="hero-send-glow" aria-hidden="true"></span>
+        <span class="hero-send-burst" aria-hidden="true"></span>
+        <span class="hero-send-ring" aria-hidden="true"></span>
+      `;
+
+      document.body.appendChild(launch);
+      window.setTimeout(() => launch.remove(), 1650);
+    };
+
+    const revokePhotoPreviews = () => {
+      attachmentState.photos.forEach(item => {
+        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+      });
+    };
+
+    const formatAttachmentSummary = () => {
+      const lines = [];
+
+      if (attachmentState.photos.length) {
+        lines.push(`Фото: ${attachmentState.photos.map(item => item.file.name).join(", ")}`);
+      }
+      if (attachmentState.files.length) {
+        lines.push(`Файлы: ${attachmentState.files.map(item => item.file.name).join(", ")}`);
+      }
+
+      return lines.length ? `\n\nПрикрепления:\n${lines.join("\n")}` : "";
+    };
+
+    const syncComposerState = () => {
+      const hasAttachments = attachmentState.photos.length + attachmentState.files.length > 0;
+      inputWrap?.classList.toggle("has-attachments", hasAttachments);
+    };
+
+    const buildAttachmentItems = () => [
+      ...attachmentState.photos.map((item, index) => ({
+        type: "photo",
+        index,
+        label: item.file.name,
+        previewUrl: item.previewUrl
+      })),
+      ...attachmentState.files.map((item, index) => ({
+        type: "file",
+        index,
+        label: item.file.name,
+        previewUrl: ""
+      }))
+    ];
+
+    const renderFinalAttachmentList = () => {
+      if (!finalAttachList || !finalAttachmentsRoot) return;
+
+      const items = buildAttachmentItems();
+      finalAttachmentsRoot.hidden = items.length === 0;
+      finalAttachList.innerHTML = renderAttachmentMarkup(items, { removable: true });
+    };
+
+    const renderAttachmentList = () => {
+      if (!attachList) return;
+
+      const items = buildAttachmentItems();
+      attachList.hidden = items.length === 0;
+      attachList.innerHTML = renderAttachmentMarkup(items, { removable: true });
+      syncComposerState();
+      if (activeComposer === api) renderFinalAttachmentList();
+    };
+
+    const addFiles = (fileList, bucket) => {
+      if (!fileList?.length) return;
+
+      const nextItems = Array.from(fileList).map(file => ({
+        file,
+        previewUrl: bucket === "photos" ? URL.createObjectURL(file) : ""
+      }));
+
+      attachmentState[bucket].push(...nextItems);
+      renderAttachmentList();
+    };
+
+    const removeAttachment = (type, index) => {
+      const bucketMap = {
+        photo: "photos",
+        file: "files"
+      };
+      const bucket = bucketMap[type];
+      if (!bucket) return;
+
+      const [removed] = attachmentState[bucket].splice(index, 1);
+      if (removed?.previewUrl) URL.revokeObjectURL(removed.previewUrl);
+      renderAttachmentList();
+    };
+
+    const resetAttachments = () => {
+      revokePhotoPreviews();
+      attachmentState.photos = [];
+      attachmentState.files = [];
+      if (photoInput) photoInput.value = "";
+      if (fileInput) fileInput.value = "";
+      renderAttachmentList();
+    };
+
+    const syncRangesVisibility = () => {
+      const hasText = Boolean(editor.value.trim());
+      if (!rangesRoot) return;
+
+      window.clearTimeout(rangesRoot._rangesHideTimer);
+
+      if (hasText) {
+        rangesRoot.hidden = false;
+        // Allow layout to apply before animating in.
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            rangesRoot.classList.add("is-visible");
+            slidersRow?.classList.add("has-ranges");
+          });
+        });
+        return;
+      }
+
+      rangesRoot.classList.remove("is-visible");
+      slidersRow?.classList.remove("has-ranges");
+      rangesRoot._rangesHideTimer = window.setTimeout(() => {
+        if (!editor.value.trim()) rangesRoot.hidden = true;
+      }, 520);
+    };
+
+    const update = () => {
+      if (budgetRange && budgetLabel) {
+        budgetLabel.textContent = formatMoney(Number(budgetRange.value));
+        setRangeProgress(budgetRange);
+      }
+      if (deadlineRange && deadlineLabel) {
+        deadlineLabel.textContent = formatDeadline(Number(deadlineRange.value));
+        setRangeProgress(deadlineRange);
+      }
+      syncRangesVisibility();
+    };
+
+    const resetForm = () => {
+      editor.value = "";
+      if (budgetRange) budgetRange.value = "150";
+      if (deadlineRange) deadlineRange.value = "30";
+      resetAttachments();
+      update();
+    };
+
+    const openFinalModal = comment => {
+      if (!finalModal || !finalCommentField) return;
+      activeComposer = api;
+      finalCommentField.value = comment;
+      renderFinalAttachmentList();
+      finalModal.classList.add("is-open");
+      finalModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      window.setTimeout(() => finalNameField?.focus(), 20);
+    };
+
+    const handleSend = () => {
+      const text = editor.value.trim();
+      const hasAttachments = attachmentState.photos.length + attachmentState.files.length > 0;
+      if (!text && !hasAttachments) {
+        submitButton.classList.add("is-invalid");
+        window.setTimeout(() => submitButton.classList.remove("is-invalid"), 360);
+        editor.focus();
+        return;
+      }
+
+      submitButton.classList.add("is-sending");
+      createFlightPlane();
+
+      window.setTimeout(() => {
+        submitButton.classList.remove("is-sending");
+        openFinalModal(text || "Заявка с вложениями");
+      }, 980);
+    };
+
+    const getAttachments = () => [
+      ...attachmentState.photos.map(item => ({ kind: "photo", file: item.file })),
+      ...attachmentState.files.map(item => ({ kind: "file", file: item.file }))
+    ];
+
+    const apiMethods = {
+      removeAttachment,
+      resetForm,
+      formatAttachmentSummary,
+      getAttachments,
+      getBudgetLabel: () => budgetLabel?.textContent || "",
+      getDeadlineLabel: () => deadlineLabel?.textContent || "",
+      revokePhotoPreviews
+    };
+    Object.assign(api, apiMethods);
+
+    photoButton?.addEventListener("click", () => photoInput?.click());
+    fileButton?.addEventListener("click", () => fileInput?.click());
+
+    photoInput?.addEventListener("change", () => {
+      addFiles(photoInput.files, "photos");
+      photoInput.value = "";
+    });
+
+    fileInput?.addEventListener("change", () => {
+      addFiles(fileInput.files, "files");
+      fileInput.value = "";
+    });
+
+    attachList?.addEventListener("click", event => {
+      const button = event.target.closest("[data-hero-attach-remove]");
+      if (!button) return;
+      removeAttachment(button.dataset.attachType, Number(button.dataset.attachIndex));
+    });
+
+    budgetRange?.addEventListener("input", update);
+    deadlineRange?.addEventListener("input", update);
+    editor.addEventListener("input", syncRangesVisibility);
+    submitButton.addEventListener("click", handleSend);
+
+    update();
+    renderAttachmentList();
+    return api;
   };
 
-  const handleSend = () => {
-    const text = editor.value.trim();
-    if (!text) {
-      submitButton.classList.add("is-invalid");
-      window.setTimeout(() => submitButton.classList.remove("is-invalid"), 360);
-      editor.focus();
-      return;
-    }
+  const composers = [...document.querySelectorAll("[data-ai-brief]")]
+    .map(initComposer)
+    .filter(Boolean);
 
-    submitButton.classList.add("is-sending");
-    createFlightPlane();
+  if (!composers.length) return;
 
-    window.setTimeout(() => {
-      submitButton.classList.remove("is-sending");
-      openFinalModal(text);
-    }, 980);
-  };
+  finalAttachList?.addEventListener("click", event => {
+    const button = event.target.closest("[data-hero-attach-remove]");
+    if (!button || !activeComposer) return;
+    activeComposer.removeAttachment(button.dataset.attachType, Number(button.dataset.attachIndex));
+  });
 
-  const handleFinalSubmit = async event => {
+  finalForm?.addEventListener("submit", async event => {
     event.preventDefault();
-    if (!finalForm) return;
+    if (!finalForm || !activeComposer) return;
 
     if (!finalNameField?.value.trim()) {
       finalNameField?.focus();
@@ -128,14 +373,17 @@ const initHeroSearch = () => {
       return;
     }
 
+    const commentText = finalCommentField?.value.trim() || "";
+    const attachments = activeComposer.getAttachments?.() || [];
     const result = await window.STUDIO_CONTACT?.submitLead({
       source: "AI-бриф",
       name: finalNameField.value.trim(),
       phone: finalPhoneField?.value.trim() || "",
       contact: finalContactField?.value.trim() || "",
-      budget: budgetLabel?.textContent || "",
-      deadline: deadlineLabel?.textContent || "",
-      comment: finalCommentField?.value.trim() || ""
+      budget: activeComposer.getBudgetLabel(),
+      deadline: activeComposer.getDeadlineLabel(),
+      comment: `${commentText}${activeComposer.formatAttachmentSummary()}`.trim(),
+      attachments
     });
 
     if (finalSubmitButton) {
@@ -154,17 +402,11 @@ const initHeroSearch = () => {
       if (result?.ok) {
         finalForm.reset();
         closeFinalModal();
-        resetHeroForm();
+        activeComposer.resetForm();
+        activeComposer = null;
       }
     }, result?.ok ? 1200 : 1800);
-  };
-
-  editor.addEventListener("input", update);
-  budgetRange?.addEventListener("input", update);
-  deadlineRange?.addEventListener("input", update);
-
-  submitButton.addEventListener("click", handleSend);
-  finalForm?.addEventListener("submit", handleFinalSubmit);
+  });
 
   finalModal?.addEventListener("click", event => {
     if (event.target.closest("[data-close-hero-final]")) {
@@ -180,9 +422,8 @@ const initHeroSearch = () => {
 
   window.addEventListener("beforeunload", () => {
     document.body.style.overflow = "";
+    composers.forEach(composer => composer.revokePhotoPreviews());
   });
-
-  update();
 };
 
 if (document.readyState === "loading") {

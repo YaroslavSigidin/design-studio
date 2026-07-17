@@ -7,6 +7,13 @@
   color: #000000;
 }
 
+/* Main site atmospheric layers must not bleed into case pages. */
+.studio-case-page::before,
+.studio-case-page::after {
+  content: none;
+  display: none;
+}
+
 .case-nav {
   position: sticky;
   top: 0;
@@ -222,7 +229,7 @@
 .case-hero-media {
   overflow: hidden;
   border-radius: 20px;
-  background: #f8f8f8;
+  background: #f3f6fa;
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -385,8 +392,9 @@
 .case-metric {
   padding: 18px 20px;
   border-radius: 14px;
-  background: #f8f8f8;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 20px rgba(20, 40, 70, 0.04);
   font-family: "Inter", sans-serif;
   font-size: 15px;
   line-height: 1.45;
@@ -401,8 +409,9 @@
 .case-chapter {
   padding: 24px;
   border-radius: 16px;
-  background: #f8f8f8;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 20px rgba(20, 40, 70, 0.04);
 }
 
 .case-chapter-label {
@@ -533,6 +542,18 @@
 .studio-discuss--case .studio-discuss__inner {
   width: 100%;
   margin: 0;
+}
+
+#case-footer-root {
+  width: min(1200px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.studio-case-page #case-footer-root .studio-footer {
+  width: 100%;
+  max-width: none;
+  margin-top: 36px;
+  padding-bottom: 20px;
 }
 
 .case-page-footer {

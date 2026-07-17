@@ -49,6 +49,7 @@ window.STUDIO_CONFIG = {
     provider: "telegram",
     endpoint: resolveLeadEndpoint(),
     timeoutMs: 12000,
+    uploadTimeoutMs: 60000,
     allowFallback: false
   },
   leadChannel: {

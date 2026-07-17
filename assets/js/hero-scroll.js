@@ -7,8 +7,9 @@ const initHeroScroll = () => {
   const wordmark = document.querySelector("[data-hero-wordmark]");
   const subtitle = document.querySelector(".hero-subtitle[data-hero-scroll-item]");
   const brief = document.querySelector(".hero-search-wrap[data-hero-scroll-item]");
-  const cta = document.querySelector(".hero-cta-wrap[data-hero-scroll-item]");
-  if (!heroPage || !wordmark || !subtitle || !brief || !cta) return;
+  const partners = document.querySelector(".hero-partners[data-hero-scroll-item]");
+  const stats = document.querySelector(".studio-stats[data-hero-scroll-item]");
+  if (!heroPage || !wordmark || !subtitle || !brief) return;
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const saveData = navigator.connection?.saveData === true;
@@ -18,7 +19,8 @@ const initHeroScroll = () => {
     { node: wordmark, lift: 52, scale: 0.1, fade: 0.94 },
     { node: subtitle, lift: 40, scale: 0.07, fade: 0.9 },
     { node: brief, lift: 34, scale: 0.06, fade: 0.88 },
-    { node: cta, lift: 28, scale: 0.05, fade: 0.86 }
+    ...(partners ? [{ node: partners, lift: 28, scale: 0.04, fade: 0.82 }] : []),
+    ...(stats ? [{ node: stats, lift: 22, scale: 0.03, fade: 0.78 }] : [])
   ];
 
   let ticking = false;

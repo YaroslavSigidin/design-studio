@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-header-font-weight" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-footer-compact" />
   </head>
   <body>
     <div class="hero-page">
@@ -41,6 +41,7 @@
             <ul class="hero-menu">
               <li><a href="#cases">Кейсы</a></li>
               <li><a href="#services">Услуги</a></li>
+              <li><a href="#about">О нас</a></li>
               <li><a href="#contacts" data-open-brief-modal>Обсудить проект</a></li>
               <li><a href="#contacts">Контакты</a></li>
             </ul>
@@ -63,6 +64,7 @@
           <div class="hero-mobile-sheet" data-header-sheet>
             <a href="#cases">Кейсы</a>
             <a href="#services">Услуги</a>
+            <a href="#about">О нас</a>
             <a href="#contacts" data-open-brief-modal>Обсудить проект</a>
             <a href="#contacts">Контакты</a>
             <div class="hero-mobile-sheet-actions">
@@ -91,6 +93,7 @@
             data-contact-phone
             data-copy-phone-chip
           >+7 961 971-05-15</a>
+          <span class="top-contact-bridge" aria-hidden="true"></span>
           <div class="top-mini-contacts" aria-label="Контакты">
             <a class="top-mini-contact-btn top-mini-contact-btn--vk" data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer" aria-label="VK">
               <span class="top-mini-contact-btn__icon" aria-hidden="true">
@@ -113,113 +116,219 @@
               </h1>
 
               <p class="hero-subtitle" data-hero-scroll-item>
-                Проектируем интерфейсы, сайты и цифровые продукты, чтобы ваш бизнес рос быстрее.
+                <span>Проектируем интерфейсы</span>
+                <span class="hero-subtitle__dot" aria-hidden="true">·</span>
+                <span>Повышаем конверсию</span>
+                <span class="hero-subtitle__dot" aria-hidden="true">·</span>
+                <span>Разрабатываем сайты</span>
               </p>
             </div>
 
-            <div class="hero-search-wrap" data-hero-scroll-item>
+            <div class="hero-search-wrap" data-hero-scroll-item data-ai-brief>
               <div class="hero-search">
                 <div class="hero-search-input-wrap">
-                  <textarea
-                    class="hero-search-editor"
-                    data-hero-search-editor
-                    aria-label="Мне нужен(а)...."
-                    data-placeholder="Мне нужен(а)...."
-                    placeholder="Мне нужен(а)...."
-                    rows="2"
-                    maxlength="3000"
-                  ></textarea>
-                  <button type="button" class="hero-search-submit" aria-label="Отправить бриф" data-hero-submit>
-                    <span>Отправить</span>
-                  </button>
+                  <ul class="hero-attach-list" data-hero-attach-list hidden></ul>
+                  <div class="hero-search-input-row">
+                    <div class="hero-search-editor-wrap">
+                      <textarea
+                        class="hero-search-editor"
+                        data-hero-search-editor
+                        aria-label="Мне нужен(а)...."
+                        data-placeholder="Мне нужен(а)...."
+                        placeholder=" "
+                        rows="2"
+                        maxlength="3000"
+                      ></textarea>
+                      <span class="hero-search-editor-ghost" aria-hidden="true">
+                        Мне нужен(а)....
+                        <span class="hero-search-caret"></span>
+                      </span>
+                    </div>
+                    <button type="button" class="hero-search-submit" aria-label="Отправить" data-hero-submit>
+                      <svg class="hero-search-submit__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path
+                          d="M4.2 11.05 18.55 4.4c.7-.32 1.4.38 1.08 1.08L13 19.8a.9.9 0 0 1-1.66-.08l-2.1-5.55-5.55-2.1a.85.85 0 0 1-.5-1.02Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      <span class="hero-search-submit__label">Отправить</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div class="hero-search-sliders">
-                  <label class="hero-range-control">
-                    <div class="hero-range-head">
-                      <span>Бюджет</span>
-                      <strong data-hero-budget-label>150 000 ₽</strong>
+                  <div class="hero-search-attachments" data-hero-attachments>
+                    <div class="hero-attach-actions">
+                      <button class="hero-attach-btn" type="button" data-hero-attach-photo>
+                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                          <rect
+                            x="3.25"
+                            y="4.25"
+                            width="13.5"
+                            height="11.5"
+                            rx="2.25"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                          />
+                          <circle cx="7.25" cy="8" r="1.35" fill="currentColor" />
+                          <path
+                            d="M4.5 13.25 7.6 10.4a1.1 1.1 0 0 1 1.45 0L11.4 12.5l1.35-1.2a1.1 1.1 0 0 1 1.4.05L15.5 13.25"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <span>Фото</span>
+                      </button>
+                      <button class="hero-attach-btn" type="button" data-hero-attach-file>
+                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                          <path
+                            d="M6.25 3.25h5.1L14.75 6.6v10.15a1 1 0 0 1-1 1H6.25a1 1 0 0 1-1-1V4.25a1 1 0 0 1 1-1Z"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M11.25 3.4v3.1h3.1"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M7.5 11h5M7.5 13.75h3.5"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                        <span>Файл</span>
+                      </button>
                     </div>
-                    <input type="range" min="5" max="500" step="5" value="150" data-hero-budget-range />
-                  </label>
-                  <label class="hero-range-control">
-                    <div class="hero-range-head">
-                      <span>Срок</span>
-                      <strong data-hero-deadline-label>30 дней</strong>
-                    </div>
-                    <input type="range" min="1" max="180" step="1" value="30" data-hero-deadline-range />
-                  </label>
+                    <input
+                      type="file"
+                      class="hero-attach-input"
+                      accept="image/*"
+                      multiple
+                      hidden
+                      data-hero-attach-photo-input
+                    />
+                    <input type="file" class="hero-attach-input" multiple hidden data-hero-attach-file-input />
+                  </div>
+                  <div class="hero-search-ranges" data-hero-search-ranges hidden>
+                    <label class="hero-range-control hero-range-control--compact hero-range-control--budget">
+                      <div class="hero-range-head">
+                        <span>Бюджет</span>
+                        <strong data-hero-budget-label>150 000 ₽</strong>
+                      </div>
+                      <div class="hero-range-track" data-hero-range-track>
+                        <input type="range" min="5" max="500" step="5" value="150" data-hero-budget-range />
+                      </div>
+                    </label>
+                    <label class="hero-range-control hero-range-control--compact hero-range-control--deadline">
+                      <div class="hero-range-head">
+                        <span>Сроки</span>
+                        <strong data-hero-deadline-label>30 дней</strong>
+                      </div>
+                      <div class="hero-range-track" data-hero-range-track>
+                        <input type="range" min="1" max="180" step="1" value="30" data-hero-deadline-range />
+                      </div>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="hero-cta-wrap" data-hero-scroll-item>
-              <div class="hero-request" data-hero-request>
-                <button
-                  class="hero-request__open"
-                  type="button"
-                  data-hero-request-toggle
-                  aria-expanded="false"
-                  aria-controls="heroRequestForm"
-                >
-                  <span class="hero-request__open-label">Оставить заявку</span>
-                  <span class="hero-request__open-chevron" aria-hidden="true">
-                    <svg viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M7.5 5 12.5 10l-5 5"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </button>
-                <form class="hero-request__form" id="heroRequestForm">
-                  <button
-                    class="hero-request__collapse"
-                    type="button"
-                    data-hero-request-collapse
-                    aria-label="Свернуть форму"
-                  >
-                    <span class="hero-request__collapse-chevron" aria-hidden="true">
-                      <svg viewBox="0 0 20 20" fill="none">
-                        <path
-                          d="M12.5 5 7.5 10l5 5"
-                          stroke="currentColor"
-                          stroke-width="1.8"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                  <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Номер телефона"
-                    autocomplete="tel"
-                    inputmode="tel"
-                  />
-                  <input
-                    type="text"
-                    name="contact"
-                    placeholder="WhatsApp, Telegram"
-                    autocomplete="username"
-                    required
-                  />
-                  <button class="hero-request__submit" type="submit">Отправить</button>
-                </form>
-              </div>
+            <div class="hero-partners" data-hero-scroll-item aria-label="Партнёры">
+              <ul class="hero-partners__list">
+                <li class="hero-partners__item">VISI FLOW</li>
+                <li class="hero-partners__item">Octoclick</li>
+                <li class="hero-partners__item">MIROX</li>
+                <li class="hero-partners__item">IN IT</li>
+                <li class="hero-partners__item">SBER</li>
+                <li class="hero-partners__item">VTB</li>
+                <li class="hero-partners__item">LUKOIL</li>
+              </ul>
             </div>
+
+            <section class="studio-stats" id="stats" data-hero-scroll-item aria-label="О студии">
+              <ul class="studio-stats__list">
+                <li class="studio-stats__item">
+                  <div class="studio-stat" aria-label="более 50 коммерческих проектов">
+                    <span class="studio-stat__accent">более 50</span>
+                    <span class="studio-stat__text">
+                      <strong>коммерческих</strong>
+                      <span>проектов</span>
+                    </span>
+                  </div>
+                </li>
+                <li class="studio-stats__item">
+                  <div class="studio-stat" aria-label="10+ лет работы в сфере IT">
+                    <span class="studio-stat__accent studio-stat__accent--compact">10+</span>
+                    <span class="studio-stat__text">
+                      <strong>лет работы</strong>
+                      <span>в сфере IT</span>
+                    </span>
+                  </div>
+                </li>
+                <li class="studio-stats__item">
+                  <div class="studio-stat studio-stat--top" aria-label="топ 10 студий юга РФ за 2025 год">
+                    <span class="studio-stat__cluster" aria-hidden="true">
+                      <span class="studio-stat__accent">топ 10</span>
+                      <i></i>
+                      <i></i>
+                    </span>
+                    <span class="studio-stat__text">
+                      <strong>студий юга РФ</strong>
+                      <span>за 2025 год</span>
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </section>
 
           </div>
         </main>
       </div>
     </div>
 
-    <section class="section studio-cases" id="cases">
+<section class="section studio-services" id="services">
+      <div class="container">
+        <h2 class="section-title" data-reveal-heading>Основные услуги</h2>
+      </div>
+      <div class="studio-services-carousel" data-services-carousel>
+        <div class="studio-services-carousel__viewport">
+          <div class="studio-services-grid" id="studioServicesGrid"></div>
+        </div>
+        <div class="studio-services-carousel__controls">
+          <button
+            class="studio-services-carousel__nav studio-services-carousel__nav--prev"
+            type="button"
+            aria-label="Предыдущие услуги"
+            data-services-prev
+          >
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M12.5 5 7.5 10l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <button
+            class="studio-services-carousel__nav studio-services-carousel__nav--next"
+            type="button"
+            aria-label="Следующие услуги"
+            data-services-next
+          >
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M7.5 5 12.5 10l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+
+<section class="section studio-cases" id="cases">
       <div class="container">
         <h2 class="section-title" data-reveal-heading>Наши кейсы</h2>
         <div class="tabs" id="projectTabs" role="tablist" aria-label="Фильтр кейсов">
@@ -290,8 +399,8 @@
           <div class="studio-cases-more__veil" aria-hidden="true"></div>
           </div>
         <div class="studio-cases-more" id="studioCasesMore" hidden>
-          <button class="studio-cases-more__button" id="studioCasesMoreButton" type="button">
-            <span>Посмотреть все</span>
+          <button class="studio-cases-more__button" id="studioCasesMoreButton" type="button" aria-expanded="false">
+            <span data-cases-more-label>Все кейсы</span>
             <span class="list-more-button__icon" aria-hidden="true">
               <svg viewBox="0 0 20 20" fill="none">
                 <path d="M5 7.5 10 12.5l5-5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
@@ -303,34 +412,343 @@
       </div>
     </section>
 
-    <section class="section studio-services" id="services">
-      <div class="container">
-        <h2 class="section-title" data-reveal-heading>Основные услуги</h2>
-      </div>
-      <div class="studio-services-carousel" data-services-carousel>
-        <button
-          class="studio-services-carousel__nav studio-services-carousel__nav--prev"
-          type="button"
-          aria-label="Предыдущие услуги"
-          data-services-prev
-        >
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M12.5 5 7.5 10l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-        <div class="studio-services-carousel__viewport">
-          <div class="studio-services-grid" id="studioServicesGrid"></div>
+<section class="section studio-services-ai" id="services-ai">
+      <div class="container studio-services-ai__inner">
+        <h2 class="studio-services-ai__title" data-reveal-heading>Согласуем все</h2>
+        <p class="studio-services-ai__subtitle">
+          Опишите вашу задачу — и менеджер отправит вам коммерческое предложение
+        </p>
+        <div class="hero-search-wrap studio-services-ai__chat" data-ai-brief>
+          <div class="hero-search">
+            <div class="hero-search-input-wrap">
+              <ul class="hero-attach-list" data-hero-attach-list hidden></ul>
+              <div class="hero-search-input-row">
+                <div class="hero-search-editor-wrap">
+                  <textarea
+                    class="hero-search-editor"
+                    data-hero-search-editor
+                    aria-label="Мне нужен(а)...."
+                    data-placeholder="Мне нужен(а)...."
+                    placeholder=" "
+                    rows="2"
+                    maxlength="3000"
+                  ></textarea>
+                  <span class="hero-search-editor-ghost" aria-hidden="true">
+                    Мне нужен(а)....
+                    <span class="hero-search-caret"></span>
+                  </span>
+                </div>
+                <button type="button" class="hero-search-submit" aria-label="Отправить" data-hero-submit>
+                  <svg class="hero-search-submit__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M4.2 11.05 18.55 4.4c.7-.32 1.4.38 1.08 1.08L13 19.8a.9.9 0 0 1-1.66-.08l-2.1-5.55-5.55-2.1a.85.85 0 0 1-.5-1.02Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <span class="hero-search-submit__label">Отправить</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="hero-search-sliders">
+              <div class="hero-search-attachments" data-hero-attachments>
+                <div class="hero-attach-actions">
+                  <button class="hero-attach-btn" type="button" data-hero-attach-photo>
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                      <rect
+                        x="3.25"
+                        y="4.25"
+                        width="13.5"
+                        height="11.5"
+                        rx="2.25"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                      />
+                      <circle cx="7.25" cy="8" r="1.35" fill="currentColor" />
+                      <path
+                        d="M4.5 13.25 7.6 10.4a1.1 1.1 0 0 1 1.45 0L11.4 12.5l1.35-1.2a1.1 1.1 0 0 1 1.4.05L15.5 13.25"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <span>Фото</span>
+                  </button>
+                  <button class="hero-attach-btn" type="button" data-hero-attach-file>
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                      <path
+                        d="M6.25 3.25h5.1L14.75 6.6v10.15a1 1 0 0 1-1 1H6.25a1 1 0 0 1-1-1V4.25a1 1 0 0 1 1-1Z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M11.25 3.4v3.1h3.1"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M7.5 11h5M7.5 13.75h3.5"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <span>Файл</span>
+                  </button>
+                </div>
+                <input
+                  type="file"
+                  class="hero-attach-input"
+                  accept="image/*"
+                  multiple
+                  hidden
+                  data-hero-attach-photo-input
+                />
+                <input type="file" class="hero-attach-input" multiple hidden data-hero-attach-file-input />
+              </div>
+              <div class="hero-search-ranges" data-hero-search-ranges hidden>
+                <label class="hero-range-control hero-range-control--compact hero-range-control--budget">
+                  <div class="hero-range-head">
+                    <span>Бюджет</span>
+                    <strong data-hero-budget-label>150 000 ₽</strong>
+                  </div>
+                  <div class="hero-range-track" data-hero-range-track>
+                    <input type="range" min="5" max="500" step="5" value="150" data-hero-budget-range />
+                  </div>
+                </label>
+                <label class="hero-range-control hero-range-control--compact hero-range-control--deadline">
+                  <div class="hero-range-head">
+                    <span>Сроки</span>
+                    <strong data-hero-deadline-label>30 дней</strong>
+                  </div>
+                  <div class="hero-range-track" data-hero-range-track>
+                    <input type="range" min="1" max="180" step="1" value="30" data-hero-deadline-range />
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
-        <button
-          class="studio-services-carousel__nav studio-services-carousel__nav--next"
-          type="button"
-          aria-label="Следующие услуги"
-          data-services-next
-        >
-          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M7.5 5 12.5 10l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
+      </div>
+    </section>
+
+    <section class="section studio-about" id="about" data-about>
+      <div class="container studio-about__inner">
+        <h2 class="section-title" data-reveal-heading>О нас</h2>
+        <p class="studio-about__lead">
+          Команда, которая ведёт продукт от идеи до запуска — дизайн, разработка и согласования в одном цикле.
+        </p>
+        <ul class="studio-about__grid">
+          <li class="studio-about__card" data-about-card style="--about-i: 0">
+            <div class="studio-about__photo">
+              <img
+                src="./assets/images/team/kamnev-egor.jpg"
+                alt="Камнев Егор"
+                width="636"
+                height="1024"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="studio-about__meta">
+                <h3 class="studio-about__name">Камнев Егор</h3>
+                <p class="studio-about__role">CTO</p>
+              </div>
+            </div>
+          </li>
+          <li class="studio-about__card" data-about-card style="--about-i: 1">
+            <div class="studio-about__photo">
+              <img
+                src="./assets/images/team/rudenko-anna.jpg"
+                alt="Руденко Анна"
+                width="640"
+                height="1024"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="studio-about__meta">
+                <h3 class="studio-about__name">Руденко Анна</h3>
+                <p class="studio-about__role">Сооснователь, дизайн-лид</p>
+              </div>
+            </div>
+          </li>
+          <li class="studio-about__card" data-about-card style="--about-i: 2">
+            <div class="studio-about__photo">
+              <img
+                src="./assets/images/team/sigidin-yaroslav.jpg"
+                alt="Сигидин Ярослав"
+                width="636"
+                height="1024"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="studio-about__meta">
+                <h3 class="studio-about__name">Сигидин Ярослав</h3>
+                <p class="studio-about__role">Сооснователь, дизайн-лид</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section studio-faq" id="faq">
+      <div class="container">
+        <h2 class="section-title" data-reveal-heading>Частые вопросы</h2>
+        <div class="studio-faq__list" data-faq>
+          <div class="studio-faq__item">
+            <button type="button" class="studio-faq__trigger" aria-expanded="false">
+              <span class="studio-faq__question">Как начать работу над проектом?</span>
+              <span class="studio-faq__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M5 7.5 10 12.5 15 7.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div class="studio-faq__panel">
+              <div class="studio-faq__panel-inner">
+                <p>
+                  Оставьте заявку на сайте или напишите в Telegram. Обсудим задачу, сроки и формат —
+                  после созвона подготовим коммерческое предложение с этапами и стоимостью.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-faq__item">
+            <button type="button" class="studio-faq__trigger" aria-expanded="false">
+              <span class="studio-faq__question">Сколько времени занимает типичный проект?</span>
+              <span class="studio-faq__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M5 7.5 10 12.5 15 7.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div class="studio-faq__panel">
+              <div class="studio-faq__panel-inner">
+                <p>
+                  Лендинг — от 2–3 недель, интерфейс продукта или сайт — от 4–8 недель. Сроки зависят
+                  от объёма экранов, согласований и наличия готового контента.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-faq__item">
+            <button type="button" class="studio-faq__trigger" aria-expanded="false">
+              <span class="studio-faq__question">Как формируется стоимость?</span>
+              <span class="studio-faq__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M5 7.5 10 12.5 15 7.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div class="studio-faq__panel">
+              <div class="studio-faq__panel-inner">
+                <p>
+                  Считаем по объёму работ: количество экранов, глубина проработки UX, брендинг,
+                  иллюстрации. Фиксируем смету в договоре до старта; изменения обсуждаем отдельно.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-faq__item">
+            <button type="button" class="studio-faq__trigger" aria-expanded="false">
+              <span class="studio-faq__question">Передаёте ли материалы в разработку?</span>
+              <span class="studio-faq__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M5 7.5 10 12.5 15 7.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div class="studio-faq__panel">
+              <div class="studio-faq__panel-inner">
+                <p>
+                  Да. Передаём макеты в Figma, UI-kit, спецификации и экспорт assets. Можем
+                  сопровождать handoff и отвечать на вопросы команды разработки.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-faq__item">
+            <button type="button" class="studio-faq__trigger" aria-expanded="false">
+              <span class="studio-faq__question">Сколько раундов правок включено?</span>
+              <span class="studio-faq__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M5 7.5 10 12.5 15 7.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div class="studio-faq__panel">
+              <div class="studio-faq__panel-inner">
+                <p>
+                  В каждый этап входит согласованное число итераций — обычно 2–3 раунда на ключевой
+                  блок. Дополнительные правки или смена ТЗ оформляем отдельно.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-faq__item">
+            <button type="button" class="studio-faq__trigger" aria-expanded="false">
+              <span class="studio-faq__question">Работаете удалённо?</span>
+              <span class="studio-faq__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M5 7.5 10 12.5 15 7.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div class="studio-faq__panel">
+              <div class="studio-faq__panel-inner">
+                <p>
+                  Да, полностью. Созвоны по видеосвязи, задачи и материалы — в Figma, Notion или
+                  ваших инструментах. При необходимости можем встретиться офлайн в Москве.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -349,19 +767,12 @@
 
           <div class="studio-footer__columns">
             <div class="studio-footer__column">
-              <h3>Ресурсы</h3>
+              <h3>Навигация</h3>
               <a href="#cases">Кейсы</a>
               <a href="#services">Услуги</a>
-              <a href="#contacts" data-open-brief-modal>Оставить бриф</a>
+              <a href="#about">О нас</a>
+              <a href="#faq">FAQ</a>
               <a href="#contacts" data-open-brief-modal>Обсудить проект</a>
-            </div>
-
-            <div class="studio-footer__column">
-              <h3>Студия</h3>
-              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Процесс работы</a>
-              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">О студии</a>
-              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">FAQ</a>
-              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Партнерство</a>
             </div>
 
             <div class="studio-footer__column">
@@ -369,21 +780,83 @@
               <a data-contact-link="email" href="mailto:sigidingo@gmail.com" data-contact-email>sigidingo@gmail.com</a>
               <a data-contact-link="phone" href="tel:+79619710515" data-contact-phone>+7 961 971-05-15</a>
               <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram: <span data-contact-handle>@sigidingo</span></a>
-              <a data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Написать Ярославу</a>
             </div>
           </div>
         </div>
 
-        <a class="studio-footer__wordmark" href="./" aria-label="Согласовано">
-          <img
-            class="brand-wordmark brand-wordmark--footer-signature"
-            src="./assets/images/brand/soglasovano-wordmark.svg"
-            alt=""
-            width="993"
-            height="242"
-            decoding="async"
-          />
-        </a>
+        <div class="studio-footer__signature">
+          <a class="studio-footer__wordmark" href="./" aria-label="Согласовано">
+            <img
+              class="brand-wordmark brand-wordmark--footer-signature"
+              src="./assets/images/brand/soglasovano-wordmark.svg"
+              alt=""
+              width="520"
+              height="58"
+              decoding="async"
+            />
+          </a>
+
+          <div class="studio-footer__request">
+            <div class="hero-request" data-hero-request>
+              <button
+                class="hero-request__open"
+                type="button"
+                data-hero-request-toggle
+                aria-expanded="false"
+                aria-controls="heroRequestForm"
+              >
+                <span class="hero-request__open-label">Оставить заявку</span>
+                <span class="hero-request__open-chevron" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7.5 5 12.5 10l-5 5"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <form class="hero-request__form" id="heroRequestForm">
+                <button
+                  class="hero-request__collapse"
+                  type="button"
+                  data-hero-request-collapse
+                  aria-label="Свернуть форму"
+                >
+                  <span class="hero-request__collapse-chevron" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M12.5 5 7.5 10l5 5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </button>
+                <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Номер телефона"
+                  autocomplete="tel"
+                  inputmode="tel"
+                />
+                <input
+                  type="text"
+                  name="contact"
+                  placeholder="WhatsApp, Telegram"
+                  autocomplete="username"
+                  required
+                />
+                <button class="hero-request__submit" type="submit">Отправить</button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="studio-footer__bottom">
@@ -507,6 +980,11 @@
             <textarea name="comment" rows="4" required></textarea>
           </label>
 
+          <div class="hero-final-attachments" data-hero-final-attachments hidden>
+            <span class="hero-final-attachments__label">Прикрепления</span>
+            <ul class="hero-attach-list hero-final-attach-list" data-hero-final-attach-list></ul>
+          </div>
+
           <button type="submit" class="hero-final-submit">Отправить</button>
         </form>
       </section>
@@ -533,22 +1011,24 @@
     </aside>
 
     <script src="./assets/js/config.js?v=20260713-escape-html-shared" defer></script>
-    <script src="./assets/js/contact.js?v=20260713-hero-ai-brief" defer></script>
+    <script src="./assets/js/contact.js?v=20260714-footer-request" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
-    <script src="./assets/js/promo-strip.js?v=20260713-header-promo" defer></script>
-    <script src="./assets/js/header-widgets.js?v=20260713-header-widgets" defer></script>
-    <script src="./assets/js/site-motion.js?v=20260530-site-motion-modal-fix" defer></script>
+    <script src="./assets/js/promo-strip.js?v=20260716-promo-topleft" defer></script>
+    <script src="./assets/js/header-widgets.js?v=20260718-chrome-exit" defer></script>
+    <script src="./assets/js/site-motion.js?v=20260716-services-arc-v5" defer></script>
+    <script src="./assets/js/about-motion.js?v=20260718-about-deal" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
     <script src="./assets/js/hero-request.js?v=20260713-hero-request-collapse" defer></script>
-    <script src="./assets/js/hero.js?v=20260713-hero-ai-brief" defer></script>
-    <script src="./assets/js/hero-scroll.js?v=20260713-hero-scroll-ai" defer></script>
-    <script src="./assets/js/hero-pong.js?v=20260713-hero-cta" defer></script>
+    <script src="./assets/js/hero.js?v=20260716-brief-align" defer></script>
+    <script src="./assets/js/hero-scroll.js?v=20260717-stats-under-logos" defer></script>
+    <script src="./assets/js/hero-pong.js?v=20260717-stats-under-logos" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
-    <script src="./assets/js/services.js?v=20260713-escape-html-shared" defer></script>
-    <script src="./assets/js/services-carousel.js?v=20260713-services-six-loop" defer></script>
+    <script src="./assets/js/services.js?v=20260718-revert-prices" defer></script>
+    <script src="./assets/js/services-carousel.js?v=20260718-mobile-linear" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
-    <script src="./assets/js/image-skeleton.js?v=20260713-escape-html-shared" defer></script>
-    <script src="./assets/js/cases.js?v=20260713-escape-html-shared" defer></script>
+    <script src="./assets/js/image-skeleton.js?v=20260717-cases-perf" defer></script>
+    <script src="./assets/js/cases.js?v=20260717-cases-perf" defer></script>
+    <script src="./assets/js/faq.js?v=20260716-faq-button-accordion" defer></script>
     <script>
       (function () {
         const escapeHtml = value =>
@@ -715,6 +1195,7 @@
             if (tabsRoot && tabsRoot.dataset.filterBound !== "true") {
               let expanded = false;
               let activeFilter = "all";
+              let switching = false;
               window.__studioCasesTabs?.initTabsIndicator?.(tabsRoot);
               const applyFilter = (filter, { animate = false } = {}) => {
                 activeFilter = filter;
@@ -751,41 +1232,68 @@
                   }
                 });
 
-                const shouldShowMore = visibleCount > visibleLimit && !expanded;
+                const shouldShowMore = visibleCount > visibleLimit;
                 if (moreWrap) moreWrap.hidden = !shouldShowMore;
+                if (moreButton) {
+                  const label = moreButton.querySelector("[data-cases-more-label]");
+                  if (label) label.textContent = expanded ? "Скрыть кейсы" : "Все кейсы";
+                  moreButton.classList.toggle("is-expanded", expanded);
+                  moreButton.setAttribute("aria-expanded", expanded ? "true" : "false");
+                }
                 window.requestAnimationFrame(() => {
                   window.requestAnimationFrame(() => {
-                    updateFallbackStackClip(grid, stack, shouldShowMore);
+                    updateFallbackStackClip(grid, stack, !expanded);
                   });
                 });
 
                 if (animate) {
                   grid.querySelectorAll(".project-card").forEach(card => card.classList.remove("is-filter-reveal"));
-                  grid.querySelectorAll(".project-card").forEach((card, index) => {
+                  void grid.offsetWidth;
+                  let revealIndex = 0;
+                  grid.querySelectorAll(".project-card").forEach(card => {
                     if (card.hidden || card.classList.contains("project-card--beyond-limit")) return;
-                    card.style.setProperty("--case-reveal-delay", `${Math.min(index * 42, 360)}ms`);
+                    card.style.setProperty(
+                      "--case-reveal-delay",
+                      `${Math.min(revealIndex * 55, 420)}ms`
+                    );
                     card.classList.add("is-filter-reveal");
+                    revealIndex += 1;
                   });
                 }
               };
 
               tabsRoot.querySelectorAll(".tab-button").forEach(tab => {
                 tab.addEventListener("click", () => {
+                  if (switching) return;
+                  const nextFilter = tab.dataset.filter || "all";
+                  if (nextFilter === activeFilter) return;
+
+                  const previousTab = tabsRoot.querySelector(".tab-button.active");
+                  const tabs = [...tabsRoot.querySelectorAll(".tab-button")];
+                  const fromIndex = tabs.indexOf(previousTab);
+                  const toIndex = tabs.indexOf(tab);
+                  const direction = toIndex >= fromIndex ? "next" : "prev";
+
+                  switching = true;
+                  tabsRoot.classList.add("is-switching");
                   window.__studioCasesTabs?.setActiveTab?.(tabsRoot, tab);
                   expanded = false;
+                  grid.dataset.switchDir = direction;
                   grid.classList.add("is-tab-switching");
                   window.setTimeout(() => {
-                    applyFilter(tab.dataset.filter || "all", { animate: true });
+                    applyFilter(nextFilter, { animate: true });
                     grid.classList.remove("is-tab-switching");
-                  }, 220);
+                    tabsRoot.classList.remove("is-switching");
+                    switching = false;
+                  }, 280);
                 });
               });
 
               moreButton?.addEventListener("click", () => {
-                expanded = true;
+                expanded = !expanded;
                 const activeTab =
                   tabsRoot.querySelector(".tab-button.active") || tabsRoot.querySelector(".tab-button");
-                applyFilter(activeTab?.dataset.filter || "all");
+                applyFilter(activeTab?.dataset.filter || "all", { animate: expanded });
               });
 
               const activeTab =

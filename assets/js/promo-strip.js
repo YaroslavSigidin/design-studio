@@ -2,22 +2,17 @@ const initPromoStrip = () => {
   const strip = document.querySelector("[data-promo-strip]");
   const timerNode = document.querySelector("[data-promo-timer]");
   const closeButton = document.querySelector("[data-promo-close]");
-  const storageKey = "studio-promo-dismissed";
   const desktopMedia = window.matchMedia("(min-width: 1101px)");
+  const storageKey = "studio-promo-dismissed-v2";
   if (!strip || !timerNode) return;
 
-  const syncVisibility = () => {
-    if (desktopMedia.matches) {
-      strip.classList.remove("is-hidden");
-      return true;
-    }
+  const isDismissed = () => window.localStorage.getItem(storageKey) === "1";
 
-    try {
-      if (window.localStorage.getItem(storageKey) === "true") {
-        strip.classList.add("is-hidden");
-        return false;
-      }
-    } catch {}
+  const syncVisibility = () => {
+    if (!desktopMedia.matches || isDismissed()) {
+      strip.classList.add("is-hidden");
+      return false;
+    }
 
     strip.classList.remove("is-hidden");
     return true;
@@ -53,11 +48,7 @@ const initPromoStrip = () => {
 
   closeButton?.addEventListener("click", () => {
     strip.classList.add("is-hidden");
-    try {
-      if (!desktopMedia.matches) {
-        window.localStorage.setItem(storageKey, "true");
-      }
-    } catch {}
+    window.localStorage.setItem(storageKey, "1");
     document.dispatchEvent(new CustomEvent("studio:promo-hidden"));
   });
 

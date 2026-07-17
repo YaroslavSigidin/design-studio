@@ -8,15 +8,35 @@ const initHeaderWidgets = () => {
   if (reducedMotion) return;
 
   const revealOffset = 12;
-  const directionThreshold = 6;
+  const directionThreshold = 5;
+  const hideStaggerMs = 28;
+  const revealStaggerMs = 24;
   let lastScrollY = window.scrollY;
   let isHidden = false;
   let ticking = false;
+  let pendingTimers = [];
 
-  const setHidden = hidden => {
+  const clearPendingTimers = () => {
+    pendingTimers.forEach(timerId => window.clearTimeout(timerId));
+    pendingTimers = [];
+  };
+
+  const setHidden = (hidden, { stagger = true } = {}) => {
     if (isHidden === hidden) return;
     isHidden = hidden;
-    widgets.forEach(widget => widget.classList.toggle("is-scroll-away", hidden));
+    clearPendingTimers();
+
+    widgets.forEach((widget, index) => {
+      const apply = () => widget.classList.toggle("is-scroll-away", hidden);
+
+      if (!stagger) {
+        apply();
+        return;
+      }
+
+      const delay = hidden ? index * hideStaggerMs : (widgets.length - 1 - index) * revealStaggerMs;
+      pendingTimers.push(window.setTimeout(apply, delay));
+    });
   };
 
   const update = () => {
@@ -24,7 +44,7 @@ const initHeaderWidgets = () => {
     const delta = currentY - lastScrollY;
 
     if (currentY <= revealOffset) {
-      setHidden(false);
+      setHidden(false, { stagger: false });
     } else if (delta > directionThreshold) {
       setHidden(true);
     } else if (delta < -directionThreshold) {

@@ -22,13 +22,18 @@ const formatRuPhone = input => {
 
 const getPhoneDigits = value => String(value || "").replace(/\D/g, "");
 
-const initHeroRequest = () => {
-  const root = document.querySelector("[data-hero-request]");
+const initHeroRequest = (scope = document) => {
+  const root =
+    scope instanceof Element && scope.matches("[data-hero-request]")
+      ? scope
+      : scope.querySelector?.("[data-hero-request]");
   const toggle = root?.querySelector("[data-hero-request-toggle]");
   const collapse = root?.querySelector("[data-hero-request-collapse]");
   const form = root?.querySelector(".hero-request__form");
   const phoneInput = form?.querySelector('input[name="phone"]');
-  if (!root || !toggle || !form) return;
+  if (!root || !toggle || !form || root.dataset.heroRequestBound === "true") return;
+
+  root.dataset.heroRequestBound = "true";
 
 const OPEN_ANIMATION_MS = 640;
 
@@ -85,3 +90,5 @@ if (document.readyState === "loading") {
 } else {
   initHeroRequest();
 }
+
+window.initHeroRequest = initHeroRequest;

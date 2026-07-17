@@ -37,8 +37,8 @@ const initHeroPong = () => {
     ".hero-title",
     ".hero-subtitle",
     ".hero-search-wrap",
-    ".hero-cta-wrap",
-    ".hero-request",
+    ".hero-partners",
+    ".studio-stats",
     ".hero-badge"
   ];
 

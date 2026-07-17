@@ -211,52 +211,13 @@ const renderRelatedCases = (projects, currentProject, cfg) => {
   `;
 };
 
-const BRAND_WORDMARK = `
-  <img
-    class="brand-wordmark brand-wordmark--footer"
-    src="./assets/images/brand/soglasovano-wordmark.svg"
-    alt="Согласовано"
-    width="993"
-    height="242"
-    decoding="async"
-  />
-`;
+const mountCaseFooter = () => {
+  const footerRoot = document.getElementById("case-footer-root");
+  if (!footerRoot || !window.renderStudioFooter) return;
 
-const renderBottomLeadForm = projectTitle => `
-  <section class="section studio-discuss studio-discuss--case" id="discuss-project">
-    <div class="studio-discuss__inner">
-      <h2>Обсудить проект</h2>
-      <form class="studio-discuss__form" data-case-title="${window.__studioEscapeHtml(projectTitle)}">
-        <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
-        <input type="tel" name="phone" placeholder="Телефон" autocomplete="tel" inputmode="tel" />
-        <input type="text" name="contact" placeholder="Telegram / email" autocomplete="email" required />
-        <button type="submit">Отправить</button>
-      </form>
-    </div>
-  </section>
-`;
-
-const renderCaseFooter = () => `
-  <footer class="case-page-footer">
-    <div class="case-page-footer__inner">
-      <div class="case-page-footer__brand">
-        <a href="./" aria-label="Согласовано">${BRAND_WORDMARK}</a>
-        <p>Дизайн-студия полного цикла: интерфейсы, сайты, брендинг и сопровождение запуска.</p>
-        <div class="case-page-footer__contacts">
-          <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram</a>
-          <a data-contact-link="phone" href="tel:+79619710515">Позвонить</a>
-          <a data-contact-link="email" href="mailto:sigidingo@gmail.com">Email</a>
-        </div>
-      </div>
-      <div class="case-page-footer__links">
-        <a href="./#cases">Кейсы</a>
-        <a href="./#services">Услуги</a>
-        <a href="./#contacts">Контакты</a>
-      </div>
-    </div>
-    <div class="case-page-footer__bottom">© 2026 Согласовано. Все права защищены.</div>
-  </footer>
-`;
+  footerRoot.innerHTML = window.renderStudioFooter({ home: "./" });
+  window.initHeroRequest?.(footerRoot);
+};
 
 const renderCase = (project, projects, currentIndex, cfg) => {
   const study = project.study || {};
@@ -368,13 +329,11 @@ const renderCase = (project, projects, currentIndex, cfg) => {
 
       <footer class="case-footer">
         <a class="case-back" href="${window.__studioEscapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
-        <a class="case-brief" href="${window.__studioEscapeHtml(cfg.studioHome || "./")}">Оставить бриф</a>
+        <a class="case-brief" href="#contacts" data-open-brief-modal>Оставить бриф</a>
       </footer>
     </article>
 
     ${renderRelatedCases(projects, project, cfg)}
-    ${renderBottomLeadForm(title)}
-    ${renderCaseFooter()}
   `;
 };
 
@@ -430,6 +389,7 @@ const initCasePage = async () => {
     await dismissCaseLoading(loading);
     root.innerHTML = renderNotFound("", cfg);
     revealCaseMain(root);
+    mountCaseFooter();
     return;
   }
 
@@ -445,6 +405,7 @@ const initCasePage = async () => {
       await dismissCaseLoading(loading);
       root.innerHTML = renderNotFound(slug, cfg);
       revealCaseMain(root);
+      mountCaseFooter();
       return;
     }
 
@@ -452,6 +413,7 @@ const initCasePage = async () => {
     await dismissCaseLoading(loading);
     root.innerHTML = markup;
     revealCaseMain(root);
+    mountCaseFooter();
     window.STUDIO_MEDIA?.initImageSkeletons(root);
   } catch (err) {
     await dismissCaseLoading(loading);
@@ -462,6 +424,7 @@ const initCasePage = async () => {
         <a class="case-back" href="${window.__studioEscapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
       </div>
     `;
+    mountCaseFooter();
     console.error("[studio case]", err);
     revealCaseMain(root);
   }

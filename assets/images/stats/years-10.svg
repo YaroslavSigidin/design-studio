@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="246" height="82" viewBox="0 0 246 82" fill="none" role="img" aria-label="10+ лет работы в сфере IT">
+  <rect x="1" y="1" width="244" height="80" rx="40" fill="#FFFFFF" stroke="rgba(255,255,255,0.95)" stroke-width="2"/>
+  <rect x="6" y="6" width="78" height="70" rx="35" fill="#A8D0F8"/>
+  <text x="45" y="49" text-anchor="middle" fill="#FFFFFF" font-family="Fustat, Inter, Arial, sans-serif" font-size="26" font-style="italic" font-weight="700" letter-spacing="-0.03em">10+</text>
+  <text x="98" y="36" fill="#111111" font-family="Fustat, Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="-0.02em">лет работы</text>
+  <text x="98" y="56" fill="#8A93A3" font-family="Fustat, Inter, Arial, sans-serif" font-size="15" font-weight="500" letter-spacing="-0.01em">в сфере IT</text>
+</svg>

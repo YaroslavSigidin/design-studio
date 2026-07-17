@@ -4,6 +4,56 @@ const initStudioContacts = () => {
 
   const encode = value => encodeURIComponent(String(value || "").trim());
 
+  const ATTACHMENT_LIMITS = {
+    maxCount: 8,
+    maxPhotoBytes: 8 * 1024 * 1024,
+    maxFileBytes: 20 * 1024 * 1024,
+    maxTotalBytes: 28 * 1024 * 1024
+  };
+
+  const arrayBufferToBase64 = buffer => {
+    const bytes = new Uint8Array(buffer);
+    let binary = "";
+    const chunkSize = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+    }
+    return btoa(binary);
+  };
+
+  const serializeAttachments = async attachments => {
+    const list = Array.isArray(attachments) ? attachments : [];
+    if (!list.length) return [];
+
+    const next = [];
+    let totalBytes = 0;
+
+    for (const item of list.slice(0, ATTACHMENT_LIMITS.maxCount)) {
+      const file = item?.file instanceof File ? item.file : item instanceof File ? item : null;
+      if (!file) continue;
+
+      const kind =
+        item?.kind === "photo" || String(file.type || "").startsWith("image/") ? "photo" : "file";
+      const maxBytes =
+        kind === "photo" ? ATTACHMENT_LIMITS.maxPhotoBytes : ATTACHMENT_LIMITS.maxFileBytes;
+
+      if (file.size <= 0 || file.size > maxBytes) continue;
+      if (totalBytes + file.size > ATTACHMENT_LIMITS.maxTotalBytes) break;
+
+      const data = arrayBufferToBase64(await file.arrayBuffer());
+      totalBytes += file.size;
+      next.push({
+        kind,
+        name: String(file.name || "file").slice(0, 180),
+        mime: String(file.type || "application/octet-stream").slice(0, 120),
+        size: file.size,
+        data
+      });
+    }
+
+    return next;
+  };
+
   const formatPayload = payload => {
     const lines = [
       `Новая заявка с сайта «Согласовано»`,
@@ -63,8 +113,14 @@ const initStudioContacts = () => {
       return { ok: false, mode: "crm-unconfigured" };
     }
 
+    const { attachments = [], ...fields } = payload || {};
+    const serializedAttachments = await serializeAttachments(attachments);
+    const hasAttachments = serializedAttachments.length > 0;
+
     const controller = new AbortController();
-    const timeoutMs = Number(cfg.crm?.timeoutMs || 12000);
+    const timeoutMs = Number(
+      hasAttachments ? cfg.crm?.uploadTimeoutMs || 60000 : cfg.crm?.timeoutMs || 12000
+    );
     const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
 
     try {
@@ -74,7 +130,8 @@ const initStudioContacts = () => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          ...payload,
+          ...fields,
+          attachments: serializedAttachments,
           page: window.location.href,
           referer: document.referrer || "",
           userAgent: navigator.userAgent,
@@ -247,7 +304,7 @@ const initStudioContacts = () => {
       source: form.dataset.caseTitle
         ? "Кейс"
         : form.matches(".hero-request__form")
-          ? "Hero «Оставить заявку»"
+          ? "Подвал «Оставить заявку»"
           : "Блок «Обсудить проект»",
       name,
       phone,
