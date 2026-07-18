@@ -11,6 +11,8 @@ const initServicesCarousel = () => {
   const arcQuery = window.matchMedia(`(min-width: ${ARC_BREAKPOINT}px)`);
   let activeIndex = 0;
   let arcFrame = 0;
+  let focusRaf = 0;
+  let lastFocusCard = null;
 
   const getCards = () => [...track.querySelectorAll("[data-service-card]")];
   const getOriginalCards = () => getCards().filter(card => !card.hasAttribute("data-service-clone"));
@@ -49,6 +51,7 @@ const initServicesCarousel = () => {
     track.style.removeProperty("height");
     track.style.removeProperty("scrollBehavior");
     root.style.removeProperty("--services-arc-height");
+    lastFocusCard = null;
   };
 
   const getStep = () => {
@@ -123,31 +126,36 @@ const initServicesCarousel = () => {
     const cards = getCards();
     if (!cards.length) return;
 
-    const viewportRect = viewport.getBoundingClientRect();
-    const centerX = viewportRect.left + viewportRect.width / 2;
-    let bestCard = null;
+    const mid = track.scrollLeft + track.clientWidth / 2;
+    let bestCard = cards[0];
     let bestDist = Infinity;
 
-    cards.forEach(card => {
-      const rect = card.getBoundingClientRect();
-      const cardCenter = rect.left + rect.width / 2;
-      const distance = Math.abs(cardCenter - centerX);
-
-      card.style.setProperty("--service-card-opacity", "1");
-      card.style.setProperty("--service-card-scale", "1");
-      card.style.setProperty("--service-card-rotate", "0deg");
-      card.classList.remove("is-focus");
-
+    for (let i = 0; i < cards.length; i += 1) {
+      const card = cards[i];
+      const center = card.offsetLeft + card.offsetWidth / 2;
+      const distance = Math.abs(center - mid);
       if (distance < bestDist) {
         bestDist = distance;
         bestCard = card;
       }
-    });
+    }
 
-    bestCard?.classList.add("is-focus");
+    if (bestCard !== lastFocusCard) {
+      lastFocusCard?.classList.remove("is-focus");
+      bestCard?.classList.add("is-focus");
+      lastFocusCard = bestCard;
+    }
 
     prevButton.disabled = false;
     nextButton.disabled = false;
+  };
+
+  const scheduleLinearFocus = () => {
+    if (focusRaf) return;
+    focusRaf = window.requestAnimationFrame(() => {
+      focusRaf = 0;
+      updateLinearFocus();
+    });
   };
 
   const layoutArc = () => {
@@ -306,7 +314,7 @@ const initServicesCarousel = () => {
 
   const onTrackScroll = () => {
     if (isArcMode()) return;
-    updateLinearFocus();
+    scheduleLinearFocus();
     window.clearTimeout(normalizeTimer);
     normalizeTimer = window.setTimeout(normalizeLoop, 110);
   };

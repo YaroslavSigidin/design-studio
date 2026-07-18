@@ -5,6 +5,11 @@ const initAboutMotion = () => {
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const saveData = navigator.connection?.saveData === true;
+  const liteMotion =
+    reducedMotion ||
+    saveData ||
+    window.matchMedia("(pointer: coarse)").matches ||
+    window.matchMedia("(max-width: 1100px)").matches;
   const cards = [...section.querySelectorAll("[data-about-card]")];
   const grid = section.querySelector("[data-about-grid]");
   const prevBtn = section.querySelector("[data-about-prev]");
@@ -19,6 +24,7 @@ const initAboutMotion = () => {
   let scrollingProgrammatically = false;
   let scrollEndTimer = 0;
   let layoutRaf = 0;
+  let lastAppliedIndex = -1;
 
   const settle = () => {
     section.classList.add("is-settled");
@@ -44,6 +50,11 @@ const initAboutMotion = () => {
   const applyLayout = centerIndex => {
     if (!cards.length) return;
     activeIndex = Math.max(0, Math.min(cards.length - 1, centerIndex));
+    if (activeIndex === lastAppliedIndex && lastAppliedIndex !== -1) {
+      syncNavState();
+      return;
+    }
+    lastAppliedIndex = activeIndex;
 
     cards.forEach((card, index) => {
       const signed = index - activeIndex;
@@ -52,7 +63,7 @@ const initAboutMotion = () => {
 
       card.classList.toggle("is-active", isActive);
 
-      if (reducedMotion) {
+      if (liteMotion) {
         card.style.setProperty("--about-card-rotate", "0deg");
         card.style.setProperty("--about-card-scale", "1");
         card.style.setProperty("--about-card-y", "0px");

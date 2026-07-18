@@ -45,12 +45,32 @@ const initVideoOrb = () => {
   setPausedState(false);
   orb.classList.add("is-pending");
 
+  const isMobileViewport = () =>
+    window.matchMedia("(max-width: 1100px)").matches || window.matchMedia("(pointer: coarse)").matches;
+
   window.setTimeout(() => {
     if (orb.classList.contains("is-hidden")) return;
+    // On phones/tablets keep the orb dormant: fixed autoplay video is a major jank source.
+    if (isMobileViewport()) {
+      orb.classList.add("is-hidden");
+      video.pause();
+      return;
+    }
     orb.classList.remove("is-pending");
     safePlay();
     setPausedState(false);
   }, appearDelayMs);
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      video.pause();
+      return;
+    }
+    if (orb.classList.contains("is-hidden") || orb.classList.contains("is-pending") || isMobileViewport()) {
+      return;
+    }
+    safePlay();
+  });
 
   closeButton.addEventListener("click", event => {
     event.preventDefault();

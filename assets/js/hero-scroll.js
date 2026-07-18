@@ -13,7 +13,9 @@ const initHeroScroll = () => {
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const saveData = navigator.connection?.saveData === true;
-  if (reducedMotion || saveData) return;
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  const narrowViewport = window.matchMedia("(max-width: 1100px)").matches;
+  if (reducedMotion || saveData || coarsePointer || narrowViewport) return;
 
   const layers = [
     { node: wordmark, lift: 52, scale: 0.1, fade: 0.94 },
@@ -24,8 +26,32 @@ const initHeroScroll = () => {
   ];
 
   let ticking = false;
+  let paused = false;
+
+  const clearLayerStyles = () => {
+    layers.forEach(layer => {
+      layer.node.style.removeProperty("--hero-scroll-opacity");
+      layer.node.style.removeProperty("--hero-scroll-transform");
+    });
+  };
+
+  const isTypingInHero = () => {
+    const active = document.activeElement;
+    return Boolean(
+      active &&
+        brief.contains(active) &&
+        (active.matches("textarea, input, [contenteditable='true']") ||
+          active.closest("textarea, input, [contenteditable='true']"))
+    );
+  };
 
   const update = () => {
+    ticking = false;
+    if (paused || isTypingInHero()) {
+      clearLayerStyles();
+      return;
+    }
+
     const range = Math.max(heroPage.offsetHeight * 0.62, window.innerHeight * 0.48, 340);
     const progress = easeOutQuint(clamp01(window.scrollY / range));
 
@@ -40,8 +66,6 @@ const initHeroScroll = () => {
         `translate3d(0, ${translateY.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`
       );
     });
-
-    ticking = false;
   };
 
   const onScroll = () => {
@@ -50,8 +74,26 @@ const initHeroScroll = () => {
     window.requestAnimationFrame(update);
   };
 
+  const onFocusIn = event => {
+    if (!brief.contains(event.target)) return;
+    paused = true;
+    clearLayerStyles();
+  };
+
+  const onFocusOut = event => {
+    if (!brief.contains(event.target)) return;
+    // Defer: focus may move between fields inside the composer.
+    window.requestAnimationFrame(() => {
+      if (isTypingInHero()) return;
+      paused = false;
+      onScroll();
+    });
+  };
+
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll, { passive: true });
+  brief.addEventListener("focusin", onFocusIn);
+  brief.addEventListener("focusout", onFocusOut);
   update();
 };
 

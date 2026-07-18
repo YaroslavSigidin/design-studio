@@ -8,6 +8,8 @@ const initHeroSearch = () => {
   const finalSubmitButton = finalForm?.querySelector(".hero-final-submit");
   const finalAttachmentsRoot = document.querySelector("[data-hero-final-attachments]");
   const finalAttachList = document.querySelector("[data-hero-final-attach-list]");
+  const mobileLite =
+    window.matchMedia("(max-width: 1100px)").matches || window.matchMedia("(pointer: coarse)").matches;
 
   let activeComposer = null;
 
@@ -122,6 +124,7 @@ const initHeroSearch = () => {
     };
 
     const createFlightPlane = () => {
+      if (mobileLite) return;
       const rect = submitButton.getBoundingClientRect();
       const launch = document.createElement("span");
       launch.className = "hero-send-launch";
@@ -236,6 +239,12 @@ const initHeroSearch = () => {
 
       if (hasText) {
         rangesRoot.hidden = false;
+        if (mobileLite) {
+          // Instant reveal: animated transform + keyboard resize causes compositing blur on iOS.
+          rangesRoot.classList.add("is-visible");
+          slidersRow?.classList.add("has-ranges");
+          return;
+        }
         // Allow layout to apply before animating in.
         window.requestAnimationFrame(() => {
           window.requestAnimationFrame(() => {
@@ -248,9 +257,12 @@ const initHeroSearch = () => {
 
       rangesRoot.classList.remove("is-visible");
       slidersRow?.classList.remove("has-ranges");
-      rangesRoot._rangesHideTimer = window.setTimeout(() => {
-        if (!editor.value.trim()) rangesRoot.hidden = true;
-      }, 520);
+      rangesRoot._rangesHideTimer = window.setTimeout(
+        () => {
+          if (!editor.value.trim()) rangesRoot.hidden = true;
+        },
+        mobileLite ? 0 : 520
+      );
     };
 
     const update = () => {
@@ -297,10 +309,13 @@ const initHeroSearch = () => {
       submitButton.classList.add("is-sending");
       createFlightPlane();
 
-      window.setTimeout(() => {
-        submitButton.classList.remove("is-sending");
-        openFinalModal(text || "Заявка с вложениями");
-      }, 980);
+      window.setTimeout(
+        () => {
+          submitButton.classList.remove("is-sending");
+          openFinalModal(text || "Заявка с вложениями");
+        },
+        mobileLite ? 120 : 980
+      );
     };
 
     const getAttachments = () => [
