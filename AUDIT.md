@@ -103,4 +103,4 @@ docs: update readme audit and deployment guide
 | 2026-07-18 | `d8ed593` | contacts + fallback UX | Phone dial vs copy; hide MAX; recovery actions |
 | 2026-07-18 | `f645f09` | a11y | Skip-link, modal traps, case links, toolbar filters, field errors |
 | 2026-07-18 | `8b15c00` | content + prerender | `content/*`, hero rewrite, honest proofs, static services/cases |
-| 2026-07-18 |  | revert homepage copy | User request: restore pre-content texts/structure; keep backend/perf/a11y |
+| 2026-07-18 | `1241791` | revert homepage copy | User request: restore pre-content texts/structure; keep backend/perf/a11y |
