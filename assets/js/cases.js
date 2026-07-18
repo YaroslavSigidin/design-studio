@@ -162,6 +162,10 @@ const renderProjectCard = (project, cfg, index = 0) => {
         eager: index < 3
       });
 
+  const linkMarkup = caseHref
+    ? `<a class="project-card__link" href="${window.__studioEscapeHtml(caseHref)}"><span class="visually-hidden">${window.__studioEscapeHtml(project.title || "Открыть кейс")}</span></a>`
+    : "";
+
   return `
     <article
       class="project-card${isPlaceholder ? " project-card--placeholder" : ""}"
@@ -169,7 +173,6 @@ const renderProjectCard = (project, cfg, index = 0) => {
       data-category="${window.__studioEscapeHtml(project.category || "web")}"
       data-search="${window.__studioEscapeHtml(buildProjectSearchText(project))}"
       data-filter-tags="${window.__studioEscapeHtml(filterTags)}"
-      ${caseHref ? `data-case-url="${window.__studioEscapeHtml(caseHref)}" tabindex="0"` : ""}
     >
       ${imageMarkup}
       <div class="content">
@@ -179,31 +182,23 @@ const renderProjectCard = (project, cfg, index = 0) => {
         </div>
         <p>${window.__studioEscapeHtml(project.subtitle || "")}</p>
       </div>
+      ${linkMarkup}
     </article>
   `;
 };
 
 const bindCardNavigation = grid => {
-  if (!grid || grid.dataset.navBound === "true") return;
-
-  grid.addEventListener("click", event => {
-    const card = event.target.closest(".project-card");
-    if (!card) return;
-    const href = card.dataset.caseUrl;
-    if (!href) return;
-    window.location.href = href;
-  });
-
-  grid.addEventListener("keydown", event => {
-    if (event.key !== "Enter" && event.key !== " ") return;
-    const card = event.target.closest(".project-card");
-    if (!card) return;
-    event.preventDefault();
-    const href = card.dataset.caseUrl;
-    if (href) window.location.href = href;
-  });
-
+  if (!grid) return;
   grid.dataset.navBound = "true";
+};
+
+const syncCardInert = (card, inert) => {
+  if (window.STUDIO_A11Y?.setInert) {
+    window.STUDIO_A11Y.setInert(card, inert);
+    return;
+  }
+  if (inert) card.setAttribute("aria-hidden", "true");
+  else card.removeAttribute("aria-hidden");
 };
 
 const updateCasesStackClip = (grid, stack, collapsed) => {
@@ -400,7 +395,9 @@ const setActiveTab = (tabsRoot, tab) => {
   qsa(".tab-button", tabsRoot).forEach(item => {
     const isActive = item === tab;
     item.classList.toggle("active", isActive);
-    item.setAttribute("aria-selected", isActive ? "true" : "false");
+    item.setAttribute("aria-pressed", isActive ? "true" : "false");
+    item.removeAttribute("aria-selected");
+    item.removeAttribute("role");
   });
   updateTabsIndicator(tabsRoot, tab);
 };
@@ -454,6 +451,7 @@ const initCasesFilter = (grid, tabsRoot) => {
       if (!matches) {
         card.hidden = true;
         card.classList.remove("project-card--beyond-limit");
+        syncCardInert(card, false);
         card.removeAttribute("aria-hidden");
         return;
       }
@@ -462,11 +460,8 @@ const initCasesFilter = (grid, tabsRoot) => {
       const isBeyond = !expanded && visibleCount > limit;
       card.hidden = false;
       card.classList.toggle("project-card--beyond-limit", isBeyond);
-      if (isBeyond) {
-        card.setAttribute("aria-hidden", "true");
-      } else {
-        card.removeAttribute("aria-hidden");
-      }
+      syncCardInert(card, isBeyond);
+      if (!isBeyond) card.removeAttribute("aria-hidden");
     });
 
     const hasExtra = visibleCount > limit;
@@ -525,11 +520,28 @@ const initCasesFilter = (grid, tabsRoot) => {
   };
 
   qsa(".tab-button", tabsRoot).forEach(tab => {
-    tab.setAttribute("role", "tab");
-    tab.setAttribute("aria-selected", tab.classList.contains("active") ? "true" : "false");
+    tab.setAttribute("aria-pressed", tab.classList.contains("active") ? "true" : "false");
+    tab.removeAttribute("aria-selected");
+    tab.removeAttribute("role");
     tab.addEventListener("click", () => {
       switchFilter(tab, tab.dataset.filter || "all");
     });
+  });
+
+  tabsRoot.addEventListener("keydown", event => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    const tabs = qsa(".tab-button", tabsRoot);
+    if (!tabs.length) return;
+    const currentIndex = tabs.indexOf(document.activeElement);
+    if (currentIndex < 0) return;
+
+    event.preventDefault();
+    let nextIndex = currentIndex;
+    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+    if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = tabs.length - 1;
+    tabs[nextIndex]?.focus();
   });
 
   moreButton?.addEventListener("click", () => {

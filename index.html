@@ -53,9 +53,10 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-contacts-fallback" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-a11y" />
   </head>
   <body data-seo-page="home">
+    <a class="skip-link" href="#main-content">Перейти к содержимому</a>
     <div class="hero-page">
       <div class="hero-pong-layer" aria-hidden="true" data-hero-pong-layer>
         <div class="hero-paddle hero-paddle--player" data-pong-player></div>
@@ -85,7 +86,14 @@
 
             <div class="hero-nav-actions">
               <a class="hero-btn hero-btn--dark" href="#contacts" data-open-brief-modal>Заказать дизайн</a>
-              <button class="hero-menu-toggle" type="button" aria-label="Открыть меню" data-header-toggle>
+              <button
+                class="hero-menu-toggle"
+                type="button"
+                aria-label="Открыть меню"
+                aria-controls="mobileNavSheet"
+                aria-expanded="false"
+                data-header-toggle
+              >
                 <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path
                     d="M3.5 5.5h13M3.5 10h13M3.5 14.5h13"
@@ -98,7 +106,7 @@
             </div>
           </div>
 
-          <div class="hero-mobile-sheet" data-header-sheet>
+          <div class="hero-mobile-sheet" id="mobileNavSheet" data-header-sheet aria-hidden="true">
             <a href="#cases">Кейсы</a>
             <a href="#services">Услуги</a>
             <a href="#about">О нас</a>
@@ -166,7 +174,7 @@
           </div>
         </div>
 
-        <main class="hero-main">
+        <main class="hero-main" id="main-content" tabindex="-1">
           <div class="hero-content">
             <div class="hero-header">
               <h1 class="hero-title" data-hero-wordmark>
@@ -427,15 +435,15 @@
 <section class="section studio-cases" id="cases">
       <div class="container">
         <h2 class="section-title" data-reveal-heading>Наши кейсы</h2>
-        <div class="tabs" id="projectTabs" role="tablist" aria-label="Фильтр кейсов">
+        <div class="tabs" id="projectTabs" role="toolbar" aria-label="Фильтр кейсов">
           <span class="tabs__indicator" data-tabs-indicator aria-hidden="true"></span>
-          <button class="tab-button active" type="button" data-filter="all">Все проекты</button>
-          <button class="tab-button" type="button" data-filter="uxui">UX/UI проекты</button>
-          <button class="tab-button" type="button" data-filter="web">Web-сайты</button>
-          <button class="tab-button" type="button" data-filter="logo">Логотипы</button>
-          <button class="tab-button" type="button" data-filter="identity">Айдентика</button>
-          <button class="tab-button" type="button" data-filter="branding">Брендинг</button>
-          <button class="tab-button" type="button" data-filter="presentation">Презентации</button>
+          <button class="tab-button active" type="button" data-filter="all" aria-pressed="true">Все проекты</button>
+          <button class="tab-button" type="button" data-filter="uxui" aria-pressed="false">UX/UI проекты</button>
+          <button class="tab-button" type="button" data-filter="web" aria-pressed="false">Web-сайты</button>
+          <button class="tab-button" type="button" data-filter="logo" aria-pressed="false">Логотипы</button>
+          <button class="tab-button" type="button" data-filter="identity" aria-pressed="false">Айдентика</button>
+          <button class="tab-button" type="button" data-filter="branding" aria-pressed="false">Брендинг</button>
+          <button class="tab-button" type="button" data-filter="presentation" aria-pressed="false">Презентации</button>
         </div>
         <p class="studio-cases-status" data-cases-status hidden>Загрузка кейсов…</p>
       </div>
@@ -1057,11 +1065,15 @@
         role="dialog"
         aria-modal="true"
         aria-labelledby="briefModalTitle"
+        tabindex="-1"
       >
         <header class="brief-modal__header">
           <div>
             <h2 class="brief-modal__title" id="briefModalTitle">Заказать дизайн</h2>
           </div>
+          <button class="brief-modal__close" type="button" aria-label="Закрыть" data-close-brief-modal>
+            <span aria-hidden="true">×</span>
+          </button>
         </header>
 
         <form class="brief-form" id="briefForm">
@@ -1142,7 +1154,7 @@
 
     <div class="hero-final-modal" id="heroFinalModal" aria-hidden="true">
       <div class="hero-final-modal__overlay" data-close-hero-final></div>
-      <section class="hero-final-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="heroFinalTitle">
+      <section class="hero-final-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="heroFinalTitle" tabindex="-1">
         <header class="hero-final-modal__header">
           <h2 id="heroFinalTitle">Последний шаг</h2>
           <button type="button" class="hero-final-modal__close" aria-label="Закрыть" data-close-hero-final>
@@ -1212,26 +1224,27 @@
     </aside>
 
     <script src="./assets/js/config.js?v=20260718-contacts-fallback" defer></script>
+    <script src="./assets/js/a11y.js?v=20260718-a11y" defer></script>
     <script src="./assets/js/studio-perf.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/analytics.js?v=20260718-truthful-leads" defer></script>
     <script src="./assets/js/seo.js?v=20260718-roadmap" defer></script>
-    <script src="./assets/js/contact.js?v=20260718-contacts-fallback" defer></script>
+    <script src="./assets/js/contact.js?v=20260718-a11y" defer></script>
     <script src="./assets/js/video-orb.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/promo-strip.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/header-widgets.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/site-motion.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/about-motion.js?v=20260718-perf-ideal" defer></script>
-    <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
+    <script src="./assets/js/header.js?v=20260718-a11y" defer></script>
     <script src="./assets/js/hero-request.js?v=20260713-hero-request-collapse" defer></script>
-    <script src="./assets/js/hero.js?v=20260718-contacts-fallback" defer></script>
+    <script src="./assets/js/hero.js?v=20260718-a11y" defer></script>
     <script src="./assets/js/hero-scroll.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/hero-pong.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
     <script src="./assets/js/services.js?v=20260718-services-icons-v2" defer></script>
     <script src="./assets/js/services-carousel.js?v=20260718-perf-ideal" defer></script>
-    <script src="./assets/js/brief-modal.js?v=20260718-contacts-fallback" defer></script>
+    <script src="./assets/js/brief-modal.js?v=20260718-a11y" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260717-cases-perf" defer></script>
-    <script src="./assets/js/cases.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/cases.js?v=20260718-a11y" defer></script>
     <script src="./assets/js/faq.js?v=20260716-faq-button-accordion" defer></script>
     <script>
       (function () {
@@ -1364,9 +1377,7 @@
                 const filterTags = [...(project.tags || []), ...(project.study?.tags || [])].join(" ").toLowerCase();
                 const imageSrc = normalizeAssetUrl(project.image || project.cover || "", cfg);
                 return `
-                  <article class="project-card" data-category="${escapeHtml(category)}" data-search="${escapeHtml(searchText)}" data-filter-tags="${escapeHtml(filterTags)}" ${
-                    href ? `data-case-url="${escapeHtml(href)}" tabindex="0"` : ""
-                  }>
+                  <article class="project-card" data-category="${escapeHtml(category)}" data-search="${escapeHtml(searchText)}" data-filter-tags="${escapeHtml(filterTags)}">
                     ${renderFallbackSkeletonImage(imageSrc, project.title || "")}
                     <div class="content">
                       <div class="project-card__title-row">
@@ -1375,28 +1386,17 @@
                       </div>
                       <p>${escapeHtml(project.subtitle || "")}</p>
                     </div>
+                    ${
+                      href
+                        ? `<a class="project-card__link" href="${escapeHtml(href)}"><span class="visually-hidden">${escapeHtml(project.title || "Открыть кейс")}</span></a>`
+                        : ""
+                    }
                   </article>
                 `;
               })
               .join("");
 
             window.STUDIO_MEDIA?.initImageSkeletons(grid);
-
-            grid.addEventListener("click", event => {
-              const card = event.target.closest(".project-card");
-              if (!card) return;
-              const href = card.dataset.caseUrl;
-              if (href) window.location.href = href;
-            });
-
-            grid.addEventListener("keydown", event => {
-              if (event.key !== "Enter" && event.key !== " ") return;
-              const card = event.target.closest(".project-card");
-              if (!card) return;
-              event.preventDefault();
-              const href = card.dataset.caseUrl;
-              if (href) window.location.href = href;
-            });
 
             if (tabsRoot && tabsRoot.dataset.filterBound !== "true") {
               let expanded = false;
@@ -1423,6 +1423,7 @@
                   if (!matches) {
                     card.hidden = true;
                     card.classList.remove("project-card--beyond-limit");
+                    if (window.STUDIO_A11Y?.setInert) window.STUDIO_A11Y.setInert(card, false);
                     card.removeAttribute("aria-hidden");
                     return;
                   }
@@ -1431,7 +1432,9 @@
                   const isBeyond = !expanded && visibleCount > visibleLimit;
                   card.hidden = false;
                   card.classList.toggle("project-card--beyond-limit", isBeyond);
-                  if (isBeyond) {
+                  if (window.STUDIO_A11Y?.setInert) {
+                    window.STUDIO_A11Y.setInert(card, isBeyond);
+                  } else if (isBeyond) {
                     card.setAttribute("aria-hidden", "true");
                   } else {
                     card.removeAttribute("aria-hidden");
@@ -1469,6 +1472,9 @@
               };
 
               tabsRoot.querySelectorAll(".tab-button").forEach(tab => {
+                tab.setAttribute("aria-pressed", tab.classList.contains("active") ? "true" : "false");
+                tab.removeAttribute("aria-selected");
+                tab.removeAttribute("role");
                 tab.addEventListener("click", () => {
                   if (switching) return;
                   const nextFilter = tab.dataset.filter || "all";
@@ -1493,6 +1499,20 @@
                     switching = false;
                   }, 280);
                 });
+              });
+
+              tabsRoot.addEventListener("keydown", event => {
+                if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+                const tabs = [...tabsRoot.querySelectorAll(".tab-button")];
+                const currentIndex = tabs.indexOf(document.activeElement);
+                if (currentIndex < 0) return;
+                event.preventDefault();
+                let nextIndex = currentIndex;
+                if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+                if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                if (event.key === "Home") nextIndex = 0;
+                if (event.key === "End") nextIndex = tabs.length - 1;
+                tabs[nextIndex]?.focus();
               });
 
               moreButton?.addEventListener("click", () => {

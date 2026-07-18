@@ -14,6 +14,10 @@ const initHeroSearch = () => {
     window.matchMedia("(pointer: coarse)").matches;
 
   let activeComposer = null;
+  let lastFinalFocus = null;
+  let finalFocusTrap = null;
+  const finalDialog = finalModal?.querySelector(".hero-final-modal__dialog") || finalModal;
+  const a11y = () => window.STUDIO_A11Y;
 
   const escapeHtml = value =>
     String(value || "")
@@ -60,8 +64,20 @@ const initHeroSearch = () => {
     if (!finalModal) return;
     finalModal.classList.remove("is-open");
     finalModal.setAttribute("aria-hidden", "true");
+    finalFocusTrap?.deactivate?.();
+    a11y()?.setBackgroundInert?.(finalModal, false);
     document.body.style.overflow = "";
+    if (lastFinalFocus instanceof HTMLElement) lastFinalFocus.focus();
+    lastFinalFocus = null;
   };
+
+  finalFocusTrap = a11y()?.createFocusTrap?.(finalDialog, {
+    onEscape: event => {
+      if (!finalModal?.classList.contains("is-open")) return;
+      event.preventDefault();
+      closeFinalModal();
+    }
+  });
 
   const renderAttachmentMarkup = (items, { removable = true } = {}) =>
     items
@@ -290,10 +306,13 @@ const initHeroSearch = () => {
     const openFinalModal = comment => {
       if (!finalModal || !finalCommentField) return;
       activeComposer = api;
+      lastFinalFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       finalCommentField.value = comment;
       renderFinalAttachmentList();
       finalModal.classList.add("is-open");
       finalModal.setAttribute("aria-hidden", "false");
+      a11y()?.setBackgroundInert?.(finalModal, true);
+      finalFocusTrap?.activate?.();
       document.body.style.overflow = "hidden";
       window.setTimeout(() => finalNameField?.focus(), 20);
     };
@@ -454,12 +473,6 @@ const initHeroSearch = () => {
 
   finalModal?.addEventListener("click", event => {
     if (event.target.closest("[data-close-hero-final]")) {
-      closeFinalModal();
-    }
-  });
-
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && finalModal?.classList.contains("is-open")) {
       closeFinalModal();
     }
   });

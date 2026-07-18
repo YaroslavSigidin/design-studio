@@ -26,14 +26,14 @@ Status legend: `open` · `in_progress` · `done` · `blocked` · `wontfix`
 | A14 | `case.html?slug=` — один HTML skeleton, SEO/OG одинаковые | P1 | `case.html`, `case-page.js`, `sitemap.xml` | View-source любого кейса | `/cases/<slug>/` + static `index.html` на кейс | open |
 | A15 | Sitemap содержит голый `case.html` | P1 | `sitemap.xml` | Открыть URL из sitemap | Удалить; только канонические published URL + lastmod | open |
 | A16 | Неподтверждённые proofs: 50+, топ‑10, 2000 студентов, SBER/VTB и т.д. | P1 | `index.html`, `cases.manifest.json` | Hero stats / partners / metrics | `content/proofs.json`; убрать или квалифицировать | open |
-| A17 | Карточки кейсов: `article tabindex="0"` + `aria-hidden` на свёрнутых | P1 | `cases.js` | Tab по сетке кейсов | Ссылки внутри карточек; inert/hidden | open |
-| A18 | Brief modal: нет focus trap / inert / видимой кнопки закрытия | P1 | `brief-modal.js`, `index.html` | Tab за пределы модалки | dialog / trap / Escape / restore focus | open |
+| A17 | Карточки кейсов: `article tabindex="0"` + `aria-hidden` на свёрнутых | P1 | `cases.js` | Tab по сетке кейсов | Ссылки внутри карточек; inert/hidden | done |
+| A18 | Brief modal: нет focus trap / inert / видимой кнопки закрытия | P1 | `brief-modal.js`, `index.html` | Tab за пределы модалки | dialog / trap / Escape / restore focus | done |
 | A19 | Дубль загрузки кейсов: `cases.js` + inline fallback + `cache: no-store` (частично уже `force-cache`) | P1 | `index.html`, `cases.js` | Network на cold load | Один loader; hashed cache | open |
 | A20 | Hero позиционирование не соответствует брифу | P2 | `index.html` | Первый экран | Новый надзаголовок / H1 / подзаголовок / CTA | open |
 | A21 | Подзаголовок услуг «Закроем любой вопрос» | P2 | `index.html`, `services.js` | Секция услуг | «Подключаемся на нужном этапе…» | open |
 | A22 | Структура главной не соответствует целевой (нет process/testimonials/proofs) | P2 | `index.html` | Скролл всей главной | Новая структура 1–12 | open |
-| A23 | Нет skip-link / один main landmark | P2 | `index.html` | Tab с начала страницы | Skip-link + `<main>` | open |
-| A24 | Tabs кейсов без tabpanel / arrow keys | P2 | `index.html`, `cases.js` | Стрелки на фильтрах | Полный ARIA tabs или обычные buttons | open |
+| A23 | Нет skip-link / один main landmark | P2 | `index.html` | Tab с начала страницы | Skip-link + `<main>` | done |
+| A24 | Tabs кейсов без tabpanel / arrow keys | P2 | `index.html`, `cases.js` | Стрелки на фильтрах | Полный ARIA tabs или обычные buttons | done |
 | A25 | MAX = `tel:` без настоящей MAX-ссылки | P2 | `config.js`, `index.html` | Клик MAX | Показать MAX только при реальном URL; иначе телефон | done |
 | A26 | Аналитика: пустой metrikaId; мало событий воронки | P2 | `analytics.js`, `config.js` | Submit / CTA | События из брифа + consent | open |
 | A27 | Нет `content/` data layer; монолит `cases.manifest.json` | P2 | repo root | Поиск `content/` | site/services/team/testimonials/proofs/cases | open |
@@ -41,8 +41,8 @@ Status legend: `open` · `in_progress` · `done` · `blocked` · `wontfix`
 | A29 | Шрифты Google (частично урезаны); нет self-host subset | P2 | `index.html` | Network fonts | Self-host / subset WOFF2 | open |
 | A30 | Privacy/terms заявляют доставку вложений/автомаршрутизацию неточно | P2 | `privacy.html`, `terms.html` | Сравнить с фактом доставки | Синхронизировать с реальной схемой | open |
 | A31 | Нет ESLint/Prettier/Stylelint/Playwright/Lighthouse CI | P3 | `.github/workflows` | CI каталог | Добавить toolchain + Actions | open |
-| A32 | FAQ без `aria-controls` | P3 | `index.html`, `faq.js` | Accordion SR | Связать trigger↔panel | open |
-| A33 | Mobile menu без полного a11y (aria-controls, focus) | P3 | `header.js` | Открыть меню с клавиатуры | Полный disclosure pattern | open |
+| A32 | FAQ без `aria-controls` | P3 | `index.html`, `faq.js` | Accordion SR | Связать trigger↔panel | done |
+| A33 | Mobile menu без полного a11y (aria-controls, focus) | P3 | `header.js` | Открыть меню с клавиатуры | Полный disclosure pattern | done |
 | A34 | Client attachment limits silent skip | P3 | `contact.js`, `hero.js` | Добавить >8 файлов | Validate on select + UI errors | open |
 | A35 | Горизонтальный скролл / overlap — нужна device matrix QA | P3 | CSS | 320–1920 widths | Fix per breakpoint | open |
 
@@ -101,3 +101,4 @@ docs: update readme audit and deployment guide
 | 2026-07-18 | `1f42c0b` | truthful leads | Attachments hidden; fallback ≠ success; no /health warmup |
 | 2026-07-18 | `b628d47` | security harden | Zod, CORS exact, rate limit, honeypot, Turnstile hook, safe errors |
 | 2026-07-18 | `d8ed593` | contacts + fallback UX | Phone dial vs copy; hide MAX; recovery actions |
+| 2026-07-18 |  | a11y | Skip-link, modal traps, case links, toolbar filters, field errors |

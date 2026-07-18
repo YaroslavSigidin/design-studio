@@ -25,9 +25,18 @@ const initBriefModal = () => {
   let currentService = "";
   let isMenuOpen = false;
   let lastFocusedElement = null;
+  let focusTrap = null;
+  const dialog = modal.querySelector(".brief-modal__dialog") || modal;
+  const a11y = () => window.STUDIO_A11Y;
 
   const lockScroll = locked => {
     document.body.style.overflow = locked ? "hidden" : "";
+  };
+
+  const clearBriefFieldErrors = () => {
+    form.querySelectorAll("[aria-invalid='true']").forEach(field => {
+      a11y()?.clearFieldError?.(field);
+    });
   };
 
   const renderServiceMenu = () => {
@@ -155,9 +164,11 @@ const initBriefModal = () => {
           ? options
           : {};
 
-    lastFocusedElement = document.activeElement;
+    lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
+    a11y()?.setBackgroundInert?.(modal, true);
+    focusTrap?.activate?.();
     lockScroll(true);
 
     const preset = String(opts.service || "").trim();
@@ -171,19 +182,39 @@ const initBriefModal = () => {
 
     syncServiceValue(services.includes(preset) ? preset : "");
     closeMenu();
+    clearBriefFieldErrors();
     success.hidden = true;
     form.hidden = false;
     updateRanges();
-    modal.querySelector('input[name="name"]')?.focus();
+    window.requestAnimationFrame(() => {
+      modal.querySelector('input[name="name"]')?.focus();
+    });
   };
 
   const close = () => {
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
     closeMenu();
+    clearBriefFieldErrors();
+    focusTrap?.deactivate?.();
+    a11y()?.setBackgroundInert?.(modal, false);
     lockScroll(false);
     if (lastFocusedElement instanceof HTMLElement) lastFocusedElement.focus();
+    lastFocusedElement = null;
   };
+
+  focusTrap = a11y()?.createFocusTrap?.(dialog, {
+    onEscape: event => {
+      if (!modal.classList.contains("is-open")) return;
+      event.preventDefault();
+      if (isMenuOpen) {
+        closeMenu();
+        serviceTrigger.focus();
+        return;
+      }
+      close();
+    }
+  });
 
   document.addEventListener("click", event => {
     if (event.target.closest("[data-promo-close]")) return;
@@ -238,38 +269,40 @@ const initBriefModal = () => {
     }
   });
 
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && modal.classList.contains("is-open")) {
-      close();
-    }
-  });
-
   form.addEventListener("focusin", event => {
     if (isMenuOpen && !event.target.closest("[data-brief-service-select]")) {
       closeMenu();
+    }
+    if (event.target instanceof HTMLElement) {
+      a11y()?.clearFieldError?.(event.target);
     }
   });
 
   form.addEventListener("submit", async event => {
     event.preventDefault();
+    clearBriefFieldErrors();
 
     if (!serviceInput.value) {
+      a11y()?.setFieldError?.(serviceTrigger, "Выберите услугу.");
       serviceTrigger.focus();
       return;
     }
 
     if (!phoneInput?.value.trim()) {
+      a11y()?.setFieldError?.(phoneInput, "Укажите телефон.");
       phoneInput?.focus();
       return;
     }
 
     if (getPhoneDigits(phoneInput.value).length !== 11) {
+      a11y()?.setFieldError?.(phoneInput, "Введите телефон полностью: +7 (___) ___-__-__.");
       phoneInput.focus();
       return;
     }
 
     const privacy = form.querySelector('input[name="privacy"]');
     if (privacy instanceof HTMLInputElement && !privacy.checked) {
+      a11y()?.setFieldError?.(privacy, "Отметьте согласие с политикой конфиденциальности.");
       privacy.focus();
       return;
     }

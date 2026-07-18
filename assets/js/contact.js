@@ -518,26 +518,36 @@ const initStudioContacts = () => {
 
     event.preventDefault();
     setFormStatus(form, "");
+    form.querySelectorAll("[aria-invalid='true']").forEach(field => {
+      window.STUDIO_A11Y?.clearFieldError?.(field);
+    });
 
     const privacy = form.querySelector('input[name="privacy"]');
     if (privacy instanceof HTMLInputElement && !privacy.checked) {
+      window.STUDIO_A11Y?.setFieldError?.(
+        privacy,
+        "Отметьте согласие с политикой конфиденциальности."
+      );
       privacy.focus();
       setFormStatus(form, "Отметьте согласие с политикой конфиденциальности.", "error");
       return;
     }
 
-    const name = form.querySelector('input[name="name"]')?.value.trim() || "";
+    const nameField = form.querySelector('input[name="name"]');
+    const name = nameField?.value.trim() || "";
     const phone = form.querySelector('input[name="phone"]')?.value.trim() || "";
     const contact = form.querySelector('input[name="contact"]')?.value.trim() || "";
 
     if (!name) {
-      form.querySelector('input[name="name"]')?.focus();
+      window.STUDIO_A11Y?.setFieldError?.(nameField, "Укажите имя.");
+      nameField?.focus();
       setFormStatus(form, "Укажите имя.", "error");
       return;
     }
 
     if (!phone && !contact) {
       const fallbackField = form.querySelector('input[name="contact"]') || form.querySelector('input[name="phone"]');
+      window.STUDIO_A11Y?.setFieldError?.(fallbackField, "Укажите телефон или мессенджер.");
       fallbackField?.focus();
       setFormStatus(form, "Укажите телефон или мессенджер.", "error");
       return;
