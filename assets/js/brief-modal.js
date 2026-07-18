@@ -274,6 +274,9 @@ const initBriefModal = () => {
       return;
     }
 
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+
     const result = await window.STUDIO_CONTACT?.submitLead({
       source: form.dataset.leadSource || "Модальное окно брифа",
       service: serviceInput.value,
@@ -284,30 +287,53 @@ const initBriefModal = () => {
       comment: form.querySelector('textarea[name="comment"]')?.value.trim() || ""
     });
 
-    form.hidden = true;
-    success.hidden = false;
-    if (result?.ok && (result.mode === "crm" || result.mode === "telegram")) {
+    if (submitButton) submitButton.disabled = false;
+
+    if (result?.confirmed && result?.ok) {
+      form.hidden = true;
+      success.hidden = false;
       success.querySelector("h3").textContent = "Заявка отправлена";
       success.querySelector("p").textContent =
-        "Мы получили данные в Telegram-группу и скоро свяжемся с вами.";
-    } else {
-      success.querySelector("h3").textContent = "Не удалось отправить";
-      success.querySelector("p").textContent =
-        result?.error || "Попробуйте ещё раз или напишите нам в Telegram.";
+        "Заявка отправлена. Мы изучим задачу и свяжемся с вами.";
+      window.setTimeout(() => {
+        close();
+        form.reset();
+        delete form.dataset.leadSource;
+        if (modalTitle) modalTitle.textContent = defaultModalTitle;
+        if (budgetRange) budgetRange.value = "150";
+        if (deadlineRange) deadlineRange.value = "30";
+        syncServiceValue("");
+        updateRanges();
+        form.hidden = false;
+        success.hidden = true;
+      }, 1600);
+      return;
     }
 
-    window.setTimeout(() => {
-      close();
-      form.reset();
-      delete form.dataset.leadSource;
-      if (modalTitle) modalTitle.textContent = defaultModalTitle;
-      if (budgetRange) budgetRange.value = "150";
-      if (deadlineRange) deadlineRange.value = "30";
-      syncServiceValue("");
-      updateRanges();
-      form.hidden = false;
-      success.hidden = true;
-    }, result?.ok ? 1600 : 2200);
+    // Keep modal open and preserve field values on failure / fallback.
+    form.hidden = false;
+    success.hidden = true;
+    const status =
+      window.STUDIO_CONTACT?.setFormStatus ||
+      ((target, message, tone) => {
+        let node = target.querySelector("[data-form-status]");
+        if (!node) {
+          node = document.createElement("p");
+          node.setAttribute("data-form-status", "");
+          node.setAttribute("role", "status");
+          node.setAttribute("aria-live", "polite");
+          target.appendChild(node);
+        }
+        node.hidden = !message;
+        node.textContent = message || "";
+        node.classList.toggle("is-error", tone === "error");
+      });
+    const requestHint = result?.requestId ? ` Код обращения: ${result.requestId}.` : "";
+    status(
+      form,
+      `${result?.error || "Не удалось отправить заявку."}${requestHint}`,
+      "error"
+    );
   });
 
   budgetRange?.addEventListener("input", updateRanges);

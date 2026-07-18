@@ -61,9 +61,10 @@ window.STUDIO_CONFIG = {
     endpoint: resolveLeadEndpoint(),
     timeoutMs: 12000,
     uploadTimeoutMs: 60000,
-    // Если Render «спит» или CORS режет запрос — открываем Telegram/mailto как запасной канал.
+    // Fallback открывает Telegram/mailto, но НЕ считается подтверждённой заявкой.
     allowFallback: true,
-    warmup: true
+    // Не греем /health на каждом визите — это лишний запрос и утечка конфигурации.
+    warmup: false
   },
   leadChannel: {
     type: "telegram"

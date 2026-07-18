@@ -391,7 +391,11 @@ const initHeroSearch = () => {
     }
 
     const commentText = finalCommentField?.value.trim() || "";
-    const attachments = activeComposer.getAttachments?.() || [];
+    if (finalSubmitButton) {
+      finalSubmitButton.disabled = true;
+      finalSubmitButton.textContent = "Отправляем…";
+    }
+
     const result = await window.STUDIO_CONTACT?.submitLead({
       source: "AI-бриф",
       name: finalNameField.value.trim(),
@@ -399,30 +403,38 @@ const initHeroSearch = () => {
       contact: finalContactField?.value.trim() || "",
       budget: activeComposer.getBudgetLabel(),
       deadline: activeComposer.getDeadlineLabel(),
-      comment: `${commentText}${activeComposer.formatAttachmentSummary()}`.trim(),
-      attachments
+      comment: commentText
     });
 
-    if (finalSubmitButton) {
-      finalSubmitButton.textContent =
-        result?.ok && (result.mode === "crm" || result.mode === "telegram")
-          ? "Отправлено"
-          : "Ошибка отправки";
-      finalSubmitButton.disabled = true;
-    }
-
-    window.setTimeout(() => {
+    if (result?.confirmed && result?.ok) {
       if (finalSubmitButton) {
-        finalSubmitButton.textContent = "Отправить";
-        finalSubmitButton.disabled = false;
+        finalSubmitButton.textContent = "Отправлено";
+        finalSubmitButton.disabled = true;
       }
-      if (result?.ok) {
+      window.setTimeout(() => {
         finalForm.reset();
         closeFinalModal();
         activeComposer.resetForm();
         activeComposer = null;
-      }
-    }, result?.ok ? 1200 : 1800);
+        if (finalSubmitButton) {
+          finalSubmitButton.textContent = "Отправить";
+          finalSubmitButton.disabled = false;
+        }
+      }, 1200);
+      return;
+    }
+
+    if (finalSubmitButton) {
+      finalSubmitButton.textContent = "Отправить";
+      finalSubmitButton.disabled = false;
+    }
+    window.STUDIO_CONTACT?.setFormStatus?.(
+      finalForm,
+      `${result?.error || "Не удалось отправить заявку."}${
+        result?.requestId ? ` Код обращения: ${result.requestId}.` : ""
+      }`,
+      "error"
+    );
   });
 
   finalModal?.addEventListener("click", event => {

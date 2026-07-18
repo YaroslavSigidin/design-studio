@@ -10,18 +10,18 @@ Status legend: `open` · `in_progress` · `done` · `blocked` · `wontfix`
 
 | ID | Проблема | Приоритет | Файл | Способ воспроизведения | Исправление | Статус |
 | --- | --- | --- | --- | --- | --- | --- |
-| A01 | Вложения кодируются в base64 на клиенте, backend игнорирует `attachments` и шлёт в Telegram только текст | P0 | `assets/js/contact.js`, `amocrm-proxy/server.mjs` | Отправить бриф с PNG/PDF → в Telegram только текст, файла нет | Multipart + `sendPhoto`/`sendDocument` + `requestId` + e2e; **или** убрать кнопки «Фото»/«Файл» из production | open |
+| A01 | Вложения кодируются в base64 на клиенте, backend игнорирует `attachments` и шлёт в Telegram только текст | P0 | `assets/js/contact.js`, `amocrm-proxy/server.mjs`, `studio.css` | Отправить бриф с PNG/PDF → в Telegram только текст, файла нет | **Временно:** UI вложений скрыт, base64 upload отключён. Далее: multipart + `sendPhoto`/`sendDocument` | done |
 | A02 | Нет жёсткого body limit: `parseBody` буферит весь запрос | P0 | `amocrm-proxy/server.mjs` | POST большого body на `/api/leads` | Stream limit + reject по Content-Length; без base64 JSON | open |
 | A03 | Нет rate limit / honeypot / Turnstile на публичном `/api/leads` | P0 | `amocrm-proxy/server.mjs` | Повторяющиеся curl POST с валидными полями | Rate limit + honeypot + Turnstile + idempotency | open |
-| A04 | Fallback Telegram/mailto считается успешной заявкой (`ok: true`, `studio:lead-sent`) | P0 | `assets/js/contact.js`, `assets/js/hero.js`, `assets/js/analytics.js` | Заблокировать proxy, отправить форму, не жать Send в Telegram | Fallback ≠ success; отдельное событие; форма не очищается | open |
-| A05 | Brief modal скрывает форму и очищает данные при ошибке | P0 | `assets/js/brief-modal.js` | Offline submit → через ~2.2s данные пропадают | Оставить форму, ошибка + Повторить / Копировать / Telegram + requestId | open |
+| A04 | Fallback Telegram/mailto считается успешной заявкой (`ok: true`, `studio:lead-sent`) | P0 | `assets/js/contact.js`, `assets/js/hero.js`, `assets/js/analytics.js` | Заблокировать proxy, отправить форму, не жать Send в Telegram | Fallback ≠ success; отдельное событие; форма не очищается | done |
+| A05 | Brief modal скрывает форму и очищает данные при ошибке | P0 | `assets/js/brief-modal.js` | Offline submit → через ~2.2s данные пропадают | Оставить форму, ошибка + Повторить / Копировать / Telegram + requestId | done |
 | A06 | CORS: `*.github.io`, localhost, path в ALLOWED_ORIGINS; preflight `*` для чужих Origin; POST без Origin проходит | P0 | `amocrm-proxy/server.mjs`, `render.yaml` | curl без Origin; Origin с path | Точные production origins; `Vary: Origin`; reject чужих | open |
 | A07 | Слабая server validation (нет schema, consent, лимитов полей) | P0 | `amocrm-proxy/server.mjs` | POST `{name:"x",contact:"@"}` без privacy | Zod/Ajv + лимиты + privacy === true | open |
-| A08 | `/health` раскрывает конфигурацию Telegram/amoCRM; warmup с каждого визита | P0 | `amocrm-proxy/server.mjs`, `assets/js/contact.js` | GET `/health` | Ответ только `{ok:true}`; убрать auto-warmup | open |
+| A08 | `/health` раскрывает конфигурацию Telegram/amoCRM; warmup с каждого визита | P0 | `amocrm-proxy/server.mjs`, `assets/js/contact.js` | GET `/health` | Ответ только `{ok:true}`; убрать auto-warmup | in_progress |
 | A09 | Сырые ошибки Telegram/amoCRM уходят клиенту | P0 | `amocrm-proxy/server.mjs` | Сломать токен → смотреть body 502 | Коды `VALIDATION_ERROR` / `RATE_LIMITED` / `DELIVERY_FAILED` / `ATTACHMENT_REJECTED` + requestId | open |
 | A10 | amoCRM может вернуть «успех» без leadId | P0 | `amocrm-proxy/server.mjs` | Неожиданный ответ unsorted API | Требовать leadId; иначе DELIVERY_FAILED | open |
 | A11 | Нет timeout/retry policy для внешних API | P0 | `amocrm-proxy/server.mjs` | Зависший upstream | AbortSignal.timeout + ограниченный retry | open |
-| A12 | Success UI / analytics не согласованы между hero / brief / footer | P0 | `contact.js`, `hero.js`, `brief-modal.js` | Сравнить три формы при fallback/error | Единые состояния confirmed / failed / fallback_opened | open |
+| A12 | Success UI / analytics не согласованы между hero / brief / footer | P0 | `contact.js`, `hero.js`, `brief-modal.js` | Сравнить три формы при fallback/error | Единые состояния confirmed / failed / fallback_opened | done |
 | A13 | Кейсы и услуги зависят от JS; без JS — скелетоны | P1 | `index.html`, `cases.js`, `services.js` | Disable JS | Build-time static HTML + noscript + fallback | open |
 | A14 | `case.html?slug=` — один HTML skeleton, SEO/OG одинаковые | P1 | `case.html`, `case-page.js`, `sitemap.xml` | View-source любого кейса | `/cases/<slug>/` + static `index.html` на кейс | open |
 | A15 | Sitemap содержит голый `case.html` | P1 | `sitemap.xml` | Открыть URL из sitemap | Удалить; только канонические published URL + lastmod | open |
@@ -56,8 +56,9 @@ Status legend: `open` · `in_progress` · `done` · `blocked` · `wontfix`
 | Attachment UI present | yes | Photo + File buttons (A01) |
 | Forbidden copy «Закроем любой вопрос» | present | A21 |
 | `content/` directory | missing | A27 |
-| Lighthouse CLI | not installed locally | run via `npx`/CI in later stage |
-| axe | not installed locally | add Playwright+axe in test stage |
+| Lighthouse desktop (local :8765) | Perf 0* / A11y 93 / BP 100 / SEO 100 | *Lantern NO_LCP on headless local; re-run after static LCP image |
+| Lighthouse mobile | failed interstitial | Chrome/local server flake; re-run in CI |
+| axe | blocked | ChromeDriver 151 vs Chrome 150 mismatch |
 | Live form e2e against Render | not run in this baseline pass | requires secrets / redeploy |
 
 ## Owner-dependent inputs (blocked without data)
@@ -96,4 +97,5 @@ docs: update readme audit and deployment guide
 
 | Date | Commit | Stage | Notes |
 | --- | --- | --- | --- |
-| 2026-07-18 | _(this file)_ | baseline audit | Local only; Pages not updated |
+| 2026-07-18 | `25bd965` | baseline audit | Local only; Pages not updated |
+| 2026-07-18 | _(pending)_ | truthful leads | Attachments hidden; fallback ≠ success; no /health warmup |

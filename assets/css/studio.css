@@ -75,6 +75,13 @@ html.studio-perf-lite .hero-search-input-wrap:focus-within {
   border-color: rgba(46, 131, 255, 0.28);
 }
 
+/* Temporary: hide attachment UI until multipart Telegram delivery ships (AUDIT A01). */
+[data-hero-attachments],
+[data-hero-final-attachments],
+.hero-attach-list {
+  display: none !important;
+}
+
 @keyframes motionVoidIn {
   from {
     opacity: 0;

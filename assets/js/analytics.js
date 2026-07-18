@@ -7,36 +7,65 @@ const initStudioAnalytics = () => {
     window.ym(Number(metrikaId), "reachGoal", goal);
   };
 
-  if (!metrikaId) return;
+  const track = (name, detail = {}) => {
+    window.reachGoal(name);
+    window.dispatchEvent(
+      new CustomEvent("studio:analytics", {
+        detail: { name, ...detail }
+      })
+    );
+  };
 
-  (function initMetrika(m, e, t, r, i, k, a) {
-    m[i] =
-      m[i] ||
-      function metrikaStub() {
-        (m[i].a = m[i].a || []).push(arguments);
-      };
-    m[i].l = 1 * new Date();
-    for (let j = 0; j < document.scripts.length; j += 1) {
-      if (document.scripts[j].src === r) return;
-    }
-    k = e.createElement(t);
-    a = e.getElementsByTagName(t)[0];
-    k.async = 1;
-    k.src = r;
-    a.parentNode.insertBefore(k, a);
-  })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+  window.STUDIO_ANALYTICS = { track, reachGoal: window.reachGoal };
 
-  window.ym(Number(metrikaId), "init", {
-    clickmap: true,
-    trackLinks: true,
-    accurateTrackBounce: true,
-    webvisor: true
-  });
+  if (metrikaId) {
+    (function initMetrika(m, e, t, r, i, k, a) {
+      m[i] =
+        m[i] ||
+        function metrikaStub() {
+          (m[i].a = m[i].a || []).push(arguments);
+        };
+      m[i].l = 1 * new Date();
+      for (let j = 0; j < document.scripts.length; j += 1) {
+        if (document.scripts[j].src === r) return;
+      }
+      k = e.createElement(t);
+      a = e.getElementsByTagName(t)[0];
+      k.async = 1;
+      k.src = r;
+      a.parentNode.insertBefore(k, a);
+    })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
+    window.ym(Number(metrikaId), "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+  }
+
+  // Only confirmed backend delivery.
   window.addEventListener("studio:lead-sent", event => {
     const source = String(event.detail?.source || "").trim();
-    window.reachGoal("lead_sent");
-    if (source) window.reachGoal(`lead_sent_${source.replace(/\s+/g, "_").toLowerCase()}`);
+    track("lead_success", { source, requestId: event.detail?.requestId || "" });
+    track("lead_submit", { source, outcome: "success" });
+    if (source) track(`lead_sent_${source.replace(/\s+/g, "_").toLowerCase()}`);
+  });
+
+  window.addEventListener("studio:lead-fallback", event => {
+    const source = String(event.detail?.source || "").trim();
+    track("lead_error", { source, outcome: "fallback_opened" });
+    track("lead_submit", { source, outcome: "fallback_opened" });
+  });
+
+  window.addEventListener("studio:lead-error", event => {
+    const source = String(event.detail?.source || "").trim();
+    track("lead_error", {
+      source,
+      code: event.detail?.code || "DELIVERY_FAILED",
+      requestId: event.detail?.requestId || ""
+    });
+    track("lead_submit", { source, outcome: "error" });
   });
 };
 

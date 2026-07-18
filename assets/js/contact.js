@@ -4,55 +4,9 @@ const initStudioContacts = () => {
 
   const encode = value => encodeURIComponent(String(value || "").trim());
 
-  const ATTACHMENT_LIMITS = {
-    maxCount: 8,
-    maxPhotoBytes: 8 * 1024 * 1024,
-    maxFileBytes: 20 * 1024 * 1024,
-    maxTotalBytes: 28 * 1024 * 1024
-  };
-
-  const arrayBufferToBase64 = buffer => {
-    const bytes = new Uint8Array(buffer);
-    let binary = "";
-    const chunkSize = 0x8000;
-    for (let i = 0; i < bytes.length; i += chunkSize) {
-      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
-    }
-    return btoa(binary);
-  };
-
-  const serializeAttachments = async attachments => {
-    const list = Array.isArray(attachments) ? attachments : [];
-    if (!list.length) return [];
-
-    const next = [];
-    let totalBytes = 0;
-
-    for (const item of list.slice(0, ATTACHMENT_LIMITS.maxCount)) {
-      const file = item?.file instanceof File ? item.file : item instanceof File ? item : null;
-      if (!file) continue;
-
-      const kind =
-        item?.kind === "photo" || String(file.type || "").startsWith("image/") ? "photo" : "file";
-      const maxBytes =
-        kind === "photo" ? ATTACHMENT_LIMITS.maxPhotoBytes : ATTACHMENT_LIMITS.maxFileBytes;
-
-      if (file.size <= 0 || file.size > maxBytes) continue;
-      if (totalBytes + file.size > ATTACHMENT_LIMITS.maxTotalBytes) break;
-
-      const data = arrayBufferToBase64(await file.arrayBuffer());
-      totalBytes += file.size;
-      next.push({
-        kind,
-        name: String(file.name || "file").slice(0, 180),
-        mime: String(file.type || "application/octet-stream").slice(0, 120),
-        size: file.size,
-        data
-      });
-    }
-
-    return next;
-  };
+  // Temporary production policy (AUDIT A01): attachment UI is disabled until
+  // multipart + Telegram sendPhoto/sendDocument is shipped. Do not base64 files.
+  const ATTACHMENTS_ENABLED = false;
 
   const formatPayload = payload => {
     const lines = [
@@ -110,17 +64,13 @@ const initStudioContacts = () => {
   const submitToCrm = async payload => {
     const endpoint = String(cfg.crm?.endpoint || "").trim();
     if (!endpoint) {
-      return { ok: false, mode: "crm-unconfigured" };
+      return { ok: false, mode: "crm-unconfigured", code: "DELIVERY_FAILED" };
     }
 
-    const { attachments = [], ...fields } = payload || {};
-    const serializedAttachments = await serializeAttachments(attachments);
-    const hasAttachments = serializedAttachments.length > 0;
+    const { attachments: _ignoredAttachments, ...fields } = payload || {};
 
     const controller = new AbortController();
-    const timeoutMs = Number(
-      hasAttachments ? cfg.crm?.uploadTimeoutMs || 60000 : cfg.crm?.timeoutMs || 12000
-    );
+    const timeoutMs = Number(cfg.crm?.timeoutMs || 12000);
     const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
 
     try {
@@ -131,10 +81,8 @@ const initStudioContacts = () => {
         },
         body: JSON.stringify({
           ...fields,
-          attachments: serializedAttachments,
           page: window.location.href,
           referer: document.referrer || "",
-          userAgent: navigator.userAgent,
           submittedAt: new Date().toISOString()
         }),
         signal: controller.signal
@@ -142,12 +90,18 @@ const initStudioContacts = () => {
 
       const data = await response.json().catch(() => ({}));
       if (!response.ok || data?.ok === false) {
-        throw new Error(data?.error || `CRM request failed with ${response.status}`);
+        const code = String(data?.code || "DELIVERY_FAILED");
+        const error = new Error(data?.error || `CRM request failed with ${response.status}`);
+        error.code = code;
+        error.requestId = data?.requestId || "";
+        throw error;
       }
 
       return {
         ok: true,
+        confirmed: true,
         mode: data?.mode === "telegram" ? "telegram" : "crm",
+        requestId: data?.requestId || "",
         data
       };
     } finally {
@@ -155,46 +109,79 @@ const initStudioContacts = () => {
     }
   };
 
-  const notifyLeadSent = source => {
+  const notifyLeadSent = (source, detail = {}) => {
     window.dispatchEvent(
       new CustomEvent("studio:lead-sent", {
+        detail: { source: String(source || "").trim(), ...detail }
+      })
+    );
+  };
+
+  const notifyLeadFallback = source => {
+    window.dispatchEvent(
+      new CustomEvent("studio:lead-fallback", {
         detail: { source: String(source || "").trim() }
       })
     );
   };
 
+  const notifyLeadError = (source, detail = {}) => {
+    window.dispatchEvent(
+      new CustomEvent("studio:lead-error", {
+        detail: { source: String(source || "").trim(), ...detail }
+      })
+    );
+  };
+
   const submitLead = async payload => {
+    // Drop attachments until secure multipart delivery is live.
+    const safePayload = { ...payload };
+    if (!ATTACHMENTS_ENABLED) delete safePayload.attachments;
+
     try {
-      const backendResult = await submitToCrm(payload);
-      if (backendResult.ok) {
-        notifyLeadSent(payload?.source);
+      const backendResult = await submitToCrm(safePayload);
+      if (backendResult.ok && backendResult.confirmed) {
+        notifyLeadSent(safePayload?.source, { mode: backendResult.mode, requestId: backendResult.requestId });
         return backendResult;
       }
     } catch (error) {
       if (!cfg.crm?.allowFallback) {
-        return {
+        const failed = {
           ok: false,
+          confirmed: false,
           mode: "backend-error",
-          error: error instanceof Error ? error.message : "Backend error"
+          code: error?.code || "DELIVERY_FAILED",
+          requestId: error?.requestId || "",
+          error: "Не удалось отправить заявку. Попробуйте ещё раз или напишите в Telegram."
         };
+        notifyLeadError(safePayload?.source, failed);
+        return failed;
       }
     }
 
-    const opened = openLeadChannel(payload);
+    const opened = openLeadChannel(safePayload);
     if (opened) {
-      notifyLeadSent(payload?.source);
-      return { ok: true, mode: "fallback" };
+      // Opening Telegram/email is NOT a confirmed delivery.
+      notifyLeadFallback(safePayload?.source);
+      return {
+        ok: false,
+        confirmed: false,
+        mode: "fallback-opened",
+        code: "DELIVERY_FAILED",
+        error:
+          "Сервер временно недоступен. Мы подготовили текст заявки и открыли Telegram — отправьте сообщение вручную, чтобы завершить обращение."
+      };
     }
 
-    return { ok: false, mode: "fallback-error", error: "Не удалось открыть канал связи" };
-  };
-
-  const warmupLeadEndpoint = () => {
-    if (cfg.crm?.warmup === false) return;
-    const endpoint = String(cfg.crm?.endpoint || "").trim();
-    if (!endpoint || endpoint.includes("127.0.0.1") || endpoint.includes("localhost")) return;
-    const healthUrl = endpoint.replace(/\/api\/leads\/?$/, "/health");
-    fetch(healthUrl, { method: "GET", mode: "cors", cache: "no-store" }).catch(() => {});
+    const failed = {
+      ok: false,
+      confirmed: false,
+      mode: "fallback-error",
+      code: "DELIVERY_FAILED",
+      error: "Не удалось отправить заявку. Напишите нам в Telegram: @sigidingo"
+    };
+    notifyLeadError(safePayload?.source, failed);
+    return failed;
   };
 
   const ensureFormStatus = form => {
@@ -436,9 +423,13 @@ const initStudioContacts = () => {
       if (submitButton) submitButton.disabled = false;
     };
 
-    if (result.ok && (result.mode === "crm" || result.mode === "telegram")) {
+    if (result.confirmed && result.ok) {
       form.reset();
-      setFormStatus(form, "Заявка отправлена. Мы скоро свяжемся с вами.", "success");
+      setFormStatus(
+        form,
+        "Заявка отправлена. Мы изучим задачу и свяжемся с вами.",
+        "success"
+      );
       if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";
       if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправлено";
       window.setTimeout(() => {
@@ -448,27 +439,15 @@ const initStudioContacts = () => {
       return;
     }
 
-    if (result.ok && result.mode === "fallback") {
-      setFormStatus(
-        form,
-        "Сервер временно недоступен — открыли запасной канал. Если окно не появилось, напишите в Telegram.",
-        "success"
-      );
-      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Открыт Telegram";
-      if (submitButton instanceof HTMLInputElement) submitButton.value = "Открыт Telegram";
-      window.setTimeout(restoreButton, 2400);
-      return;
-    }
-
+    // Keep form data on any non-confirmed result.
+    const requestHint = result?.requestId ? ` Код обращения: ${result.requestId}.` : "";
     setFormStatus(
       form,
-      result?.error || "Не удалось отправить. Напишите нам в Telegram: @sigidingo",
+      `${result?.error || "Не удалось отправить заявку."}${requestHint}`,
       "error"
     );
     restoreButton();
   });
-
-  warmupLeadEndpoint();
 };
 
 if (document.readyState === "loading") {
