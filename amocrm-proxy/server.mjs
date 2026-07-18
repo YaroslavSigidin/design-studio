@@ -45,10 +45,29 @@ const parseBody = request =>
     request.on("error", reject);
   });
 
+const isAllowedOrigin = origin => {
+  if (!origin) return true;
+  if (!config.allowedOrigins.length) return true;
+  if (config.allowedOrigins.includes(origin)) return true;
+  if (config.allowedOrigins.includes("*")) return true;
+
+  try {
+    const url = new URL(origin);
+    const host = url.hostname;
+    // Локальная разработка и типичные деплои студии.
+    if (host === "localhost" || host === "127.0.0.1") return true;
+    if (host.endsWith(".github.io")) return true;
+    if (host === "92.53.96.132") return true;
+  } catch {
+    return false;
+  }
+
+  return false;
+};
+
 const getCorsOrigin = origin => {
   if (!origin) return "*";
-  if (!config.allowedOrigins.length) return origin;
-  return config.allowedOrigins.includes(origin) ? origin : "";
+  return isAllowedOrigin(origin) ? origin : "";
 };
 
 const sendJson = (response, statusCode, payload, origin) => {

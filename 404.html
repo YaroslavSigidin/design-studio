@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>404 — страница не найдена · Согласовано</title>
+    <meta name="description" content="Страница не найдена. Пока можете сыграть в пинг-понг." />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/brand/favicon-32.png" />
+    <link rel="apple-touch-icon" href="./assets/images/brand/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-seo-leads" />
+    <link rel="stylesheet" href="./assets/css/not-found.css?v=20260718-404" />
+  </head>
+  <body class="nf-body">
+    <main class="nf-page" data-nf-page>
+      <div class="nf-pong" aria-hidden="true" data-nf-pong>
+        <div class="nf-paddle nf-paddle--player" data-nf-player></div>
+        <div class="nf-paddle nf-paddle--ai" data-nf-ai></div>
+        <div class="nf-ball" data-nf-ball></div>
+      </div>
+
+      <header class="nf-brand">
+        <a class="nf-brand__link" href="./" aria-label="Согласовано — на главную">
+          <img
+            class="brand-wordmark"
+            src="./assets/images/brand/soglasovano-wordmark.svg"
+            alt="Согласовано"
+            width="993"
+            height="242"
+            decoding="async"
+          />
+        </a>
+      </header>
+
+      <div class="nf-center">
+        <h1 class="nf-code">404</h1>
+        <p class="nf-caption">но пока что вы можете поиграть в пинг понг</p>
+        <button class="nf-back hero-btn hero-btn--dark" type="button" data-nf-back>
+          вернуться назад
+        </button>
+      </div>
+
+      <div class="nf-score" aria-live="polite">
+        <div class="nf-score__side">
+          <span class="nf-score__label">Вы</span>
+          <span class="nf-score__value" data-nf-score-player>0</span>
+        </div>
+        <div class="nf-score__divider" aria-hidden="true"></div>
+        <div class="nf-score__side nf-score__side--right">
+          <span class="nf-score__label">Сайт</span>
+          <span class="nf-score__value" data-nf-score-ai>0</span>
+        </div>
+      </div>
+    </main>
+
+    <script src="./assets/js/not-found-pong.js?v=20260718-404" defer></script>
+  </body>
+</html>

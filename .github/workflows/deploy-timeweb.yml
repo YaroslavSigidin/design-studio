@@ -107,6 +107,9 @@ jobs:
       - name: Deploy to Timeweb
         shell: bash
         run: |
+          # Timeweb shared hosting serves sites via Apache from public_html.
+          # .htaccess in the repo root sets ErrorDocument 404 /404.html after git reset.
+          # For nginx VPS, see nginx.sample.conf in the repo root.
           if ! ssh -i ~/.ssh/timeweb_deploy -o BatchMode=yes ca568679@92.53.96.132 '
             cd /home/c/ca568679/public_html &&
             git fetch --all --prune &&

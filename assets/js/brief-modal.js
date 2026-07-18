@@ -7,6 +7,8 @@ const initBriefModal = () => {
   const serviceLabel = modal?.querySelector("[data-brief-service-label]");
   const serviceMenu = modal?.querySelector("[data-brief-service-menu]");
   const success = document.getElementById("briefSuccess");
+  const modalTitle = document.getElementById("briefModalTitle");
+  const commentField = form?.querySelector('textarea[name="comment"]');
   const budgetRange = form?.querySelector("[data-brief-budget-range]");
   const budgetLabel = form?.querySelector("[data-brief-budget-label]");
   const deadlineRange = form?.querySelector("[data-brief-deadline-range]");
@@ -15,6 +17,8 @@ const initBriefModal = () => {
   if (!modal || !form || !serviceInput || !serviceSelect || !serviceTrigger || !serviceLabel || !serviceMenu || !success) {
     return;
   }
+
+  const defaultModalTitle = modalTitle?.textContent?.trim() || "Заказать дизайн";
 
   const serviceNames = [...new Set((window.SERVICES || []).map(item => item.title))];
   const services = [...serviceNames, "Другое"];
@@ -143,13 +147,28 @@ const initBriefModal = () => {
     }
   };
 
-  const open = presetService => {
+  const open = (options = {}) => {
+    const opts =
+      typeof options === "string"
+        ? { service: options }
+        : options && typeof options === "object"
+          ? options
+          : {};
+
     lastFocusedElement = document.activeElement;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
     lockScroll(true);
 
-    const preset = presetService?.trim() || "";
+    const preset = String(opts.service || "").trim();
+    const source = String(opts.source || "Модальное окно брифа").trim() || "Модальное окно брифа";
+    const comment = String(opts.comment || "");
+    const title = String(opts.title || "").trim();
+
+    form.dataset.leadSource = source;
+    if (modalTitle) modalTitle.textContent = title || defaultModalTitle;
+    if (commentField) commentField.value = comment;
+
     syncServiceValue(services.includes(preset) ? preset : "");
     closeMenu();
     success.hidden = true;
@@ -167,10 +186,30 @@ const initBriefModal = () => {
   };
 
   document.addEventListener("click", event => {
+    if (event.target.closest("[data-promo-close]")) return;
     const opener = event.target.closest("[data-open-brief-modal]");
     if (!opener) return;
     event.preventDefault();
-    open(opener.dataset.service || "");
+    open({
+      service: opener.dataset.service || "",
+      source: opener.dataset.briefSource || "Модальное окно брифа",
+      comment: opener.dataset.briefComment || "",
+      title: opener.dataset.briefTitle || ""
+    });
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    if (event.target.closest("[data-promo-close]")) return;
+    const opener = event.target.closest("[data-open-brief-modal][role='button']");
+    if (!opener || event.target !== opener) return;
+    event.preventDefault();
+    open({
+      service: opener.dataset.service || "",
+      source: opener.dataset.briefSource || "Модальное окно брифа",
+      comment: opener.dataset.briefComment || "",
+      title: opener.dataset.briefTitle || ""
+    });
   });
 
   modal.addEventListener("click", event => {
@@ -229,8 +268,14 @@ const initBriefModal = () => {
       return;
     }
 
+    const privacy = form.querySelector('input[name="privacy"]');
+    if (privacy instanceof HTMLInputElement && !privacy.checked) {
+      privacy.focus();
+      return;
+    }
+
     const result = await window.STUDIO_CONTACT?.submitLead({
-      source: "Модальное окно брифа",
+      source: form.dataset.leadSource || "Модальное окно брифа",
       service: serviceInput.value,
       name: form.querySelector('input[name="name"]')?.value.trim() || "",
       phone: phoneInput?.value.trim() || "",
@@ -254,6 +299,8 @@ const initBriefModal = () => {
     window.setTimeout(() => {
       close();
       form.reset();
+      delete form.dataset.leadSource;
+      if (modalTitle) modalTitle.textContent = defaultModalTitle;
       if (budgetRange) budgetRange.value = "150";
       if (deadlineRange) deadlineRange.value = "30";
       syncServiceValue("");

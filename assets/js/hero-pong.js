@@ -8,12 +8,15 @@ const initHeroPong = () => {
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const saveData = navigator.connection?.saveData === true;
-  const lowEndCpu = typeof navigator.hardwareConcurrency === "number" && navigator.hardwareConcurrency <= 4;
   const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-  if (reducedMotion || saveData || lowEndCpu || coarsePointer) {
+  if (reducedMotion || saveData || coarsePointer) {
     layer.style.display = "none";
     return;
   }
+
+  const MIN_SPEED = 6.2;
+  const MAX_SPEED = 14;
+  const BASE_SPEED = 7.4;
 
   const state = {
     paddleHeight: 118,
@@ -24,12 +27,12 @@ const initHeroPong = () => {
     aiY: window.innerHeight * 0.5,
     ballX: window.innerWidth * 0.5,
     ballY: window.innerHeight * 0.5,
-    vx: 4.4,
-    vy: 2.7,
+    vx: BASE_SPEED,
+    vy: 3.6,
     lastTs: 0,
-    lastFrameTs: 0,
     arena: heroPage.getBoundingClientRect(),
-    blockers: []
+    blockers: [],
+    stuckFrames: 0
   };
 
   const blockersSelectors = [
@@ -44,12 +47,34 @@ const initHeroPong = () => {
 
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
+  const enforceSpeed = () => {
+    const speed = Math.hypot(state.vx, state.vy);
+    if (!Number.isFinite(speed) || speed < 0.01) {
+      state.vx = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
+      state.vy = (Math.random() * 4 - 2) || 2;
+      return;
+    }
+    if (speed < MIN_SPEED) {
+      const scale = MIN_SPEED / speed;
+      state.vx *= scale;
+      state.vy *= scale;
+      return;
+    }
+    if (speed > MAX_SPEED) {
+      const scale = MAX_SPEED / speed;
+      state.vx *= scale;
+      state.vy *= scale;
+    }
+  };
+
   const resetBall = direction => {
     const arena = state.arena;
     state.ballX = arena.left + arena.width / 2;
     state.ballY = arena.top + arena.height / 2;
-    state.vx = 4.1 * direction;
-    state.vy = (Math.random() * 3.2 - 1.6) || 1.1;
+    state.vx = BASE_SPEED * direction;
+    state.vy = (Math.random() * 5.2 - 2.6) || 2.2;
+    state.stuckFrames = 0;
+    enforceSpeed();
   };
 
   const refreshGeometry = () => {
@@ -86,23 +111,38 @@ const initHeroPong = () => {
     const overlapBottom = rect.bottom - (state.ballY - state.ballRadius);
     const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
 
-    if (minOverlap === overlapLeft) {
-      state.ballX = rect.left - state.ballRadius;
+    if (minOverlap === overlapLeft && state.vx > 0) {
+      state.ballX = rect.left - state.ballRadius - 0.5;
       state.vx = -Math.abs(state.vx);
-      return;
+      return true;
     }
-    if (minOverlap === overlapRight) {
-      state.ballX = rect.right + state.ballRadius;
+    if (minOverlap === overlapRight && state.vx < 0) {
+      state.ballX = rect.right + state.ballRadius + 0.5;
       state.vx = Math.abs(state.vx);
-      return;
+      return true;
     }
-    if (minOverlap === overlapTop) {
-      state.ballY = rect.top - state.ballRadius;
+    if (minOverlap === overlapTop && state.vy > 0) {
+      state.ballY = rect.top - state.ballRadius - 0.5;
       state.vy = -Math.abs(state.vy);
-      return;
+      return true;
     }
-    state.ballY = rect.bottom + state.ballRadius;
-    state.vy = Math.abs(state.vy);
+    if (minOverlap === overlapBottom && state.vy < 0) {
+      state.ballY = rect.bottom + state.ballRadius + 0.5;
+      state.vy = Math.abs(state.vy);
+      return true;
+    }
+
+    // Ball is trapped inside — eject along the shallowest axis.
+    if (minOverlap === overlapLeft || minOverlap === overlapRight) {
+      const goLeft = overlapLeft <= overlapRight;
+      state.ballX = goLeft ? rect.left - state.ballRadius - 1 : rect.right + state.ballRadius + 1;
+      state.vx = Math.abs(state.vx || BASE_SPEED) * (goLeft ? -1 : 1);
+    } else {
+      const goUp = overlapTop <= overlapBottom;
+      state.ballY = goUp ? rect.top - state.ballRadius - 1 : rect.bottom + state.ballRadius + 1;
+      state.vy = Math.abs(state.vy || BASE_SPEED * 0.55) * (goUp ? -1 : 1);
+    }
+    return true;
   };
 
   const tick = ts => {
@@ -112,12 +152,6 @@ const initHeroPong = () => {
       return;
     }
 
-    if (state.lastFrameTs && ts - state.lastFrameTs < 33) {
-      requestAnimationFrame(tick);
-      return;
-    }
-    state.lastFrameTs = ts;
-
     const arena = state.arena;
     if (arena.bottom < 0 || arena.top > window.innerHeight) {
       state.lastTs = 0;
@@ -125,10 +159,10 @@ const initHeroPong = () => {
       return;
     }
 
-    const dt = state.lastTs ? Math.min((ts - state.lastTs) / 16.6667, 2) : 1;
+    const dt = state.lastTs ? Math.min((ts - state.lastTs) / 16.6667, 2.4) : 1;
     state.lastTs = ts;
 
-    state.aiY += (state.ballY - state.aiY) * 0.08 * dt;
+    state.aiY += (state.ballY - state.aiY) * 0.11 * dt;
     updatePaddles();
 
     state.ballX += state.vx * dt;
@@ -159,19 +193,33 @@ const initHeroPong = () => {
 
     if (intersectsRect(playerRect) && state.vx < 0) {
       state.ballX = playerRect.right + state.ballRadius;
-      state.vx = Math.abs(state.vx) + 0.12;
-      state.vy += ((state.ballY - state.playerY) / (state.paddleHeight / 2)) * 0.7;
+      state.vx = Math.abs(state.vx) + 0.28;
+      state.vy += ((state.ballY - state.playerY) / (state.paddleHeight / 2)) * 1.05;
     }
 
     if (intersectsRect(aiRect) && state.vx > 0) {
       state.ballX = aiRect.left - state.ballRadius;
-      state.vx = -Math.abs(state.vx) - 0.12;
-      state.vy += ((state.ballY - state.aiY) / (state.paddleHeight / 2)) * 0.7;
+      state.vx = -Math.abs(state.vx) - 0.28;
+      state.vy += ((state.ballY - state.aiY) / (state.paddleHeight / 2)) * 1.05;
     }
 
-    state.blockers.forEach(rect => {
-      if (intersectsRect(rect)) bounceFromRect(rect);
-    });
+    let hitBlocker = false;
+    for (let i = 0; i < state.blockers.length; i += 1) {
+      const rect = state.blockers[i];
+      if (!intersectsRect(rect)) continue;
+      bounceFromRect(rect);
+      hitBlocker = true;
+      break;
+    }
+
+    if (hitBlocker) {
+      state.stuckFrames += 1;
+      if (state.stuckFrames > 18) resetBall(state.vx >= 0 ? 1 : -1);
+    } else {
+      state.stuckFrames = 0;
+    }
+
+    enforceSpeed();
 
     if (state.ballX < arena.left - 40) resetBall(1);
     if (state.ballX > arena.right + 40) resetBall(-1);
@@ -187,15 +235,32 @@ const initHeroPong = () => {
   };
 
   window.addEventListener("mousemove", handlePointerMove, { passive: true });
-  window.addEventListener("touchmove", event => {
-    const touch = event.touches?.[0];
-    if (!touch) return;
-    state.playerY = touch.clientY;
-  }, { passive: true });
+  window.addEventListener(
+    "touchmove",
+    event => {
+      const touch = event.touches?.[0];
+      if (!touch) return;
+      state.playerY = touch.clientY;
+    },
+    { passive: true }
+  );
   window.addEventListener("resize", refreshGeometry, { passive: true });
-  window.addEventListener("scroll", refreshGeometry, { passive: true });
 
-  const geometryTimer = window.setInterval(refreshGeometry, 280);
+  let scrollQueued = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (scrollQueued) return;
+      scrollQueued = true;
+      requestAnimationFrame(() => {
+        scrollQueued = false;
+        refreshGeometry();
+      });
+    },
+    { passive: true }
+  );
+
+  const geometryTimer = window.setInterval(refreshGeometry, 500);
   window.addEventListener("beforeunload", () => window.clearInterval(geometryTimer), { once: true });
 
   refreshGeometry();

@@ -3,11 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="robots" content="noindex,nofollow" />
+    <meta name="robots" content="index,follow" />
     <title>Согласовано — дизайн-студия полного цикла</title>
     <meta
       name="description"
       content="Согласовано — дизайн-студия полного цикла. UX/UI, сайты, брендинг и продуктовый дизайн под задачи вашего бизнеса."
+    />
+    <link rel="canonical" href="https://yaroslavsigidin.github.io/design-studio/" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/brand/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="./assets/images/brand/favicon-512.png" />
+    <link rel="apple-touch-icon" href="./assets/images/brand/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content="Согласовано" />
+    <meta property="og:title" content="Согласовано — дизайн-студия полного цикла" />
+    <meta
+      property="og:description"
+      content="Согласовано — дизайн-студия полного цикла. UX/UI, сайты, брендинг и продуктовый дизайн под задачи вашего бизнеса."
+    />
+    <meta property="og:url" content="https://yaroslavsigidin.github.io/design-studio/" />
+    <meta
+      property="og:image"
+      content="https://yaroslavsigidin.github.io/design-studio/assets/images/brand/og-cover.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Согласовано — дизайн-студия полного цикла" />
+    <meta
+      name="twitter:description"
+      content="Согласовано — дизайн-студия полного цикла. UX/UI, сайты, брендинг и продуктовый дизайн под задачи вашего бизнеса."
+    />
+    <meta
+      name="twitter:image"
+      content="https://yaroslavsigidin.github.io/design-studio/assets/images/brand/og-cover.png"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,9 +42,9 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-footer-compact" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-seo-leads" />
   </head>
-  <body>
+  <body data-seo-page="home">
     <div class="hero-page">
       <div class="hero-pong-layer" aria-hidden="true" data-hero-pong-layer>
         <div class="hero-paddle hero-paddle--player" data-pong-player></div>
@@ -42,7 +69,6 @@
               <li><a href="#cases">Кейсы</a></li>
               <li><a href="#services">Услуги</a></li>
               <li><a href="#about">О нас</a></li>
-              <li><a href="#contacts" data-open-brief-modal>Обсудить проект</a></li>
               <li><a href="#contacts">Контакты</a></li>
             </ul>
 
@@ -65,7 +91,6 @@
             <a href="#cases">Кейсы</a>
             <a href="#services">Услуги</a>
             <a href="#about">О нас</a>
-            <a href="#contacts" data-open-brief-modal>Обсудить проект</a>
             <a href="#contacts">Контакты</a>
             <div class="hero-mobile-sheet-actions">
               <a class="hero-btn hero-btn--dark" href="#contacts" data-open-brief-modal>Заказать дизайн</a>
@@ -73,7 +98,19 @@
           </div>
         </header>
 
-        <aside class="promo-strip" aria-label="Промо-акция" data-promo-strip data-header-widget>
+        <aside
+          class="promo-strip"
+          aria-label="Акция: скидка 10% на лендинг. Открыть заявку"
+          data-promo-strip
+          data-header-widget
+          data-open-brief-modal
+          data-service="Одностраничный сайт"
+          data-brief-source="Акция: скидка 10% на лендинг"
+          data-brief-comment="Запрос по акции: скидка 10% на лендинг."
+          data-brief-title="Акция: скидка 10% на лендинг"
+          role="button"
+          tabindex="0"
+        >
           <div class="promo-strip__timer">
             <p class="promo-strip__label">До конца акции:</p>
             <p class="promo-strip__value" data-promo-timer>20ч:10м:46с</p>
@@ -95,14 +132,14 @@
           >+7 961 971-05-15</a>
           <span class="top-contact-bridge" aria-hidden="true"></span>
           <div class="top-mini-contacts" aria-label="Контакты">
-            <a class="top-mini-contact-btn top-mini-contact-btn--vk" data-contact-link="direct" href="https://t.me/sigidingo" target="_blank" rel="noreferrer" aria-label="VK">
+            <a class="top-mini-contact-btn top-mini-contact-btn--vk" data-contact-link="vk" href="https://vk.com/sigidingo" target="_blank" rel="noreferrer" aria-label="VK">
               <span class="top-mini-contact-btn__icon" aria-hidden="true">
                 <img src="./assets/icons/custom/vk-logo-white.svg" alt="" />
               </span>
             </a>
-            <a class="top-mini-contact-btn top-mini-contact-btn--max" data-contact-link="phone" href="tel:+79619710515" aria-label="MAX">
-              <span class="top-mini-contact-btn__icon" aria-hidden="true">
-                <img src="./assets/icons/custom/max-logo-white.svg" alt="" />
+            <a class="top-mini-contact-btn top-mini-contact-btn--max" data-contact-link="max" href="tel:+79619710515" aria-label="MAX" title="MAX: +7 961 971-05-15">
+              <span class="top-mini-contact-btn__icon" aria-hidden="true" data-max-icon>
+                <img src="./assets/icons/custom/max-logo-white.svg" alt="" data-max-icon-img />
               </span>
             </a>
           </div>
@@ -253,39 +290,76 @@
             </div>
 
             <section class="studio-stats" id="stats" data-hero-scroll-item aria-label="О студии">
-              <ul class="studio-stats__list">
-                <li class="studio-stats__item">
-                  <div class="studio-stat" aria-label="более 50 коммерческих проектов">
-                    <span class="studio-stat__accent">более 50</span>
-                    <span class="studio-stat__text">
-                      <strong>коммерческих</strong>
-                      <span>проектов</span>
-                    </span>
-                  </div>
-                </li>
-                <li class="studio-stats__item">
-                  <div class="studio-stat" aria-label="10+ лет работы в сфере IT">
-                    <span class="studio-stat__accent studio-stat__accent--compact">10+</span>
-                    <span class="studio-stat__text">
-                      <strong>лет работы</strong>
-                      <span>в сфере IT</span>
-                    </span>
-                  </div>
-                </li>
-                <li class="studio-stats__item">
-                  <div class="studio-stat studio-stat--top" aria-label="топ 10 студий юга РФ за 2025 год">
-                    <span class="studio-stat__cluster" aria-hidden="true">
-                      <span class="studio-stat__accent">топ 10</span>
-                      <i></i>
-                      <i></i>
-                    </span>
-                    <span class="studio-stat__text">
-                      <strong>студий юга РФ</strong>
-                      <span>за 2025 год</span>
-                    </span>
-                  </div>
-                </li>
-              </ul>
+              <div class="studio-stats__viewport">
+                <div class="studio-stats__track">
+                  <ul class="studio-stats__list">
+                    <li class="studio-stats__item">
+                      <div class="studio-stat" aria-label="более 50 коммерческих проектов">
+                        <span class="studio-stat__accent">более 50</span>
+                        <span class="studio-stat__text">
+                          <strong>коммерческих</strong>
+                          <span>проектов</span>
+                        </span>
+                      </div>
+                    </li>
+                    <li class="studio-stats__item">
+                      <div class="studio-stat" aria-label="10+ лет работы в сфере IT">
+                        <span class="studio-stat__accent studio-stat__accent--compact">10+</span>
+                        <span class="studio-stat__text">
+                          <strong>лет работы</strong>
+                          <span>в сфере IT</span>
+                        </span>
+                      </div>
+                    </li>
+                    <li class="studio-stats__item">
+                      <div class="studio-stat studio-stat--top" aria-label="топ 10 студий юга РФ за 2025 год">
+                        <span class="studio-stat__cluster" aria-hidden="true">
+                          <span class="studio-stat__accent">топ 10</span>
+                          <i></i>
+                          <i></i>
+                        </span>
+                        <span class="studio-stat__text">
+                          <strong>студий юга РФ</strong>
+                          <span>за 2025 год</span>
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul class="studio-stats__list studio-stats__list--clone" aria-hidden="true">
+                    <li class="studio-stats__item">
+                      <div class="studio-stat">
+                        <span class="studio-stat__accent">более 50</span>
+                        <span class="studio-stat__text">
+                          <strong>коммерческих</strong>
+                          <span>проектов</span>
+                        </span>
+                      </div>
+                    </li>
+                    <li class="studio-stats__item">
+                      <div class="studio-stat">
+                        <span class="studio-stat__accent studio-stat__accent--compact">10+</span>
+                        <span class="studio-stat__text">
+                          <strong>лет работы</strong>
+                          <span>в сфере IT</span>
+                        </span>
+                      </div>
+                    </li>
+                    <li class="studio-stats__item">
+                      <div class="studio-stat studio-stat--top">
+                        <span class="studio-stat__cluster" aria-hidden="true">
+                          <span class="studio-stat__accent">топ 10</span>
+                          <i></i>
+                          <i></i>
+                        </span>
+                        <span class="studio-stat__text">
+                          <strong>студий юга РФ</strong>
+                          <span>за 2025 год</span>
+                        </span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </section>
 
           </div>
@@ -295,7 +369,8 @@
 
 <section class="section studio-services" id="services">
       <div class="container">
-        <h2 class="section-title" data-reveal-heading>Основные услуги</h2>
+        <h2 class="section-title" data-reveal-heading>Наши услуги</h2>
+        <p class="section-subtitle">Закроем любой вопрос</p>
       </div>
       <div class="studio-services-carousel" data-services-carousel>
         <div class="studio-services-carousel__viewport">
@@ -350,48 +425,60 @@
           <article class="project-card case-skeleton" aria-hidden="true">
             <div class="case-skeleton-media"></div>
             <div class="content">
-              <span class="tag">&nbsp;</span>
-              <h3>&nbsp;</h3>
+              <div class="project-card__title-row">
+                <h3>&nbsp;</h3>
+                <span class="tag">&nbsp;</span>
+              </div>
               <p>&nbsp;</p>
             </div>
           </article>
           <article class="project-card case-skeleton" aria-hidden="true">
             <div class="case-skeleton-media"></div>
             <div class="content">
-              <span class="tag">&nbsp;</span>
-              <h3>&nbsp;</h3>
+              <div class="project-card__title-row">
+                <h3>&nbsp;</h3>
+                <span class="tag">&nbsp;</span>
+              </div>
               <p>&nbsp;</p>
             </div>
           </article>
           <article class="project-card case-skeleton" aria-hidden="true">
             <div class="case-skeleton-media"></div>
             <div class="content">
-              <span class="tag">&nbsp;</span>
-              <h3>&nbsp;</h3>
+              <div class="project-card__title-row">
+                <h3>&nbsp;</h3>
+                <span class="tag">&nbsp;</span>
+              </div>
               <p>&nbsp;</p>
             </div>
           </article>
           <article class="project-card case-skeleton" aria-hidden="true">
             <div class="case-skeleton-media"></div>
             <div class="content">
-              <span class="tag">&nbsp;</span>
-              <h3>&nbsp;</h3>
+              <div class="project-card__title-row">
+                <h3>&nbsp;</h3>
+                <span class="tag">&nbsp;</span>
+              </div>
               <p>&nbsp;</p>
             </div>
           </article>
           <article class="project-card case-skeleton" aria-hidden="true">
             <div class="case-skeleton-media"></div>
             <div class="content">
-              <span class="tag">&nbsp;</span>
-              <h3>&nbsp;</h3>
+              <div class="project-card__title-row">
+                <h3>&nbsp;</h3>
+                <span class="tag">&nbsp;</span>
+              </div>
               <p>&nbsp;</p>
             </div>
           </article>
           <article class="project-card case-skeleton" aria-hidden="true">
             <div class="case-skeleton-media"></div>
             <div class="content">
-              <span class="tag">&nbsp;</span>
-              <h3>&nbsp;</h3>
+              <div class="project-card__title-row">
+                <h3>&nbsp;</h3>
+                <span class="tag">&nbsp;</span>
+              </div>
               <p>&nbsp;</p>
             </div>
           </article>
@@ -538,12 +625,20 @@
 
     <section class="section studio-about" id="about" data-about>
       <div class="container studio-about__inner">
-        <h2 class="section-title" data-reveal-heading>О нас</h2>
+        <h2 class="section-title" data-reveal-heading>Чуть-чуть<br class="studio-about__title-break" /> больше о нас</h2>
         <p class="studio-about__lead">
-          Команда, которая ведёт продукт от идеи до запуска — дизайн, разработка и согласования в одном цикле.
+          <span class="studio-about__lead-text">
+            Ведём продукт от идеи до запуска — дизайн, разработка и согласования без разрывов между этапами.
+          </span>
         </p>
-        <ul class="studio-about__grid">
-          <li class="studio-about__card" data-about-card style="--about-i: 0">
+        <ul class="studio-about__grid" data-about-grid>
+          <li class="studio-about__card studio-about__card--fact studio-about__card--stat" data-about-card style="--about-i: 0">
+            <div class="studio-about__fact-body">
+              <p class="studio-about__fact-value">более 50</p>
+              <p class="studio-about__fact-title">коммерческих проектов</p>
+            </div>
+          </li>
+          <li class="studio-about__card studio-about__card--person" data-about-card data-about-person style="--about-i: 1">
             <div class="studio-about__photo">
               <img
                 src="./assets/images/team/kamnev-egor.jpg"
@@ -554,12 +649,20 @@
                 decoding="async"
               />
               <div class="studio-about__meta">
-                <h3 class="studio-about__name">Камнев Егор</h3>
-                <p class="studio-about__role">CTO</p>
+                <div class="studio-about__title-row">
+                  <h3 class="studio-about__name">Камнев Егор</h3>
+                  <p class="studio-about__role">CTO</p>
+                </div>
               </div>
             </div>
           </li>
-          <li class="studio-about__card" data-about-card style="--about-i: 1">
+          <li class="studio-about__card studio-about__card--fact studio-about__card--stat" data-about-card style="--about-i: 2">
+            <div class="studio-about__fact-body">
+              <p class="studio-about__fact-value">10+</p>
+              <p class="studio-about__fact-title">лет работы в сфере IT</p>
+            </div>
+          </li>
+          <li class="studio-about__card studio-about__card--person" data-about-card data-about-person style="--about-i: 3">
             <div class="studio-about__photo">
               <img
                 src="./assets/images/team/rudenko-anna.jpg"
@@ -570,12 +673,20 @@
                 decoding="async"
               />
               <div class="studio-about__meta">
-                <h3 class="studio-about__name">Руденко Анна</h3>
-                <p class="studio-about__role">Сооснователь, дизайн-лид</p>
+                <div class="studio-about__title-row">
+                  <h3 class="studio-about__name">Руденко Анна</h3>
+                  <p class="studio-about__role">Основатель, дизайн-лид</p>
+                </div>
               </div>
             </div>
           </li>
-          <li class="studio-about__card" data-about-card style="--about-i: 2">
+          <li class="studio-about__card studio-about__card--fact studio-about__card--stat" data-about-card style="--about-i: 4">
+            <div class="studio-about__fact-body">
+              <p class="studio-about__fact-value">топ 10</p>
+              <p class="studio-about__fact-title">студий юга РФ</p>
+            </div>
+          </li>
+          <li class="studio-about__card studio-about__card--person" data-about-card data-about-person style="--about-i: 5">
             <div class="studio-about__photo">
               <img
                 src="./assets/images/team/sigidin-yaroslav.jpg"
@@ -586,12 +697,62 @@
                 decoding="async"
               />
               <div class="studio-about__meta">
-                <h3 class="studio-about__name">Сигидин Ярослав</h3>
-                <p class="studio-about__role">Сооснователь, дизайн-лид</p>
+                <div class="studio-about__title-row">
+                  <h3 class="studio-about__name">Сигидин Ярослав</h3>
+                  <p class="studio-about__role">Основатель, дизайн-лид</p>
+                </div>
               </div>
             </div>
           </li>
+          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 6">
+            <div class="studio-about__fact-body">
+              <p class="studio-about__fact-title">Выпустили более 2000 студентов</p>
+              <p class="studio-about__fact-text">Через практику и реальные задачи — от первых макетов до рабочих кейсов.</p>
+            </div>
+          </li>
+          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 7">
+            <div class="studio-about__fact-body">
+              <p class="studio-about__fact-title">Настроили полный цикл внутри студии</p>
+              <p class="studio-about__fact-text">Бриф, дизайн, разработка и согласования идут в одном контуре без разрывов.</p>
+            </div>
+          </li>
+          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 8">
+            <div class="studio-about__fact-body">
+              <p class="studio-about__fact-title">Дизайн и разработка — вместе</p>
+              <p class="studio-about__fact-text">Не передаём проект «на сторону»: решения принимаем и закрываем одной командой.</p>
+            </div>
+          </li>
+          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 9">
+            <div class="studio-about__fact-body">
+              <p class="studio-about__fact-title">Согласования без простоя</p>
+              <p class="studio-about__fact-text">Держим темп и прозрачные этапы, чтобы продукт не буксовал между правками.</p>
+            </div>
+          </li>
+          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 10">
+            <div class="studio-about__fact-body">
+              <p class="studio-about__fact-title">От идеи до запуска</p>
+              <p class="studio-about__fact-text">Ведем продукт целиком: от концепции и интерфейса до рабочей версии в проде.</p>
+            </div>
+          </li>
+          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 11">
+            <div class="studio-about__fact-body">
+              <p class="studio-about__fact-title">Остаёмся после релиза</p>
+              <p class="studio-about__fact-text">Помогаем развивать продукт дальше — итерации, улучшения и поддержка.</p>
+            </div>
+          </li>
         </ul>
+        <div class="studio-about__controls">
+          <button class="studio-about__nav" type="button" aria-label="Предыдущая карточка" data-about-prev>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M12.5 5 7.5 10l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <button class="studio-about__nav" type="button" aria-label="Следующая карточка" data-about-next>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M7.5 5 12.5 10l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -758,13 +919,6 @@
         <span class="studio-footer__tape studio-footer__tape--right" aria-hidden="true"></span>
 
         <div class="studio-footer__top">
-          <div class="studio-footer__brand">
-            <p>
-              Дизайн-студия полного цикла. Проектируем интерфейсы, сайты и цифровые продукты, чтобы
-              ваш бизнес рос быстрее.
-            </p>
-          </div>
-
           <div class="studio-footer__columns">
             <div class="studio-footer__column">
               <h3>Навигация</h3>
@@ -772,7 +926,6 @@
               <a href="#services">Услуги</a>
               <a href="#about">О нас</a>
               <a href="#faq">FAQ</a>
-              <a href="#contacts" data-open-brief-modal>Обсудить проект</a>
             </div>
 
             <div class="studio-footer__column">
@@ -785,17 +938,6 @@
         </div>
 
         <div class="studio-footer__signature">
-          <a class="studio-footer__wordmark" href="./" aria-label="Согласовано">
-            <img
-              class="brand-wordmark brand-wordmark--footer-signature"
-              src="./assets/images/brand/soglasovano-wordmark.svg"
-              alt=""
-              width="520"
-              height="58"
-              decoding="async"
-            />
-          </a>
-
           <div class="studio-footer__request">
             <div class="hero-request" data-hero-request>
               <button
@@ -818,7 +960,7 @@
                   </svg>
                 </span>
               </button>
-              <form class="hero-request__form" id="heroRequestForm">
+              <form class="hero-request__form" id="heroRequestForm" autocomplete="on">
                 <button
                   class="hero-request__collapse"
                   type="button"
@@ -837,7 +979,7 @@
                     </svg>
                   </span>
                 </button>
-                <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
+                <input type="text" name="name" placeholder="Имя" autocomplete="given-name" required />
                 <input
                   type="tel"
                   name="phone"
@@ -849,13 +991,32 @@
                   type="text"
                   name="contact"
                   placeholder="WhatsApp, Telegram"
-                  autocomplete="username"
+                  autocomplete="off"
                   required
                 />
                 <button class="hero-request__submit" type="submit">Отправить</button>
+                <label class="form-consent hero-request__consent">
+                  <input type="checkbox" name="privacy" value="1" required />
+                  <span
+                    >Соглашаюсь с
+                    <a href="./privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>
+                    и обработкой персональных данных</span
+                  >
+                </label>
               </form>
             </div>
           </div>
+
+          <a class="studio-footer__wordmark" href="./" aria-label="Согласовано">
+            <img
+              class="brand-wordmark brand-wordmark--footer-signature"
+              src="./assets/images/brand/soglasovano-wordmark.svg"
+              alt=""
+              width="980"
+              height="148"
+              decoding="async"
+            />
+          </a>
         </div>
       </div>
 
@@ -937,6 +1098,15 @@
             ></textarea>
           </label>
 
+          <label class="form-consent">
+            <input type="checkbox" name="privacy" value="1" required />
+            <span
+              >Соглашаюсь с
+              <a href="./privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>
+              и обработкой персональных данных</span
+            >
+          </label>
+
           <div class="brief-modal__actions">
             <button class="brief-modal__submit" type="submit">Отправить задачу</button>
           </div>
@@ -985,6 +1155,15 @@
             <ul class="hero-attach-list hero-final-attach-list" data-hero-final-attach-list></ul>
           </div>
 
+          <label class="form-consent">
+            <input type="checkbox" name="privacy" value="1" required />
+            <span
+              >Соглашаюсь с
+              <a href="./privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>
+              и обработкой персональных данных</span
+            >
+          </label>
+
           <button type="submit" class="hero-final-submit">Отправить</button>
         </form>
       </section>
@@ -1002,6 +1181,7 @@
           class="video-orb__media"
           data-video-orb-media
           src="./assets/video/dlya-saita.mp4"
+          poster="./assets/video/dlya-saita-poster.jpg"
           loop
           muted
           playsinline
@@ -1010,24 +1190,26 @@
       </button>
     </aside>
 
-    <script src="./assets/js/config.js?v=20260713-escape-html-shared" defer></script>
-    <script src="./assets/js/contact.js?v=20260714-footer-request" defer></script>
+    <script src="./assets/js/config.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/analytics.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/seo.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/contact.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/video-orb.js?v=20260530-video-orb-icons-pro" defer></script>
-    <script src="./assets/js/promo-strip.js?v=20260716-promo-topleft" defer></script>
+    <script src="./assets/js/promo-strip.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/header-widgets.js?v=20260718-chrome-exit" defer></script>
     <script src="./assets/js/site-motion.js?v=20260716-services-arc-v5" defer></script>
-    <script src="./assets/js/about-motion.js?v=20260718-about-deal" defer></script>
+    <script src="./assets/js/about-motion.js?v=20260718-about-smooth" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
     <script src="./assets/js/hero-request.js?v=20260713-hero-request-collapse" defer></script>
     <script src="./assets/js/hero.js?v=20260716-brief-align" defer></script>
     <script src="./assets/js/hero-scroll.js?v=20260717-stats-under-logos" defer></script>
-    <script src="./assets/js/hero-pong.js?v=20260717-stats-under-logos" defer></script>
+    <script src="./assets/js/hero-pong.js?v=20260718-pong-faster" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
-    <script src="./assets/js/services.js?v=20260718-revert-prices" defer></script>
-    <script src="./assets/js/services-carousel.js?v=20260718-mobile-linear" defer></script>
-    <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
+    <script src="./assets/js/services.js?v=20260718-services-icons-v2" defer></script>
+    <script src="./assets/js/services-carousel.js?v=20260718-focus-cta" defer></script>
+    <script src="./assets/js/brief-modal.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260717-cases-perf" defer></script>
-    <script src="./assets/js/cases.js?v=20260717-cases-perf" defer></script>
+    <script src="./assets/js/cases.js?v=20260718-cases-meta" defer></script>
     <script src="./assets/js/faq.js?v=20260716-faq-button-accordion" defer></script>
     <script>
       (function () {
@@ -1136,7 +1318,7 @@
 
           const cfg = window.STUDIO_CONFIG || {};
           const manifestUrl =
-            cfg.manifest || "./data/cases.manifest.json?v=20260530-cases-fallback";
+            cfg.manifest || "./data/cases.manifest.json?v=20260718-we-voice";
 
           try {
             const res = await fetch(manifestUrl, { cache: "no-store" });
@@ -1165,8 +1347,10 @@
                   }>
                     ${renderFallbackSkeletonImage(imageSrc, project.title || "")}
                     <div class="content">
-                      <span class="tag">${tagLabel}</span>
-                      <h3>${escapeHtml(project.title || "")}</h3>
+                      <div class="project-card__title-row">
+                        <h3>${escapeHtml(project.title || "")}</h3>
+                        <span class="tag">${tagLabel}</span>
+                      </div>
                       <p>${escapeHtml(project.subtitle || "")}</p>
                     </div>
                   </article>

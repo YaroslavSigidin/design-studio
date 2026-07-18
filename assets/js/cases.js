@@ -104,8 +104,10 @@ const renderCasesSkeleton = (grid, count = SKELETON_CARDS_COUNT) => {
       <article class="project-card case-skeleton" aria-hidden="true">
         <div class="case-skeleton-media"></div>
         <div class="content">
-          <span class="tag"> </span>
-          <h3> </h3>
+          <div class="project-card__title-row">
+            <h3> </h3>
+            <span class="tag"> </span>
+          </div>
           <p> </p>
         </div>
       </article>
@@ -171,8 +173,10 @@ const renderProjectCard = (project, cfg, index = 0) => {
     >
       ${imageMarkup}
       <div class="content">
-        <span class="tag">${isPlaceholder ? "NEW" : tagLabel}</span>
-        <h3>${window.__studioEscapeHtml(project.title)}</h3>
+        <div class="project-card__title-row">
+          <h3>${window.__studioEscapeHtml(project.title)}</h3>
+          <span class="tag">${isPlaceholder ? "NEW" : tagLabel}</span>
+        </div>
         <p>${window.__studioEscapeHtml(project.subtitle || "")}</p>
       </div>
     </article>

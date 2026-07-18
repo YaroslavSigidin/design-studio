@@ -62,6 +62,18 @@ const renderTags = tags =>
     ? `<div class="case-tags">${tags.map(tag => `<span class="case-tag">${window.__studioEscapeHtml(tag)}</span>`).join("")}</div>`
     : "";
 
+const normalizeStoryChapters = project => {
+  const raw = project?.study?.storyChapters?.length
+    ? project.study.storyChapters
+    : project?.storyChapters || [];
+
+  return raw.map(chapter => ({
+    label: chapter?.label || chapter?.title || "",
+    title: chapter?.title || "",
+    text: chapter?.text || chapter?.body || ""
+  }));
+};
+
 const renderChapters = chapters =>
   chapters.length
     ? `<div class="case-chapters">${chapters
@@ -224,7 +236,7 @@ const renderCase = (project, projects, currentIndex, cfg) => {
   const tags = study.tags?.length ? study.tags : project.tags || [];
   const whatDone = study.whatDone?.length ? study.whatDone : [];
   const metrics = study.metrics?.length ? study.metrics : [];
-  const chapters = study.storyChapters || [];
+  const chapters = normalizeStoryChapters(project);
   const gallery = Array.isArray(project.gallery)
     ? project.gallery.map(image => normalizeAssetUrl(image, cfg)).filter(Boolean)
     : [];
@@ -280,7 +292,7 @@ const renderCase = (project, projects, currentIndex, cfg) => {
   document.title = `${title} — Согласовано`;
   window.__studioSeo?.applyCaseSeo({
     title,
-    description: subtitle,
+    description: subtitle || project.description || "",
     image: heroImage,
     slug,
     tags,
@@ -430,8 +442,23 @@ const initCasePage = async () => {
   }
 };
 
+const bindCaseBackLinks = () => {
+  document.addEventListener("click", event => {
+    const link = event.target.closest("[data-case-back]");
+    if (!link) return;
+    if (window.history.length > 1) {
+      event.preventDefault();
+      window.history.back();
+    }
+  });
+};
+
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initCasePage);
+  document.addEventListener("DOMContentLoaded", () => {
+    bindCaseBackLinks();
+    initCasePage();
+  });
 } else {
+  bindCaseBackLinks();
   initCasePage();
 }

@@ -3,10 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
     <title>Политика конфиденциальности — Согласовано</title>
     <meta
       name="description"
       content="Политика конфиденциальности дизайн-студии Согласовано: какие данные мы собираем и как их используем."
+    />
+    <link rel="canonical" href="https://yaroslavsigidin.github.io/design-studio/privacy.html" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/brand/favicon-32.png" />
+    <link rel="apple-touch-icon" href="./assets/images/brand/apple-touch-icon.png" />
+    <meta property="og:title" content="Политика конфиденциальности — Согласовано" />
+    <meta
+      property="og:description"
+      content="Политика конфиденциальности дизайн-студии Согласовано: какие данные мы собираем и как их используем."
+    />
+    <meta
+      property="og:image"
+      content="https://yaroslavsigidin.github.io/design-studio/assets/images/brand/og-cover.png"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,10 +27,10 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-header-btn-black-hover" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-seo-leads" />
     <link rel="stylesheet" href="./assets/css/legal.css?v=20260713-legal-pages" />
   </head>
-  <body class="studio-legal-page">
+  <body class="studio-legal-page" data-seo-page="legal">
     <header class="hero-nav" data-floating-header>
       <div class="hero-nav-inner">
         <a class="hero-logo" href="./" aria-label="Согласовано">
@@ -34,7 +47,6 @@
         <ul class="hero-menu">
           <li><a href="./#cases">Кейсы</a></li>
           <li><a href="./#services">Услуги</a></li>
-          <li><a href="./#contacts">Обсудить проект</a></li>
           <li><a href="./#contacts">Контакты</a></li>
         </ul>
 
@@ -56,7 +68,6 @@
       <div class="hero-mobile-sheet" data-header-sheet>
         <a href="./#cases">Кейсы</a>
         <a href="./#services">Услуги</a>
-        <a href="./#contacts">Обсудить проект</a>
         <a href="./#contacts">Контакты</a>
         <div class="hero-mobile-sheet-actions">
           <a class="hero-btn hero-btn--dark" href="./#contacts" data-open-brief-modal>Заказать дизайн</a>
@@ -68,7 +79,7 @@
       <div class="legal-shell">
         <a class="legal-back" href="./">← На главную</a>
         <h1 class="legal-title">Политика конфиденциальности</h1>
-        <p class="legal-meta">Дата обновления: 13 июля 2026 г.</p>
+        <p class="legal-meta">Дата обновления: 18 июля 2026 г.</p>
 
         <div class="legal-content">
           <section>
@@ -78,8 +89,8 @@
               пользователей сайта дизайн-студии «Согласовано» (далее — Сайт).
             </p>
             <p>
-              Оператор персональных данных: Ярослав Сигидин. Отправляя заявку через формы на Сайте,
-              вы соглашаетесь с условиями этой Политики.
+              Оператор персональных данных: Ярослав Сигидин (самозанятый / физическое лицо). Отправляя
+              заявку через формы на Сайте, вы соглашаетесь с условиями этой Политики.
             </p>
           </section>
 
@@ -91,6 +102,10 @@
               <li>выбранную услугу, бюджет и сроки, если вы указываете их в форме;</li>
               <li>технические данные: IP-адрес, тип браузера, cookies и сведения о посещении страниц.</li>
             </ul>
+            <p>
+              Данные из форм заявок передаются через защищённый backend-сервис (хостинг Render) для
+              доставки в рабочую Telegram-группу студии и дальнейшей обработки обращения.
+            </p>
           </section>
 
           <section>
@@ -107,9 +122,16 @@
             <h2>4. Передача данных третьим лицам</h2>
             <p>
               Мы можем передавать данные сервисам, которые помогают принимать заявки и вести
-              коммуникацию (например, Telegram, почтовые сервисы, CRM и хостинг-провайдеры), только в
-              объёме, необходимом для работы Сайта и обработки обращений.
+              коммуникацию, только в объёме, необходимом для работы Сайта и обработки обращений:
             </p>
+            <ul>
+              <li>
+                backend на Render (Render.com) — приём и маршрутизация заявок с форм Сайта в
+                Telegram-группу студии;
+              </li>
+              <li>Telegram — доставка уведомлений о новых заявках и дальнейшая переписка;</li>
+              <li>хостинг-провайдеры и почтовые сервисы — размещение Сайта и резервная связь.</li>
+            </ul>
             <p>Мы не продаём персональные данные и не передаём их третьим лицам в маркетинговых целях.</p>
           </section>
 
@@ -144,8 +166,9 @@
           <section>
             <h2>8. Контакты</h2>
             <p>
-              По вопросам обработки персональных данных напишите на
-              <a href="mailto:sigidingo@gmail.com">sigidingo@gmail.com</a>
+              Оператор: Ярослав Сигидин. По вопросам обработки персональных данных напишите на
+              <a href="mailto:sigidingo@gmail.com">sigidingo@gmail.com</a>, позвоните
+              <a href="tel:+79619710515">+7 961 971-05-15</a>
               или в Telegram:
               <a href="https://t.me/sigidingo" target="_blank" rel="noreferrer">@sigidingo</a>.
             </p>
@@ -221,6 +244,15 @@
             ></textarea>
           </label>
 
+          <label class="form-consent">
+            <input type="checkbox" name="privacy" value="1" required />
+            <span
+              >Соглашаюсь с
+              <a href="./privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>
+              и обработкой персональных данных</span
+            >
+          </label>
+
           <div class="brief-modal__actions">
             <button class="brief-modal__submit" type="submit">Отправить задачу</button>
           </div>
@@ -233,10 +265,12 @@
       </section>
     </div>
 
-    <script src="./assets/js/config.js?v=20260711-telegram-leads" defer></script>
-    <script src="./assets/js/contact.js?v=20260711-telegram-leads" defer></script>
+    <script src="./assets/js/config.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/analytics.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/seo.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/contact.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
-    <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
+    <script src="./assets/js/brief-modal.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/services.js?v=20260718-revert-prices" defer></script>
   </body>
 </html>

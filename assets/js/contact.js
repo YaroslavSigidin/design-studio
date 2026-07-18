@@ -95,7 +95,7 @@ const initStudioContacts = () => {
     }
 
     if (url) {
-      window.location.href = url;
+      window.open(url, "_blank", "noopener,noreferrer");
       return true;
     }
 
@@ -155,10 +155,21 @@ const initStudioContacts = () => {
     }
   };
 
+  const notifyLeadSent = source => {
+    window.dispatchEvent(
+      new CustomEvent("studio:lead-sent", {
+        detail: { source: String(source || "").trim() }
+      })
+    );
+  };
+
   const submitLead = async payload => {
     try {
       const backendResult = await submitToCrm(payload);
-      if (backendResult.ok) return backendResult;
+      if (backendResult.ok) {
+        notifyLeadSent(payload?.source);
+        return backendResult;
+      }
     } catch (error) {
       if (!cfg.crm?.allowFallback) {
         return {
@@ -170,14 +181,61 @@ const initStudioContacts = () => {
     }
 
     const opened = openLeadChannel(payload);
-    return opened
-      ? { ok: true, mode: "fallback" }
-      : { ok: false, mode: "fallback-error", error: "Не удалось открыть канал связи" };
+    if (opened) {
+      notifyLeadSent(payload?.source);
+      return { ok: true, mode: "fallback" };
+    }
+
+    return { ok: false, mode: "fallback-error", error: "Не удалось открыть канал связи" };
   };
 
-  const bindContactLink = (selector, value) => {
-    if (!value) return;
+  const warmupLeadEndpoint = () => {
+    if (cfg.crm?.warmup === false) return;
+    const endpoint = String(cfg.crm?.endpoint || "").trim();
+    if (!endpoint || endpoint.includes("127.0.0.1") || endpoint.includes("localhost")) return;
+    const healthUrl = endpoint.replace(/\/api\/leads\/?$/, "/health");
+    fetch(healthUrl, { method: "GET", mode: "cors", cache: "no-store" }).catch(() => {});
+  };
+
+  const ensureFormStatus = form => {
+    let status = form.querySelector("[data-form-status]");
+    if (status) return status;
+    status = document.createElement("p");
+    status.className = "form-status";
+    status.hidden = true;
+    status.setAttribute("data-form-status", "");
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+    const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+    if (submitButton?.parentElement) {
+      submitButton.parentElement.insertAdjacentElement("afterend", status);
+    } else {
+      form.appendChild(status);
+    }
+    return status;
+  };
+
+  const setFormStatus = (form, message, tone = "") => {
+    const status = ensureFormStatus(form);
+    if (!message) {
+      status.hidden = true;
+      status.textContent = "";
+      status.classList.remove("is-error", "is-success");
+      return;
+    }
+    status.hidden = false;
+    status.textContent = message;
+    status.classList.toggle("is-error", tone === "error");
+    status.classList.toggle("is-success", tone === "success");
+  };
+
+  const bindContactLink = (selector, value, { hideIfEmpty = false } = {}) => {
     document.querySelectorAll(selector).forEach(node => {
+      if (!value) {
+        if (hideIfEmpty) node.hidden = true;
+        return;
+      }
+      node.hidden = false;
       node.setAttribute("href", value);
     });
   };
@@ -220,10 +278,59 @@ const initStudioContacts = () => {
     return fallbackCopyText(value);
   };
 
-  bindContactLink('[data-contact-link="telegram"]', contacts.telegramUrl);
+  const maxUrl = String(contacts.maxUrl || "").trim();
+  const vkUrl = String(contacts.vkUrl || "").trim();
+  const telegramUrl = String(contacts.telegramUrl || "").trim();
+
+  bindContactLink('[data-contact-link="telegram"]', telegramUrl);
   bindContactLink('[data-contact-link="phone"]', contacts.phoneHref);
   bindContactLink('[data-contact-link="email"]', contacts.emailHref);
-  bindContactLink('[data-contact-link="direct"]', contacts.telegramUrl || contacts.emailHref || contacts.phoneHref);
+  bindContactLink('[data-contact-link="vk"]', vkUrl || telegramUrl);
+  bindContactLink('[data-contact-link="max"]', maxUrl || contacts.phoneHref || telegramUrl);
+
+  const telegramIconSvg = `
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+      <path d="M21.5 4.5 3.8 11.3c-1.2.47-1.18 1.28-.22 1.61l4.55 1.42 1.74 5.4c.23.72.12 1 .93.1l2.64-2.9 4.84 3.58c.89.49 1.53.23 1.76-.84l3.2-15.07c.33-1.48-.5-2.14-1.74-1.1Z" fill="currentColor"/>
+    </svg>
+  `;
+
+  document.querySelectorAll('[data-contact-link="max"]').forEach(node => {
+    const iconHost = node.querySelector("[data-max-icon]");
+    const href = maxUrl || contacts.phoneHref || telegramUrl;
+    if (href?.startsWith("tel:")) {
+      node.removeAttribute("target");
+      node.removeAttribute("rel");
+      node.setAttribute("aria-label", "MAX");
+      node.setAttribute("title", `MAX: ${contacts.phoneDisplay || href.replace(/^tel:/, "")}`);
+      node.classList.remove("is-telegram-fallback");
+      if (iconHost && !iconHost.querySelector("[data-max-icon-img]")) {
+        iconHost.innerHTML = `<img src="./assets/icons/custom/max-logo-white.svg" alt="" data-max-icon-img />`;
+      }
+    } else if (maxUrl) {
+      node.setAttribute("target", "_blank");
+      node.setAttribute("rel", "noreferrer");
+      node.setAttribute("aria-label", "MAX");
+      node.setAttribute("title", "MAX");
+      node.classList.remove("is-telegram-fallback");
+      if (iconHost && !iconHost.querySelector("[data-max-icon-img]")) {
+        iconHost.innerHTML = `<img src="./assets/icons/custom/max-logo-white.svg" alt="" data-max-icon-img />`;
+      }
+    } else if (telegramUrl) {
+      node.setAttribute("target", "_blank");
+      node.setAttribute("rel", "noreferrer");
+      node.setAttribute("aria-label", "Telegram");
+      node.setAttribute("title", "Telegram");
+      node.classList.add("is-telegram-fallback");
+      if (iconHost) iconHost.innerHTML = telegramIconSvg;
+    }
+  });
+
+  document.querySelectorAll('[data-contact-link="vk"]').forEach(node => {
+    if (!vkUrl && telegramUrl) {
+      node.setAttribute("aria-label", "Telegram");
+      node.setAttribute("title", "Telegram");
+    }
+  });
 
   bindText("[data-contact-phone]", contacts.phoneDisplay);
   bindText("[data-contact-email]", contacts.email);
@@ -257,7 +364,8 @@ const initStudioContacts = () => {
     },
     openLeadChannel,
     submitLead,
-    formatPayload
+    formatPayload,
+    setFormStatus
   };
 
   document.addEventListener("submit", async event => {
@@ -272,6 +380,14 @@ const initStudioContacts = () => {
     }
 
     event.preventDefault();
+    setFormStatus(form, "");
+
+    const privacy = form.querySelector('input[name="privacy"]');
+    if (privacy instanceof HTMLInputElement && !privacy.checked) {
+      privacy.focus();
+      setFormStatus(form, "Отметьте согласие с политикой конфиденциальности.", "error");
+      return;
+    }
 
     const name = form.querySelector('input[name="name"]')?.value.trim() || "";
     const phone = form.querySelector('input[name="phone"]')?.value.trim() || "";
@@ -279,12 +395,14 @@ const initStudioContacts = () => {
 
     if (!name) {
       form.querySelector('input[name="name"]')?.focus();
+      setFormStatus(form, "Укажите имя.", "error");
       return;
     }
 
     if (!phone && !contact) {
       const fallbackField = form.querySelector('input[name="contact"]') || form.querySelector('input[name="phone"]');
       fallbackField?.focus();
+      setFormStatus(form, "Укажите телефон или мессенджер.", "error");
       return;
     }
 
@@ -312,34 +430,45 @@ const initStudioContacts = () => {
       comment: form.dataset.caseTitle || ""
     });
 
-    if (result.ok && result.mode === "crm") {
+    const restoreButton = () => {
+      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
+      if (submitButton instanceof HTMLInputElement) submitButton.value = previousLabel || "Отправить";
+      if (submitButton) submitButton.disabled = false;
+    };
+
+    if (result.ok && (result.mode === "crm" || result.mode === "telegram")) {
       form.reset();
+      setFormStatus(form, "Заявка отправлена. Мы скоро свяжемся с вами.", "success");
       if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";
       if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправлено";
       window.setTimeout(() => {
-        if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
-        if (submitButton instanceof HTMLInputElement) submitButton.value = previousLabel || "Отправить";
-        if (submitButton) submitButton.disabled = false;
-      }, 1800);
+        restoreButton();
+        setFormStatus(form, "");
+      }, 2200);
       return;
     }
 
-    if (result.ok && result.mode === "telegram") {
-      form.reset();
-      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";
-      if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправлено";
-      window.setTimeout(() => {
-        if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
-        if (submitButton instanceof HTMLInputElement) submitButton.value = previousLabel || "Отправить";
-        if (submitButton) submitButton.disabled = false;
-      }, 1800);
+    if (result.ok && result.mode === "fallback") {
+      setFormStatus(
+        form,
+        "Сервер временно недоступен — открыли запасной канал. Если окно не появилось, напишите в Telegram.",
+        "success"
+      );
+      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Открыт Telegram";
+      if (submitButton instanceof HTMLInputElement) submitButton.value = "Открыт Telegram";
+      window.setTimeout(restoreButton, 2400);
       return;
     }
 
-    if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
-    if (submitButton instanceof HTMLInputElement) submitButton.value = previousLabel || "Отправить";
-    if (submitButton) submitButton.disabled = false;
+    setFormStatus(
+      form,
+      result?.error || "Не удалось отправить. Напишите нам в Telegram: @sigidingo",
+      "error"
+    );
+    restoreButton();
   });
+
+  warmupLeadEndpoint();
 };
 
 if (document.readyState === "loading") {

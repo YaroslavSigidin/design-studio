@@ -259,8 +259,8 @@
   font-family: "Schibsted Grotesk", sans-serif;
   font-weight: 600;
   font-size: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  text-transform: none;
   color: #505050;
 }
 
@@ -419,8 +419,8 @@
   font-family: "Schibsted Grotesk", sans-serif;
   font-weight: 600;
   font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  text-transform: none;
   color: #505050;
 }
 
@@ -516,7 +516,8 @@
   font-family: "Schibsted Grotesk", sans-serif;
   font-size: 11px;
   line-height: 24px;
-  letter-spacing: 0.06em;
+  letter-spacing: -0.01em;
+  text-transform: none;
 }
 
 .case-related-content h3 {
@@ -642,6 +643,25 @@
 
 .case-back:hover {
   color: #000000;
+}
+
+.case-header-back {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .studio-case-page .hero-nav-actions .case-header-back {
+    display: inline-flex;
+    min-height: 40px;
+    min-width: 0;
+    padding: 0 14px;
+    border-radius: 11px;
+    font-size: 14px;
+  }
+
+  .studio-case-page .hero-nav-actions .case-header-home {
+    display: none;
+  }
 }
 
 .case-brief {

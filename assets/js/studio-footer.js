@@ -9,13 +9,6 @@ window.renderStudioFooter = ({ home = "./" } = {}) => {
         <span class="studio-footer__tape studio-footer__tape--right" aria-hidden="true"></span>
 
         <div class="studio-footer__top">
-          <div class="studio-footer__brand">
-            <p>
-              Дизайн-студия полного цикла. Проектируем интерфейсы, сайты и цифровые продукты, чтобы
-              ваш бизнес рос быстрее.
-            </p>
-          </div>
-
           <div class="studio-footer__columns">
             <div class="studio-footer__column">
               <h3>Навигация</h3>
@@ -23,7 +16,6 @@ window.renderStudioFooter = ({ home = "./" } = {}) => {
               <a href="${anchor("services")}">Услуги</a>
               <a href="${anchor("about")}">О нас</a>
               <a href="${anchor("faq")}">FAQ</a>
-              <a href="#contacts" data-open-brief-modal>Обсудить проект</a>
             </div>
 
             <div class="studio-footer__column">
@@ -36,17 +28,6 @@ window.renderStudioFooter = ({ home = "./" } = {}) => {
         </div>
 
         <div class="studio-footer__signature">
-          <a class="studio-footer__wordmark" href="${homeHref}" aria-label="Согласовано">
-            <img
-              class="brand-wordmark brand-wordmark--footer-signature"
-              src="./assets/images/brand/soglasovano-wordmark.svg"
-              alt=""
-              width="520"
-              height="58"
-              decoding="async"
-            />
-          </a>
-
           <div class="studio-footer__request">
             <div class="hero-request" data-hero-request>
               <button
@@ -69,7 +50,7 @@ window.renderStudioFooter = ({ home = "./" } = {}) => {
                   </svg>
                 </span>
               </button>
-              <form class="hero-request__form" id="heroRequestForm">
+              <form class="hero-request__form" id="heroRequestForm" autocomplete="on">
                 <button
                   class="hero-request__collapse"
                   type="button"
@@ -88,7 +69,7 @@ window.renderStudioFooter = ({ home = "./" } = {}) => {
                     </svg>
                   </span>
                 </button>
-                <input type="text" name="name" placeholder="Имя" autocomplete="name" required />
+                <input type="text" name="name" placeholder="Имя" autocomplete="given-name" required />
                 <input
                   type="tel"
                   name="phone"
@@ -100,13 +81,32 @@ window.renderStudioFooter = ({ home = "./" } = {}) => {
                   type="text"
                   name="contact"
                   placeholder="WhatsApp, Telegram"
-                  autocomplete="username"
+                  autocomplete="off"
                   required
                 />
                 <button class="hero-request__submit" type="submit">Отправить</button>
+                <label class="form-consent hero-request__consent">
+                  <input type="checkbox" name="privacy" value="1" required />
+                  <span
+                    >Соглашаюсь с
+                    <a href="./privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>
+                    и обработкой персональных данных</span
+                  >
+                </label>
               </form>
             </div>
           </div>
+
+          <a class="studio-footer__wordmark" href="${homeHref}" aria-label="Согласовано">
+            <img
+              class="brand-wordmark brand-wordmark--footer-signature"
+              src="./assets/images/brand/soglasovano-wordmark.svg"
+              alt=""
+              width="980"
+              height="148"
+              decoding="async"
+            />
+          </a>
         </div>
       </div>
 

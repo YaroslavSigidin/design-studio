@@ -3,10 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
     <title>Условия использования — Согласовано</title>
     <meta
       name="description"
       content="Условия использования сайта и услуг дизайн-студии Согласовано."
+    />
+    <link rel="canonical" href="https://yaroslavsigidin.github.io/design-studio/terms.html" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/brand/favicon-32.png" />
+    <link rel="apple-touch-icon" href="./assets/images/brand/apple-touch-icon.png" />
+    <meta property="og:title" content="Условия использования — Согласовано" />
+    <meta
+      property="og:description"
+      content="Условия использования сайта и услуг дизайн-студии Согласовано."
+    />
+    <meta
+      property="og:image"
+      content="https://yaroslavsigidin.github.io/design-studio/assets/images/brand/og-cover.png"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,10 +27,10 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260713-header-btn-black-hover" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-seo-leads" />
     <link rel="stylesheet" href="./assets/css/legal.css?v=20260713-legal-pages" />
   </head>
-  <body class="studio-legal-page">
+  <body class="studio-legal-page" data-seo-page="legal">
     <header class="hero-nav" data-floating-header>
       <div class="hero-nav-inner">
         <a class="hero-logo" href="./" aria-label="Согласовано">
@@ -34,7 +47,6 @@
         <ul class="hero-menu">
           <li><a href="./#cases">Кейсы</a></li>
           <li><a href="./#services">Услуги</a></li>
-          <li><a href="./#contacts">Обсудить проект</a></li>
           <li><a href="./#contacts">Контакты</a></li>
         </ul>
 
@@ -56,7 +68,6 @@
       <div class="hero-mobile-sheet" data-header-sheet>
         <a href="./#cases">Кейсы</a>
         <a href="./#services">Услуги</a>
-        <a href="./#contacts">Обсудить проект</a>
         <a href="./#contacts">Контакты</a>
         <div class="hero-mobile-sheet-actions">
           <a class="hero-btn hero-btn--dark" href="./#contacts" data-open-brief-modal>Заказать дизайн</a>
@@ -68,7 +79,7 @@
       <div class="legal-shell">
         <a class="legal-back" href="./">← На главную</a>
         <h1 class="legal-title">Условия использования</h1>
-        <p class="legal-meta">Дата обновления: 13 июля 2026 г.</p>
+        <p class="legal-meta">Дата обновления: 18 июля 2026 г.</p>
 
         <div class="legal-content">
           <section>
@@ -77,6 +88,9 @@
               Настоящие Условия регулируют использование сайта дизайн-студии «Согласовано» (далее —
               Сайт) и взаимодействие с услугами студии. Используя Сайт, вы подтверждаете, что
               ознакомились с Условиями и принимаете их.
+            </p>
+            <p>
+              Исполнитель услуг и владелец Сайта: Ярослав Сигидин (самозанятый / физическое лицо).
             </p>
           </section>
 
@@ -97,6 +111,10 @@
             <h2>3. Порядок работы по проекту</h2>
             <ul>
               <li>заявка через форму на Сайте или прямой контакт со студией;</li>
+              <li>
+                автоматическая передача данных формы через backend на Render в Telegram-группу
+                студии для первичной обработки;
+              </li>
               <li>уточнение задачи, сроков и бюджета;</li>
               <li>согласование объёма работ и условий сотрудничества;</li>
               <li>выполнение работ поэтапно с промежуточными согласованиями;</li>
@@ -150,9 +168,9 @@
           <section>
             <h2>8. Контакты</h2>
             <p>
-              По вопросам использования Сайта и услуг студии:
+              Исполнитель: Ярослав Сигидин. По вопросам использования Сайта и услуг студии:
               <a href="mailto:sigidingo@gmail.com">sigidingo@gmail.com</a>,
-              <a href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram</a>,
+              <a href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram @sigidingo</a>,
               телефон <a href="tel:+79619710515">+7 961 971-05-15</a>.
             </p>
           </section>
@@ -227,6 +245,15 @@
             ></textarea>
           </label>
 
+          <label class="form-consent">
+            <input type="checkbox" name="privacy" value="1" required />
+            <span
+              >Соглашаюсь с
+              <a href="./privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>
+              и обработкой персональных данных</span
+            >
+          </label>
+
           <div class="brief-modal__actions">
             <button class="brief-modal__submit" type="submit">Отправить задачу</button>
           </div>
@@ -239,10 +266,12 @@
       </section>
     </div>
 
-    <script src="./assets/js/config.js?v=20260711-telegram-leads" defer></script>
-    <script src="./assets/js/contact.js?v=20260711-telegram-leads" defer></script>
+    <script src="./assets/js/config.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/analytics.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/seo.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/contact.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
-    <script src="./assets/js/brief-modal.js?v=20260711-telegram-leads" defer></script>
+    <script src="./assets/js/brief-modal.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/services.js?v=20260718-revert-prices" defer></script>
   </body>
 </html>

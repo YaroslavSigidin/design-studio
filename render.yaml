@@ -11,7 +11,7 @@ services:
       - key: TELEGRAM_CHAT_ID
         value: "-5360826750"
       - key: ALLOWED_ORIGINS
-        value: "https://yaroslavsigidin.github.io,https://yaroslavsigidin.github.io/design-studio,http://127.0.0.1:8766,http://localhost:8766"
+        value: "https://yaroslavsigidin.github.io,https://yaroslavsigidin.github.io/design-studio,http://127.0.0.1:8766,http://localhost:8766,http://92.53.96.132,https://92.53.96.132"
       - key: TELEGRAM_BOT_TOKEN
         sync: false
       - key: AMO_BASE_URL

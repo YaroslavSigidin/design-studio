@@ -6,11 +6,31 @@ const initPromoStrip = () => {
   const storageKey = "studio-promo-dismissed-v2";
   if (!strip || !timerNode) return;
 
+  const promoConfig = window.STUDIO_CONFIG?.promo || {};
+  const endsAtMs = Date.parse(String(promoConfig.endsAt || ""));
+  if (!Number.isFinite(endsAtMs)) {
+    strip.classList.add("is-hidden");
+    return;
+  }
+
+  if (Date.now() >= endsAtMs) {
+    strip.classList.add("is-hidden");
+    document.dispatchEvent(new CustomEvent("studio:promo-hidden"));
+    return;
+  }
+
   const isDismissed = () => window.localStorage.getItem(storageKey) === "1";
 
+  const getRemainingMs = () => Math.max(0, endsAtMs - Date.now());
+
+  const isExpired = () => getRemainingMs() <= 0;
+
   const syncVisibility = () => {
-    if (!desktopMedia.matches || isDismissed()) {
+    if (!desktopMedia.matches || isDismissed() || isExpired()) {
       strip.classList.add("is-hidden");
+      if (isExpired()) {
+        document.dispatchEvent(new CustomEvent("studio:promo-hidden"));
+      }
       return false;
     }
 
@@ -18,35 +38,51 @@ const initPromoStrip = () => {
     return true;
   };
 
-  let remainingSeconds = 20 * 3600 + 10 * 60 + 46;
-
   const formatPart = (value, suffix) => `${String(value).padStart(2, "0")}${suffix}`;
 
   const render = () => {
-    const safeValue = Math.max(0, remainingSeconds);
-    const hours = Math.floor(safeValue / 3600);
-    const minutes = Math.floor((safeValue % 3600) / 60);
-    const seconds = safeValue % 60;
-    timerNode.textContent = `${formatPart(hours, "ч")}:${formatPart(minutes, "м")}:${formatPart(seconds, "с")}`;
+    const remainingMs = getRemainingMs();
+    if (remainingMs <= 0) {
+      timerNode.textContent = "00ч:00м:00с";
+      syncVisibility();
+      return;
+    }
+
+    const totalSeconds = Math.floor(remainingMs / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    timerNode.textContent =
+      days > 0
+        ? `${days}д:${formatPart(hours, "ч")}:${formatPart(minutes, "м")}`
+        : `${formatPart(hours, "ч")}:${formatPart(minutes, "м")}:${formatPart(seconds, "с")}`;
   };
 
   const startTimer = () => {
-    if (!syncVisibility()) return;
+    if (!syncVisibility()) {
+      render();
+      return;
+    }
 
     render();
     window.setInterval(() => {
-      remainingSeconds = remainingSeconds > 0 ? remainingSeconds - 1 : 20 * 3600 + 10 * 60 + 46;
       render();
+      if (isExpired()) syncVisibility();
     }, 1000);
   };
 
   const handleMediaChange = () => {
     syncVisibility();
+    render();
   };
 
   startTimer();
 
-  closeButton?.addEventListener("click", () => {
+  closeButton?.addEventListener("click", event => {
+    event.preventDefault();
+    event.stopPropagation();
     strip.classList.add("is-hidden");
     window.localStorage.setItem(storageKey, "1");
     document.dispatchEvent(new CustomEvent("studio:promo-hidden"));

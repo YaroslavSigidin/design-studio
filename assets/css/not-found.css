@@ -1,0 +1,242 @@
+.nf-body {
+  margin: 0;
+  min-height: 100dvh;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.nf-page {
+  position: relative;
+  min-height: 100dvh;
+  isolation: isolate;
+}
+
+.nf-pong {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  cursor: none;
+}
+
+.nf-paddle {
+  position: absolute;
+  width: 12px;
+  height: 118px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(20, 25, 32, 0.95), rgba(42, 50, 64, 0.88));
+  box-shadow: 0 8px 16px rgba(14, 20, 30, 0.24);
+  top: 50%;
+  transform: translateY(-50%);
+  will-change: top;
+}
+
+.nf-paddle--player {
+  left: 14px;
+}
+
+.nf-paddle--ai {
+  right: 14px;
+}
+
+.nf-ball {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #f1f6ff 42%, #d7e6ff 100%);
+  box-shadow:
+    0 0 0 1px rgba(20, 34, 56, 0.1),
+    0 8px 20px rgba(22, 54, 90, 0.22);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  will-change: left, top;
+}
+
+.nf-brand {
+  position: absolute;
+  top: max(18px, env(safe-area-inset-top));
+  left: 50%;
+  z-index: 3;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.nf-brand__link {
+  display: block;
+  width: min(168px, 42vw);
+}
+
+.nf-brand__link .brand-wordmark {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.nf-center {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 96px 24px 120px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.nf-code {
+  margin: 0;
+  font-family: "Fustat", "Schibsted Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: clamp(96px, 22vw, 220px);
+  line-height: 0.86;
+  letter-spacing: -0.06em;
+  color: #0a0f16;
+  text-shadow: 0 18px 40px rgba(18, 40, 72, 0.12);
+  animation: nfCodeIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.nf-caption {
+  margin: 0;
+  max-width: 22ch;
+  font-family: "Schibsted Grotesk", sans-serif;
+  font-weight: 500;
+  font-size: clamp(15px, 2.4vw, 18px);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: rgba(10, 15, 22, 0.72);
+  animation: nfFadeUp 520ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
+}
+
+.nf-back {
+  pointer-events: auto;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 13px;
+  font-family: "Schibsted Grotesk", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  animation: nfFadeUp 520ms cubic-bezier(0.22, 1, 0.36, 1) 140ms both;
+}
+
+.nf-score {
+  position: absolute;
+  left: 50%;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: nfFadeUp 520ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
+}
+
+.nf-score__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 64px;
+}
+
+.nf-score__side--right {
+  align-items: flex-end;
+}
+
+.nf-score__label {
+  font-family: "Schibsted Grotesk", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(10, 15, 22, 0.48);
+}
+
+.nf-score__value {
+  font-family: "Fustat", "Schibsted Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 8vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #0a0f16;
+  font-variant-numeric: tabular-nums;
+}
+
+.nf-score__divider {
+  width: 1px;
+  height: 42px;
+  margin-bottom: 6px;
+  background: rgba(10, 15, 22, 0.16);
+}
+
+@keyframes nfCodeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes nfFadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (max-width: 720px) {
+  .nf-paddle {
+    width: 10px;
+    height: 96px;
+  }
+
+  .nf-paddle--player {
+    left: 10px;
+  }
+
+  .nf-paddle--ai {
+    right: 10px;
+  }
+
+  .nf-ball {
+    width: 12px;
+    height: 12px;
+  }
+
+  .nf-center {
+    gap: 14px;
+    padding: 88px 20px 110px;
+  }
+
+  .nf-score {
+    gap: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nf-code,
+  .nf-caption,
+  .nf-back,
+  .nf-score {
+    animation: none;
+  }
+
+  .nf-pong {
+    cursor: auto;
+  }
+}

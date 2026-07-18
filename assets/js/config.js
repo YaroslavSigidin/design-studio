@@ -32,14 +32,25 @@ window.__studioEscapeHtml = value =>
 window.STUDIO_CONFIG = {
   basePath: studioBasePath,
   assetBasePath: studioBasePath,
-  manifest: joinPath(studioBasePath, "data/cases.manifest.json"),
+  siteUrl: "https://yaroslavsigidin.github.io/design-studio",
+  manifest: joinPath(studioBasePath, "data/cases.manifest.json") + "?v=20260718-roadmap-all",
   studioHome: studioBasePath,
   studioCases: `${studioBasePath}#cases`,
   casePageBase: joinPath(studioBasePath, "case.html"),
+  seo: {
+    siteName: "Согласовано",
+    title: "Согласовано — дизайн-студия полного цикла",
+    description:
+      "Согласовано — дизайн-студия полного цикла. UX/UI, сайты, брендинг и продуктовый дизайн под задачи вашего бизнеса.",
+    image: "assets/images/brand/og-cover.png"
+  },
   contacts: {
     name: "Ярослав Сигидин",
     telegramHandle: "sigidingo",
     telegramUrl: "https://t.me/sigidingo",
+    vkUrl: "https://vk.com/sigidingo",
+    // Прямой диплинк MAX по номеру недоступен — ведём на ваш номер в MAX/телефоне.
+    maxUrl: "tel:+79619710515",
     phoneDisplay: "+7 961 971-05-15",
     phoneHref: "tel:+79619710515",
     email: "sigidingo@gmail.com",
@@ -50,9 +61,24 @@ window.STUDIO_CONFIG = {
     endpoint: resolveLeadEndpoint(),
     timeoutMs: 12000,
     uploadTimeoutMs: 60000,
-    allowFallback: false
+    // Если Render «спит» или CORS режет запрос — открываем Telegram/mailto как запасной канал.
+    allowFallback: true,
+    warmup: true
   },
   leadChannel: {
     type: "telegram"
+  },
+  // analytics.metrikaId — ID счётчика Яндекс.Метрики. Пустая строка отключает счётчик и reachGoal().
+  // Цели lead_sent* отправляются через событие studio:lead-sent после успешной заявки.
+  analytics: {
+    metrikaId: ""
+  },
+  promo: {
+    // endsAt — ISO-дата окончания акции (с часовым поясом). После дедлайна promo-strip скрывается навсегда.
+    endsAt: "2026-07-27T23:59:59+03:00",
+    title: "Акция: скидка 10% на лендинг",
+    source: "Акция: скидка 10% на лендинг",
+    comment: "Запрос по акции: скидка 10% на лендинг.",
+    service: "Одностраничный сайт"
   }
 };

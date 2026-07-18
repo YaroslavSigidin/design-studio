@@ -3,3 +3,4 @@ Thumbs.db
 .env
 *.local
 amocrm-proxy/.env
+.preview/

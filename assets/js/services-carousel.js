@@ -125,8 +125,8 @@ const initServicesCarousel = () => {
 
     const viewportRect = viewport.getBoundingClientRect();
     const centerX = viewportRect.left + viewportRect.width / 2;
-    const cardWidth = getOriginalCards()[0]?.offsetWidth || cards[0].offsetWidth || 360;
-    const focusBand = cardWidth * 0.88;
+    let bestCard = null;
+    let bestDist = Infinity;
 
     cards.forEach(card => {
       const rect = card.getBoundingClientRect();
@@ -136,8 +136,15 @@ const initServicesCarousel = () => {
       card.style.setProperty("--service-card-opacity", "1");
       card.style.setProperty("--service-card-scale", "1");
       card.style.setProperty("--service-card-rotate", "0deg");
-      card.classList.toggle("is-focus", distance <= focusBand);
+      card.classList.remove("is-focus");
+
+      if (distance < bestDist) {
+        bestDist = distance;
+        bestCard = card;
+      }
     });
+
+    bestCard?.classList.add("is-focus");
 
     prevButton.disabled = false;
     nextButton.disabled = false;
