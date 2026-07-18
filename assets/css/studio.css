@@ -1222,49 +1222,7 @@ body::after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-}
-
-.hero-eyebrow {
-  margin: 0;
-  max-width: 42rem;
-  font-family: "Fustat", sans-serif;
-  font-size: clamp(15px, 1.5vw, 18px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: #101820;
-  text-wrap: balance;
-}
-
-.hero-cta-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.hero-cta-row .hero-btn {
-  min-height: 48px;
-  padding: 0 20px;
-  border-radius: 13px;
-  font-size: 15px;
-}
-
-.hero-partners__label {
-  margin: 0 0 10px;
-  font-family: "Fustat", sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(92, 102, 120, 0.9);
-  text-align: center;
-}
-
-.studio-stat__accent--word {
-  font-size: clamp(22px, 2.4vw, 30px);
-  letter-spacing: -0.04em;
+  gap: 24px;
 }
 
 .hero-badge {
@@ -1303,11 +1261,10 @@ body::after {
 
 .hero-title {
   margin: 0;
-  max-width: 18ch;
   font-family: "Fustat", sans-serif;
   font-weight: 700;
-  font-size: clamp(34px, 4.4vw, 58px);
-  line-height: 1.05;
+  font-size: clamp(52px, 6.2vw, 88px);
+  line-height: 1.02;
   letter-spacing: -0.045em;
   text-wrap: balance;
 }
@@ -1319,7 +1276,6 @@ body::after {
 }
 
 .hero-title[data-hero-wordmark],
-.hero-header [data-hero-scroll-item],
 .hero-subtitle[data-hero-scroll-item],
 .hero-search-wrap[data-hero-scroll-item],
 .hero-partners[data-hero-scroll-item],
@@ -1346,16 +1302,6 @@ body::after {
   letter-spacing: -0.015em;
   color: #5c6678;
   white-space: nowrap;
-}
-
-.hero-subtitle--prose {
-  display: block;
-  width: min(40rem, 100%);
-  max-width: min(40rem, 100%);
-  white-space: normal;
-  text-wrap: pretty;
-  font-size: clamp(15px, 1.55vw, 18px);
-  line-height: 1.45;
 }
 
 .hero-subtitle__dot {

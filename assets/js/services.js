@@ -55,13 +55,11 @@ const SERVICE_ICONS = {
   `
 };
 
-const SERVICES_FALLBACK = [
+const SERVICES = [
   {
-    id: "uxui",
     title: "UX/UI дизайн",
     price: 95000,
     icon: "layout",
-    ctaLabel: "Обсудить эту задачу",
     bullets: [
       "Понятные пользовательские сценарии",
       "Удобные роли доступа",
@@ -71,11 +69,9 @@ const SERVICES_FALLBACK = [
     ]
   },
   {
-    id: "landing",
     title: "Одностраничный сайт",
     price: 40000,
     icon: "landing",
-    ctaLabel: "Обсудить эту задачу",
     bullets: [
       "Сильный первый экран",
       "Путь к заявке",
@@ -85,11 +81,9 @@ const SERVICES_FALLBACK = [
     ]
   },
   {
-    id: "multipage",
     title: "Многостраничный сайт",
     price: 70000,
     icon: "multipage",
-    ctaLabel: "Обсудить эту задачу",
     bullets: [
       "Логичная карта разделов",
       "Единый стиль страниц",
@@ -99,11 +93,9 @@ const SERVICES_FALLBACK = [
     ]
   },
   {
-    id: "branding",
     title: "Брендинг и айдентика",
     price: 48000,
     icon: "brand",
-    ctaLabel: "Обсудить эту задачу",
     bullets: [
       "Узнаваемый логотип бренда",
       "Цвета и шрифты",
@@ -113,11 +105,9 @@ const SERVICES_FALLBACK = [
     ]
   },
   {
-    id: "redesign",
     title: "Редизайн сайта",
     price: 60000,
     icon: "redesign",
-    ctaLabel: "Обсудить эту задачу",
     bullets: [
       "Аудит текущих проблем",
       "Свежий внешний вид",
@@ -128,22 +118,7 @@ const SERVICES_FALLBACK = [
   }
 ];
 
-window.SERVICES = SERVICES_FALLBACK;
-
-const loadServicesContent = async () => {
-  const url = window.STUDIO_CONFIG?.content?.services;
-  if (!url) return SERVICES_FALLBACK;
-  try {
-    const response = await fetch(url, { cache: "force-cache" });
-    if (!response.ok) throw new Error(`services ${response.status}`);
-    const data = await response.json();
-    const list = Array.isArray(data?.services) ? data.services : [];
-    return list.length ? list : SERVICES_FALLBACK;
-  } catch (err) {
-    console.warn("[studio services] content fallback", err);
-    return SERVICES_FALLBACK;
-  }
-};
+window.SERVICES = SERVICES;
 
 const formatRub = value => new Intl.NumberFormat("ru-RU").format(value);
 
@@ -215,20 +190,11 @@ const serviceCardTemplate = service => {
   `;
 };
 
-const initServices = async () => {
+const initServices = () => {
   const grid = document.getElementById("studioServicesGrid");
   if (!grid) return;
 
-  const services = await loadServicesContent();
-  window.SERVICES = services;
-  const hasPrerender = grid.querySelector("[data-service-card][data-prerendered]");
-  // Keep static HTML if fetch failed and returned the same fallback already painted.
-  if (hasPrerender && services === SERVICES_FALLBACK && grid.children.length) {
-    window.dispatchEvent(new CustomEvent("studio:services-rendered"));
-    return;
-  }
-
-  grid.innerHTML = services.map(serviceCardTemplate).join("");
+  grid.innerHTML = SERVICES.map(serviceCardTemplate).join("");
   window.dispatchEvent(new CustomEvent("studio:services-rendered"));
 };
 
