@@ -93,6 +93,38 @@ test: add playwright axe and lighthouse checks
 docs: update readme audit and deployment guide
 ```
 
+## Motion budgets (Definition of Done)
+
+Profiles (`document.documentElement.dataset.studioPerf`):
+
+| Profile | When | Allowed | Forbidden |
+| --- | --- | --- | --- |
+| `full` | fine pointer, wide, ≥6 cores, !saveData, !reduced | parallax, services arc, cursor, pong, soft blur | layout anim (`left`/`top`), always-on idle RAF |
+| `balanced` | coarse / ≤1100px / 3–4 cores | CSS reveals, cases tabs, linear snap carousels | backdrop-filter, cursor, pong, hero parallax, arc 3D |
+| `lite` | reduced-motion / saveData / ≤2 cores | instant opacity / static layout | almost all motion + shimmer |
+
+| Metric | Target | How to measure |
+| --- | --- | --- |
+| FPS scroll homepage | ≥55 avg | Chrome Performance, 5s scroll |
+| FPS services arc | ≥50 | desktop `full` only |
+| Idle cursor CPU | ≈0 after settle | Perf monitor, mouse still 2–3s |
+| Long tasks while idle | 0 × >50ms | Performance panel |
+| Cases «Все кейсы» | only if filter count > 6 | no veil when hidden |
+| CLS from motion | 0 | no layout jump on reveal |
+
+### Manual QA checklist (each motion PR)
+
+1. Desktop: scroll homepage 5s — header shrink + hero dissolve smooth
+2. Services: arc step left/right — cards via `translate3d`, no fog jank
+3. Cases: switch tabs incl. sparse filters — button/veil only when >6
+4. About: team carousel — no 3D on balanced/lite
+5. Idle cursor 3s — RAF sleeps
+6. Emulate mobile / narrow — `balanced`, no cursor/pong
+7. `prefers-reduced-motion` — `lite`, content visible without waiting
+8. Optional: open `/?motionQa=1` → console `[motion-qa]` snapshot
+
+Dev helper: `assets/js/studio-motion-qa.js` (active only with `?motionQa=1`).
+
 ## Progress log
 
 | Date | Commit | Stage | Notes |
@@ -104,3 +136,5 @@ docs: update readme audit and deployment guide
 | 2026-07-18 | `f645f09` | a11y | Skip-link, modal traps, case links, toolbar filters, field errors |
 | 2026-07-18 | `8b15c00` | content + prerender | `content/*`, hero rewrite, honest proofs, static services/cases |
 | 2026-07-18 | `1241791` | revert homepage copy | User request: restore pre-content texts/structure; keep backend/perf/a11y |
+| 2026-07-18 | local | motion profiles | `full` / `balanced` / `lite` + `studio-scroll` bus; heavy FX only on full; mid motion on balanced |
+| 2026-07-18 | local | motion QA | Budgets + checklist in AUDIT; `?motionQa=1` console helper |

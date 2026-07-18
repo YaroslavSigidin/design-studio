@@ -38,13 +38,19 @@
     />
     <script>
       (() => {
-        const lite =
-          window.matchMedia("(pointer: coarse)").matches ||
-          window.matchMedia("(max-width: 1100px)").matches ||
-          window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-          Boolean(navigator.connection && navigator.connection.saveData) ||
-          (Number.isFinite(navigator.hardwareConcurrency) && navigator.hardwareConcurrency <= 4);
-        if (lite) document.documentElement.classList.add("studio-perf-lite");
+        const coarse = window.matchMedia("(pointer: coarse)").matches;
+        const narrow = window.matchMedia("(max-width: 1100px)").matches;
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+        const cores = Number.isFinite(navigator.hardwareConcurrency)
+          ? navigator.hardwareConcurrency
+          : null;
+        const root = document.documentElement;
+        let profile = "full";
+        if (reduced || saveData || (cores !== null && cores <= 2)) profile = "lite";
+        else if (coarse || narrow || (cores !== null && cores <= 4)) profile = "balanced";
+        root.classList.add("studio-perf-" + profile);
+        root.dataset.studioPerf = profile;
       })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -53,10 +59,10 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-a11y" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260719-about-deal" />
+    <link rel="stylesheet" href="./assets/css/user-cursor.css?v=20260718-user-cursor" />
   </head>
   <body data-seo-page="home">
-    <a class="skip-link" href="#main-content">Перейти к содержимому</a>
     <div class="hero-page">
       <div class="hero-pong-layer" aria-hidden="true" data-hero-pong-layer>
         <div class="hero-paddle hero-paddle--player" data-pong-player></div>
@@ -149,15 +155,6 @@
               aria-label="Позвонить: +7 961 971-05-15"
               data-contact-phone
             >+7 961 971-05-15</a>
-            <button
-              class="top-phone-copy"
-              type="button"
-              data-copy-phone
-              aria-label="Скопировать номер телефона"
-              title="Скопировать номер"
-            >
-              <span aria-hidden="true">⧉</span>
-            </button>
           </div>
           <span class="top-contact-bridge" aria-hidden="true"></span>
           <div class="top-mini-contacts" aria-label="Контакты">
@@ -341,15 +338,11 @@
                       </div>
                     </li>
                     <li class="studio-stats__item">
-                      <div class="studio-stat studio-stat--top" aria-label="топ 10 студий юга РФ за 2025 год">
-                        <span class="studio-stat__cluster" aria-hidden="true">
-                          <span class="studio-stat__accent">топ 10</span>
-                          <i></i>
-                          <i></i>
-                        </span>
+                      <div class="studio-stat" aria-label="24/7 поддержка и коммуникация">
+                        <span class="studio-stat__accent studio-stat__accent--compact">24/7</span>
                         <span class="studio-stat__text">
-                          <strong>студий юга РФ</strong>
-                          <span>за 2025 год</span>
+                          <strong>поддержка и</strong>
+                          <span>коммуникация</span>
                         </span>
                       </div>
                     </li>
@@ -374,15 +367,11 @@
                       </div>
                     </li>
                     <li class="studio-stats__item">
-                      <div class="studio-stat studio-stat--top">
-                        <span class="studio-stat__cluster" aria-hidden="true">
-                          <span class="studio-stat__accent">топ 10</span>
-                          <i></i>
-                          <i></i>
-                        </span>
+                      <div class="studio-stat">
+                        <span class="studio-stat__accent studio-stat__accent--compact">24/7</span>
                         <span class="studio-stat__text">
-                          <strong>студий юга РФ</strong>
-                          <span>за 2025 год</span>
+                          <strong>поддержка и</strong>
+                          <span>коммуникация</span>
                         </span>
                       </div>
                     </li>
@@ -654,29 +643,41 @@
 
     <section class="section studio-about" id="about" data-about>
       <div class="container studio-about__inner">
-        <h2 class="section-title" data-reveal-heading>Чуть-чуть<br class="studio-about__title-break" /> больше о нас</h2>
+        <h2 class="section-title" data-reveal-heading>Команда,<br class="studio-about__title-break" /> которой доверяют</h2>
         <p class="studio-about__lead">
           <span class="studio-about__lead-text">
             Ведём продукт от идеи до запуска — дизайн, разработка и согласования без разрывов между этапами.
           </span>
         </p>
         <ul class="studio-about__grid" data-about-grid>
-          <li class="studio-about__card studio-about__card--fact studio-about__card--stat" data-about-card style="--about-i: 0">
-            <div class="studio-about__fact-body">
-              <p class="studio-about__fact-value">более 50</p>
-              <p class="studio-about__fact-title">коммерческих проектов</p>
-            </div>
-          </li>
-          <li class="studio-about__card studio-about__card--person" data-about-card data-about-person style="--about-i: 1">
+          <li class="studio-about__card studio-about__card--person" data-about-card data-about-person style="--about-i: 0">
             <div class="studio-about__photo">
               <img
                 src="./assets/images/team/kamnev-egor.jpg"
                 alt="Камнев Егор"
                 width="636"
                 height="1024"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
+                fetchpriority="low"
               />
+              <button
+                type="button"
+                class="studio-about__more"
+                aria-label="Подробнее о Камневе Егоре"
+                aria-expanded="false"
+                data-about-more
+              >
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M10 4.5v11M4.5 10h11" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+                </svg>
+              </button>
+              <div class="studio-about__bio" data-about-bio hidden>
+                <p>
+                  Технический директор. Обсуждает вопросы, связанные с автоматизацией, документацией
+                  и сложными B2B-платформами.
+                </p>
+              </div>
               <div class="studio-about__meta">
                 <div class="studio-about__title-row">
                   <h3 class="studio-about__name">Камнев Егор</h3>
@@ -685,22 +686,33 @@
               </div>
             </div>
           </li>
-          <li class="studio-about__card studio-about__card--fact studio-about__card--stat" data-about-card style="--about-i: 2">
-            <div class="studio-about__fact-body">
-              <p class="studio-about__fact-value">10+</p>
-              <p class="studio-about__fact-title">лет работы в сфере IT</p>
-            </div>
-          </li>
-          <li class="studio-about__card studio-about__card--person" data-about-card data-about-person style="--about-i: 3">
+          <li class="studio-about__card studio-about__card--person" data-about-card data-about-person style="--about-i: 1">
             <div class="studio-about__photo">
               <img
                 src="./assets/images/team/rudenko-anna.jpg"
                 alt="Руденко Анна"
                 width="640"
                 height="1024"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
+                fetchpriority="low"
               />
+              <button
+                type="button"
+                class="studio-about__more"
+                aria-label="Подробнее о Руденко Анне"
+                aria-expanded="false"
+                data-about-more
+              >
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M10 4.5v11M4.5 10h11" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+                </svg>
+              </button>
+              <div class="studio-about__bio" data-about-bio hidden>
+                <p>
+                  Сильный бренд-дизайнер. Отличается лёгкой коммуникацией и упором на разработку сайтов.
+                </p>
+              </div>
               <div class="studio-about__meta">
                 <div class="studio-about__title-row">
                   <h3 class="studio-about__name">Руденко Анна</h3>
@@ -709,64 +721,40 @@
               </div>
             </div>
           </li>
-          <li class="studio-about__card studio-about__card--fact studio-about__card--stat" data-about-card style="--about-i: 4">
-            <div class="studio-about__fact-body">
-              <p class="studio-about__fact-value">топ 10</p>
-              <p class="studio-about__fact-title">студий юга РФ</p>
-            </div>
-          </li>
-          <li class="studio-about__card studio-about__card--person" data-about-card data-about-person style="--about-i: 5">
+          <li class="studio-about__card studio-about__card--person" data-about-card data-about-person style="--about-i: 2">
             <div class="studio-about__photo">
               <img
                 src="./assets/images/team/sigidin-yaroslav.jpg"
                 alt="Сигидин Ярослав"
                 width="636"
                 height="1024"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
+                fetchpriority="low"
               />
+              <button
+                type="button"
+                class="studio-about__more"
+                aria-label="Подробнее о Сигидине Ярославе"
+                aria-expanded="false"
+                data-about-more
+              >
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M10 4.5v11M4.5 10h11" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+                </svg>
+              </button>
+              <div class="studio-about__bio" data-about-bio hidden>
+                <p>
+                  Тимлид с большим опытом в UI-дизайне, разработке мобильных приложений и проектировании
+                  платформ.
+                </p>
+              </div>
               <div class="studio-about__meta">
                 <div class="studio-about__title-row">
                   <h3 class="studio-about__name">Сигидин Ярослав</h3>
                   <p class="studio-about__role">Основатель, дизайн-лид</p>
                 </div>
               </div>
-            </div>
-          </li>
-          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 6">
-            <div class="studio-about__fact-body">
-              <p class="studio-about__fact-title">Выпустили более 2000 студентов</p>
-              <p class="studio-about__fact-text">Через практику и реальные задачи — от первых макетов до рабочих кейсов.</p>
-            </div>
-          </li>
-          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 7">
-            <div class="studio-about__fact-body">
-              <p class="studio-about__fact-title">Настроили полный цикл внутри студии</p>
-              <p class="studio-about__fact-text">Бриф, дизайн, разработка и согласования идут в одном контуре без разрывов.</p>
-            </div>
-          </li>
-          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 8">
-            <div class="studio-about__fact-body">
-              <p class="studio-about__fact-title">Дизайн и разработка — вместе</p>
-              <p class="studio-about__fact-text">Не передаём проект «на сторону»: решения принимаем и закрываем одной командой.</p>
-            </div>
-          </li>
-          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 9">
-            <div class="studio-about__fact-body">
-              <p class="studio-about__fact-title">Согласования без простоя</p>
-              <p class="studio-about__fact-text">Держим темп и прозрачные этапы, чтобы продукт не буксовал между правками.</p>
-            </div>
-          </li>
-          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 10">
-            <div class="studio-about__fact-body">
-              <p class="studio-about__fact-title">От идеи до запуска</p>
-              <p class="studio-about__fact-text">Ведем продукт целиком: от концепции и интерфейса до рабочей версии в проде.</p>
-            </div>
-          </li>
-          <li class="studio-about__card studio-about__card--fact" data-about-card style="--about-i: 11">
-            <div class="studio-about__fact-body">
-              <p class="studio-about__fact-title">Остаёмся после релиза</p>
-              <p class="studio-about__fact-text">Помогаем развивать продукт дальше — итерации, улучшения и поддержка.</p>
             </div>
           </li>
         </ul>
@@ -944,98 +932,19 @@
 
     <footer class="studio-footer" id="contacts">
       <div class="studio-footer__card">
-        <span class="studio-footer__tape studio-footer__tape--left" aria-hidden="true"></span>
-        <span class="studio-footer__tape studio-footer__tape--right" aria-hidden="true"></span>
-
         <div class="studio-footer__top">
-          <div class="studio-footer__columns">
-            <div class="studio-footer__column">
-              <h3>Навигация</h3>
-              <a href="#cases">Кейсы</a>
-              <a href="#services">Услуги</a>
-              <a href="#about">О нас</a>
-              <a href="#faq">FAQ</a>
-            </div>
-
-            <div class="studio-footer__column">
-              <h3>Контакты</h3>
-              <a data-contact-link="email" href="mailto:sigidingo@gmail.com" data-contact-email>sigidingo@gmail.com</a>
-              <a data-contact-link="phone" href="tel:+79619710515" data-contact-phone>+7 961 971-05-15</a>
-              <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram: <span data-contact-handle>@sigidingo</span></a>
-            </div>
-          </div>
+          <nav class="studio-footer__links" aria-label="Навигация и контакты">
+            <a href="#cases">Кейсы</a>
+            <a href="#services">Услуги</a>
+            <a href="#about">О нас</a>
+            <a href="#faq">FAQ</a>
+            <a data-contact-link="email" href="mailto:sigidingo@gmail.com" data-contact-email>sigidingo@gmail.com</a>
+            <a data-contact-link="phone" href="tel:+79619710515" data-contact-phone>+7 961 971-05-15</a>
+            <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram: <span data-contact-handle>@sigidingo</span></a>
+          </nav>
         </div>
 
         <div class="studio-footer__signature">
-          <div class="studio-footer__request">
-            <div class="hero-request" data-hero-request>
-              <button
-                class="hero-request__open"
-                type="button"
-                data-hero-request-toggle
-                aria-expanded="false"
-                aria-controls="heroRequestForm"
-              >
-                <span class="hero-request__open-label">Оставить заявку</span>
-                <span class="hero-request__open-chevron" aria-hidden="true">
-                  <svg viewBox="0 0 20 20" fill="none">
-                    <path
-                      d="M7.5 5 12.5 10l-5 5"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </span>
-              </button>
-              <form class="hero-request__form" id="heroRequestForm" autocomplete="on">
-                <button
-                  class="hero-request__collapse"
-                  type="button"
-                  data-hero-request-collapse
-                  aria-label="Свернуть форму"
-                >
-                  <span class="hero-request__collapse-chevron" aria-hidden="true">
-                    <svg viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M12.5 5 7.5 10l5 5"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </button>
-                <input type="text" name="name" placeholder="Имя" autocomplete="given-name" required />
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Номер телефона"
-                  autocomplete="tel"
-                  inputmode="tel"
-                />
-                <input
-                  type="text"
-                  name="contact"
-                  placeholder="WhatsApp, Telegram"
-                  autocomplete="off"
-                  required
-                />
-                <button class="hero-request__submit" type="submit">Отправить</button>
-                <label class="form-consent hero-request__consent">
-                  <input type="checkbox" name="privacy" value="1" required />
-                  <span
-                    >Соглашаюсь с
-                    <a href="./privacy.html" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>
-                    и обработкой персональных данных</span
-                  >
-                </label>
-              </form>
-            </div>
-          </div>
-
           <a class="studio-footer__wordmark" href="./" aria-label="Согласовано">
             <img
               class="brand-wordmark brand-wordmark--footer-signature"
@@ -1132,7 +1041,7 @@
           </label>
 
           <label class="form-consent">
-            <input type="checkbox" name="privacy" value="1" required />
+            <input type="checkbox" name="privacy" value="1" required checked />
             <span
               >Соглашаюсь с
               <a href="./privacy.html" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>
@@ -1189,7 +1098,7 @@
           </div>
 
           <label class="form-consent">
-            <input type="checkbox" name="privacy" value="1" required />
+            <input type="checkbox" name="privacy" value="1" required checked />
             <span
               >Соглашаюсь с
               <a href="./privacy.html" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>
@@ -1225,26 +1134,29 @@
 
     <script src="./assets/js/config.js?v=20260718-contacts-fallback" defer></script>
     <script src="./assets/js/a11y.js?v=20260718-a11y" defer></script>
-    <script src="./assets/js/studio-perf.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/studio-perf.js?v=20260718-perf-profiles" defer></script>
+    <script src="./assets/js/studio-scroll.js?v=20260718-perf-profiles" defer></script>
+    <script src="./assets/js/studio-motion-qa.js?v=20260718-motion-qa" defer></script>
+    <script src="./assets/js/user-cursor.js?v=20260718-perf-profiles" defer></script>
     <script src="./assets/js/analytics.js?v=20260718-truthful-leads" defer></script>
     <script src="./assets/js/seo.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/contact.js?v=20260718-a11y" defer></script>
-    <script src="./assets/js/video-orb.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/video-orb.js?v=20260718-perf-profiles" defer></script>
     <script src="./assets/js/promo-strip.js?v=20260718-perf-ideal" defer></script>
-    <script src="./assets/js/header-widgets.js?v=20260718-perf-ideal" defer></script>
-    <script src="./assets/js/site-motion.js?v=20260718-perf-ideal" defer></script>
-    <script src="./assets/js/about-motion.js?v=20260718-perf-ideal" defer></script>
-    <script src="./assets/js/header.js?v=20260718-a11y" defer></script>
+    <script src="./assets/js/header-widgets.js?v=20260718-perf-profiles" defer></script>
+    <script src="./assets/js/site-motion.js?v=20260719-cases-9" defer></script>
+    <script src="./assets/js/about-motion.js?v=20260719-about-deal" defer></script>
+    <script src="./assets/js/header.js?v=20260718-perf-profiles" defer></script>
     <script src="./assets/js/hero-request.js?v=20260713-hero-request-collapse" defer></script>
     <script src="./assets/js/hero.js?v=20260718-a11y" defer></script>
-    <script src="./assets/js/hero-scroll.js?v=20260718-perf-ideal" defer></script>
-    <script src="./assets/js/hero-pong.js?v=20260718-perf-ideal" defer></script>
-    <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
-    <script src="./assets/js/services.js?v=20260718-services-icons-v2" defer></script>
-    <script src="./assets/js/services-carousel.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/hero-scroll.js?v=20260718-perf-profiles" defer></script>
+    <script src="./assets/js/hero-pong.js?v=20260718-motion-qa" defer></script>
+    <script src="./assets/js/heading-reveal.js?v=20260719-scroll-fx" defer></script>
+    <script src="./assets/js/services.js?v=20260719-price-from" defer></script>
+    <script src="./assets/js/services-carousel.js?v=20260719-services-center" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260718-a11y" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260717-cases-perf" defer></script>
-    <script src="./assets/js/cases.js?v=20260718-a11y" defer></script>
+    <script src="./assets/js/cases.js?v=20260719-cases-9" defer></script>
     <script src="./assets/js/faq.js?v=20260716-faq-button-accordion" defer></script>
     <script>
       (function () {
@@ -1305,8 +1217,10 @@
           if (!stack) return;
 
           const clip = stack.querySelector("[data-cases-clip]");
+          const firstBeyond = grid?.querySelector(".project-card--beyond-limit");
+          const shouldCollapse = Boolean(collapsed && firstBeyond);
 
-          if (!collapsed) {
+          if (!shouldCollapse) {
             stack.classList.remove("is-collapsed");
             if (clip) clip.style.maxHeight = "";
             return;
@@ -1317,10 +1231,10 @@
           const visibleCards = [...grid.querySelectorAll(".project-card")].filter(
             card => !card.hidden && !card.classList.contains("project-card--beyond-limit")
           );
-          const firstBeyond = grid.querySelector(".project-card--beyond-limit");
           const lastVisible = visibleCards[visibleCards.length - 1];
 
-          if (!clip || !lastVisible || !firstBeyond) {
+          if (!clip || !lastVisible) {
+            stack.classList.remove("is-collapsed");
             if (clip) clip.style.maxHeight = "";
             return;
           }
@@ -1340,7 +1254,8 @@
           const tabsRoot = document.getElementById("projectTabs");
           const moreWrap = document.getElementById("studioCasesMore");
           const moreButton = document.getElementById("studioCasesMoreButton");
-          const visibleLimit = 9;
+          const getVisibleLimit = () =>
+            window.matchMedia("(min-width: 901px)").matches ? 9 : 6;
           if (!grid || grid.dataset.initDone === "true") return;
           if (grid.dataset.initInProgress === "true") {
             window.setTimeout(renderFallbackCases, 500);
@@ -1406,6 +1321,7 @@
               const applyFilter = (filter, { animate = false } = {}) => {
                 activeFilter = filter;
                 let visibleCount = 0;
+                const visibleLimit = getVisibleLimit();
 
                 grid.querySelectorAll(".project-card").forEach(card => {
                   const category = card.dataset.category || "";
@@ -1422,7 +1338,7 @@
 
                   if (!matches) {
                     card.hidden = true;
-                    card.classList.remove("project-card--beyond-limit");
+                    card.classList.remove("project-card--beyond-limit", "project-card--peek");
                     if (window.STUDIO_A11Y?.setInert) window.STUDIO_A11Y.setInert(card, false);
                     card.removeAttribute("aria-hidden");
                     return;
@@ -1430,8 +1346,11 @@
 
                   visibleCount += 1;
                   const isBeyond = !expanded && visibleCount > visibleLimit;
+                  const isPeek = isBeyond && visibleCount === visibleLimit + 1;
                   card.hidden = false;
                   card.classList.toggle("project-card--beyond-limit", isBeyond);
+                  card.classList.toggle("project-card--peek", isPeek);
+                  if (!isBeyond) card.classList.remove("project-card--peek");
                   if (window.STUDIO_A11Y?.setInert) {
                     window.STUDIO_A11Y.setInert(card, isBeyond);
                   } else if (isBeyond) {
@@ -1442,6 +1361,7 @@
                 });
 
                 const shouldShowMore = visibleCount > visibleLimit;
+                if (!shouldShowMore) expanded = false;
                 if (moreWrap) moreWrap.hidden = !shouldShowMore;
                 if (moreButton) {
                   const label = moreButton.querySelector("[data-cases-more-label]");
@@ -1451,7 +1371,7 @@
                 }
                 window.requestAnimationFrame(() => {
                   window.requestAnimationFrame(() => {
-                    updateFallbackStackClip(grid, stack, !expanded);
+                    updateFallbackStackClip(grid, stack, !expanded && shouldShowMore);
                   });
                 });
 

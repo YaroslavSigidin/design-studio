@@ -263,11 +263,16 @@ const initHeroPong = () => {
     { passive: true }
   );
 
-  const onScroll = perf.rafThrottle(() => {
+  const onScrollRefresh = () => {
     if (!state.running) return;
     refreshGeometry();
-  });
-  window.addEventListener("scroll", onScroll, { passive: true });
+  };
+
+  if (window.STUDIO_SCROLL?.subscribe) {
+    window.STUDIO_SCROLL.subscribe(onScrollRefresh);
+  } else {
+    window.addEventListener("scroll", perf.rafThrottle(onScrollRefresh), { passive: true });
+  }
 
   refreshGeometry();
   updatePaddles();

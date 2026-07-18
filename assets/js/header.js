@@ -1,17 +1,34 @@
 const initHeaderScroll = header => {
   const threshold = 32;
-  let ticking = false;
+  let lastScrolled = null;
 
-  const update = () => {
-    header.classList.toggle("is-scrolled", window.scrollY > threshold);
-    ticking = false;
+  const update = ({ y } = {}) => {
+    const scrollY = typeof y === "number" ? y : window.scrollY;
+    const scrolled = scrollY > threshold;
+    if (scrolled === lastScrolled) return;
+    lastScrolled = scrolled;
+    header.classList.toggle("is-scrolled", scrolled);
   };
 
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(update);
-  };
+  if (window.STUDIO_SCROLL?.subscribe) {
+    window.STUDIO_SCROLL.subscribe(update);
+    return;
+  }
+
+  const onScroll =
+    typeof window.STUDIO_PERF?.rafThrottle === "function"
+      ? window.STUDIO_PERF.rafThrottle(() => update())
+      : (() => {
+          let ticking = false;
+          return () => {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(() => {
+              ticking = false;
+              update();
+            });
+          };
+        })();
 
   update();
   window.addEventListener("scroll", onScroll, { passive: true });

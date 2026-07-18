@@ -6,19 +6,34 @@
   };
 
   const readSaveData = () => navigator.connection?.saveData === true;
-  const readLowCore = () =>
+  const readCores = () =>
     Number.isFinite(navigator.hardwareConcurrency) && navigator.hardwareConcurrency > 0
-      ? navigator.hardwareConcurrency <= 4
-      : false;
+      ? navigator.hardwareConcurrency
+      : null;
+
+  const resolveProfile = () => {
+    const cores = readCores();
+    if (mq.reduced.matches || readSaveData() || (cores !== null && cores <= 2)) {
+      return "lite";
+    }
+    if (mq.coarse.matches || mq.narrow.matches || (cores !== null && cores <= 4)) {
+      return "balanced";
+    }
+    return "full";
+  };
+
+  let profile = resolveProfile();
 
   const syncHtmlFlags = () => {
+    profile = resolveProfile();
     const root = document.documentElement;
-    const lite =
-      mq.coarse.matches || mq.narrow.matches || mq.reduced.matches || readSaveData() || readLowCore();
-    root.classList.toggle("studio-perf-lite", lite);
+    root.classList.toggle("studio-perf-lite", profile === "lite");
+    root.classList.toggle("studio-perf-balanced", profile === "balanced");
+    root.classList.toggle("studio-perf-full", profile === "full");
     root.classList.toggle("studio-perf-coarse", mq.coarse.matches);
     root.classList.toggle("studio-perf-narrow", mq.narrow.matches);
     root.classList.toggle("studio-perf-reduced", mq.reduced.matches);
+    root.dataset.studioPerf = profile;
   };
 
   const rafThrottle = fn => {
@@ -65,6 +80,18 @@
   };
 
   const perf = {
+    get profile() {
+      return profile;
+    },
+    get isFull() {
+      return profile === "full";
+    },
+    get isBalanced() {
+      return profile === "balanced";
+    },
+    get isLite() {
+      return profile === "lite";
+    },
     get isCoarse() {
       return mq.coarse.matches;
     },
@@ -78,19 +105,16 @@
       return readSaveData();
     },
     get lowCore() {
-      return readLowCore();
+      const cores = readCores();
+      return cores !== null && cores <= 4;
     },
-    get isLite() {
-      return (
-        this.isCoarse ||
-        this.isNarrow ||
-        this.prefersReducedMotion ||
-        this.saveData ||
-        this.lowCore
-      );
-    },
+    /** Parallax, arc 3D, cursor, pong — desktop full only */
     get canAnimateHeavy() {
-      return !this.isLite && !document.hidden;
+      return profile === "full" && !document.hidden;
+    },
+    /** Reveals, tab switches, snap carousels — full + balanced */
+    get canAnimateMid() {
+      return profile !== "lite" && !document.hidden;
     },
     rafThrottle,
     pauseWhenHidden,

@@ -22,6 +22,10 @@ const initVideoOrb = () => {
     </svg>
   `;
 
+  let userPaused = false;
+  let inView = true;
+  let appeared = false;
+
   const updateSoundIcon = () => {
     soundButton.innerHTML = video.muted ? SOUND_OFF_ICON : SOUND_ON_ICON;
     soundButton.setAttribute("aria-label", video.muted ? "Включить звук" : "Выключить звук");
@@ -38,17 +42,36 @@ const initVideoOrb = () => {
     }
   };
 
+  const canAutoPlay = () =>
+    appeared &&
+    !userPaused &&
+    inView &&
+    !document.hidden &&
+    !orb.classList.contains("is-hidden") &&
+    !orb.classList.contains("is-pending") &&
+    !isMobileViewport();
+
+  const syncPlayback = () => {
+    if (canAutoPlay()) {
+      safePlay();
+      setPausedState(false);
+      return;
+    }
+    video.pause();
+    if (userPaused) setPausedState(true);
+  };
+
+  const isMobileViewport = () =>
+    Boolean(window.STUDIO_PERF && !window.STUDIO_PERF.isFull) ||
+    window.matchMedia("(max-width: 1100px)").matches ||
+    window.matchMedia("(pointer: coarse)").matches;
+
   video.muted = true;
   video.playsInline = true;
   video.pause();
   updateSoundIcon();
   setPausedState(false);
   orb.classList.add("is-pending");
-
-  const isMobileViewport = () =>
-    Boolean(window.STUDIO_PERF?.isLite) ||
-    window.matchMedia("(max-width: 1100px)").matches ||
-    window.matchMedia("(pointer: coarse)").matches;
 
   window.setTimeout(() => {
     if (orb.classList.contains("is-hidden")) return;
@@ -59,24 +82,29 @@ const initVideoOrb = () => {
       return;
     }
     orb.classList.remove("is-pending");
-    safePlay();
-    setPausedState(false);
+    appeared = true;
+    syncPlayback();
   }, appearDelayMs);
 
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      video.pause();
-      return;
+  document.addEventListener("visibilitychange", syncPlayback);
+
+  window.STUDIO_PERF?.observeVisibility?.(orb, {
+    threshold: 0.05,
+    rootMargin: "80px 0px",
+    enter: () => {
+      inView = true;
+      syncPlayback();
+    },
+    leave: () => {
+      inView = false;
+      syncPlayback();
     }
-    if (orb.classList.contains("is-hidden") || orb.classList.contains("is-pending") || isMobileViewport()) {
-      return;
-    }
-    safePlay();
   });
 
   closeButton.addEventListener("click", event => {
     event.preventDefault();
     orb.classList.add("is-hidden");
+    userPaused = false;
     video.pause();
   });
 
@@ -86,19 +114,20 @@ const initVideoOrb = () => {
     video.muted = !video.muted;
     updateSoundIcon();
     if (!video.paused) return;
-    safePlay();
-    setPausedState(false);
+    userPaused = false;
+    syncPlayback();
   });
 
   toggleButton.addEventListener("click", event => {
     event.preventDefault();
     if (orb.classList.contains("is-pending")) return;
     if (video.paused) {
-      safePlay();
-      setPausedState(false);
+      userPaused = false;
+      syncPlayback();
       return;
     }
 
+    userPaused = true;
     video.pause();
     setPausedState(true);
   });

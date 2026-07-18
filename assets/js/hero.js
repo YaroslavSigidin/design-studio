@@ -432,6 +432,8 @@ const initHeroSearch = () => {
       }
       window.setTimeout(() => {
         finalForm.reset();
+        const privacyReset = finalForm.querySelector('input[name="privacy"]');
+        if (privacyReset instanceof HTMLInputElement) privacyReset.checked = true;
         closeFinalModal();
         activeComposer.resetForm();
         activeComposer = null;

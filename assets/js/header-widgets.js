@@ -17,7 +17,6 @@ const initHeaderWidgets = () => {
   const revealStaggerMs = 24;
   let lastScrollY = window.scrollY;
   let isHidden = false;
-  let ticking = false;
   let pendingTimers = [];
 
   const clearPendingTimers = () => {
@@ -43,8 +42,8 @@ const initHeaderWidgets = () => {
     });
   };
 
-  const update = () => {
-    const currentY = window.scrollY;
+  const update = ({ y } = {}) => {
+    const currentY = typeof y === "number" ? y : window.scrollY;
     const delta = currentY - lastScrollY;
 
     if (currentY <= revealOffset) {
@@ -56,18 +55,30 @@ const initHeaderWidgets = () => {
     }
 
     lastScrollY = currentY;
-    ticking = false;
   };
 
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(update);
-  };
+  if (window.STUDIO_SCROLL?.subscribe) {
+    window.STUDIO_SCROLL.subscribe(update);
+  } else {
+    const onScroll =
+      typeof window.STUDIO_PERF?.rafThrottle === "function"
+        ? window.STUDIO_PERF.rafThrottle(() => update())
+        : (() => {
+            let ticking = false;
+            return () => {
+              if (ticking) return;
+              ticking = true;
+              window.requestAnimationFrame(() => {
+                ticking = false;
+                update();
+              });
+            };
+          })();
 
-  update();
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+  }
 
   document.addEventListener("studio:promo-hidden", () => {
     widgets

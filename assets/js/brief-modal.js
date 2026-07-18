@@ -331,6 +331,8 @@ const initBriefModal = () => {
       window.setTimeout(() => {
         close();
         form.reset();
+        const privacyReset = form.querySelector('input[name="privacy"]');
+        if (privacyReset instanceof HTMLInputElement) privacyReset.checked = true;
         delete form.dataset.leadSource;
         if (modalTitle) modalTitle.textContent = defaultModalTitle;
         if (budgetRange) budgetRange.value = "150";

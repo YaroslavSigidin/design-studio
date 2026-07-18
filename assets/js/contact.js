@@ -588,6 +588,8 @@ const initStudioContacts = () => {
 
       if (result.confirmed && result.ok) {
         form.reset();
+        const privacyReset = form.querySelector('input[name="privacy"]');
+        if (privacyReset instanceof HTMLInputElement) privacyReset.checked = true;
         setFormStatus(
           form,
           "Заявка отправлена. Мы изучим задачу и свяжемся с вами.",

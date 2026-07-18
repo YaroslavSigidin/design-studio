@@ -13,7 +13,7 @@ const initHeroScroll = () => {
 
   const perf = window.STUDIO_PERF;
   if (
-    perf?.isLite ||
+    (perf && !perf.isFull) ||
     window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
     navigator.connection?.saveData === true ||
     window.matchMedia("(pointer: coarse)").matches ||
@@ -30,10 +30,13 @@ const initHeroScroll = () => {
     ...(stats ? [{ node: stats, lift: 22, scale: 0.03, fade: 0.78 }] : [])
   ];
 
-  let ticking = false;
   let paused = false;
+  let lastProgress = -1;
+  let enabled = true;
+  let unsubscribeScroll = null;
 
   const clearLayerStyles = () => {
+    lastProgress = -1;
     layers.forEach(layer => {
       layer.node.style.removeProperty("--hero-scroll-opacity");
       layer.node.style.removeProperty("--hero-scroll-transform");
@@ -50,15 +53,18 @@ const initHeroScroll = () => {
     );
   };
 
-  const update = () => {
-    ticking = false;
-    if (paused || isTypingInHero()) {
+  const update = ({ y } = {}) => {
+    if (!enabled || paused || isTypingInHero()) {
       clearLayerStyles();
       return;
     }
 
+    const scrollY = typeof y === "number" ? y : window.scrollY;
     const range = Math.max(heroPage.offsetHeight * 0.62, window.innerHeight * 0.48, 340);
-    const progress = easeOutQuint(clamp01(window.scrollY / range));
+    const progress = easeOutQuint(clamp01(scrollY / range));
+
+    if (Math.abs(progress - lastProgress) < 0.0008) return;
+    lastProgress = progress;
 
     layers.forEach(layer => {
       const opacity = 1 - progress * layer.fade;
@@ -73,12 +79,6 @@ const initHeroScroll = () => {
     });
   };
 
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(update);
-  };
-
   const onFocusIn = event => {
     if (!brief.contains(event.target)) return;
     paused = true;
@@ -87,19 +87,57 @@ const initHeroScroll = () => {
 
   const onFocusOut = event => {
     if (!brief.contains(event.target)) return;
-    // Defer: focus may move between fields inside the composer.
     window.requestAnimationFrame(() => {
       if (isTypingInHero()) return;
       paused = false;
-      onScroll();
+      update();
     });
   };
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
   brief.addEventListener("focusin", onFocusIn);
   brief.addEventListener("focusout", onFocusOut);
+
+  if (window.STUDIO_SCROLL?.subscribe) {
+    unsubscribeScroll = window.STUDIO_SCROLL.subscribe(update);
+  } else {
+    const onScroll =
+      typeof perf?.rafThrottle === "function"
+        ? perf.rafThrottle(() => update())
+        : (() => {
+            let ticking = false;
+            return () => {
+              if (ticking) return;
+              ticking = true;
+              window.requestAnimationFrame(() => {
+                ticking = false;
+                update();
+              });
+            };
+          })();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+  }
+
+  const stopVisibility = perf?.pauseWhenHidden?.({
+    start: () => {
+      enabled = true;
+      update();
+    },
+    stop: () => {
+      enabled = false;
+    }
+  });
+
   update();
+
+  window.addEventListener(
+    "pagehide",
+    () => {
+      stopVisibility?.();
+      unsubscribeScroll?.();
+    },
+    { once: true }
+  );
 };
 
 if (document.readyState === "loading") {

@@ -23,13 +23,19 @@
     <meta name="twitter:card" content="summary_large_image" />
     <script>
       (() => {
-        const lite =
-          window.matchMedia("(pointer: coarse)").matches ||
-          window.matchMedia("(max-width: 1100px)").matches ||
-          window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-          Boolean(navigator.connection && navigator.connection.saveData) ||
-          (Number.isFinite(navigator.hardwareConcurrency) && navigator.hardwareConcurrency <= 4);
-        if (lite) document.documentElement.classList.add("studio-perf-lite");
+        const coarse = window.matchMedia("(pointer: coarse)").matches;
+        const narrow = window.matchMedia("(max-width: 1100px)").matches;
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+        const cores = Number.isFinite(navigator.hardwareConcurrency)
+          ? navigator.hardwareConcurrency
+          : null;
+        const root = document.documentElement;
+        let profile = "full";
+        if (reduced || saveData || (cores !== null && cores <= 2)) profile = "lite";
+        else if (coarse || narrow || (cores !== null && cores <= 4)) profile = "balanced";
+        root.classList.add("studio-perf-" + profile);
+        root.dataset.studioPerf = profile;
       })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -38,8 +44,9 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-perf-ideal" />
-    <link rel="stylesheet" href="./assets/css/case.css?v=20260718-no-caps" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260719-price-from" />
+    <link rel="stylesheet" href="./assets/css/case.css?v=20260719-case-air" />
+    <link rel="stylesheet" href="./assets/css/user-cursor.css?v=20260718-user-cursor" />
   </head>
   <body class="studio-case-page" data-seo-page="case">
     <header class="hero-nav" data-floating-header>
@@ -185,7 +192,7 @@
           </label>
 
           <label class="form-consent">
-            <input type="checkbox" name="privacy" value="1" required />
+            <input type="checkbox" name="privacy" value="1" required checked />
             <span
               >Соглашаюсь с
               <a href="./privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>
@@ -206,17 +213,19 @@
     </div>
 
     <script src="./assets/js/config.js?v=20260718-roadmap" defer></script>
-    <script src="./assets/js/studio-perf.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/studio-perf.js?v=20260718-perf-profiles" defer></script>
+    <script src="./assets/js/studio-scroll.js?v=20260718-perf-profiles" defer></script>
+    <script src="./assets/js/user-cursor.js?v=20260718-perf-profiles" defer></script>
     <script src="./assets/js/analytics.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/seo.js?v=20260718-roadmap" defer></script>
-    <script src="./assets/js/studio-footer.js?v=20260718-form-consent" defer></script>
-    <script src="./assets/js/services.js?v=20260718-revert-prices" defer></script>
+    <script src="./assets/js/studio-footer.js?v=20260719-no-footer-tape" defer></script>
+    <script src="./assets/js/services.js?v=20260718-strip-icons" defer></script>
     <script src="./assets/js/contact.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/hero-request.js?v=20260715-case-footer" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260718-roadmap" defer></script>
-    <script src="./assets/js/site-motion.js?v=20260718-perf-ideal" defer></script>
-    <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
+    <script src="./assets/js/site-motion.js?v=20260719-cases-9" defer></script>
+    <script src="./assets/js/header.js?v=20260718-perf-profiles" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260713-escape-html-shared" defer></script>
-    <script src="./assets/js/case-page.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/case-page.js?v=20260719-case-air" defer></script>
   </body>
 </html>

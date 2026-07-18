@@ -1,11 +1,17 @@
 const initHeadingReveal = () => {
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const saveData = navigator.connection?.saveData === true;
-  const lowEndCpu = typeof navigator.hardwareConcurrency === "number" && navigator.hardwareConcurrency <= 4;
-  const headings = [...document.querySelectorAll("[data-reveal-heading]")];
+  const perf = window.STUDIO_PERF;
+  const hardDisable =
+    Boolean(perf?.isLite) ||
+    Boolean(perf?.prefersReducedMotion) ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Hero stays static — only section titles below the fold
+  const headings = [...document.querySelectorAll("[data-reveal-heading]")].filter(
+    node => !node.closest(".hero-page")
+  );
   if (!headings.length) return;
 
-  if (!("IntersectionObserver" in window) || reducedMotion || saveData || lowEndCpu) {
+  if (!("IntersectionObserver" in window) || hardDisable) {
     headings.forEach(node => node.classList.add("is-visible"));
     return;
   }
@@ -18,11 +24,11 @@ const initHeadingReveal = () => {
         observer.unobserve(entry.target);
       });
     },
-    { threshold: 0.22, rootMargin: "0px 0px -7% 0px" }
+    { threshold: 0.18, rootMargin: "0px 0px -8% 0px" }
   );
 
-  headings.forEach((node, index) => {
-    node.style.setProperty("--reveal-delay", `${Math.min(index * 70, 280)}ms`);
+  headings.forEach(node => {
+    node.style.setProperty("--reveal-delay", "0ms");
     observer.observe(node);
   });
 };

@@ -427,6 +427,7 @@ const initCasePage = async () => {
     revealCaseMain(root);
     mountCaseFooter();
     window.STUDIO_MEDIA?.initImageSkeletons(root);
+    window.dispatchEvent(new CustomEvent("studio:case-rendered"));
   } catch (err) {
     await dismissCaseLoading(loading);
     root.innerHTML = `

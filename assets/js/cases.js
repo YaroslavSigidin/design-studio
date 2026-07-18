@@ -90,7 +90,13 @@ const pickProjects = manifest => {
 };
 
 const SKELETON_CARDS_COUNT = 6;
-const CASES_VISIBLE_LIMIT = 9;
+const CASES_VISIBLE_LIMIT_DESKTOP = 9;
+const CASES_VISIBLE_LIMIT_MOBILE = 6;
+
+const getCasesVisibleLimit = () =>
+  window.matchMedia("(min-width: 901px)").matches
+    ? CASES_VISIBLE_LIMIT_DESKTOP
+    : CASES_VISIBLE_LIMIT_MOBILE;
 
 const renderMediaSkeleton = attrs => window.STUDIO_MEDIA?.renderSkeletonImage(attrs) || "";
 
@@ -149,7 +155,8 @@ const renderProjectCard = (project, cfg, index = 0) => {
   const image = normalizeAssetUrl(project.image || project.cover || "", cfg);
   const isPlaceholder = Boolean(project.isPlaceholder);
   const filterTags = [...(project.tags || []), ...(project.study?.tags || [])].join(" ").toLowerCase();
-  const deferImage = !isPlaceholder && index >= CASES_VISIBLE_LIMIT;
+  // Never leave cards without src — deferred data-src caused empty previews
+  // when collapse/clip failed or "beyond" cards peeked into view.
   const imageMarkup = isPlaceholder
     ? `<div class="project-placeholder-media" aria-hidden="true"></div>`
     : renderMediaSkeleton({
@@ -158,8 +165,9 @@ const renderProjectCard = (project, cfg, index = 0) => {
         width: "1200",
         height: "630",
         className: "media-skeleton--cover",
-        defer: deferImage,
-        eager: index < 3
+        defer: false,
+        loading: "lazy",
+        eager: index < 2
       });
 
   const linkMarkup = caseHref
@@ -205,8 +213,10 @@ const updateCasesStackClip = (grid, stack, collapsed) => {
   if (!stack) return;
 
   const clip = qs("[data-cases-clip]", stack) || qs(".studio-cases-clip", stack);
+  const firstBeyond = qs(".project-card--beyond-limit", grid);
+  const shouldCollapse = Boolean(collapsed && firstBeyond);
 
-  if (!collapsed) {
+  if (!shouldCollapse) {
     stack.classList.remove("is-collapsed");
     if (clip) clip.style.maxHeight = "";
     return;
@@ -217,10 +227,10 @@ const updateCasesStackClip = (grid, stack, collapsed) => {
   const visibleCards = [...qsa(".project-card", grid)].filter(
     card => !card.hidden && !card.classList.contains("project-card--beyond-limit")
   );
-  const firstBeyond = qs(".project-card--beyond-limit", grid);
   const lastVisible = visibleCards[visibleCards.length - 1];
 
-  if (!clip || !lastVisible || !firstBeyond) {
+  if (!clip || !lastVisible) {
+    stack.classList.remove("is-collapsed");
     if (clip) clip.style.maxHeight = "";
     return;
   }
@@ -281,7 +291,10 @@ const hydrateVisibleCaseImages = grid => {
   const visibleCards = qsa(".project-card", grid).filter(
     card => !card.hidden && !card.classList.contains("project-card--beyond-limit")
   );
-  return hydrateCaseCardImages(visibleCards);
+  // Peek card under the veil also needs a real preview
+  const peekCard = qs(".project-card--beyond-limit.project-card--peek", grid);
+  const roots = peekCard ? [...visibleCards, peekCard] : visibleCards;
+  return hydrateCaseCardImages(roots);
 };
 
 const hydrateExpandedCaseImages = (grid, revealIds = []) => {
@@ -363,11 +376,20 @@ const updateTabsIndicator = (tabsRoot, activeTab) => {
 
   const tabsRect = tabsRoot.getBoundingClientRect();
   const tabRect = activeTab.getBoundingClientRect();
-  const x = tabRect.left - tabsRect.left + tabsRoot.scrollLeft;
-  const y = tabRect.top - tabsRect.top + tabsRoot.scrollTop;
+  const x = Math.round((tabRect.left - tabsRect.left + tabsRoot.scrollLeft) * 100) / 100;
+  const y = Math.round((tabRect.top - tabsRect.top + tabsRoot.scrollTop) * 100) / 100;
+  const width = Math.round(tabRect.width * 100) / 100;
+  const height = Math.round(tabRect.height * 100) / 100;
 
-  indicator.style.width = `${tabRect.width}px`;
-  indicator.style.height = `${tabRect.height}px`;
+  const nextKey = `${width}|${height}|${x}|${y}`;
+  if (indicator.dataset.posKey === nextKey) {
+    tabsRoot.classList.add("is-ready");
+    return;
+  }
+  indicator.dataset.posKey = nextKey;
+
+  indicator.style.width = `${width}px`;
+  indicator.style.height = `${height}px`;
   indicator.style.transform = `translate3d(${x}px, ${y}px, 0)`;
   tabsRoot.classList.add("is-ready");
 };
@@ -375,18 +397,32 @@ const updateTabsIndicator = (tabsRoot, activeTab) => {
 const initTabsIndicator = tabsRoot => {
   if (!tabsRoot || tabsRoot.dataset.indicatorBound === "true") return;
 
-  const sync = () => {
+  const syncRaw = () => {
     const activeTab = qs(".tab-button.active", tabsRoot) || qs(".tab-button", tabsRoot);
     updateTabsIndicator(tabsRoot, activeTab);
   };
 
+  const sync =
+    typeof window.STUDIO_PERF?.rafThrottle === "function"
+      ? window.STUDIO_PERF.rafThrottle(syncRaw)
+      : (() => {
+          let frame = 0;
+          return () => {
+            if (frame) return;
+            frame = window.requestAnimationFrame(() => {
+              frame = 0;
+              syncRaw();
+            });
+          };
+        })();
+
   window.addEventListener("resize", sync, { passive: true });
   window.addEventListener("load", sync, { passive: true });
   tabsRoot.addEventListener("scroll", sync, { passive: true });
-  window.setTimeout(sync, 80);
-  window.setTimeout(sync, 320);
+  window.setTimeout(syncRaw, 80);
+  window.setTimeout(syncRaw, 320);
   if (document.fonts?.ready) {
-    document.fonts.ready.then(sync).catch(() => {});
+    document.fonts.ready.then(syncRaw).catch(() => {});
   }
   tabsRoot.dataset.indicatorBound = "true";
 };
@@ -402,6 +438,14 @@ const setActiveTab = (tabsRoot, tab) => {
   updateTabsIndicator(tabsRoot, tab);
 };
 
+const clearFilterReveal = (grid, cards) => {
+  cards.forEach(card => {
+    card.classList.remove("is-filter-reveal");
+    card.style.removeProperty("--case-reveal-delay");
+  });
+  grid.removeAttribute("data-switch-dir");
+};
+
 const revealFilteredCards = grid => {
   if (!grid) return;
 
@@ -413,20 +457,33 @@ const revealFilteredCards = grid => {
     .filter(card => !card.hidden && !card.classList.contains("project-card--beyond-limit"))
     .slice(0, 6);
 
+  if (!visibleCards.length) {
+    grid.removeAttribute("data-switch-dir");
+    return;
+  }
+
+  let pending = visibleCards.length;
+
   visibleCards.forEach((card, index) => {
     card.style.setProperty(
       "--case-reveal-delay",
       `${Math.min(index * TAB_SWITCH_STAGGER_MS, TAB_SWITCH_STAGGER_CAP_MS)}ms`
     );
     card.classList.add("is-filter-reveal");
+
+    const onEnd = event => {
+      if (event.target !== card) return;
+      if (event.animationName && !String(event.animationName).includes("caseFilter")) return;
+      card.removeEventListener("animationend", onEnd);
+      pending -= 1;
+      if (pending <= 0) clearFilterReveal(grid, visibleCards);
+    };
+    card.addEventListener("animationend", onEnd);
   });
 
+  // Safety net if animationend is skipped (display:none mid-flight, etc.)
   window.setTimeout(() => {
-    qsa(".project-card.is-filter-reveal", grid).forEach(card => {
-      card.classList.remove("is-filter-reveal");
-      card.style.removeProperty("--case-reveal-delay");
-    });
-    grid.removeAttribute("data-switch-dir");
+    if (pending > 0) clearFilterReveal(grid, visibleCards);
   }, TAB_SWITCH_IN_MS + TAB_SWITCH_STAGGER_CAP_MS + 80);
 };
 
@@ -444,13 +501,13 @@ const initCasesFilter = (grid, tabsRoot) => {
 
   const applyFilter = ({ animate = false, stackAnimate = false, revealIds = [] } = {}) => {
     let visibleCount = 0;
-    const limit = CASES_VISIBLE_LIMIT;
+    const limit = getCasesVisibleLimit();
 
     qsa(".project-card", grid).forEach(card => {
       const matches = matchesProjectFilter(card, activeFilter);
       if (!matches) {
         card.hidden = true;
-        card.classList.remove("project-card--beyond-limit");
+        card.classList.remove("project-card--beyond-limit", "project-card--peek");
         syncCardInert(card, false);
         card.removeAttribute("aria-hidden");
         return;
@@ -458,19 +515,24 @@ const initCasesFilter = (grid, tabsRoot) => {
 
       visibleCount += 1;
       const isBeyond = !expanded && visibleCount > limit;
+      const isPeek = isBeyond && visibleCount === limit + 1;
       card.hidden = false;
       card.classList.toggle("project-card--beyond-limit", isBeyond);
+      card.classList.toggle("project-card--peek", isPeek);
+      if (!isBeyond) card.classList.remove("project-card--peek");
       syncCardInert(card, isBeyond);
       if (!isBeyond) card.removeAttribute("aria-hidden");
     });
 
     const hasExtra = visibleCount > limit;
+    if (!hasExtra) expanded = false;
     updateMoreButtonState(moreButton, moreWrap, expanded, hasExtra);
-    hydrateVisibleCaseImages(grid);
 
-    if (stackAnimate) {
+    const collapseStack = !expanded && hasExtra;
+
+    if (stackAnimate && hasExtra) {
       stack?.classList.toggle("is-expanding", expanded);
-      animateCasesStackClip(grid, stack, !expanded, () => {
+      animateCasesStackClip(grid, stack, collapseStack, () => {
         stack?.classList.remove("is-expanding");
         if (expanded) {
           revealExpandedCases(grid, revealIds);
@@ -478,8 +540,12 @@ const initCasesFilter = (grid, tabsRoot) => {
         }
       });
     } else {
-      scheduleCasesStackClip(grid, stack, !expanded);
+      scheduleCasesStackClip(grid, stack, collapseStack);
     }
+
+    hydrateVisibleCaseImages(grid).finally(() => {
+      scheduleCasesStackClip(grid, stack, collapseStack);
+    });
 
     if (animate && !stackAnimate) revealFilteredCards(grid);
   };
@@ -594,7 +660,7 @@ const renderCasesGrid = (grid, projects, cfg) =>
       grid.innerHTML = items.map((project, index) => renderProjectCard(project, cfg, index)).join("");
       bindCardNavigation(grid);
       window.STUDIO_MEDIA?.initImageSkeletons(grid);
-      window.dispatchEvent(new CustomEvent("studio:cases-rendered"));
+      // cases-rendered fires after filter/collapse is applied (see initCases)
       resolve();
     }, 120);
   });
@@ -619,6 +685,7 @@ const initCases = async () => {
     await renderCasesGrid(grid, projects, cfg);
     initCasesFilter(grid, tabsRoot);
     grid.dataset.initDone = "true";
+    window.dispatchEvent(new CustomEvent("studio:cases-rendered"));
 
     if (statusEl) {
       statusEl.hidden = true;

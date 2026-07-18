@@ -17,10 +17,26 @@ const initServicesCarousel = () => {
   const getCards = () => [...track.querySelectorAll("[data-service-card]")];
   const getOriginalCards = () => getCards().filter(card => !card.hasAttribute("data-service-clone"));
 
+  // Prefer "Одностраничный сайт"; else middle card so the arc starts evenly
+  const getDefaultServiceIndex = (cards = getOriginalCards()) => {
+    const count = cards.length;
+    if (!count) return 0;
+    const preferred =
+      window.STUDIO_DEFAULT_SERVICE_TITLE ||
+      window.DEFAULT_SERVICE_TITLE ||
+      "Одностраничный сайт";
+    const byTitle = cards.findIndex(card => {
+      const title = card.querySelector(".studio-service-title")?.textContent?.trim() || "";
+      return title.toLowerCase() === String(preferred).toLowerCase();
+    });
+    if (byTitle >= 0) return byTitle;
+    return Math.floor((count - 1) / 2);
+  };
+
   const isArcMode = () => {
     if (!arcQuery.matches || window.innerWidth < ARC_BREAKPOINT) return false;
-    // Use isLite (not canAnimateHeavy): document.hidden must not collapse the arc layout.
-    if (window.STUDIO_PERF?.isLite) return false;
+    // Arc 3D only on full profile — ignore document.hidden so layout doesn't collapse.
+    if (window.STUDIO_PERF && !window.STUDIO_PERF.isFull) return false;
     return true;
   };
 
@@ -28,12 +44,31 @@ const initServicesCarousel = () => {
     root.classList.toggle("is-arc", enabled);
   };
 
-  const setCloneVisibility = visible => {
+  const removeLoopClones = () => {
     getCards()
       .filter(card => card.hasAttribute("data-service-clone"))
-      .forEach(card => {
-        card.style.display = visible ? "" : "none";
-      });
+      .forEach(card => card.remove());
+    delete track.dataset.loopReady;
+    delete track.dataset.originalCount;
+    delete track.dataset.loopSetWidth;
+  };
+
+  const syncArcNav = () => {
+    const count = getOriginalCards().length;
+    prevButton.disabled = activeIndex <= 0;
+    nextButton.disabled = activeIndex >= count - 1;
+  };
+
+  const syncLinearNav = focusCard => {
+    const cards = getOriginalCards();
+    if (!cards.length) {
+      prevButton.disabled = true;
+      nextButton.disabled = true;
+      return;
+    }
+    const index = Math.max(0, cards.indexOf(focusCard));
+    prevButton.disabled = index <= 0;
+    nextButton.disabled = index >= cards.length - 1;
   };
 
   const clearArcStyles = card => {
@@ -44,11 +79,18 @@ const initServicesCarousel = () => {
     card.style.removeProperty("pointer-events");
     card.style.removeProperty("visibility");
     card.style.removeProperty("transition");
+    card.style.removeProperty("--service-card-x");
+    card.style.removeProperty("--service-card-y");
     card.style.removeProperty("--service-card-scale");
     card.style.removeProperty("--service-card-opacity");
     card.style.removeProperty("--service-card-rotate");
     card.classList.remove("is-focus");
     delete card.dataset.arcRel;
+  };
+
+  const setArcPosition = (card, x, y) => {
+    card.style.setProperty("--service-card-x", `${x.toFixed(2)}px`);
+    card.style.setProperty("--service-card-y", `${y.toFixed(2)}px`);
   };
 
   const resetLinearStyles = () => {
@@ -74,61 +116,8 @@ const initServicesCarousel = () => {
     track.scrollLeft = Math.max(0, targetLeft);
   };
 
-  const prepareLoop = () => {
-    if (track.dataset.loopReady === "true") {
-      return Number(track.dataset.originalCount || 0);
-    }
-
-    const originals = getOriginalCards();
-    if (originals.length < 2) return originals.length;
-
-    const setWidth = track.scrollWidth;
-    const endFragment = document.createDocumentFragment();
-    const startFragment = document.createDocumentFragment();
-
-    originals.forEach(card => {
-      const clone = card.cloneNode(true);
-      clone.setAttribute("data-service-clone", "append");
-      clone.setAttribute("aria-hidden", "true");
-      endFragment.appendChild(clone);
-    });
-
-    originals.forEach(card => {
-      const clone = card.cloneNode(true);
-      clone.setAttribute("data-service-clone", "prepend");
-      clone.setAttribute("aria-hidden", "true");
-      startFragment.appendChild(clone);
-    });
-
-    track.appendChild(endFragment);
-    track.insertBefore(startFragment, track.firstChild);
-
-    track.dataset.loopReady = "true";
-    track.dataset.originalCount = String(originals.length);
-    track.dataset.loopSetWidth = String(setWidth);
-    return originals.length;
-  };
-
-  const normalizeLoop = () => {
-    if (isArcMode()) return;
-
-    const setWidth = Number(track.dataset.loopSetWidth || 0);
-    if (!setWidth) return;
-
-    const left = track.scrollLeft;
-    if (left >= setWidth * 2 - 6) {
-      track.style.scrollBehavior = "auto";
-      track.scrollLeft = left - setWidth;
-      track.style.scrollBehavior = "";
-    } else if (left <= 6) {
-      track.style.scrollBehavior = "auto";
-      track.scrollLeft = left + setWidth;
-      track.style.scrollBehavior = "";
-    }
-  };
-
   const updateLinearFocus = () => {
-    const cards = getCards();
+    const cards = getOriginalCards();
     if (!cards.length) return;
 
     const mid = track.scrollLeft + track.clientWidth / 2;
@@ -151,8 +140,7 @@ const initServicesCarousel = () => {
       lastFocusCard = bestCard;
     }
 
-    prevButton.disabled = false;
-    nextButton.disabled = false;
+    syncLinearNav(bestCard);
   };
 
   const scheduleLinearFocus = () => {
@@ -168,27 +156,28 @@ const initServicesCarousel = () => {
     const count = cards.length;
     if (!count) return;
 
-    setCloneVisibility(false);
-    activeIndex = ((activeIndex % count) + count) % count;
+    removeLoopClones();
+    activeIndex = Math.max(0, Math.min(count - 1, activeIndex));
 
     const viewportWidth = Math.max(viewport.clientWidth, 320);
     const cardWidth = cards[0].offsetWidth || 332;
     const cardHeight = cards[0].offsetHeight || 392;
 
-    // Wheel: 5 cards on a semicircle, one extra slot for enter/exit travel
+    // Gentle arc with breathing room between cards
     const visibleRange = 2;
     const travelRange = visibleRange + 1;
-    const stepDeg = 28;
+    const stepDeg = 14;
     const stepRad = (stepDeg * Math.PI) / 180;
     const maxAngle = visibleRange * stepRad;
+    const rotateDamp = 0.5;
 
-    const desiredGap = cardWidth * 0.58;
+    const desiredGap = cardWidth * 0.64;
     const radiusFromGap = desiredGap / Math.sin(stepRad);
-    const radius = Math.min(Math.max(radiusFromGap, 360), 520);
+    const radius = Math.min(Math.max(radiusFromGap, 780), 1200);
 
     const arcDrop = radius * (1 - Math.cos(maxAngle));
-    const stagePadTop = 10;
-    const stagePadBottom = Math.round(cardHeight * 0.3);
+    const stagePadTop = 8;
+    const stagePadBottom = Math.round(cardHeight * 0.16);
     const arcHeight = Math.ceil(cardHeight + arcDrop + stagePadTop + stagePadBottom);
 
     // Circle center below the stage; card bottoms sit on the upper arc
@@ -199,9 +188,8 @@ const initServicesCarousel = () => {
     track.style.height = `${arcHeight}px`;
 
     cards.forEach((card, index) => {
-      let relative = index - activeIndex;
-      if (relative > count / 2) relative -= count;
-      if (relative < -count / 2) relative += count;
+      // Finite list: no wrap-around — ends of the catalog stay ends.
+      const relative = index - activeIndex;
 
       const absRel = Math.abs(relative);
       const dir = relative === 0 ? 1 : Math.sign(relative);
@@ -216,37 +204,38 @@ const initServicesCarousel = () => {
       const y = centerY - radius * Math.cos(angle);
 
       if (wrapped) {
-        card.style.transition = "opacity 0.55s ease, box-shadow 0.45s ease";
+        card.style.transition = "opacity 0.55s ease, box-shadow 0.45s ease, transform 0.55s var(--ease-out, ease)";
       } else {
         card.style.removeProperty("transition");
       }
 
       if (absRel > travelRange) {
-        card.style.left = `${x}px`;
-        card.style.top = `${y}px`;
+        setArcPosition(card, x, y);
         card.style.zIndex = "0";
         card.style.pointerEvents = "none";
         card.style.visibility = "hidden";
         card.style.setProperty("--service-card-scale", "0.78");
         card.style.setProperty("--service-card-opacity", "0");
-        card.style.setProperty("--service-card-rotate", `${(angle * 180) / Math.PI}deg`);
+        card.style.setProperty(
+          "--service-card-rotate",
+          `${(((angle * 180) / Math.PI) * rotateDamp).toFixed(2)}deg`
+        );
         card.classList.remove("is-focus");
         card.setAttribute("aria-hidden", "true");
         return;
       }
 
-      const focusWeight = Math.max(0, 1 - absRel * 0.32);
-      const scale = absRel > visibleRange ? 0.78 : 0.82 + focusWeight * 0.18;
+      const focusWeight = Math.max(0, 1 - absRel * 0.28);
+      const scale = absRel > visibleRange ? 0.86 : 0.9 + focusWeight * 0.1;
       const opacity =
         absRel > visibleRange
-          ? Math.max(0, 0.28 - (absRel - visibleRange) * 0.28)
-          : 0.5 + focusWeight * 0.5;
-      const rotate = (angle * 180) / Math.PI;
+          ? Math.max(0, 0.35 - (absRel - visibleRange) * 0.28)
+          : 0.62 + focusWeight * 0.38;
+      const rotate = ((angle * 180) / Math.PI) * rotateDamp;
       const isFocus = index === activeIndex;
       const inView = absRel <= visibleRange;
 
-      card.style.left = `${x}px`;
-      card.style.top = `${y}px`;
+      setArcPosition(card, x, y);
       card.style.zIndex = isFocus ? "120" : String(50 - Math.round(absRel * 10));
       card.style.pointerEvents = inView ? "" : "none";
       card.style.visibility = "visible";
@@ -269,8 +258,7 @@ const initServicesCarousel = () => {
       }
     });
 
-    prevButton.disabled = false;
-    nextButton.disabled = false;
+    syncArcNav();
   };
 
   const scheduleArcLayout = () => {
@@ -278,44 +266,23 @@ const initServicesCarousel = () => {
     arcFrame = window.requestAnimationFrame(layoutArc);
   };
 
-  const shouldLoopLinear = () => !window.STUDIO_PERF?.isLite;
-
   const bootLinear = () => {
     const originals = getOriginalCards();
     if (!originals.length) return;
 
-    if (!shouldLoopLinear()) {
-      // Lite devices: no DOM cloning / infinite loop — plain snap scroll.
-      setCloneVisibility(false);
-      const target = originals[Math.min(1, originals.length - 1)];
-      const runCenter = () => {
-        centerCard(target);
-        updateLinearFocus();
-      };
-      runCenter();
-      window.requestAnimationFrame(runCenter);
-      return;
-    }
-
-    const count = prepareLoop();
-    if (!count) return;
-
-    const startIndex = Math.min(1, count - 1);
-    const target = track.children[count + startIndex];
-
+    removeLoopClones();
+    activeIndex = getDefaultServiceIndex(originals);
+    const target = originals[activeIndex] || originals[0];
     const runCenter = () => {
       centerCard(target);
       updateLinearFocus();
     };
-
     runCenter();
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(runCenter);
-    });
+    window.requestAnimationFrame(runCenter);
   };
 
   const bootArc = () => {
-    activeIndex = Math.min(1, Math.max(getOriginalCards().length - 1, 0));
+    activeIndex = getDefaultServiceIndex();
     scheduleArcLayout();
   };
 
@@ -328,25 +295,25 @@ const initServicesCarousel = () => {
     }
 
     setArcModeClass(false);
-    setCloneVisibility(true);
+    removeLoopClones();
     resetLinearStyles();
     bootLinear();
   };
 
-  let normalizeTimer = 0;
-
   const onTrackScroll = () => {
     if (isArcMode()) return;
     scheduleLinearFocus();
-    if (!shouldLoopLinear()) return;
-    window.clearTimeout(normalizeTimer);
-    normalizeTimer = window.setTimeout(normalizeLoop, 110);
   };
 
   const stepArc = direction => {
     const count = getOriginalCards().length;
     if (!count) return;
-    activeIndex = (activeIndex + direction + count) % count;
+    const nextIndex = Math.max(0, Math.min(count - 1, activeIndex + direction));
+    if (nextIndex === activeIndex) {
+      syncArcNav();
+      return;
+    }
+    activeIndex = nextIndex;
     layoutArc();
   };
 
@@ -354,7 +321,7 @@ const initServicesCarousel = () => {
     const cards = getOriginalCards();
     const count = cards.length;
     if (!count) return;
-    const nextIndex = ((index % count) + count) % count;
+    const nextIndex = Math.max(0, Math.min(count - 1, index));
     if (nextIndex === activeIndex) return;
     activeIndex = nextIndex;
     layoutArc();
@@ -406,10 +373,7 @@ const initServicesCarousel = () => {
       return;
     }
     if (nowArc) scheduleArcLayout();
-    else {
-      updateLinearFocus();
-      normalizeLoop();
-    }
+    else updateLinearFocus();
   };
 
   window.addEventListener("resize", onResize, { passive: true });
@@ -436,11 +400,24 @@ const initServicesCarousel = () => {
     resizeObserver.observe(viewport);
   }
 
-  if (track.children.length) {
+  const onServicesRendered = () => {
+    removeLoopClones();
+    track.querySelectorAll(".studio-service-icon").forEach(node => node.remove());
     boot();
-  } else {
-    window.addEventListener("studio:services-rendered", boot, { once: true });
+  };
+
+  const paintTarget = root.closest(".studio-services") || root;
+  window.STUDIO_PERF?.observeVisibility?.(paintTarget, {
+    threshold: 0.05,
+    rootMargin: "120px 0px",
+    enter: () => root.classList.add("is-arc-paint"),
+    leave: () => root.classList.remove("is-arc-paint")
+  });
+
+  if (track.children.length) {
+    onServicesRendered();
   }
+  window.addEventListener("studio:services-rendered", onServicesRendered);
 };
 
 if (document.readyState === "loading") {
