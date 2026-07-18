@@ -102,4 +102,4 @@ docs: update readme audit and deployment guide
 | 2026-07-18 | `b628d47` | security harden | Zod, CORS exact, rate limit, honeypot, Turnstile hook, safe errors |
 | 2026-07-18 | `d8ed593` | contacts + fallback UX | Phone dial vs copy; hide MAX; recovery actions |
 | 2026-07-18 | `f645f09` | a11y | Skip-link, modal traps, case links, toolbar filters, field errors |
-| 2026-07-18 |  | content + prerender | `content/*`, hero rewrite, honest proofs, static services/cases |
+| 2026-07-18 | `8b15c00` | content + prerender | `content/*`, hero rewrite, honest proofs, static services/cases |
