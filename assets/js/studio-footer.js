@@ -22,7 +22,7 @@ window.renderStudioFooter = ({ home = "./" } = {}) => {
               <h3>Контакты</h3>
               <a data-contact-link="email" href="mailto:sigidingo@gmail.com" data-contact-email>sigidingo@gmail.com</a>
               <a data-contact-link="phone" href="tel:+79619710515" data-contact-phone>+7 961 971-05-15</a>
-              <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noreferrer">Telegram: <span data-contact-handle>@sigidingo</span></a>
+              <a data-contact-link="telegram" href="https://t.me/sigidingo" target="_blank" rel="noopener noreferrer">Telegram: <span data-contact-handle>@sigidingo</span></a>
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@ window.renderStudioFooter = ({ home = "./" } = {}) => {
                   <input type="checkbox" name="privacy" value="1" required />
                   <span
                     >Соглашаюсь с
-                    <a href="./privacy.html" target="_blank" rel="noopener">политикой конфиденциальности</a>
+                    <a href="./privacy.html" target="_blank" rel="noopener noreferrer">политикой конфиденциальности</a>
                     и обработкой персональных данных</span
                   >
                 </label>

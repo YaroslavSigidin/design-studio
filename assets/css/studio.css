@@ -5231,9 +5231,83 @@ body::after {
   color: #027a48;
 }
 
+.form-status__message {
+  margin: 0;
+}
+
+.form-status__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.form-status__action {
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid rgba(17, 24, 39, 0.14);
+  border-radius: 10px;
+  background: #fff;
+  color: #111827;
+  font-family: "Schibsted Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+}
+
+.form-status__action:hover {
+  border-color: rgba(17, 24, 39, 0.28);
+}
+
+.form-status__action:focus-visible {
+  outline: 2px solid rgba(46, 131, 255, 0.55);
+  outline-offset: 2px;
+}
+
+.form-status__meta {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: rgba(28, 40, 58, 0.55);
+}
+
 .hero-request__form .form-status {
   grid-column: 1 / -1;
   margin: 0 4px 2px;
+}
+
+.top-phone-group {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  min-width: 0;
+}
+
+.top-phone-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  margin-left: 4px;
+  padding: 0 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+  cursor: pointer;
+}
+
+.top-phone-copy:hover,
+.top-phone-copy.is-copied {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.top-phone-copy:focus-visible {
+  outline: 2px solid rgba(46, 131, 255, 0.55);
+  outline-offset: 2px;
 }
 
 .form-consent input {

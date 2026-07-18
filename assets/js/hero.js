@@ -428,13 +428,28 @@ const initHeroSearch = () => {
       finalSubmitButton.textContent = "Отправить";
       finalSubmitButton.disabled = false;
     }
-    window.STUDIO_CONTACT?.setFormStatus?.(
-      finalForm,
-      `${result?.error || "Не удалось отправить заявку."}${
-        result?.requestId ? ` Код обращения: ${result.requestId}.` : ""
-      }`,
-      "error"
-    );
+    const recoveryPayload = {
+      source: "AI-бриф",
+      name: finalNameField.value.trim(),
+      phone: finalPhoneField?.value.trim() || "",
+      contact: finalContactField?.value.trim() || "",
+      budget: activeComposer.getBudgetLabel(),
+      deadline: activeComposer.getDeadlineLabel(),
+      comment: commentText
+    };
+    if (window.STUDIO_CONTACT?.showLeadRecovery) {
+      window.STUDIO_CONTACT.showLeadRecovery(finalForm, result, recoveryPayload, {
+        onRetry: () => finalForm.requestSubmit()
+      });
+    } else {
+      window.STUDIO_CONTACT?.setFormStatus?.(
+        finalForm,
+        `${result?.error || "Не удалось отправить заявку."}${
+          result?.requestId ? ` Код обращения: ${result.requestId}.` : ""
+        }`,
+        "error"
+      );
+    }
   });
 
   finalModal?.addEventListener("click", event => {

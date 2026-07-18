@@ -313,27 +313,28 @@ const initBriefModal = () => {
     // Keep modal open and preserve field values on failure / fallback.
     form.hidden = false;
     success.hidden = true;
-    const status =
-      window.STUDIO_CONTACT?.setFormStatus ||
-      ((target, message, tone) => {
-        let node = target.querySelector("[data-form-status]");
-        if (!node) {
-          node = document.createElement("p");
-          node.setAttribute("data-form-status", "");
-          node.setAttribute("role", "status");
-          node.setAttribute("aria-live", "polite");
-          target.appendChild(node);
-        }
-        node.hidden = !message;
-        node.textContent = message || "";
-        node.classList.toggle("is-error", tone === "error");
+    const payload = {
+      source: form.dataset.leadSource || "Модальное окно брифа",
+      service: serviceInput.value,
+      name: form.querySelector('input[name="name"]')?.value.trim() || "",
+      phone: phoneInput?.value.trim() || "",
+      budget: budgetLabel?.textContent || "",
+      deadline: deadlineLabel?.textContent || "",
+      comment: form.querySelector('textarea[name="comment"]')?.value.trim() || ""
+    };
+    if (window.STUDIO_CONTACT?.showLeadRecovery) {
+      window.STUDIO_CONTACT.showLeadRecovery(form, result, payload, {
+        onRetry: () => form.requestSubmit()
       });
-    const requestHint = result?.requestId ? ` Код обращения: ${result.requestId}.` : "";
-    status(
-      form,
-      `${result?.error || "Не удалось отправить заявку."}${requestHint}`,
-      "error"
-    );
+    } else {
+      window.STUDIO_CONTACT?.setFormStatus?.(
+        form,
+        `${result?.error || "Не удалось отправить заявку."}${
+          result?.requestId ? ` Код обращения: ${result.requestId}.` : ""
+        }`,
+        "error"
+      );
+    }
   });
 
   budgetRange?.addEventListener("input", updateRanges);

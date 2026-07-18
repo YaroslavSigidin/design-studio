@@ -34,7 +34,7 @@ Status legend: `open` · `in_progress` · `done` · `blocked` · `wontfix`
 | A22 | Структура главной не соответствует целевой (нет process/testimonials/proofs) | P2 | `index.html` | Скролл всей главной | Новая структура 1–12 | open |
 | A23 | Нет skip-link / один main landmark | P2 | `index.html` | Tab с начала страницы | Skip-link + `<main>` | open |
 | A24 | Tabs кейсов без tabpanel / arrow keys | P2 | `index.html`, `cases.js` | Стрелки на фильтрах | Полный ARIA tabs или обычные buttons | open |
-| A25 | MAX = `tel:` без настоящей MAX-ссылки | P2 | `config.js`, `index.html` | Клик MAX | Показать MAX только при реальном URL; иначе телефон | open |
+| A25 | MAX = `tel:` без настоящей MAX-ссылки | P2 | `config.js`, `index.html` | Клик MAX | Показать MAX только при реальном URL; иначе телефон | done |
 | A26 | Аналитика: пустой metrikaId; мало событий воронки | P2 | `analytics.js`, `config.js` | Submit / CTA | События из брифа + consent | open |
 | A27 | Нет `content/` data layer; монолит `cases.manifest.json` | P2 | repo root | Поиск `content/` | site/services/team/testimonials/proofs/cases | open |
 | A28 | Нет Vite build, hashed assets, page-specific JS | P2 | repo | Production deploy = raw files | Vite + ESM + split CSS | open |
@@ -100,3 +100,4 @@ docs: update readme audit and deployment guide
 | 2026-07-18 | `25bd965` | baseline audit | Local only; Pages not updated |
 | 2026-07-18 | `1f42c0b` | truthful leads | Attachments hidden; fallback ≠ success; no /health warmup |
 | 2026-07-18 | `b628d47` | security harden | Zod, CORS exact, rate limit, honeypot, Turnstile hook, safe errors |
+| 2026-07-18 | _(pending)_ | contacts + fallback UX | Phone dial vs copy; hide MAX; recovery actions |

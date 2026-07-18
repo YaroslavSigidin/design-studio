@@ -174,9 +174,9 @@ const initStudioContacts = () => {
       }
     }
 
-    const opened = openLeadChannel(safePayload);
-    if (opened) {
-      // Opening Telegram/email is NOT a confirmed delivery.
+    // Do not auto-open Telegram: opening a composer is not delivery.
+    // UI offers «Открыть Telegram» / «Скопировать заявку» instead.
+    if (cfg.crm?.allowFallback) {
       notifyLeadFallback(safePayload?.source);
       return {
         ok: false,
@@ -184,7 +184,7 @@ const initStudioContacts = () => {
         mode: "fallback-opened",
         code: "DELIVERY_FAILED",
         error:
-          "Сервер временно недоступен. Мы подготовили текст заявки и открыли Telegram — отправьте сообщение вручную, чтобы завершить обращение."
+          "Сервер временно недоступен. Скопируйте заявку или откройте Telegram и отправьте сообщение вручную — только после этого обращение будет доставлено."
       };
     }
 
@@ -214,8 +214,20 @@ const initStudioContacts = () => {
   const ensureFormStatus = form => {
     ensureHoneypot(form);
     let status = form.querySelector("[data-form-status]");
-    if (status) return status;
-    status = document.createElement("p");
+    if (status) {
+      if (status.tagName === "P") {
+        const replacement = document.createElement("div");
+        replacement.className = status.className || "form-status";
+        replacement.hidden = status.hidden;
+        replacement.setAttribute("data-form-status", "");
+        replacement.setAttribute("role", "status");
+        replacement.setAttribute("aria-live", "polite");
+        status.replaceWith(replacement);
+        status = replacement;
+      }
+      return status;
+    }
+    status = document.createElement("div");
     status.className = "form-status";
     status.hidden = true;
     status.setAttribute("data-form-status", "");
@@ -230,18 +242,74 @@ const initStudioContacts = () => {
     return status;
   };
 
-  const setFormStatus = (form, message, tone = "") => {
+  const setFormStatus = (form, message, tone = "", options = {}) => {
     const status = ensureFormStatus(form);
+    status.classList.remove("is-error", "is-success");
+    status.replaceChildren();
+
     if (!message) {
       status.hidden = true;
-      status.textContent = "";
-      status.classList.remove("is-error", "is-success");
-      return;
+      return status;
     }
+
     status.hidden = false;
-    status.textContent = message;
     status.classList.toggle("is-error", tone === "error");
     status.classList.toggle("is-success", tone === "success");
+
+    const messageNode = document.createElement("p");
+    messageNode.className = "form-status__message";
+    messageNode.textContent = message;
+    status.appendChild(messageNode);
+
+    if (options.requestId) {
+      const meta = document.createElement("p");
+      meta.className = "form-status__meta";
+      meta.textContent = `Код обращения: ${options.requestId}`;
+      status.appendChild(meta);
+    }
+
+    const actions = Array.isArray(options.actions) ? options.actions.filter(Boolean) : [];
+    if (actions.length) {
+      const row = document.createElement("div");
+      row.className = "form-status__actions";
+      actions.forEach(action => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "form-status__action";
+        button.textContent = action.label;
+        button.addEventListener("click", event => {
+          event.preventDefault();
+          action.onClick?.(event);
+        });
+        row.appendChild(button);
+      });
+      status.appendChild(row);
+    }
+
+    return status;
+  };
+
+  const isHttpUrl = value => /^https?:\/\//i.test(String(value || "").trim());
+  const isRealMaxUrl = value => {
+    const url = String(value || "").trim();
+    if (!isHttpUrl(url)) return false;
+    try {
+      const host = new URL(url).hostname.replace(/^www\./, "");
+      return host === "max.ru" || host.endsWith(".max.ru");
+    } catch {
+      return false;
+    }
+  };
+
+  const decorateExternalLink = node => {
+    if (!(node instanceof HTMLAnchorElement)) return;
+    const href = node.getAttribute("href") || "";
+    if (!isHttpUrl(href)) {
+      node.removeAttribute("target");
+      return;
+    }
+    node.setAttribute("target", "_blank");
+    node.setAttribute("rel", "noopener noreferrer");
   };
 
   const bindContactLink = (selector, value, { hideIfEmpty = false } = {}) => {
@@ -252,6 +320,7 @@ const initStudioContacts = () => {
       }
       node.hidden = false;
       node.setAttribute("href", value);
+      decorateExternalLink(node);
     });
   };
 
@@ -296,67 +365,67 @@ const initStudioContacts = () => {
   const maxUrl = String(contacts.maxUrl || "").trim();
   const vkUrl = String(contacts.vkUrl || "").trim();
   const telegramUrl = String(contacts.telegramUrl || "").trim();
+  const phoneHref = String(contacts.phoneHref || "").trim();
 
   bindContactLink('[data-contact-link="telegram"]', telegramUrl);
-  bindContactLink('[data-contact-link="phone"]', contacts.phoneHref);
+  bindContactLink('[data-contact-link="phone"]', phoneHref);
   bindContactLink('[data-contact-link="email"]', contacts.emailHref);
-  bindContactLink('[data-contact-link="vk"]', vkUrl || telegramUrl);
-  bindContactLink('[data-contact-link="max"]', maxUrl || contacts.phoneHref || telegramUrl);
+  bindContactLink('[data-contact-link="vk"]', vkUrl, { hideIfEmpty: true });
 
-  const telegramIconSvg = `
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
-      <path d="M21.5 4.5 3.8 11.3c-1.2.47-1.18 1.28-.22 1.61l4.55 1.42 1.74 5.4c.23.72.12 1 .93.1l2.64-2.9 4.84 3.58c.89.49 1.53.23 1.76-.84l3.2-15.07c.33-1.48-.5-2.14-1.74-1.1Z" fill="currentColor"/>
-    </svg>
-  `;
+  document.querySelectorAll('[data-contact-link="phone"]').forEach(node => {
+    if (!(node instanceof HTMLAnchorElement)) return;
+    node.removeAttribute("target");
+    node.removeAttribute("rel");
+    if (phoneHref) {
+      node.setAttribute(
+        "aria-label",
+        `Позвонить: ${contacts.phoneDisplay || phoneHref.replace(/^tel:/, "")}`
+      );
+    }
+  });
 
   document.querySelectorAll('[data-contact-link="max"]').forEach(node => {
-    const iconHost = node.querySelector("[data-max-icon]");
-    const href = maxUrl || contacts.phoneHref || telegramUrl;
-    if (href?.startsWith("tel:")) {
+    if (!isRealMaxUrl(maxUrl)) {
+      node.hidden = true;
+      node.setAttribute("href", "#");
       node.removeAttribute("target");
       node.removeAttribute("rel");
-      node.setAttribute("aria-label", "MAX");
-      node.setAttribute("title", `MAX: ${contacts.phoneDisplay || href.replace(/^tel:/, "")}`);
-      node.classList.remove("is-telegram-fallback");
-      if (iconHost && !iconHost.querySelector("[data-max-icon-img]")) {
-        iconHost.innerHTML = `<img src="./assets/icons/custom/max-logo-white.svg" alt="" data-max-icon-img />`;
-      }
-    } else if (maxUrl) {
-      node.setAttribute("target", "_blank");
-      node.setAttribute("rel", "noreferrer");
-      node.setAttribute("aria-label", "MAX");
-      node.setAttribute("title", "MAX");
-      node.classList.remove("is-telegram-fallback");
-      if (iconHost && !iconHost.querySelector("[data-max-icon-img]")) {
-        iconHost.innerHTML = `<img src="./assets/icons/custom/max-logo-white.svg" alt="" data-max-icon-img />`;
-      }
-    } else if (telegramUrl) {
-      node.setAttribute("target", "_blank");
-      node.setAttribute("rel", "noreferrer");
-      node.setAttribute("aria-label", "Telegram");
-      node.setAttribute("title", "Telegram");
-      node.classList.add("is-telegram-fallback");
-      if (iconHost) iconHost.innerHTML = telegramIconSvg;
+      return;
     }
+
+    node.hidden = false;
+    node.setAttribute("href", maxUrl);
+    node.setAttribute("target", "_blank");
+    node.setAttribute("rel", "noopener noreferrer");
+    node.setAttribute("aria-label", "MAX");
+    node.setAttribute("title", "MAX");
+    node.classList.remove("is-telegram-fallback");
   });
 
   document.querySelectorAll('[data-contact-link="vk"]').forEach(node => {
-    if (!vkUrl && telegramUrl) {
-      node.setAttribute("aria-label", "Telegram");
-      node.setAttribute("title", "Telegram");
+    if (!vkUrl) {
+      node.hidden = true;
+      return;
     }
+    node.hidden = false;
+    node.setAttribute("aria-label", "VK");
+    node.setAttribute("title", "VK");
+    decorateExternalLink(node);
   });
+
+  document.querySelectorAll('[data-contact-link="telegram"]').forEach(decorateExternalLink);
 
   bindText("[data-contact-phone]", contacts.phoneDisplay);
   bindText("[data-contact-email]", contacts.email);
   bindText("[data-contact-name]", contacts.name);
   bindText("[data-contact-handle]", `@${String(contacts.telegramHandle || "").replace(/^@/, "")}`);
 
-  document.querySelectorAll("[data-copy-phone-chip]").forEach(node => {
+  document.querySelectorAll("[data-copy-phone], [data-copy-phone-chip]").forEach(node => {
     let resetTimer = 0;
     node.addEventListener("click", async event => {
       event.preventDefault();
-      const value = String(contacts.phoneDisplay || contacts.phone || node.textContent || "").trim();
+      event.stopPropagation();
+      const value = String(contacts.phoneDisplay || contacts.phone || "").trim();
       const copied = await copyText(value);
       node.classList.toggle("is-copied", copied);
       if (copied) {
@@ -370,6 +439,48 @@ const initStudioContacts = () => {
       }
     });
   });
+
+  const showLeadRecovery = (form, result, payload, { onRetry } = {}) => {
+    const messageText = formatPayload(payload || {});
+    const telegramUrlForLead = buildTelegramUrl(messageText);
+    setFormStatus(form, result?.error || "Не удалось отправить заявку.", "error", {
+      requestId: result?.requestId || "",
+      actions: [
+        onRetry
+          ? {
+              label: "Повторить",
+              onClick: () => onRetry()
+            }
+          : null,
+        {
+          label: "Скопировать заявку",
+          onClick: async () => {
+            const copied = await copyText(messageText);
+            if (copied) {
+              setFormStatus(form, "Текст заявки скопирован. Можно вставить в Telegram.", "error", {
+                requestId: result?.requestId || "",
+                actions: [
+                  onRetry ? { label: "Повторить", onClick: () => onRetry() } : null,
+                  telegramUrlForLead
+                    ? {
+                        label: "Открыть Telegram",
+                        onClick: () => window.open(telegramUrlForLead, "_blank", "noopener,noreferrer")
+                      }
+                    : null
+                ].filter(Boolean)
+              });
+            }
+          }
+        },
+        telegramUrlForLead
+          ? {
+              label: "Открыть Telegram",
+              onClick: () => window.open(telegramUrlForLead, "_blank", "noopener,noreferrer")
+            }
+          : null
+      ]
+    });
+  };
 
   // Prepare honeypot + status hosts on every known lead form.
   document
@@ -390,6 +501,7 @@ const initStudioContacts = () => {
     submitLead,
     formatPayload,
     setFormStatus,
+    showLeadRecovery,
     ensureHoneypot
   };
 
@@ -439,11 +551,7 @@ const initStudioContacts = () => {
           ? submitButton.value
           : "";
 
-    if (submitButton) submitButton.disabled = true;
-    if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправляем…";
-    if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправляем…";
-
-    const result = await submitLead({
+    const payload = {
       source: form.dataset.caseTitle
         ? "Кейс"
         : form.matches(".hero-request__form")
@@ -453,7 +561,7 @@ const initStudioContacts = () => {
       phone,
       contact,
       comment: form.dataset.caseTitle || ""
-    });
+    };
 
     const restoreButton = () => {
       if (submitButton instanceof HTMLButtonElement) submitButton.textContent = previousLabel || "Отправить";
@@ -461,30 +569,35 @@ const initStudioContacts = () => {
       if (submitButton) submitButton.disabled = false;
     };
 
-    if (result.confirmed && result.ok) {
-      form.reset();
-      setFormStatus(
-        form,
-        "Заявка отправлена. Мы изучим задачу и свяжемся с вами.",
-        "success"
-      );
-      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";
-      if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправлено";
-      window.setTimeout(() => {
-        restoreButton();
-        setFormStatus(form, "");
-      }, 2200);
-      return;
-    }
+    const send = async () => {
+      if (submitButton) submitButton.disabled = true;
+      if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправляем…";
+      if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправляем…";
 
-    // Keep form data on any non-confirmed result.
-    const requestHint = result?.requestId ? ` Код обращения: ${result.requestId}.` : "";
-    setFormStatus(
-      form,
-      `${result?.error || "Не удалось отправить заявку."}${requestHint}`,
-      "error"
-    );
-    restoreButton();
+      const result = await submitLead(payload);
+
+      if (result.confirmed && result.ok) {
+        form.reset();
+        setFormStatus(
+          form,
+          "Заявка отправлена. Мы изучим задачу и свяжемся с вами.",
+          "success"
+        );
+        if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";
+        if (submitButton instanceof HTMLInputElement) submitButton.value = "Отправлено";
+        window.setTimeout(() => {
+          restoreButton();
+          setFormStatus(form, "");
+        }, 2200);
+        return;
+      }
+
+      // Keep form data; offer retry / copy / Telegram.
+      restoreButton();
+      showLeadRecovery(form, result, payload, { onRetry: send });
+    };
+
+    await send();
   });
 };
 

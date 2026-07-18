@@ -49,8 +49,8 @@ window.STUDIO_CONFIG = {
     telegramHandle: "sigidingo",
     telegramUrl: "https://t.me/sigidingo",
     vkUrl: "https://vk.com/sigidingo",
-    // Прямой диплинк MAX по номеру недоступен — ведём на ваш номер в MAX/телефоне.
-    maxUrl: "tel:+79619710515",
+    // Показывать MAX только при настоящей ссылке max.ru/u/... (не tel:).
+    maxUrl: "",
     phoneDisplay: "+7 961 971-05-15",
     phoneHref: "tel:+79619710515",
     email: "sigidingo@gmail.com",
