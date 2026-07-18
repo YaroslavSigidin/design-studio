@@ -99,4 +99,4 @@ docs: update readme audit and deployment guide
 | --- | --- | --- | --- |
 | 2026-07-18 | `25bd965` | baseline audit | Local only; Pages not updated |
 | 2026-07-18 | `1f42c0b` | truthful leads | Attachments hidden; fallback ≠ success; no /health warmup |
-| 2026-07-18 | _(pending)_ | security harden | Zod, CORS exact, rate limit, honeypot, Turnstile hook, safe errors |
+| 2026-07-18 | `b628d47` | security harden | Zod, CORS exact, rate limit, honeypot, Turnstile hook, safe errors |
