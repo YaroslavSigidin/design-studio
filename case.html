@@ -21,13 +21,24 @@
       content="https://yaroslavsigidin.github.io/design-studio/assets/images/brand/og-cover.png"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      (() => {
+        const lite =
+          window.matchMedia("(pointer: coarse)").matches ||
+          window.matchMedia("(max-width: 1100px)").matches ||
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+          Boolean(navigator.connection && navigator.connection.saveData) ||
+          (Number.isFinite(navigator.hardwareConcurrency) && navigator.hardwareConcurrency <= 4);
+        if (lite) document.documentElement.classList.add("studio-perf-lite");
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-seo-leads" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-perf-ideal" />
     <link rel="stylesheet" href="./assets/css/case.css?v=20260718-no-caps" />
   </head>
   <body class="studio-case-page" data-seo-page="case">
@@ -195,6 +206,7 @@
     </div>
 
     <script src="./assets/js/config.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/studio-perf.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/analytics.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/seo.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/studio-footer.js?v=20260718-form-consent" defer></script>
@@ -202,7 +214,7 @@
     <script src="./assets/js/contact.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/hero-request.js?v=20260715-case-footer" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260718-roadmap" defer></script>
-    <script src="./assets/js/site-motion.js?v=20260715-faq" defer></script>
+    <script src="./assets/js/site-motion.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260713-escape-html-shared" defer></script>
     <script src="./assets/js/case-page.js?v=20260718-roadmap" defer></script>

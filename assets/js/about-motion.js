@@ -3,11 +3,12 @@ const initAboutMotion = () => {
   if (!section || section.classList.contains("is-bound")) return;
   section.classList.add("is-bound");
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const saveData = navigator.connection?.saveData === true;
-  const liteMotion =
-    reducedMotion ||
-    saveData ||
+  const reducedMotion = () =>
+    Boolean(window.STUDIO_PERF?.prefersReducedMotion) ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const liteMotion = () =>
+    Boolean(window.STUDIO_PERF?.isLite) ||
+    reducedMotion() ||
     window.matchMedia("(pointer: coarse)").matches ||
     window.matchMedia("(max-width: 1100px)").matches;
   const cards = [...section.querySelectorAll("[data-about-card]")];
@@ -63,7 +64,7 @@ const initAboutMotion = () => {
 
       card.classList.toggle("is-active", isActive);
 
-      if (liteMotion) {
+      if (liteMotion()) {
         card.style.setProperty("--about-card-rotate", "0deg");
         card.style.setProperty("--about-card-scale", "1");
         card.style.setProperty("--about-card-y", "0px");
@@ -104,7 +105,7 @@ const initAboutMotion = () => {
 
     applyLayout(nextIndex);
 
-    const useSmooth = smooth && !reducedMotion;
+    const useSmooth = smooth && !reducedMotion() && !liteMotion();
     scrollingProgrammatically = useSmooth;
     section.classList.toggle("is-nav-animating", useSmooth);
     grid.style.scrollSnapType = "none";
@@ -181,6 +182,7 @@ const initAboutMotion = () => {
     "resize",
     () => {
       measureStep();
+      lastAppliedIndex = -1;
       goToIndex(activeIndex, { smooth: false });
     },
     { passive: true }
@@ -189,7 +191,7 @@ const initAboutMotion = () => {
   measureStep();
   syncNavState();
 
-  if (reducedMotion || saveData || !("IntersectionObserver" in window)) {
+  if (liteMotion() || !("IntersectionObserver" in window)) {
     play();
     settle();
     return;

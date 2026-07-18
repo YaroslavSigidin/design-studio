@@ -19,6 +19,62 @@ html {
   );
 }
 
+/* Section containment: skip offscreen layout/paint work */
+.studio-cases,
+.studio-services,
+.studio-about,
+.studio-faq,
+.studio-discuss,
+.studio-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 900px;
+}
+
+html.studio-perf-lite body::after {
+  display: none;
+}
+
+html.studio-perf-lite .hero-nav,
+html.studio-perf-lite .hero-request,
+html.studio-perf-lite .studio-discuss__inner,
+html.studio-perf-lite .studio-about__name,
+html.studio-perf-lite .studio-about__role,
+html.studio-perf-lite .brief-modal__overlay,
+html.studio-perf-lite .hero-final-modal__overlay,
+html.studio-perf-lite .promo-strip,
+html.studio-perf-lite .top-mini-contacts,
+html.studio-perf-lite .top-mini-contact-btn {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.studio-perf-lite .hero-nav {
+  background: rgba(255, 255, 255, 0.97);
+}
+
+html.studio-perf-lite .media-skeleton__shimmer::after,
+html.studio-perf-lite .project-card__skeleton::after {
+  animation: none !important;
+  will-change: auto;
+  opacity: 0;
+}
+
+html.studio-perf-lite .studio-about__card,
+html.studio-perf-lite .studio-services-carousel__card,
+html.studio-perf-lite .motion-item,
+html.studio-perf-lite [data-reveal-heading] {
+  will-change: auto !important;
+}
+
+html.studio-perf-lite .hero-search,
+html.studio-perf-lite .hero-search-input-wrap:focus-within {
+  box-shadow: none;
+}
+
+html.studio-perf-lite .hero-search-input-wrap:focus-within {
+  border-color: rgba(46, 131, 255, 0.28);
+}
+
 @keyframes motionVoidIn {
   from {
     opacity: 0;
@@ -288,13 +344,14 @@ body::after {
 
 .hero-paddle {
   position: absolute;
+  top: 0;
   width: 12px;
   height: 118px;
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(20, 25, 32, 0.95), rgba(42, 50, 64, 0.88));
   box-shadow: 0 8px 16px rgba(14, 20, 30, 0.24);
-  top: 50%;
-  transform: translateY(-50%);
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .hero-paddle--player {
@@ -307,14 +364,15 @@ body::after {
 
 .hero-pong-ball {
   position: absolute;
+  left: 0;
+  top: 0;
   width: 14px;
   height: 14px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #ffffff 0%, #f1f6ff 42%, #d7e6ff 100%);
   box-shadow: 0 0 0 1px rgba(20, 34, 56, 0.1), 0 8px 20px rgba(22, 54, 90, 0.22);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .hero-layout {
@@ -6450,6 +6508,7 @@ body::after {
   opacity: 1;
   filter: none;
   animation: none;
+  will-change: auto;
   box-shadow:
     0 10px 22px rgba(27, 56, 91, 0.1),
     0 22px 40px rgba(27, 56, 91, 0.12);

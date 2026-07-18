@@ -6,10 +6,8 @@ const initHeroPong = () => {
   const heroPage = document.querySelector(".hero-page");
   if (!layer || !playerPaddleEl || !aiPaddleEl || !ballEl || !heroPage) return;
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const saveData = navigator.connection?.saveData === true;
-  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-  if (reducedMotion || saveData || coarsePointer) {
+  const perf = window.STUDIO_PERF;
+  if (!perf?.canAnimateHeavy) {
     layer.style.display = "none";
     return;
   }
@@ -32,7 +30,9 @@ const initHeroPong = () => {
     lastTs: 0,
     arena: heroPage.getBoundingClientRect(),
     blockers: [],
-    stuckFrames: 0
+    stuckFrames: 0,
+    running: false,
+    frame: 0
   };
 
   const blockersSelectors = [
@@ -51,7 +51,7 @@ const initHeroPong = () => {
     const speed = Math.hypot(state.vx, state.vy);
     if (!Number.isFinite(speed) || speed < 0.01) {
       state.vx = BASE_SPEED * (Math.random() > 0.5 ? 1 : -1);
-      state.vy = (Math.random() * 4 - 2) || 2;
+      state.vy = Math.random() * 4 - 2 || 2;
       return;
     }
     if (speed < MIN_SPEED) {
@@ -72,7 +72,7 @@ const initHeroPong = () => {
     state.ballX = arena.left + arena.width / 2;
     state.ballY = arena.top + arena.height / 2;
     state.vx = BASE_SPEED * direction;
-    state.vy = (Math.random() * 5.2 - 2.6) || 2.2;
+    state.vy = Math.random() * 5.2 - 2.6 || 2.2;
     state.stuckFrames = 0;
     enforceSpeed();
   };
@@ -94,8 +94,10 @@ const initHeroPong = () => {
     state.playerY = clamp(state.playerY, minY, maxY);
     state.aiY = clamp(state.aiY, minY, maxY);
 
-    playerPaddleEl.style.top = `${state.playerY - arena.top}px`;
-    aiPaddleEl.style.top = `${state.aiY - arena.top}px`;
+    const playerTop = state.playerY - arena.top - state.paddleHeight / 2;
+    const aiTop = state.aiY - arena.top - state.paddleHeight / 2;
+    playerPaddleEl.style.transform = `translate3d(0, ${playerTop.toFixed(2)}px, 0)`;
+    aiPaddleEl.style.transform = `translate3d(0, ${aiTop.toFixed(2)}px, 0)`;
   };
 
   const intersectsRect = rect =>
@@ -114,25 +116,24 @@ const initHeroPong = () => {
     if (minOverlap === overlapLeft && state.vx > 0) {
       state.ballX = rect.left - state.ballRadius - 0.5;
       state.vx = -Math.abs(state.vx);
-      return true;
+      return;
     }
     if (minOverlap === overlapRight && state.vx < 0) {
       state.ballX = rect.right + state.ballRadius + 0.5;
       state.vx = Math.abs(state.vx);
-      return true;
+      return;
     }
     if (minOverlap === overlapTop && state.vy > 0) {
       state.ballY = rect.top - state.ballRadius - 0.5;
       state.vy = -Math.abs(state.vy);
-      return true;
+      return;
     }
     if (minOverlap === overlapBottom && state.vy < 0) {
       state.ballY = rect.bottom + state.ballRadius + 0.5;
       state.vy = Math.abs(state.vy);
-      return true;
+      return;
     }
 
-    // Ball is trapped inside — eject along the shallowest axis.
     if (minOverlap === overlapLeft || minOverlap === overlapRight) {
       const goLeft = overlapLeft <= overlapRight;
       state.ballX = goLeft ? rect.left - state.ballRadius - 1 : rect.right + state.ballRadius + 1;
@@ -142,23 +143,21 @@ const initHeroPong = () => {
       state.ballY = goUp ? rect.top - state.ballRadius - 1 : rect.bottom + state.ballRadius + 1;
       state.vy = Math.abs(state.vy || BASE_SPEED * 0.55) * (goUp ? -1 : 1);
     }
-    return true;
+  };
+
+  const renderBall = () => {
+    const x = state.ballX - state.arena.left - state.ballRadius;
+    const y = state.ballY - state.arena.top - state.ballRadius;
+    ballEl.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
   };
 
   const tick = ts => {
-    if (document.hidden) {
-      state.lastTs = 0;
-      requestAnimationFrame(tick);
+    if (!state.running) {
+      state.frame = 0;
       return;
     }
 
     const arena = state.arena;
-    if (arena.bottom < 0 || arena.top > window.innerHeight) {
-      state.lastTs = 0;
-      requestAnimationFrame(tick);
-      return;
-    }
-
     const dt = state.lastTs ? Math.min((ts - state.lastTs) / 16.6667, 2.4) : 1;
     state.lastTs = ts;
 
@@ -224,49 +223,63 @@ const initHeroPong = () => {
     if (state.ballX < arena.left - 40) resetBall(1);
     if (state.ballX > arena.right + 40) resetBall(-1);
 
-    ballEl.style.left = `${state.ballX - arena.left}px`;
-    ballEl.style.top = `${state.ballY - arena.top}px`;
-
-    requestAnimationFrame(tick);
+    renderBall();
+    state.frame = window.requestAnimationFrame(tick);
   };
 
-  const handlePointerMove = event => {
-    state.playerY = event.clientY;
+  const start = () => {
+    if (state.running || !perf.canAnimateHeavy) return;
+    state.running = true;
+    state.lastTs = 0;
+    refreshGeometry();
+    updatePaddles();
+    state.frame = window.requestAnimationFrame(tick);
   };
 
-  window.addEventListener("mousemove", handlePointerMove, { passive: true });
+  const stop = () => {
+    state.running = false;
+    state.lastTs = 0;
+    if (state.frame) {
+      window.cancelAnimationFrame(state.frame);
+      state.frame = 0;
+    }
+  };
+
   window.addEventListener(
-    "touchmove",
+    "mousemove",
     event => {
-      const touch = event.touches?.[0];
-      if (!touch) return;
-      state.playerY = touch.clientY;
+      state.playerY = event.clientY;
     },
     { passive: true }
   );
-  window.addEventListener("resize", refreshGeometry, { passive: true });
 
-  let scrollQueued = false;
   window.addEventListener(
-    "scroll",
+    "resize",
     () => {
-      if (scrollQueued) return;
-      scrollQueued = true;
-      requestAnimationFrame(() => {
-        scrollQueued = false;
-        refreshGeometry();
-      });
+      if (!state.running) return;
+      refreshGeometry();
+      updatePaddles();
     },
     { passive: true }
   );
 
-  const geometryTimer = window.setInterval(refreshGeometry, 500);
-  window.addEventListener("beforeunload", () => window.clearInterval(geometryTimer), { once: true });
+  const onScroll = perf.rafThrottle(() => {
+    if (!state.running) return;
+    refreshGeometry();
+  });
+  window.addEventListener("scroll", onScroll, { passive: true });
 
   refreshGeometry();
   updatePaddles();
   resetBall(Math.random() > 0.5 ? 1 : -1);
-  requestAnimationFrame(tick);
+  renderBall();
+
+  perf.pauseWhenHidden({ start, stop });
+  perf.observeVisibility(heroPage, {
+    enter: start,
+    leave: stop,
+    threshold: 0.08
+  });
 };
 
 if (document.readyState === "loading") {

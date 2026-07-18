@@ -46,7 +46,9 @@ const initVideoOrb = () => {
   orb.classList.add("is-pending");
 
   const isMobileViewport = () =>
-    window.matchMedia("(max-width: 1100px)").matches || window.matchMedia("(pointer: coarse)").matches;
+    Boolean(window.STUDIO_PERF?.isLite) ||
+    window.matchMedia("(max-width: 1100px)").matches ||
+    window.matchMedia("(pointer: coarse)").matches;
 
   window.setTimeout(() => {
     if (orb.classList.contains("is-hidden")) return;

@@ -9,7 +9,9 @@ const initHeroSearch = () => {
   const finalAttachmentsRoot = document.querySelector("[data-hero-final-attachments]");
   const finalAttachList = document.querySelector("[data-hero-final-attach-list]");
   const mobileLite =
-    window.matchMedia("(max-width: 1100px)").matches || window.matchMedia("(pointer: coarse)").matches;
+    Boolean(window.STUDIO_PERF?.isLite) ||
+    window.matchMedia("(max-width: 1100px)").matches ||
+    window.matchMedia("(pointer: coarse)").matches;
 
   let activeComposer = null;
 

@@ -11,11 +11,16 @@ const initHeroScroll = () => {
   const stats = document.querySelector(".studio-stats[data-hero-scroll-item]");
   if (!heroPage || !wordmark || !subtitle || !brief) return;
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const saveData = navigator.connection?.saveData === true;
-  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-  const narrowViewport = window.matchMedia("(max-width: 1100px)").matches;
-  if (reducedMotion || saveData || coarsePointer || narrowViewport) return;
+  const perf = window.STUDIO_PERF;
+  if (
+    perf?.isLite ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    navigator.connection?.saveData === true ||
+    window.matchMedia("(pointer: coarse)").matches ||
+    window.matchMedia("(max-width: 1100px)").matches
+  ) {
+    return;
+  }
 
   const layers = [
     { node: wordmark, lift: 52, scale: 0.1, fade: 0.94 },

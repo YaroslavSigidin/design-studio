@@ -17,7 +17,12 @@ const initServicesCarousel = () => {
   const getCards = () => [...track.querySelectorAll("[data-service-card]")];
   const getOriginalCards = () => getCards().filter(card => !card.hasAttribute("data-service-clone"));
 
-  const isArcMode = () => arcQuery.matches && window.innerWidth >= ARC_BREAKPOINT;
+  const isArcMode = () => {
+    if (!arcQuery.matches || window.innerWidth < ARC_BREAKPOINT) return false;
+    // Use isLite (not canAnimateHeavy): document.hidden must not collapse the arc layout.
+    if (window.STUDIO_PERF?.isLite) return false;
+    return true;
+  };
 
   const setArcModeClass = enabled => {
     root.classList.toggle("is-arc", enabled);
@@ -273,7 +278,25 @@ const initServicesCarousel = () => {
     arcFrame = window.requestAnimationFrame(layoutArc);
   };
 
+  const shouldLoopLinear = () => !window.STUDIO_PERF?.isLite;
+
   const bootLinear = () => {
+    const originals = getOriginalCards();
+    if (!originals.length) return;
+
+    if (!shouldLoopLinear()) {
+      // Lite devices: no DOM cloning / infinite loop — plain snap scroll.
+      setCloneVisibility(false);
+      const target = originals[Math.min(1, originals.length - 1)];
+      const runCenter = () => {
+        centerCard(target);
+        updateLinearFocus();
+      };
+      runCenter();
+      window.requestAnimationFrame(runCenter);
+      return;
+    }
+
     const count = prepareLoop();
     if (!count) return;
 
@@ -315,6 +338,7 @@ const initServicesCarousel = () => {
   const onTrackScroll = () => {
     if (isArcMode()) return;
     scheduleLinearFocus();
+    if (!shouldLoopLinear()) return;
     window.clearTimeout(normalizeTimer);
     normalizeTimer = window.setTimeout(normalizeLoop, 110);
   };

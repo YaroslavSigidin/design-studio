@@ -1,10 +1,14 @@
 const initHeaderWidgets = () => {
+  if (window.STUDIO_PERF?.isNarrow || window.STUDIO_PERF?.isLite) return;
+
   const widgets = [...document.querySelectorAll("[data-header-widget]")].filter(
     node => !node.classList.contains("is-hidden")
   );
   if (!widgets.length) return;
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducedMotion =
+    Boolean(window.STUDIO_PERF?.prefersReducedMotion) ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reducedMotion) return;
 
   const revealOffset = 12;

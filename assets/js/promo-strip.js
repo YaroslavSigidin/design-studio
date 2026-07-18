@@ -19,15 +19,22 @@ const initPromoStrip = () => {
     return;
   }
 
+  let timerId = 0;
+
   const isDismissed = () => window.localStorage.getItem(storageKey) === "1";
-
   const getRemainingMs = () => Math.max(0, endsAtMs - Date.now());
-
   const isExpired = () => getRemainingMs() <= 0;
+
+  const stopTimer = () => {
+    if (!timerId) return;
+    window.clearInterval(timerId);
+    timerId = 0;
+  };
 
   const syncVisibility = () => {
     if (!desktopMedia.matches || isDismissed() || isExpired()) {
       strip.classList.add("is-hidden");
+      stopTimer();
       if (isExpired()) {
         document.dispatchEvent(new CustomEvent("studio:promo-hidden"));
       }
@@ -61,21 +68,21 @@ const initPromoStrip = () => {
   };
 
   const startTimer = () => {
-    if (!syncVisibility()) {
+    stopTimer();
+    if (!syncVisibility() || document.hidden) {
       render();
       return;
     }
 
     render();
-    window.setInterval(() => {
+    timerId = window.setInterval(() => {
       render();
       if (isExpired()) syncVisibility();
     }, 1000);
   };
 
   const handleMediaChange = () => {
-    syncVisibility();
-    render();
+    startTimer();
   };
 
   startTimer();
@@ -85,7 +92,13 @@ const initPromoStrip = () => {
     event.stopPropagation();
     strip.classList.add("is-hidden");
     window.localStorage.setItem(storageKey, "1");
+    stopTimer();
     document.dispatchEvent(new CustomEvent("studio:promo-hidden"));
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopTimer();
+    else startTimer();
   });
 
   if (typeof desktopMedia.addEventListener === "function") {

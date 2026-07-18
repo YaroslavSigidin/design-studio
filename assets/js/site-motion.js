@@ -1,7 +1,6 @@
 const initSiteMotion = () => {
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const saveData = navigator.connection?.saveData === true;
-  const lowEndCpu = typeof navigator.hardwareConcurrency === "number" && navigator.hardwareConcurrency <= 4;
+  const perf = window.STUDIO_PERF;
+  const hardDisable = Boolean(perf?.isLite);
   const targetSelector = [
     ".hero-badge",
     ".hero-btn",
@@ -13,7 +12,6 @@ const initSiteMotion = () => {
     ".case-related-card",
     ".case-lead-form__inner"
   ].join(",");
-  const hardDisable = reducedMotion || saveData || lowEndCpu;
 
   let itemIndex = 0;
   const seen = new WeakSet();
@@ -53,16 +51,22 @@ const initSiteMotion = () => {
   const scan = root => {
     if (!(root instanceof Element) && root !== document) return;
     if (root instanceof Element && root.matches(targetSelector)) registerElement(root);
-
     const nodes = root.querySelectorAll ? root.querySelectorAll(targetSelector) : [];
     nodes.forEach(registerElement);
   };
 
-  const runScan = () => scan(document);
-  runScan();
-  window.setTimeout(runScan, 500);
-  window.setTimeout(runScan, 1600);
-  window.setTimeout(runScan, 3200);
+  scan(document);
+
+  // Re-scan only when dynamic sections announce they rendered cards.
+  ["studio:services-rendered", "studio:cases-rendered"].forEach(eventName => {
+    window.addEventListener(eventName, () => scan(document), { once: false });
+  });
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(() => scan(document), { timeout: 1800 });
+  } else {
+    window.setTimeout(() => scan(document), 900);
+  }
 };
 
 if (document.readyState === "loading") {

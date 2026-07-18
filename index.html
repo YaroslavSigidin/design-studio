@@ -36,13 +36,24 @@
       name="twitter:image"
       content="https://yaroslavsigidin.github.io/design-studio/assets/images/brand/og-cover.png"
     />
+    <script>
+      (() => {
+        const lite =
+          window.matchMedia("(pointer: coarse)").matches ||
+          window.matchMedia("(max-width: 1100px)").matches ||
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+          Boolean(navigator.connection && navigator.connection.saveData) ||
+          (Number.isFinite(navigator.hardwareConcurrency) && navigator.hardwareConcurrency <= 4);
+        if (lite) document.documentElement.classList.add("studio-perf-lite");
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-mobile-perf" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20260718-perf-ideal" />
   </head>
   <body data-seo-page="home">
     <div class="hero-page">
@@ -1191,25 +1202,26 @@
     </aside>
 
     <script src="./assets/js/config.js?v=20260718-roadmap" defer></script>
+    <script src="./assets/js/studio-perf.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/analytics.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/seo.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/contact.js?v=20260718-roadmap" defer></script>
-    <script src="./assets/js/video-orb.js?v=20260718-mobile-perf" defer></script>
-    <script src="./assets/js/promo-strip.js?v=20260718-roadmap" defer></script>
-    <script src="./assets/js/header-widgets.js?v=20260718-chrome-exit" defer></script>
-    <script src="./assets/js/site-motion.js?v=20260716-services-arc-v5" defer></script>
-    <script src="./assets/js/about-motion.js?v=20260718-mobile-perf" defer></script>
+    <script src="./assets/js/video-orb.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/promo-strip.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/header-widgets.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/site-motion.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/about-motion.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/header.js?v=20260713-header-scroll" defer></script>
     <script src="./assets/js/hero-request.js?v=20260713-hero-request-collapse" defer></script>
-    <script src="./assets/js/hero.js?v=20260718-mobile-perf" defer></script>
-    <script src="./assets/js/hero-scroll.js?v=20260718-mobile-perf" defer></script>
-    <script src="./assets/js/hero-pong.js?v=20260718-pong-faster" defer></script>
+    <script src="./assets/js/hero.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/hero-scroll.js?v=20260718-perf-ideal" defer></script>
+    <script src="./assets/js/hero-pong.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260530-heading-reveal-lite" defer></script>
     <script src="./assets/js/services.js?v=20260718-services-icons-v2" defer></script>
-    <script src="./assets/js/services-carousel.js?v=20260718-mobile-perf" defer></script>
+    <script src="./assets/js/services-carousel.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/brief-modal.js?v=20260718-roadmap" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260717-cases-perf" defer></script>
-    <script src="./assets/js/cases.js?v=20260718-cases-meta" defer></script>
+    <script src="./assets/js/cases.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/faq.js?v=20260716-faq-button-accordion" defer></script>
     <script>
       (function () {

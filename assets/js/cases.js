@@ -5,7 +5,7 @@ const loadJson = async (url, timeoutMs = 2500) => {
   const timeoutPromise = new Promise((_, reject) => {
     window.setTimeout(() => reject(new Error(`${url} → timeout (${timeoutMs}ms)`)), timeoutMs);
   });
-  const responsePromise = fetch(url, { cache: "no-store" });
+  const responsePromise = fetch(url, { cache: "force-cache" });
   const res = await Promise.race([responsePromise, timeoutPromise]);
   if (!res.ok) throw new Error(`${url} → ${res.status}`);
   return res.json();
@@ -348,7 +348,11 @@ const TAB_SWITCH_STAGGER_MS = 55;
 const TAB_SWITCH_STAGGER_CAP_MS = 420;
 
 const prefersReducedMotion = () =>
+  Boolean(window.STUDIO_PERF?.prefersReducedMotion) ||
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const prefersLiteMotion = () =>
+  Boolean(window.STUDIO_PERF?.isLite) || prefersReducedMotion();
 
 const getTabSwitchDirection = (tabsRoot, fromTab, toTab) => {
   const tabs = qsa(".tab-button", tabsRoot);
@@ -406,14 +410,11 @@ const revealFilteredCards = grid => {
 
   qsa(".project-card", grid).forEach(card => card.classList.remove("is-filter-reveal"));
 
-  if (prefersReducedMotion()) return;
+  if (prefersLiteMotion()) return;
 
-  const visibleCards = qsa(".project-card", grid).filter(
-    card => !card.hidden && !card.classList.contains("project-card--beyond-limit")
-  );
-
-  // Force reflow so enter animation restarts cleanly after exit.
-  void grid.offsetWidth;
+  const visibleCards = qsa(".project-card", grid)
+    .filter(card => !card.hidden && !card.classList.contains("project-card--beyond-limit"))
+    .slice(0, 6);
 
   visibleCards.forEach((card, index) => {
     card.style.setProperty(
@@ -542,11 +543,19 @@ const initCasesFilter = (grid, tabsRoot) => {
 
   grid.addEventListener("load", () => scheduleCasesStackClip(grid, stack, stack?.classList.contains("is-collapsed")), true);
 
-  window.addEventListener("resize", () => {
-    expanded = false;
-    applyFilter();
-    updateTabsIndicator(tabsRoot, qs(".tab-button.active", tabsRoot));
-  });
+  let resizeTimer = 0;
+  window.addEventListener(
+    "resize",
+    () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        expanded = false;
+        applyFilter();
+        updateTabsIndicator(tabsRoot, qs(".tab-button.active", tabsRoot));
+      }, 140);
+    },
+    { passive: true }
+  );
 
   applyFilter();
   tabsRoot.dataset.filterBound = "true";
@@ -573,6 +582,7 @@ const renderCasesGrid = (grid, projects, cfg) =>
       grid.innerHTML = items.map((project, index) => renderProjectCard(project, cfg, index)).join("");
       bindCardNavigation(grid);
       window.STUDIO_MEDIA?.initImageSkeletons(grid);
+      window.dispatchEvent(new CustomEvent("studio:cases-rendered"));
       resolve();
     }, 120);
   });
