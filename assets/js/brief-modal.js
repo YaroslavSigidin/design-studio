@@ -18,7 +18,7 @@ const initBriefModal = () => {
     return;
   }
 
-  const defaultModalTitle = modalTitle?.textContent?.trim() || "Заказать дизайн";
+  const defaultModalTitle = modalTitle?.textContent?.trim() || "Обсудить проект";
 
   const serviceNames = [...new Set((window.SERVICES || []).map(item => item.title))];
   const services = [...serviceNames, "Другое"];

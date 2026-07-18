@@ -610,7 +610,13 @@ const initCases = async () => {
   if (grid.dataset.initDone === "true") return;
 
   grid.dataset.initInProgress = "true";
-  renderCasesSkeleton(grid);
+  const hasPrerender = Boolean(grid.querySelector(".project-card[data-project-id]:not(.case-skeleton)"));
+  if (!hasPrerender) {
+    renderCasesSkeleton(grid);
+  } else {
+    grid.classList.remove("is-loading");
+    grid.removeAttribute("aria-busy");
+  }
 
   try {
     const { manifest } = await loadManifestWithFallback(cfg);
@@ -626,11 +632,19 @@ const initCases = async () => {
   } catch (err) {
     grid.classList.remove("is-loading");
     grid.removeAttribute("aria-busy");
-    if (statusEl) {
+    if (hasPrerender) {
+      bindCardNavigation(grid);
+      initCasesFilter(grid, tabsRoot);
+      grid.dataset.initDone = "true";
+      if (statusEl) statusEl.hidden = true;
+      console.warn("[studio cases] using prerendered cards", err);
+    } else if (statusEl) {
       statusEl.textContent = `Не удалось загрузить кейсы: ${err?.message || err}`;
       statusEl.hidden = false;
+      console.error("[studio cases]", err);
+    } else {
+      console.error("[studio cases]", err);
     }
-    console.error("[studio cases]", err);
   } finally {
     grid.dataset.initInProgress = "false";
   }

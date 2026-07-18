@@ -1,0 +1,22 @@
+{
+  "members": [
+    {
+      "name": "Камнев Егор",
+      "role": "CTO",
+      "photo": "./assets/images/team/kamnev-egor.jpg",
+      "alt": "Камнев Егор"
+    },
+    {
+      "name": "Руденко Анна",
+      "role": "Основатель, дизайн-лид",
+      "photo": "./assets/images/team/rudenko-anna.jpg",
+      "alt": "Руденко Анна"
+    },
+    {
+      "name": "Сигидин Ярослав",
+      "role": "Основатель, дизайн-лид",
+      "photo": "./assets/images/team/sigidin-yaroslav.jpg",
+      "alt": "Сигидин Ярослав"
+    }
+  ]
+}

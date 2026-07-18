@@ -34,14 +34,22 @@ window.STUDIO_CONFIG = {
   assetBasePath: studioBasePath,
   siteUrl: "https://yaroslavsigidin.github.io/design-studio",
   manifest: joinPath(studioBasePath, "data/cases.manifest.json") + "?v=20260718-roadmap-all",
+  content: {
+    site: joinPath(studioBasePath, "content/site.json") + "?v=20260718-content",
+    services: joinPath(studioBasePath, "content/services.json") + "?v=20260718-content",
+    cases: joinPath(studioBasePath, "content/cases.json") + "?v=20260718-content",
+    proofs: joinPath(studioBasePath, "content/proofs.json") + "?v=20260718-content",
+    team: joinPath(studioBasePath, "content/team.json") + "?v=20260718-content",
+    testimonials: joinPath(studioBasePath, "content/testimonials.json") + "?v=20260718-content"
+  },
   studioHome: studioBasePath,
   studioCases: `${studioBasePath}#cases`,
   casePageBase: joinPath(studioBasePath, "case.html"),
   seo: {
     siteName: "Согласовано",
-    title: "Согласовано — дизайн-студия полного цикла",
+    title: "Согласовано — дизайн и разработка цифровых продуктов",
     description:
-      "Согласовано — дизайн-студия полного цикла. UX/UI, сайты, брендинг и продуктовый дизайн под задачи вашего бизнеса.",
+      "Проектируем сайты и интерфейсы, которые проще согласовать и быстрее запустить. Дизайн, разработка и поддержка одной командой.",
     image: "assets/images/brand/og-cover.png"
   },
   contacts: {

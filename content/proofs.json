@@ -1,0 +1,121 @@
+{
+  "stats": [
+    {
+      "id": "projects-50",
+      "claim": "более 50 коммерческих проектов",
+      "status": "needs_evidence",
+      "sourceUrl": "",
+      "sourceTitle": "",
+      "year": null,
+      "displayNote": "Скрыто до подтверждения портфелем/CRM."
+    },
+    {
+      "id": "experience-10",
+      "claim": "10+ лет суммарного опыта команды в digital",
+      "status": "qualified",
+      "sourceUrl": "",
+      "sourceTitle": "",
+      "year": 2026,
+      "displayNote": "Суммарный опыт команды, не рейтинг студии.",
+      "display": {
+        "accent": "10+",
+        "strong": "лет суммарного опыта",
+        "text": "команды в digital"
+      }
+    },
+    {
+      "id": "top-10-south",
+      "claim": "топ 10 студий юга РФ за 2025 год",
+      "status": "needs_evidence",
+      "sourceUrl": "",
+      "sourceTitle": "",
+      "year": 2025,
+      "displayNote": "Рейтинги не публикуем без источника."
+    },
+    {
+      "id": "students-2000",
+      "claim": "более 2000 студентов",
+      "status": "needs_evidence",
+      "sourceUrl": "",
+      "sourceTitle": "",
+      "year": null,
+      "displayNote": "Скрыто до подтверждения."
+    }
+  ],
+  "partners": [
+    {
+      "name": "VISI FLOW",
+      "status": "verified",
+      "context": "прямой клиент",
+      "evidence": "case:visiflow"
+    },
+    {
+      "name": "Octoclick",
+      "status": "verified",
+      "context": "прямой клиент",
+      "evidence": "case:octoclick"
+    },
+    {
+      "name": "MIROX",
+      "status": "verified",
+      "context": "прямой клиент",
+      "evidence": "case:mirox"
+    },
+    {
+      "name": "IN IT",
+      "status": "verified",
+      "context": "прямой клиент",
+      "evidence": "case:in-it"
+    },
+    {
+      "name": "PAZL&KOD",
+      "status": "verified",
+      "context": "прямой клиент",
+      "evidence": "case:pazl-kod-platform"
+    },
+    {
+      "name": "WINGLISH",
+      "status": "verified",
+      "context": "прямой клиент",
+      "evidence": "case:winglish"
+    },
+    {
+      "name": "SBER",
+      "status": "removed",
+      "context": "",
+      "displayNote": "Не публиковать без подтверждённого контекста."
+    },
+    {
+      "name": "VTB",
+      "status": "removed",
+      "context": "",
+      "displayNote": "Не публиковать без подтверждённого контекста."
+    },
+    {
+      "name": "LUKOIL",
+      "status": "removed",
+      "context": "",
+      "displayNote": "Не публиковать без подтверждённого контекста."
+    }
+  ],
+  "aboutFacts": [
+    {
+      "id": "full-cycle",
+      "title": "Настроили полный цикл внутри студии",
+      "text": "Бриф, дизайн, разработка и согласования идут в одном контуре без разрывов.",
+      "status": "verified"
+    },
+    {
+      "id": "design-dev",
+      "title": "Дизайн и разработка вместе",
+      "text": "Одна команда отвечает за макет, передачу и реализацию — меньше потерь на стыках.",
+      "status": "verified"
+    },
+    {
+      "id": "after-release",
+      "title": "Остаёмся после релиза",
+      "text": "Поддерживаем продукт, правим узкие места и развиваем интерфейс по метрикам.",
+      "status": "verified"
+    }
+  ]
+}
