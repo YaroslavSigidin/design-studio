@@ -3,4 +3,6 @@ Thumbs.db
 .env
 *.local
 amocrm-proxy/.env
+amocrm-proxy/node_modules/
+node_modules/
 .preview/

@@ -4,15 +4,24 @@ services:
     runtime: node
     rootDir: amocrm-proxy
     plan: free
-    buildCommand: echo "no build"
+    buildCommand: npm install --omit=dev
     startCommand: node server.mjs
     healthCheckPath: /health
     envVars:
       - key: TELEGRAM_CHAT_ID
         value: "-5360826750"
+      # Exact Origins only — never include a path after the host.
       - key: ALLOWED_ORIGINS
-        value: "https://yaroslavsigidin.github.io,https://yaroslavsigidin.github.io/design-studio,http://127.0.0.1:8766,http://localhost:8766,http://92.53.96.132,https://92.53.96.132"
+        value: "https://yaroslavsigidin.github.io,http://127.0.0.1:8765,http://localhost:8765,http://127.0.0.1:8766,http://localhost:8766"
+      - key: MAX_BODY_BYTES
+        value: "65536"
+      - key: RATE_LIMIT_MAX
+        value: "12"
+      - key: UPSTREAM_TIMEOUT_MS
+        value: "10000"
       - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TURNSTILE_SECRET
         sync: false
       - key: AMO_BASE_URL
         value: ""

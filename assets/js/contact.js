@@ -61,13 +61,33 @@ const initStudioContacts = () => {
     return false;
   };
 
+  const buildLeadBody = payload => {
+    const fields = payload || {};
+    return {
+      name: String(fields.name || "").trim(),
+      phone: String(fields.phone || "").trim(),
+      contact: String(fields.contact || "").trim(),
+      service: String(fields.service || "").trim(),
+      source: String(fields.source || "").trim(),
+      budget: String(fields.budget || "").trim(),
+      deadline: String(fields.deadline || "").trim(),
+      comment: String(fields.comment || "").trim(),
+      page: window.location.href.slice(0, 500),
+      referer: String(document.referrer || "").slice(0, 500),
+      submittedAt: new Date().toISOString(),
+      privacy: true,
+      // Honeypot fields — must remain empty.
+      website: "",
+      company_url: "",
+      turnstileToken: String(fields.turnstileToken || window.STUDIO_CONFIG?.turnstileToken || "").trim()
+    };
+  };
+
   const submitToCrm = async payload => {
     const endpoint = String(cfg.crm?.endpoint || "").trim();
     if (!endpoint) {
       return { ok: false, mode: "crm-unconfigured", code: "DELIVERY_FAILED" };
     }
-
-    const { attachments: _ignoredAttachments, ...fields } = payload || {};
 
     const controller = new AbortController();
     const timeoutMs = Number(cfg.crm?.timeoutMs || 12000);
@@ -79,12 +99,7 @@ const initStudioContacts = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          ...fields,
-          page: window.location.href,
-          referer: document.referrer || "",
-          submittedAt: new Date().toISOString()
-        }),
+        body: JSON.stringify(buildLeadBody(payload)),
         signal: controller.signal
       });
 
@@ -184,7 +199,20 @@ const initStudioContacts = () => {
     return failed;
   };
 
+  const ensureHoneypot = form => {
+    if (form.querySelector('input[name="website"]')) return;
+    const wrap = document.createElement("div");
+    wrap.setAttribute("aria-hidden", "true");
+    wrap.style.cssText =
+      "position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;";
+    wrap.innerHTML =
+      '<label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>' +
+      '<label>Company URL<input type="text" name="company_url" tabindex="-1" autocomplete="off" /></label>';
+    form.appendChild(wrap);
+  };
+
   const ensureFormStatus = form => {
+    ensureHoneypot(form);
     let status = form.querySelector("[data-form-status]");
     if (status) return status;
     status = document.createElement("p");
@@ -343,6 +371,15 @@ const initStudioContacts = () => {
     });
   });
 
+  // Prepare honeypot + status hosts on every known lead form.
+  document
+    .querySelectorAll(
+      ".studio-discuss__form, .hero-request__form, #briefForm, #heroFinalForm, form[data-lead-form]"
+    )
+    .forEach(form => {
+      if (form instanceof HTMLFormElement) ensureFormStatus(form);
+    });
+
   window.STUDIO_CONTACT = {
     buildLeadUrl: payload => {
       const message = formatPayload(payload);
@@ -352,7 +389,8 @@ const initStudioContacts = () => {
     openLeadChannel,
     submitLead,
     formatPayload,
-    setFormStatus
+    setFormStatus,
+    ensureHoneypot
   };
 
   document.addEventListener("submit", async event => {

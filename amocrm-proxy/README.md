@@ -1,82 +1,40 @@
-# Lead proxy для сайта "Согласовано"
+# Lead proxy (Telegram / optional amoCRM)
 
-GitHub Pages не может безопасно хранить токены Telegram или amoCRM в браузере, поэтому заявки отправляются через этот backend.
+Hardened Node HTTP service for `/api/leads`.
 
-Сейчас прокси умеет:
+## Security controls
 
-1. отправлять заявки в Telegram-группу через бота;
-2. опционально дублировать заявки в amoCRM.
+- Exact-origin CORS (`ALLOWED_ORIGINS`, no paths, no `*.github.io` wildcards)
+- `Vary: Origin`
+- Body size limit (`MAX_BODY_BYTES`, default 64 KB)
+- Zod schema validation (strict object)
+- In-memory rate limit per IP
+- Honeypot fields `website` / `company_url`
+- Optional Cloudflare Turnstile (`TURNSTILE_SECRET`)
+- Public `/health` returns only `{ "ok": true }`
+- Upstream timeout + limited retry
+- Safe client error codes: `VALIDATION_ERROR`, `RATE_LIMITED`, `DELIVERY_FAILED`, `ATTACHMENT_REJECTED`
+- Internal errors logged with `requestId` only
 
-## Telegram
-
-В `.env` нужны:
-
-```env
-TELEGRAM_BOT_TOKEN=your-bot-token
-TELEGRAM_CHAT_ID=-5360826750
-ALLOWED_ORIGINS=https://yaroslavsigidin.github.io,https://yaroslavsigidin.github.io/design-studio,http://127.0.0.1:8766,http://localhost:8766
-```
-
-Бот должен быть добавлен в группу и иметь право писать сообщения.
-
-## Локальный запуск
+## Local run
 
 ```bash
 cd amocrm-proxy
-cp .env.example .env
-node --env-file=.env server.mjs
+cp .env.example .env   # fill TELEGRAM_* 
+npm install
+npm start
 ```
 
-Проверка:
+## Env
 
-```bash
-curl http://127.0.0.1:8787/health
-```
+See `.env.example`. On Render, set `ALLOWED_ORIGINS` to exact production origins only, e.g.:
 
-## Endpoint
+`https://yaroslavsigidin.github.io`
 
-`POST /api/leads`
+Do **not** include a path like `/design-studio` — browser `Origin` never has a path.
 
-Пример payload:
+## Owner follow-ups
 
-```json
-{
-  "source": "Модальное окно брифа",
-  "service": "Редизайн сайта",
-  "name": "Ярослав",
-  "phone": "+7 961 971-05-15",
-  "contact": "@sigidingo",
-  "budget": "145 000 ₽",
-  "deadline": "2.3 мес",
-  "comment": "Нужен быстрый редизайн лендинга",
-  "page": "https://yaroslavsigidin.github.io/design-studio/"
-}
-```
-
-## Деплой на Render
-
-1. Создайте Web Service из репозитория на [Render](https://render.com).
-2. Render подхватит `render.yaml` из корня репозитория.
-3. В Environment добавьте `TELEGRAM_BOT_TOKEN`.
-4. После деплоя URL сервиса должен быть `https://soglasovano-leads.onrender.com`.
-
-Фронт уже настроен на этот endpoint в `assets/js/config.js`.
-
-## amoCRM (опционально)
-
-Если нужен amoCRM, дополнительно заполните:
-
-```env
-AMO_BASE_URL=https://sigidingo.amocrm.ru
-AMO_ACCESS_TOKEN=<долгосрочный токен>
-AMO_SOURCE_NAME=Сайт Согласовано
-AMO_SOURCE_UID=design-studio-site
-AMO_PIPELINE_ID=
-```
-
-Если amoCRM настроен, заявка может уходить и в CRM, и в Telegram.
-
-## Безопасность
-
-- Никогда не коммитьте `.env` и не публикуйте токен бота в репозиторий.
-- Если токен когда-либо попал в чат или git, перевыпустите его через `@BotFather`.
+- Redeploy Render after this change (`npm install` in build)
+- Provide `TURNSTILE_SECRET` (+ site key in frontend config) to enable Turnstile
+- Confirm Telegram bot can post to `TELEGRAM_CHAT_ID`

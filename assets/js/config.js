@@ -74,6 +74,9 @@ window.STUDIO_CONFIG = {
   analytics: {
     metrikaId: ""
   },
+  // Optional Cloudflare Turnstile site key. Leave empty until owner provides keys.
+  turnstileSiteKey: "",
+  turnstileToken: "",
   promo: {
     // endsAt — ISO-дата окончания акции (с часовым поясом). После дедлайна promo-strip скрывается навсегда.
     endsAt: "2026-07-27T23:59:59+03:00",

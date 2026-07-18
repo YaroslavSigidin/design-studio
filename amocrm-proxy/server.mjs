@@ -1,7 +1,28 @@
 import http from "node:http";
 import { randomUUID } from "node:crypto";
+import { z } from "zod";
 
 const env = process.env;
+
+const DEFAULT_ORIGINS = [
+  "https://yaroslavsigidin.github.io",
+  "http://127.0.0.1:8765",
+  "http://127.0.0.1:8766",
+  "http://localhost:8765",
+  "http://localhost:8766"
+];
+
+const normalizeOrigin = value => {
+  const raw = String(value || "").trim();
+  if (!raw || raw === "*") return "";
+  try {
+    const url = new URL(raw);
+    // Origins never include a path — strip accidental path entries from env.
+    return `${url.protocol}//${url.host}`;
+  } catch {
+    return "";
+  }
+};
 
 const config = {
   port: Number(env.PORT || 8787),
@@ -12,11 +33,55 @@ const config = {
   amoPipelineId: env.AMO_PIPELINE_ID ? Number(env.AMO_PIPELINE_ID) : null,
   telegramBotToken: String(env.TELEGRAM_BOT_TOKEN || "").trim(),
   telegramChatId: String(env.TELEGRAM_CHAT_ID || "").trim(),
-  allowedOrigins: String(env.ALLOWED_ORIGINS || "")
+  turnstileSecret: String(env.TURNSTILE_SECRET || "").trim(),
+  allowedOrigins: String(env.ALLOWED_ORIGINS || DEFAULT_ORIGINS.join(","))
     .split(",")
-    .map(value => value.trim())
-    .filter(Boolean)
+    .map(normalizeOrigin)
+    .filter(Boolean),
+  maxBodyBytes: Number(env.MAX_BODY_BYTES || 64 * 1024),
+  rateLimitWindowMs: Number(env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000),
+  rateLimitMax: Number(env.RATE_LIMIT_MAX || 12),
+  rateLimitMaxNoOrigin: Number(env.RATE_LIMIT_MAX_NO_ORIGIN || 4),
+  upstreamTimeoutMs: Number(env.UPSTREAM_TIMEOUT_MS || 10000),
+  upstreamRetries: Number(env.UPSTREAM_RETRIES || 1)
 };
+
+const ERROR_CODES = {
+  VALIDATION_ERROR: "VALIDATION_ERROR",
+  RATE_LIMITED: "RATE_LIMITED",
+  DELIVERY_FAILED: "DELIVERY_FAILED",
+  ATTACHMENT_REJECTED: "ATTACHMENT_REJECTED"
+};
+
+const leadSchema = z
+  .object({
+    name: z.string().trim().min(1).max(120),
+    phone: z.string().trim().max(64).optional().default(""),
+    contact: z.string().trim().max(255).optional().default(""),
+    service: z.string().trim().max(160).optional().default(""),
+    source: z.string().trim().max(160).optional().default(""),
+    budget: z.string().trim().max(120).optional().default(""),
+    deadline: z.string().trim().max(120).optional().default(""),
+    comment: z.string().trim().max(4000).optional().default(""),
+    page: z.string().trim().max(500).optional().default(""),
+    referer: z.string().trim().max(500).optional().default(""),
+    submittedAt: z.string().trim().max(64).optional().default(""),
+    privacy: z.union([z.literal(true), z.literal("true"), z.literal(1), z.literal("1")]).optional(),
+    // Honeypot — must stay empty.
+    website: z.string().max(0).optional().default(""),
+    company_url: z.string().max(0).optional().default(""),
+    turnstileToken: z.string().trim().max(2048).optional().default("")
+  })
+  .strict()
+  .superRefine((value, ctx) => {
+    if (!value.phone && !value.contact) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Нужен телефон или контакт",
+        path: ["contact"]
+      });
+    }
+  });
 
 const hasRealAmoToken = () =>
   Boolean(config.amoAccessToken) && config.amoAccessToken !== "put-long-lived-token-here";
@@ -27,75 +92,133 @@ const hasTelegram = () => Boolean(config.telegramBotToken && config.telegramChat
 
 const jsonHeaders = {
   "Content-Type": "application/json; charset=utf-8",
-  "Cache-Control": "no-store"
+  "Cache-Control": "no-store",
+  Vary: "Origin"
 };
 
-const parseBody = request =>
-  new Promise((resolve, reject) => {
-    const chunks = [];
-    request.on("data", chunk => chunks.push(chunk));
-    request.on("end", () => {
-      try {
-        const raw = Buffer.concat(chunks).toString("utf8");
-        resolve(raw ? JSON.parse(raw) : {});
-      } catch {
-        reject(new Error("Некорректный JSON body"));
-      }
-    });
-    request.on("error", reject);
-  });
+const rateBucket = new Map();
 
-const isAllowedOrigin = origin => {
-  if (!origin) return true;
-  if (!config.allowedOrigins.length) return true;
-  if (config.allowedOrigins.includes(origin)) return true;
-  if (config.allowedOrigins.includes("*")) return true;
+const getClientIp = request => {
+  const forwarded = String(request.headers["x-forwarded-for"] || "")
+    .split(",")[0]
+    .trim();
+  return forwarded || request.socket.remoteAddress || "unknown";
+};
 
-  try {
-    const url = new URL(origin);
-    const host = url.hostname;
-    // Локальная разработка и типичные деплои студии.
-    if (host === "localhost" || host === "127.0.0.1") return true;
-    if (host.endsWith(".github.io")) return true;
-    if (host === "92.53.96.132") return true;
-  } catch {
-    return false;
+const pruneRateBucket = now => {
+  for (const [key, entry] of rateBucket.entries()) {
+    if (now - entry.start >= config.rateLimitWindowMs) rateBucket.delete(key);
+  }
+};
+
+const consumeRateLimit = (ip, hasOrigin) => {
+  const now = Date.now();
+  pruneRateBucket(now);
+  const max = hasOrigin ? config.rateLimitMax : config.rateLimitMaxNoOrigin;
+  const key = `${ip}:${hasOrigin ? "o" : "n"}`;
+  const current = rateBucket.get(key);
+
+  if (!current || now - current.start >= config.rateLimitWindowMs) {
+    rateBucket.set(key, { start: now, count: 1 });
+    return { allowed: true, remaining: max - 1 };
   }
 
-  return false;
+  current.count += 1;
+  if (current.count > max) {
+    return { allowed: false, remaining: 0, retryAfterMs: config.rateLimitWindowMs - (now - current.start) };
+  }
+
+  return { allowed: true, remaining: Math.max(0, max - current.count) };
 };
 
-const getCorsOrigin = origin => {
-  if (!origin) return "*";
-  return isAllowedOrigin(origin) ? origin : "";
+const isAllowedOrigin = origin => {
+  if (!origin) return false;
+  const normalized = normalizeOrigin(origin);
+  return Boolean(normalized && config.allowedOrigins.includes(normalized));
 };
 
-const sendJson = (response, statusCode, payload, origin) => {
-  const corsOrigin = getCorsOrigin(origin);
-  const headers = { ...jsonHeaders };
-
-  if (corsOrigin) {
-    headers["Access-Control-Allow-Origin"] = corsOrigin;
+const sendJson = (response, statusCode, payload, origin, extraHeaders = {}) => {
+  const headers = { ...jsonHeaders, ...extraHeaders };
+  if (origin && isAllowedOrigin(origin)) {
+    headers["Access-Control-Allow-Origin"] = normalizeOrigin(origin);
     headers["Access-Control-Allow-Headers"] = "Content-Type";
     headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS";
   }
-
   response.writeHead(statusCode, headers);
   response.end(JSON.stringify(payload));
 };
 
 const handleOptions = (response, origin) => {
-  const corsOrigin = getCorsOrigin(origin);
-  const headers = {
-    "Access-Control-Allow-Origin": corsOrigin || "*",
+  if (!origin || !isAllowedOrigin(origin)) {
+    response.writeHead(403, { ...jsonHeaders, "Cache-Control": "no-store" });
+    response.end();
+    return;
+  }
+
+  response.writeHead(204, {
+    ...jsonHeaders,
+    "Access-Control-Allow-Origin": normalizeOrigin(origin),
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
     "Access-Control-Max-Age": "86400"
-  };
-
-  response.writeHead(204, headers);
+  });
   response.end();
 };
+
+const parseBodyLimited = (request, maxBytes) =>
+  new Promise((resolve, reject) => {
+    const contentLength = Number(request.headers["content-length"] || 0);
+    if (Number.isFinite(contentLength) && contentLength > maxBytes) {
+      const error = new Error("Payload too large");
+      error.code = ERROR_CODES.VALIDATION_ERROR;
+      error.statusCode = 413;
+      reject(error);
+      return;
+    }
+
+    const chunks = [];
+    let total = 0;
+    let settled = false;
+
+    const fail = (message, statusCode = 413) => {
+      if (settled) return;
+      settled = true;
+      request.destroy();
+      const error = new Error(message);
+      error.code = ERROR_CODES.VALIDATION_ERROR;
+      error.statusCode = statusCode;
+      reject(error);
+    };
+
+    request.on("data", chunk => {
+      total += chunk.length;
+      if (total > maxBytes) {
+        fail("Payload too large", 413);
+        return;
+      }
+      chunks.push(chunk);
+    });
+
+    request.on("end", () => {
+      if (settled) return;
+      settled = true;
+      try {
+        const raw = Buffer.concat(chunks).toString("utf8");
+        resolve(raw ? JSON.parse(raw) : {});
+      } catch {
+        const error = new Error("Некорректный JSON body");
+        error.code = ERROR_CODES.VALIDATION_ERROR;
+        error.statusCode = 400;
+        reject(error);
+      }
+    });
+
+    request.on("error", error => {
+      if (settled) return;
+      settled = true;
+      reject(error);
+    });
+  });
 
 const sanitizeText = (value, maxLength = 1200) =>
   String(value || "")
@@ -112,12 +235,13 @@ const parseBudget = value => {
 
 const detectEmail = value => {
   const normalized = sanitizeText(value, 255);
-  return normalized.includes("@") ? normalized : "";
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized) ? normalized : "";
 };
 
-const buildNoteText = payload => {
+const buildNoteText = (payload, requestId) => {
   const lines = [
     "Новая заявка с сайта «Согласовано»",
+    `ID: ${requestId}`,
     "",
     payload.source ? `Источник: ${payload.source}` : "",
     payload.service ? `Услуга: ${payload.service}` : "",
@@ -130,13 +254,12 @@ const buildNoteText = payload => {
     payload.page ? `Страница: ${payload.page}` : ""
   ].filter(Boolean);
 
-  return lines.join("\n");
+  return lines.join("\n").slice(0, 3900);
 };
 
 const buildLeadName = payload => {
   const service = sanitizeText(payload.service, 120);
   const name = sanitizeText(payload.name, 120);
-
   if (service && name) return `${service} — ${name}`;
   if (service) return `Заявка: ${service}`;
   if (name) return `Заявка: ${name}`;
@@ -148,32 +271,87 @@ const buildSourceUid = payload => {
     .toLowerCase()
     .replace(/[^a-zа-я0-9]+/gi, "-")
     .replace(/^-+|-+$/g, "");
-
   return [config.amoSourceUid, source].filter(Boolean).join("-");
 };
 
-const amoRequest = async (path, method, body) => {
-  const response = await fetch(`${config.amoBaseUrl}${path}`, {
-    method,
-    headers: {
-      Authorization: `Bearer ${config.amoAccessToken}`,
-      "Content-Type": "application/json"
-    },
-    body: body ? JSON.stringify(body) : undefined
-  });
-
-  const text = await response.text();
-  const data = text ? JSON.parse(text) : null;
-
-  if (!response.ok) {
-    const detail = data?.detail || data?.title || text || `HTTP ${response.status}`;
-    throw new Error(`amoCRM ${response.status}: ${detail}`);
+const fetchWithTimeout = async (url, options = {}, timeoutMs = config.upstreamTimeoutMs) => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
   }
-
-  return data;
 };
 
-const createUnsortedLead = async (payload, request) => {
+const withRetry = async (fn, retries = config.upstreamRetries) => {
+  let lastError;
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      return await fn(attempt);
+    } catch (error) {
+      lastError = error;
+      const retryable =
+        error?.name === "AbortError" ||
+        /timeout|network|ECONNRESET|503|502|429/i.test(String(error?.message || ""));
+      if (!retryable || attempt === retries) break;
+      await new Promise(resolve => setTimeout(resolve, 250 * (attempt + 1)));
+    }
+  }
+  throw lastError;
+};
+
+const logError = (requestId, scope, error) => {
+  const message = error instanceof Error ? error.message : String(error);
+  process.stderr.write(`[lead-proxy] ${requestId} ${scope}: ${message}\n`);
+};
+
+const verifyTurnstile = async (token, ip) => {
+  if (!config.turnstileSecret) return true;
+  if (!token) return false;
+
+  const body = new URLSearchParams({
+    secret: config.turnstileSecret,
+    response: token,
+    remoteip: ip
+  });
+
+  const response = await fetchWithTimeout("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body
+  });
+  const data = await response.json().catch(() => ({}));
+  return Boolean(data?.success);
+};
+
+const amoRequest = async (path, method, body) =>
+  withRetry(async () => {
+    const response = await fetchWithTimeout(`${config.amoBaseUrl}${path}`, {
+      method,
+      headers: {
+        Authorization: `Bearer ${config.amoAccessToken}`,
+        "Content-Type": "application/json"
+      },
+      body: body ? JSON.stringify(body) : undefined
+    });
+
+    const text = await response.text();
+    let data = null;
+    try {
+      data = text ? JSON.parse(text) : null;
+    } catch {
+      data = null;
+    }
+
+    if (!response.ok) {
+      throw new Error(`amoCRM HTTP ${response.status}`);
+    }
+
+    return data;
+  });
+
+const createUnsortedLead = async (payload, request, requestId) => {
   const email = detectEmail(payload.contact);
   const phone = sanitizeText(payload.phone, 64);
   const comment = sanitizeText(payload.comment, 4000);
@@ -181,7 +359,7 @@ const createUnsortedLead = async (payload, request) => {
   const leadName = buildLeadName(payload);
   const price = parseBudget(payload.budget);
   const nowTs = Math.floor(Date.now() / 1000);
-  const noteText = buildNoteText(payload);
+  const noteText = buildNoteText(payload, requestId);
   const tags = [payload.service, payload.source, "Сайт Согласовано"]
     .map(value => sanitizeText(value, 80))
     .filter(Boolean)
@@ -209,13 +387,13 @@ const createUnsortedLead = async (payload, request) => {
 
   const unsortedPayload = [
     {
-      request_id: randomUUID(),
+      request_id: requestId,
       source_uid: sourceUid,
       source_name: config.amoSourceName,
       pipeline_id: config.amoPipelineId || undefined,
       created_at: nowTs,
       metadata: {
-        ip: request.socket.remoteAddress || "",
+        ip: getClientIp(request),
         form_id: sourceUid,
         form_sent_at: nowTs,
         form_name: sanitizeText(payload.source || "Форма сайта", 120),
@@ -237,153 +415,178 @@ const createUnsortedLead = async (payload, request) => {
 
   const unsortedResponse = await amoRequest("/api/v4/leads/unsorted/forms", "POST", unsortedPayload);
   const leadId = unsortedResponse?._embedded?.unsorted?.[0]?._embedded?.leads?.[0]?.id;
-
-  let noteAttached = false;
-  let noteError = "";
-
-  if (leadId && noteText) {
-    try {
-      await amoRequest("/api/v4/leads/notes", "POST", [
-        {
-          entity_id: leadId,
-          note_type: "common",
-          params: {
-            text: comment ? `${noteText}\n\nТекст задачи:\n${comment}` : noteText
-          }
-        }
-      ]);
-      noteAttached = true;
-    } catch (error) {
-      noteError = error instanceof Error ? error.message : "Не удалось сохранить note";
-    }
+  if (!leadId) {
+    throw new Error("amoCRM returned no leadId");
   }
 
-  return {
-    leadId: leadId || null,
-    noteAttached,
-    noteError
-  };
+  await amoRequest("/api/v4/leads/notes", "POST", [
+    {
+      entity_id: leadId,
+      note_type: "common",
+      params: {
+        text: comment ? `${noteText}\n\nТекст задачи:\n${comment}` : noteText
+      }
+    }
+  ]);
+
+  return { leadId };
 };
 
-const sendTelegramMessage = async text => {
-  const response = await fetch(`https://api.telegram.org/bot${config.telegramBotToken}/sendMessage`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      chat_id: config.telegramChatId,
-      text,
-      disable_web_page_preview: true
-    })
+const sendTelegramMessage = async text =>
+  withRetry(async () => {
+    const response = await fetchWithTimeout(
+      `https://api.telegram.org/bot${config.telegramBotToken}/sendMessage`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: config.telegramChatId,
+          text,
+          disable_web_page_preview: true
+        })
+      }
+    );
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data?.ok === false) {
+      throw new Error(`Telegram HTTP ${response.status}`);
+    }
+
+    return { messageId: data?.result?.message_id || null };
   });
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || data?.ok === false) {
-    const detail = data?.description || `HTTP ${response.status}`;
-    throw new Error(`Telegram: ${detail}`);
-  }
-
-  return {
-    messageId: data?.result?.message_id || null
-  };
-};
-
-const validateLead = payload => {
-  const name = sanitizeText(payload.name, 120);
-  const phone = sanitizeText(payload.phone, 64);
-  const contact = sanitizeText(payload.contact, 255);
-
-  if (!name) return "Имя обязательно";
-  if (!phone && !contact) return "Нужен телефон или контакт";
-  return "";
-};
-
-const submitLead = async (payload, request) => {
+const submitLead = async (payload, request, requestId) => {
   const errors = [];
-  const result = {
-    telegram: null,
-    amocrm: null
-  };
+  let telegram = null;
+  let amocrm = null;
 
   if (hasTelegram()) {
     try {
-      result.telegram = await sendTelegramMessage(buildNoteText(payload));
+      telegram = await sendTelegramMessage(buildNoteText(payload, requestId));
     } catch (error) {
-      errors.push(error instanceof Error ? error.message : "Telegram error");
+      logError(requestId, "telegram", error);
+      errors.push("telegram");
     }
   }
 
   if (hasAmo()) {
     try {
-      result.amocrm = await createUnsortedLead(payload, request);
+      amocrm = await createUnsortedLead(payload, request, requestId);
     } catch (error) {
-      errors.push(error instanceof Error ? error.message : "amoCRM error");
+      logError(requestId, "amocrm", error);
+      errors.push("amocrm");
     }
   }
 
-  if (result.telegram) {
-    return {
-      ok: true,
-      mode: "telegram",
-      result
-    };
+  if (telegram?.messageId) {
+    return { ok: true, mode: "telegram", telegram, amocrm };
   }
 
-  if (result.amocrm) {
-    return {
-      ok: true,
-      mode: "crm",
-      result
-    };
+  if (amocrm?.leadId) {
+    return { ok: true, mode: "crm", telegram, amocrm };
   }
 
-  throw new Error(errors.join("; ") || "Lead delivery is not configured");
+  const error = new Error(errors.join(",") || "Lead delivery is not configured");
+  error.code = ERROR_CODES.DELIVERY_FAILED;
+  throw error;
 };
 
+const publicError = (code, requestId, statusCode = 400) => ({
+  statusCode,
+  body: {
+    ok: false,
+    code,
+    requestId,
+    error:
+      code === ERROR_CODES.RATE_LIMITED
+        ? "Слишком много запросов. Попробуйте позже."
+        : code === ERROR_CODES.VALIDATION_ERROR
+          ? "Проверьте заполнение формы."
+          : code === ERROR_CODES.ATTACHMENT_REJECTED
+            ? "Вложение отклонено."
+            : "Не удалось отправить заявку. Попробуйте ещё раз."
+  }
+});
+
 const server = http.createServer(async (request, response) => {
-  const origin = request.headers.origin || "";
+  const origin = String(request.headers.origin || "");
+  const requestId = randomUUID();
 
   if (request.method === "OPTIONS") {
     handleOptions(response, origin);
     return;
   }
 
-  if (request.url === "/health" && request.method === "GET") {
-    sendJson(
-      response,
-      200,
-      {
-        ok: true,
-        telegramConfigured: hasTelegram(),
-        amoConfigured: hasAmo(),
-        source: config.amoSourceName
-      },
-      origin
-    );
+  if ((request.url === "/health" || request.url?.startsWith("/health?")) && request.method === "GET") {
+    // Public health: no CORS reflection of secrets, no config leak.
+    response.writeHead(200, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store"
+    });
+    response.end(JSON.stringify({ ok: true }));
     return;
   }
 
   if (request.url !== "/api/leads" || request.method !== "POST") {
-    sendJson(response, 404, { ok: false, error: "Not found" }, origin);
+    sendJson(response, 404, { ok: false, code: "VALIDATION_ERROR", requestId, error: "Not found" }, origin);
     return;
   }
 
-  if (!hasTelegram() && !hasAmo()) {
-    sendJson(response, 500, { ok: false, error: "Lead delivery env is not configured" }, origin);
+  if (origin && !isAllowedOrigin(origin)) {
+    sendJson(response, 403, publicError(ERROR_CODES.VALIDATION_ERROR, requestId, 403).body, "");
+    return;
+  }
+
+  const rate = consumeRateLimit(getClientIp(request), Boolean(origin));
+  if (!rate.allowed) {
+    const payload = publicError(ERROR_CODES.RATE_LIMITED, requestId, 429);
+    sendJson(response, payload.statusCode, payload.body, origin, {
+      "Retry-After": String(Math.ceil((rate.retryAfterMs || config.rateLimitWindowMs) / 1000))
+    });
     return;
   }
 
   try {
-    const body = await parseBody(request);
-    const error = validateLead(body);
+    const rawBody = await parseBodyLimited(request, config.maxBodyBytes);
 
-    if (error) {
-      sendJson(response, 400, { ok: false, error }, origin);
+    if (rawBody?.website || rawBody?.company_url) {
+      // Honeypot trip: pretend success to bots, do not deliver.
+      sendJson(response, 200, { ok: true, mode: "accepted", requestId }, origin);
       return;
     }
 
-    const delivery = await submitLead(body, request);
+    if (Array.isArray(rawBody?.attachments) && rawBody.attachments.length) {
+      const payload = publicError(ERROR_CODES.ATTACHMENT_REJECTED, requestId, 400);
+      sendJson(response, payload.statusCode, payload.body, origin);
+      return;
+    }
+
+    const parsed = leadSchema.safeParse(rawBody);
+    if (!parsed.success) {
+      const payload = publicError(ERROR_CODES.VALIDATION_ERROR, requestId, 400);
+      sendJson(response, payload.statusCode, payload.body, origin);
+      return;
+    }
+
+    const body = parsed.data;
+
+    if (config.turnstileSecret) {
+      const turnstileOk = await verifyTurnstile(body.turnstileToken, getClientIp(request));
+      if (!turnstileOk) {
+        const payload = publicError(ERROR_CODES.VALIDATION_ERROR, requestId, 400);
+        sendJson(response, payload.statusCode, payload.body, origin);
+        return;
+      }
+    }
+
+    if (!hasTelegram() && !hasAmo()) {
+      logError(requestId, "config", new Error("Lead delivery env is not configured"));
+      const payload = publicError(ERROR_CODES.DELIVERY_FAILED, requestId, 503);
+      sendJson(response, payload.statusCode, payload.body, origin);
+      return;
+    }
+
+    const delivery = await submitLead(body, request, requestId);
 
     sendJson(
       response,
@@ -391,26 +594,21 @@ const server = http.createServer(async (request, response) => {
       {
         ok: true,
         mode: delivery.mode,
-        source: config.amoSourceName,
-        result: delivery.result
+        requestId
       },
       origin
     );
   } catch (error) {
-    sendJson(
-      response,
-      502,
-      {
-        ok: false,
-        error: error instanceof Error ? error.message : "Не удалось отправить заявку"
-      },
-      origin
-    );
+    logError(requestId, "request", error);
+    const code = error?.code || ERROR_CODES.DELIVERY_FAILED;
+    const statusCode = Number(error?.statusCode) || (code === ERROR_CODES.VALIDATION_ERROR ? 400 : 502);
+    const payload = publicError(code, requestId, statusCode);
+    sendJson(response, payload.statusCode, payload.body, origin);
   }
 });
 
 server.listen(config.port, () => {
   process.stdout.write(
-    `Lead proxy listening on http://127.0.0.1:${config.port} (telegram: ${hasTelegram()}, amo: ${hasAmo()})\n`
+    `Lead proxy listening on http://127.0.0.1:${config.port} (origins: ${config.allowedOrigins.length}, turnstile: ${Boolean(config.turnstileSecret)})\n`
   );
 });
