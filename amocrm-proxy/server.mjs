@@ -1,5 +1,6 @@
 import http from "node:http";
 import { randomUUID } from "node:crypto";
+import Busboy from "busboy";
 import { z } from "zod";
 
 const env = process.env;
@@ -39,6 +40,9 @@ const config = {
     .map(normalizeOrigin)
     .filter(Boolean),
   maxBodyBytes: Number(env.MAX_BODY_BYTES || 64 * 1024),
+  maxUploadBytes: Number(env.MAX_UPLOAD_BYTES || 40 * 1024 * 1024),
+  maxAttachments: Number(env.MAX_ATTACHMENTS || 8),
+  maxAttachmentBytes: Number(env.MAX_ATTACHMENT_BYTES || 20 * 1024 * 1024),
   rateLimitWindowMs: Number(env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000),
   rateLimitMax: Number(env.RATE_LIMIT_MAX || 12),
   rateLimitMaxNoOrigin: Number(env.RATE_LIMIT_MAX_NO_ORIGIN || 4),
@@ -455,14 +459,154 @@ const sendTelegramMessage = async text =>
     return { messageId: data?.result?.message_id || null };
   });
 
-const submitLead = async (payload, request, requestId) => {
+const sendTelegramFile = async (file, requestId) => {
+  const mime = String(file.mime || "application/octet-stream").toLowerCase();
+  const isImage = mime.startsWith("image/") && mime !== "image/svg+xml";
+  const isVideo = mime.startsWith("video/");
+  const usePhoto = isImage && file.buffer.length <= 10 * 1024 * 1024;
+  const useVideo = isVideo && file.buffer.length <= 50 * 1024 * 1024;
+  const method = usePhoto ? "sendPhoto" : useVideo ? "sendVideo" : "sendDocument";
+  const field = usePhoto ? "photo" : useVideo ? "video" : "document";
+
+  const form = new FormData();
+  form.append("chat_id", config.telegramChatId);
+  form.append(field, new Blob([file.buffer], { type: mime }), file.filename || "file");
+  form.append("caption", String(file.filename || "file").slice(0, 200));
+
+  const response = await fetchWithTimeout(
+    `https://api.telegram.org/bot${config.telegramBotToken}/${method}`,
+    { method: "POST", body: form },
+    60000
+  );
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data?.ok === false) {
+    throw new Error(`Telegram ${method} failed for ${requestId}`);
+  }
+  return true;
+};
+
+const parseMultipart = (request, maxBytes) =>
+  new Promise((resolve, reject) => {
+    const fields = {};
+    const files = [];
+    let total = 0;
+    let settled = false;
+
+    const fail = (message, code = ERROR_CODES.VALIDATION_ERROR, statusCode = 400) => {
+      if (settled) return;
+      settled = true;
+      const error = new Error(message);
+      error.code = code;
+      error.statusCode = statusCode;
+      reject(error);
+    };
+
+    let busboy;
+    try {
+      busboy = Busboy({
+        headers: request.headers,
+        limits: {
+          files: config.maxAttachments,
+          fileSize: config.maxAttachmentBytes,
+          fieldSize: 32 * 1024
+        }
+      });
+    } catch (error) {
+      fail("Некорректный multipart body");
+      return;
+    }
+
+    busboy.on("field", (name, value) => {
+      fields[name] = value;
+    });
+
+    busboy.on("file", (name, stream, info) => {
+      if (!String(name).startsWith("attachments")) {
+        stream.resume();
+        return;
+      }
+      const chunks = [];
+      stream.on("data", chunk => {
+        total += chunk.length;
+        if (total > maxBytes) {
+          stream.destroy();
+          fail("Payload too large", ERROR_CODES.VALIDATION_ERROR, 413);
+          return;
+        }
+        chunks.push(chunk);
+      });
+      stream.on("limit", () => {
+        fail("Файл слишком большой (лимит 20 МБ).", ERROR_CODES.ATTACHMENT_REJECTED, 400);
+      });
+      stream.on("end", () => {
+        if (settled) return;
+        const buffer = Buffer.concat(chunks);
+        if (!buffer.length) return;
+        files.push({
+          filename: info?.filename || "file",
+          mime: info?.mimeType || "application/octet-stream",
+          buffer
+        });
+      });
+    });
+
+    busboy.on("error", () => fail("Некорректный multipart body"));
+    busboy.on("finish", () => {
+      if (settled) return;
+      settled = true;
+      resolve({ fields, files });
+    });
+
+    request.pipe(busboy);
+  });
+
+const parseLeadRequest = async request => {
+  const contentType = String(request.headers["content-type"] || "");
+  if (contentType.includes("multipart/form-data")) {
+    const parsed = await parseMultipart(request, config.maxUploadBytes);
+    return {
+      body: {
+        ...parsed.fields,
+        privacy:
+          parsed.fields.privacy === true ||
+          parsed.fields.privacy === "true" ||
+          parsed.fields.privacy === "1" ||
+          parsed.fields.privacy === 1
+      },
+      files: parsed.files
+    };
+  }
+
+  const rawBody = await parseBodyLimited(request, config.maxBodyBytes);
+  return { body: rawBody, files: [] };
+};
+
+const submitLead = async (payload, request, requestId, files = []) => {
   const errors = [];
   let telegram = null;
   let amocrm = null;
+  let attachmentsSent = 0;
+  let attachmentsFailed = 0;
 
   if (hasTelegram()) {
     try {
-      telegram = await sendTelegramMessage(buildNoteText(payload, requestId));
+      const note = buildNoteText(payload, requestId);
+      const withFiles =
+        files.length > 0
+          ? `${note}\n\nВложений: ${files.length}\n${files
+              .map((file, index) => `${index + 1}. ${file.filename} (${file.mime})`)
+              .join("\n")}`
+          : note;
+      telegram = await sendTelegramMessage(withFiles.slice(0, 3900));
+      for (const file of files) {
+        try {
+          await sendTelegramFile(file, requestId);
+          attachmentsSent += 1;
+        } catch (error) {
+          logError(requestId, "telegram-file", error);
+          attachmentsFailed += 1;
+        }
+      }
     } catch (error) {
       logError(requestId, "telegram", error);
       errors.push("telegram");
@@ -479,11 +623,11 @@ const submitLead = async (payload, request, requestId) => {
   }
 
   if (telegram?.messageId) {
-    return { ok: true, mode: "telegram", telegram, amocrm };
+    return { ok: true, mode: "telegram", telegram, amocrm, attachmentsSent, attachmentsFailed };
   }
 
   if (amocrm?.leadId) {
-    return { ok: true, mode: "crm", telegram, amocrm };
+    return { ok: true, mode: "crm", telegram, amocrm, attachmentsSent, attachmentsFailed };
   }
 
   const error = new Error(errors.join(",") || "Lead delivery is not configured");
@@ -547,7 +691,7 @@ const server = http.createServer(async (request, response) => {
   }
 
   try {
-    const rawBody = await parseBodyLimited(request, config.maxBodyBytes);
+    const { body: rawBody, files } = await parseLeadRequest(request);
 
     if (rawBody?.website || rawBody?.company_url) {
       // Honeypot trip: pretend success to bots, do not deliver.
@@ -556,6 +700,13 @@ const server = http.createServer(async (request, response) => {
     }
 
     if (Array.isArray(rawBody?.attachments) && rawBody.attachments.length) {
+      // Reject base64 JSON attachments — only multipart files are accepted.
+      const payload = publicError(ERROR_CODES.ATTACHMENT_REJECTED, requestId, 400);
+      sendJson(response, payload.statusCode, payload.body, origin);
+      return;
+    }
+
+    if (files.length > config.maxAttachments) {
       const payload = publicError(ERROR_CODES.ATTACHMENT_REJECTED, requestId, 400);
       sendJson(response, payload.statusCode, payload.body, origin);
       return;
@@ -586,7 +737,7 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
-    const delivery = await submitLead(body, request, requestId);
+    const delivery = await submitLead(body, request, requestId, files);
 
     sendJson(
       response,
@@ -594,7 +745,9 @@ const server = http.createServer(async (request, response) => {
       {
         ok: true,
         mode: delivery.mode,
-        requestId
+        requestId,
+        attachmentsSent: delivery.attachmentsSent || 0,
+        attachmentsFailed: delivery.attachmentsFailed || 0
       },
       origin
     );

@@ -217,12 +217,22 @@ const initHeroSearch = () => {
 
     const addFiles = (fileList, bucket) => {
       if (!fileList?.length) return;
+      const maxFiles = Number(window.STUDIO_CONFIG?.crm?.maxAttachments || 8);
+      const maxBytes = Number(window.STUDIO_CONFIG?.crm?.maxAttachmentBytes || 20 * 1024 * 1024);
+      const currentCount = attachmentState.photos.length + attachmentState.files.length;
+      const room = Math.max(0, maxFiles - currentCount);
+      const nextItems = [];
 
-      const nextItems = Array.from(fileList).map(file => ({
-        file,
-        previewUrl: bucket === "photos" ? URL.createObjectURL(file) : ""
-      }));
+      for (const file of Array.from(fileList)) {
+        if (nextItems.length >= room) break;
+        if (!file || file.size <= 0 || file.size > maxBytes) continue;
+        nextItems.push({
+          file,
+          previewUrl: bucket === "photos" ? URL.createObjectURL(file) : ""
+        });
+      }
 
+      if (!nextItems.length) return;
       attachmentState[bucket].push(...nextItems);
       renderAttachmentList();
     };
@@ -422,7 +432,8 @@ const initHeroSearch = () => {
       contact: finalContactField?.value.trim() || "",
       budget: activeComposer.getBudgetLabel(),
       deadline: activeComposer.getDeadlineLabel(),
-      comment: commentText
+      comment: commentText,
+      attachments: activeComposer.getAttachments?.() || []
     });
 
     if (result?.confirmed && result?.ok) {

@@ -10,17 +10,18 @@ const detectStudioBasePath = () => {
 
 const joinPath = (base, suffix) => `${base.replace(/\/+$/, "")}/${suffix.replace(/^\/+/, "")}`;
 
+const studioBasePath = detectStudioBasePath();
+
 const resolveLeadEndpoint = () => {
   const host = window.location.hostname;
 
+  // Local Node proxy (optional). Production / Timeweb uses same-origin PHP.
   if (host === "localhost" || host === "127.0.0.1") {
     return "http://127.0.0.1:8787/api/leads";
   }
 
-  return "https://soglasovano-leads.onrender.com/api/leads";
+  return joinPath(studioBasePath, "api/leads.php");
 };
-
-const studioBasePath = detectStudioBasePath();
 
 window.__studioEscapeHtml = value =>
   String(value ?? "")
@@ -59,12 +60,14 @@ window.STUDIO_CONFIG = {
   crm: {
     provider: "telegram",
     endpoint: resolveLeadEndpoint(),
-    timeoutMs: 12000,
-    uploadTimeoutMs: 60000,
+    timeoutMs: 15000,
+    uploadTimeoutMs: 90000,
     // Fallback открывает Telegram/mailto, но НЕ считается подтверждённой заявкой.
     allowFallback: true,
     // Не греем /health на каждом визите — это лишний запрос и утечка конфигурации.
-    warmup: false
+    warmup: false,
+    maxAttachments: 8,
+    maxAttachmentBytes: 20 * 1024 * 1024
   },
   leadChannel: {
     type: "telegram"

@@ -4,9 +4,9 @@ const initStudioContacts = () => {
 
   const encode = value => encodeURIComponent(String(value || "").trim());
 
-  // Temporary production policy (AUDIT A01): attachment UI is disabled until
-  // multipart + Telegram sendPhoto/sendDocument is shipped. Do not base64 files.
-  const ATTACHMENTS_ENABLED = false;
+  const ATTACHMENTS_ENABLED = true;
+  const MAX_ATTACHMENTS = Number(cfg.crm?.maxAttachments || 8);
+  const MAX_ATTACHMENT_BYTES = Number(cfg.crm?.maxAttachmentBytes || 20 * 1024 * 1024);
 
   const formatPayload = payload => {
     const lines = [
@@ -83,25 +83,72 @@ const initStudioContacts = () => {
     };
   };
 
+  const normalizeAttachments = payload => {
+    if (!ATTACHMENTS_ENABLED) return [];
+    const raw = Array.isArray(payload?.attachments) ? payload.attachments : [];
+    const files = [];
+    for (const item of raw) {
+      const file = item?.file instanceof File ? item.file : item instanceof File ? item : null;
+      if (!file) continue;
+      if (file.size <= 0 || file.size > MAX_ATTACHMENT_BYTES) {
+        const error = new Error(`Файл «${file.name}» слишком большой (лимит 20 МБ).`);
+        error.code = "ATTACHMENT_REJECTED";
+        throw error;
+      }
+      files.push({
+        kind: String(item?.kind || "file"),
+        file
+      });
+    }
+    if (files.length > MAX_ATTACHMENTS) {
+      const error = new Error(`Можно прикрепить не больше ${MAX_ATTACHMENTS} файлов.`);
+      error.code = "ATTACHMENT_REJECTED";
+      throw error;
+    }
+    return files;
+  };
+
   const submitToCrm = async payload => {
     const endpoint = String(cfg.crm?.endpoint || "").trim();
     if (!endpoint) {
       return { ok: false, mode: "crm-unconfigured", code: "DELIVERY_FAILED" };
     }
 
+    const body = buildLeadBody(payload);
+    const attachments = normalizeAttachments(payload);
+    const hasFiles = attachments.length > 0;
+
     const controller = new AbortController();
-    const timeoutMs = Number(cfg.crm?.timeoutMs || 12000);
+    const timeoutMs = Number(
+      hasFiles ? cfg.crm?.uploadTimeoutMs || 90000 : cfg.crm?.timeoutMs || 15000
+    );
     const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
 
     try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(buildLeadBody(payload)),
-        signal: controller.signal
-      });
+      let response;
+      if (hasFiles) {
+        const form = new FormData();
+        Object.entries(body).forEach(([key, value]) => {
+          form.append(key, value === true ? "true" : value === false ? "false" : String(value ?? ""));
+        });
+        attachments.forEach(item => {
+          form.append("attachments[]", item.file, item.file.name);
+        });
+        response = await fetch(endpoint, {
+          method: "POST",
+          body: form,
+          signal: controller.signal
+        });
+      } else {
+        response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body),
+          signal: controller.signal
+        });
+      }
 
       const data = await response.json().catch(() => ({}));
       if (!response.ok || data?.ok === false) {
@@ -149,7 +196,6 @@ const initStudioContacts = () => {
   };
 
   const submitLead = async payload => {
-    // Drop attachments until secure multipart delivery is live.
     const safePayload = { ...payload };
     if (!ATTACHMENTS_ENABLED) delete safePayload.attachments;
 
@@ -160,6 +206,19 @@ const initStudioContacts = () => {
         return backendResult;
       }
     } catch (error) {
+      if (error?.code === "ATTACHMENT_REJECTED") {
+        const failed = {
+          ok: false,
+          confirmed: false,
+          mode: "attachment-error",
+          code: "ATTACHMENT_REJECTED",
+          requestId: error?.requestId || "",
+          error: error.message || "Вложение отклонено."
+        };
+        notifyLeadError(safePayload?.source, failed);
+        return failed;
+      }
+
       if (!cfg.crm?.allowFallback) {
         const failed = {
           ok: false,
