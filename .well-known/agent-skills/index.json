@@ -16,7 +16,7 @@
       "type": "skill",
       "description": "Understand that lead submission is public and does not require OAuth registration.",
       "url": "https://soglasovano.online/auth.md",
-      "sha256": "3f05e06edc2d1c55d68e29a0ea608a27eff0042e9f698c5a0801e034f41acb06"
+      "sha256": "8d0dfa1c78b2050d08d709e28490abb3bca1e776ea30d129fe90ee063176f94c"
     },
     {
       "name": "site-overview",

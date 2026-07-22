@@ -1,4 +1,3 @@
-# Timeweb shared hosting uses Apache (often behind nginx). Custom 404 page for static routes.
 DirectoryIndex index.php
 ErrorDocument 404 /404.html
 
@@ -9,34 +8,36 @@ ErrorDocument 404 /404.html
 </IfModule>
 
 <IfModule mod_headers.c>
-  # Agent discovery (RFC 8288 / RFC 9727) on the homepage HTML entrypoints.
   SetEnvIf Request_URI "^/(index\.html)?$" IS_HOME
   SetEnvIf Request_URI "^/index\.php$" IS_HOME
   Header always set Link "</.well-known/api-catalog>; rel=\"api-catalog\", </llms.txt>; rel=\"describedby\", </sitemap.xml>; rel=\"describedby\", </auth.md>; rel=\"alternate\"; type=\"text/markdown\", </index.md>; rel=\"alternate\"; type=\"text/markdown\"" env=IS_HOME
+
+  <Files "robots.txt">
+    Header set Cache-Control "no-store, max-age=0"
+  </Files>
 </IfModule>
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Machine-readable catalog must not be served as raw extensionless bytes without type.
-  RewriteRule ^\.well-known/api-catalog$ .well-known/api-catalog.php [L]
+  # Prefer dynamic robots to bust CDN/edge caches.
+  RewriteRule ^robots\.txt$ robots.php [L]
 
-  # Route HTML pages through PHP negotiators (Accept: text/markdown).
+  RewriteRule ^\.well-known/api-catalog$ .well-known/api-catalog.php [L]
+  RewriteRule ^\.well-known/oauth-protected-resource$ .well-known/oauth-protected-resource.php [L]
+
   RewriteRule ^privacy\.html$ privacy.php [L]
   RewriteRule ^terms\.html$ terms.php [L]
   RewriteRule ^case\.html$ case.php [L]
 
-  # Never soft-fallback machine-readable agent paths to HTML.
   RewriteRule ^\.well-known/ - [L]
   RewriteRule ^.*\.(json|md|txt|xml)$ - [L]
   RewriteRule ^api/ - [L]
   RewriteRule ^docs/ - [L]
 
-  # Serve existing files and directories as-is.
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # True 404 for unknown paths (ErrorDocument renders /404.html).
   RewriteRule ^ - [R=404,L]
 </IfModule>

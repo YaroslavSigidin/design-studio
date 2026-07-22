@@ -12,6 +12,20 @@
     "streaming": false,
     "pushNotifications": false
   },
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text", "application/json"],
+  "supportedInterfaces": [
+    {
+      "url": "https://soglasovano.online/api/mcp.php",
+      "protocol": "MCP",
+      "transport": "streamable-http"
+    },
+    {
+      "url": "https://soglasovano.online/api/leads.php",
+      "protocol": "HTTP",
+      "transport": "https"
+    }
+  ],
   "skills": [
     {
       "id": "submit-lead",
@@ -25,7 +39,5 @@
       "description": "Browse portfolio cases from /data/cases.manifest.json",
       "tags": ["portfolio"]
     }
-  ],
-  "defaultInputModes": ["text"],
-  "defaultOutputModes": ["text", "application/json"]
+  ]
 }

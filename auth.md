@@ -6,7 +6,17 @@ There is no agentic OAuth registration for the marketing site. Follow the steps 
 
 ## Step 1 — Discover
 
-Public discovery documents:
+Discovery is two hops — you may have already done this.
+
+### 1a. Fetch the Protected Resource Metadata
+
+```http
+GET /.well-known/oauth-protected-resource
+```
+
+This resource is **public**. `authorization_servers` is empty on purpose: no bearer token is required for `POST /api/leads.php`.
+
+Also useful:
 
 - API catalog: `GET /.well-known/api-catalog`
 - OpenAPI: `GET /api/openapi.json`
@@ -15,11 +25,9 @@ Public discovery documents:
 - Agent skills: `GET /.well-known/agent-skills/index.json`
 - MCP card: `GET /.well-known/mcp/server-card.json`
 
-This service does **not** publish `/.well-known/oauth-authorization-server` or `/.well-known/oauth-protected-resource` because the lead API is intentionally public.
-
 ## Step 2 — Register
 
-No registration endpoint. Agents do not create accounts.
+No registration endpoint. Agents do not create accounts and do not obtain access tokens.
 
 ## Step 3 — Call the API
 
