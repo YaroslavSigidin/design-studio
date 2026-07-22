@@ -120,3 +120,7 @@ jobs:
             echo "::error::SSH connection to Timeweb failed. Recreate TIMEWEB_SSH_KEY from the private key printed by cat ~/.ssh/github_actions_deploy on Timeweb and paste it into GitHub Secrets as a multi-line value."
             exit 1
           fi
+
+      - name: Notify Yandex via IndexNow
+        shell: bash
+        run: node scripts/submit-indexnow.mjs
