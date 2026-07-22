@@ -1,0 +1,31 @@
+{
+  "name": "Согласовано",
+  "description": "Design studio site agent card: public lead API, portfolio cases, contacts.",
+  "url": "https://soglasovano.online",
+  "provider": {
+    "organization": "Согласовано",
+    "url": "https://soglasovano.online"
+  },
+  "version": "1.0.0",
+  "documentationUrl": "https://soglasovano.online/llms.txt",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "skills": [
+    {
+      "id": "submit-lead",
+      "name": "Submit lead",
+      "description": "Submit a project brief via POST /api/leads.php",
+      "tags": ["lead", "contact"]
+    },
+    {
+      "id": "list-cases",
+      "name": "List cases",
+      "description": "Browse portfolio cases from /data/cases.manifest.json",
+      "tags": ["portfolio"]
+    }
+  ],
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text", "application/json"]
+}

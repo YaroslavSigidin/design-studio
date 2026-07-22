@@ -14,4 +14,4 @@ if (studio_accepts_markdown()) {
     studio_send_markdown(__DIR__ . '/index.md', $link);
 }
 
-studio_send_html(__DIR__ . '/index.html', $link);
+studio_send_html(__DIR__ . '/home.html', $link);

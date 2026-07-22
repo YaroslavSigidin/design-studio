@@ -16,14 +16,14 @@
       "type": "skill",
       "description": "Understand that lead submission is public and does not require OAuth registration.",
       "url": "https://soglasovano.online/auth.md",
-      "sha256": "86b7c7c99ed501fb9c7516bed6b937e233777ee8edfa99a23f4ed50abe293054"
+      "sha256": "3f05e06edc2d1c55d68e29a0ea608a27eff0042e9f698c5a0801e034f41acb06"
     },
     {
       "name": "site-overview",
       "type": "skill",
       "description": "High-level site summary and agent entry points for Согласовано.",
       "url": "https://soglasovano.online/llms.txt",
-      "sha256": "13d3788dcc279e2c2766b9f031a26be8bc58522752b5eeed4a30c5971097a50f"
+      "sha256": "40a3889a8ecd3e92a17855b24166526a760623f0774d413e6bd46bce8cf6c9ae"
     },
     {
       "name": "homepage-markdown",

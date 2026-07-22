@@ -1,0 +1,16 @@
+{
+  "serverInfo": {
+    "name": "soglasovano-leads",
+    "version": "1.0.0"
+  },
+  "description": "MCP tools for the Согласовано design studio: submit project leads and list portfolio cases.",
+  "url": "https://soglasovano.online/api/mcp.php",
+  "transport": {
+    "type": "streamable-http"
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false
+  }
+}

@@ -1,6 +1,6 @@
 # Timeweb shared hosting uses Apache (often behind nginx). Custom 404 page for static routes.
+DirectoryIndex index.php
 ErrorDocument 404 /404.html
-DirectoryIndex index.php index.html
 
 <IfModule mod_mime.c>
   AddType text/markdown md

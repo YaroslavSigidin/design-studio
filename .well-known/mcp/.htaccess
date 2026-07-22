@@ -1,0 +1,8 @@
+Options -Indexes
+
+<IfModule mod_headers.c>
+  <Files "server-card.json">
+    Header set Content-Type "application/json; charset=utf-8"
+    Header set Cache-Control "public, max-age=300"
+  </Files>
+</IfModule>

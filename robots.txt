@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
-Content-Signal: ai-train=no, search=yes, ai-input=yes
+Content-Signal: search=yes, ai-train=no, ai-input=yes
 
 Sitemap: https://soglasovano.online/sitemap.xml
