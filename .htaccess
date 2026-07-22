@@ -21,8 +21,13 @@ ErrorDocument 404 /404.html
   RewriteEngine On
 
   # Keep one indexable origin: HTTPS without www.
-  RewriteCond %{HTTPS} !=on [OR]
   RewriteCond %{HTTP_HOST} ^www\.soglasovano\.online$ [NC]
+  RewriteRule ^ https://soglasovano.online%{REQUEST_URI} [R=301,L]
+
+  # Timeweb terminates TLS at nginx, so Apache can receive HTTPS requests
+  # with HTTPS=off and X-Forwarded-Proto=https.
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !^https$ [NC]
   RewriteRule ^ https://soglasovano.online%{REQUEST_URI} [R=301,L]
 
   # Prefer dynamic robots to bust CDN/edge caches.
