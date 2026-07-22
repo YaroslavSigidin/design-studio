@@ -11,6 +11,8 @@ return [
     'telegram_chat_id' => '-5360826750',
     // Optional extras. Same-host Origin is always allowed automatically.
     'allowed_origins' => [
+        'https://soglasovano.online',
+        'https://www.soglasovano.online',
         'https://yaroslavsigidin.github.io',
         'http://127.0.0.1:8765',
         'http://localhost:8765',
