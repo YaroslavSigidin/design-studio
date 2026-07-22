@@ -1,6 +1,7 @@
 const SERVICES = [
   {
     title: "UX/UI дизайн",
+    url: "./ux-ui-design.html",
     price: 95000,
     bullets: [
       "Понятные пользовательские сценарии",
@@ -23,6 +24,7 @@ const SERVICES = [
   },
   {
     title: "Одностраничный сайт",
+    url: "./landing-page.html",
     price: 40000,
     bullets: [
       "Сильный первый экран",
@@ -45,6 +47,7 @@ const SERVICES = [
   },
   {
     title: "Редизайн сайта",
+    url: "./site-redesign.html",
     price: 60000,
     bullets: [
       "Аудит текущих проблем",
@@ -112,7 +115,11 @@ const serviceCardTemplate = service => {
   return `
     <article class="${cardClassName}" data-service-card>
       <div class="studio-service-card__body">
-        <h3 class="studio-service-title">${window.__studioEscapeHtml(service.title)}</h3>
+        <h3 class="studio-service-title">${
+          service.url
+            ? `<a href="${window.__studioEscapeHtml(service.url)}">${window.__studioEscapeHtml(service.title)}</a>`
+            : window.__studioEscapeHtml(service.title)
+        }</h3>
         <div class="studio-service-prices">
           <p class="studio-service-price">${priceMarkup}</p>
         </div>

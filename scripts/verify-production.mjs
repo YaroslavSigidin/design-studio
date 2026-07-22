@@ -36,7 +36,8 @@ check(robots.body.includes("Disallow: /api/"), "robots.txt excludes technical AP
 const sitemap = await request("/sitemap.xml");
 const sitemapUrls = [...sitemap.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]);
 check(sitemap.response.status === 200, "sitemap.xml returns HTTP 200");
-check(sitemapUrls.length === 33, "sitemap contains the expected 33 canonical URLs");
+check(sitemapUrls.length === 37, "sitemap contains the expected 37 canonical URLs");
+check(sitemapUrls.includes(`${ORIGIN}/insights.html`), "sitemap includes the SEO insights hub");
 check(!sitemapUrls.includes(`${ORIGIN}/case.html`), "sitemap excludes the empty case template");
 
 const validCase = await request("/case.html?slug=visiflow");
@@ -44,6 +45,11 @@ check(validCase.response.status === 200, "published case returns HTTP 200");
 check(validCase.body.includes("VISI FLOW — кейс UX/UI и дизайна | Согласовано"), "case metadata is rendered server-side");
 check(validCase.body.includes(`${ORIGIN}/case.html?slug=visiflow`), "case canonical URL includes the slug");
 check(validCase.body.includes('id="case-structured-data"'), "case includes structured data");
+
+const insights = await request("/insights.html");
+check(insights.response.status === 200, "SEO insights hub returns HTTP 200");
+check(insights.body.includes("Журнал о сайтах, UX и конверсии"), "insights hub has its SEO title");
+check(insights.body.includes('data-lead-source="SEO — журнал"'), "insights hub has a measurable lead form");
 
 const missingCase = await request("/case.html?slug=production-verifier-missing");
 check(missingCase.response.status === 404, "unknown case returns HTTP 404");

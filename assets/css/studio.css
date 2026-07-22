@@ -4732,6 +4732,17 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
   color: #111;
 }
 
+.studio-service-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.studio-service-title a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.12em;
+}
+
 .studio-service-prices {
   display: flex;
   flex-wrap: wrap;

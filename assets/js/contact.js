@@ -11,7 +11,17 @@ const initStudioContacts = () => {
 
   const collectAttribution = () => {
     const params = new URLSearchParams(window.location.search);
-    const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "yclid", "gclid"];
+    const keys = [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_content",
+      "utm_term",
+      "yclid",
+      "gclid",
+      "exp",
+      "variant"
+    ];
     const current = {};
     keys.forEach(key => {
       const value = String(params.get(key) || "").trim();
@@ -662,15 +672,16 @@ const initStudioContacts = () => {
           : "";
 
     const payload = {
-      source: form.dataset.caseTitle
+      source: form.dataset.leadSource || (form.dataset.caseTitle
         ? "Кейс"
         : form.matches(".hero-request__form")
           ? "Подвал «Оставить заявку»"
-          : "Блок «Обсудить проект»",
+          : "Блок «Обсудить проект»"),
+      service: form.dataset.service || form.querySelector('[name="service"]')?.value.trim() || "",
       name,
       phone,
       contact,
-      comment: form.dataset.caseTitle || ""
+      comment: form.querySelector('[name="comment"]')?.value.trim() || form.dataset.caseTitle || ""
     };
 
     const restoreButton = () => {

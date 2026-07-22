@@ -1,14 +1,14 @@
 const initStudioAnalytics = () => {
   const metrikaId = String(window.STUDIO_CONFIG?.analytics?.metrikaId || "").trim();
 
-  window.reachGoal = name => {
+  window.reachGoal = (name, params = {}) => {
     const goal = String(name || "").trim();
     if (!goal || !metrikaId || typeof window.ym !== "function") return;
-    window.ym(Number(metrikaId), "reachGoal", goal);
+    window.ym(Number(metrikaId), "reachGoal", goal, params);
   };
 
   const track = (name, detail = {}) => {
-    window.reachGoal(name);
+    window.reachGoal(name, detail);
     window.dispatchEvent(
       new CustomEvent("studio:analytics", {
         detail: { name, ...detail }
@@ -42,14 +42,51 @@ const initStudioAnalytics = () => {
       accurateTrackBounce: true,
       webvisor: true
     });
+
+    const experiment = window.STUDIO_EXPERIMENT;
+    if (experiment?.active) {
+      const experimentParams = {
+        experiment: experiment.id,
+        variant: experiment.variant,
+        assignment: experiment.assignment
+      };
+      window.ym(Number(metrikaId), "params", {
+        experiments: { [experiment.id]: experiment.variant }
+      });
+      window.ym(Number(metrikaId), "reachGoal", "experiment_view", experimentParams);
+    }
+  }
+
+  if (document.body?.dataset?.seoPage === "insights") {
+    track("insights_view", {
+      articleCount: document.querySelectorAll("[data-insight-id]").length,
+      page: "insights"
+    });
   }
 
   document.addEventListener("click", event => {
     const target = event.target instanceof Element ? event.target.closest("a,button,[role='button']") : null;
     if (!target) return;
 
-    if (target.matches("[data-open-brief-modal], [data-hero-submit], .case-brief")) {
+    if (target.matches("[data-open-brief-modal], [data-hero-submit], [data-offer-cta], .case-brief")) {
       track("cta_click", { label: String(target.textContent || target.getAttribute("aria-label") || "").trim().slice(0, 80) });
+      return;
+    }
+
+    const insightCta = target.closest("[data-insight-cta]");
+    if (insightCta) {
+      track("insight_cta_click", {
+        article: insightCta.getAttribute("data-insight-article") || "hero",
+        label: insightCta.getAttribute("data-insight-label") || String(insightCta.textContent || "").trim().slice(0, 80)
+      });
+      return;
+    }
+
+    const insightLink = target.closest("[data-insight-link]");
+    if (insightLink) {
+      track("insight_open", {
+        article: insightLink.getAttribute("data-insight-id") || ""
+      });
       return;
     }
 
