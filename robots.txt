@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /docs/
+Disallow: /.well-known/
 Content-Signal: search=yes, ai-train=no, ai-input=yes
 
 Sitemap: https://soglasovano.online/sitemap.xml

@@ -33,6 +33,18 @@
     node.setAttribute("href", href);
   };
 
+  const ensureJsonLd = (id, value) => {
+    if (!value) return;
+    let node = document.getElementById(id);
+    if (!node) {
+      node = document.createElement("script");
+      node.id = id;
+      node.type = "application/ld+json";
+      document.head.appendChild(node);
+    }
+    node.textContent = JSON.stringify(value);
+  };
+
   const applySeo = ({
     title,
     description,
@@ -71,13 +83,20 @@
   };
 
   const applyCaseSeo = ({ title, description, image, slug, tags = [], category } = {}) => {
-    const caseTitle = title ? `${title} — кейс студии Согласовано` : "Кейс — Согласовано";
+    const caseTitle = title
+      ? `${title} — кейс UX/UI и дизайна | Согласовано`
+      : "Кейс — Согласовано";
     const tagLine = [...(Array.isArray(tags) ? tags : []), category].filter(Boolean).join(", ");
-    const caseDescription =
+    const rawCaseDescription =
       description ||
       (tagLine
         ? `Кейс «${title}»: ${tagLine}. Дизайн-студия Согласовано.`
         : `Кейс дизайн-студии Согласовано${title ? `: ${title}` : ""}.`);
+    const normalizedDescription = String(rawCaseDescription).replace(/\s+/g, " ").trim();
+    const caseDescription =
+      normalizedDescription.length > 160
+        ? `${normalizedDescription.slice(0, 157)}…`
+        : normalizedDescription;
 
     applySeo({
       title: caseTitle,
@@ -87,6 +106,36 @@
       robots: "index,follow",
       type: "article"
     });
+
+    if (slug) {
+      const siteRoot = absoluteUrl("").replace(/\/$/, "");
+      const url = absoluteUrl(`case.html?slug=${encodeURIComponent(slug)}`);
+      ensureJsonLd("case-structured-data", {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CreativeWork",
+            "@id": `${url}#case`,
+            name: title,
+            headline: caseTitle,
+            description: caseDescription,
+            url,
+            image: absoluteUrl(image || "assets/images/brand/og-cover.png"),
+            inLanguage: "ru-RU",
+            creator: { "@id": `${siteRoot}/#organization` },
+            keywords: [...(Array.isArray(tags) ? tags : []), category].filter(Boolean)
+          },
+          {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Главная", item: `${siteRoot}/` },
+              { "@type": "ListItem", position: 2, name: "Кейсы", item: `${siteRoot}/#cases` },
+              { "@type": "ListItem", position: 3, name: title, item: url }
+            ]
+          }
+        ]
+      });
+    }
   };
 
   window.__studioSeo = { applySeo, applyCaseSeo, absoluteUrl };

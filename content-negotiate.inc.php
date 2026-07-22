@@ -75,3 +75,16 @@ function studio_send_html($path, $linkHeader = '')
     readfile($path);
     exit;
 }
+
+function studio_send_html_content($body, $linkHeader = '', $status = 200)
+{
+    http_response_code($status);
+    if ($linkHeader !== '') {
+        header('Link: ' . $linkHeader);
+    }
+    header('Content-Type: text/html; charset=utf-8');
+    header('Vary: Accept');
+    header('Cache-Control: public, max-age=60');
+    echo $body;
+    exit;
+}

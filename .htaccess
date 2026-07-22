@@ -20,6 +20,11 @@ ErrorDocument 404 /404.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Keep one indexable origin: HTTPS without www.
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\.soglasovano\.online$ [NC]
+  RewriteRule ^ https://soglasovano.online%{REQUEST_URI} [R=301,L]
+
   # Prefer dynamic robots to bust CDN/edge caches.
   RewriteRule ^robots\.txt$ robots.php [L]
 
