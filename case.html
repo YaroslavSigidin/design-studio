@@ -47,9 +47,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
+      />
+    </noscript>
     <link rel="stylesheet" href="./assets/css/studio.css?v=20260719-price-from" />
     <link rel="stylesheet" href="./assets/css/case.css?v=20260719-case-air" />
     <link rel="stylesheet" href="./assets/css/user-cursor.css?v=20260718-user-cursor" />
