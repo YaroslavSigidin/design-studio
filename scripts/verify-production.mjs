@@ -22,6 +22,11 @@ check(home.response.status === 200, "home returns HTTP 200");
 check(home.body.includes("<title>Дизайн-студия сайтов и интерфейсов — Согласовано</title>"), "production has the current SEO title");
 check(home.body.includes('"@type": ["Organization", "ProfessionalService"]'), "home includes structured organization data");
 check(home.body.includes("assets/js/contact.js?v=20260722-leads7d"), "home references the current lead-attribution bundle");
+check(home.body.includes('rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg"'), "home advertises the crawler-friendly SVG favicon");
+
+const favicon = await request("/favicon.svg");
+check(favicon.response.status === 200, "SVG favicon returns HTTP 200");
+check(favicon.body.includes('viewBox="0 0 120 120"'), "SVG favicon uses the recommended 120 by 120 canvas");
 
 const robots = await request("/robots.txt");
 check(robots.response.status === 200, "robots.txt returns HTTP 200");
