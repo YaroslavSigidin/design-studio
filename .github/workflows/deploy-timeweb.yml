@@ -121,6 +121,10 @@ jobs:
             exit 1
           fi
 
+      - name: Verify production
+        shell: bash
+        run: node scripts/verify-production.mjs
+
       - name: Notify Yandex via IndexNow
         shell: bash
         run: node scripts/submit-indexnow.mjs
