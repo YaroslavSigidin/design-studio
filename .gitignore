@@ -6,6 +6,7 @@ amocrm-proxy/.env
 amocrm-proxy/node_modules/
 node_modules/
 .preview/
+.cf-pages/
 api/leads.config.php
 leads.config.php
 leads.config.timeweb.php
