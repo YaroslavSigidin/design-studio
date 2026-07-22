@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agentskills.io/schemas/discovery/0.2.0.json",
+  "version": "0.2.0",
+  "name": "soglasovano-agent-skills",
+  "description": "Discovery index for AI agents interacting with soglasovano.online",
+  "skills": [
+    {
+      "name": "submit-lead",
+      "type": "skill",
+      "description": "Submit a project brief to the Согласовано design studio via the public Lead API.",
+      "url": "https://soglasovano.online/docs/leads.md",
+      "sha256": "9eb24703de0a5f9c21c82948b44922dd2f4ed66ed94a52a9ff50a383ac3e0e67"
+    },
+    {
+      "name": "auth-model",
+      "type": "skill",
+      "description": "Understand that lead submission is public and does not require OAuth registration.",
+      "url": "https://soglasovano.online/auth.md",
+      "sha256": "86b7c7c99ed501fb9c7516bed6b937e233777ee8edfa99a23f4ed50abe293054"
+    },
+    {
+      "name": "site-overview",
+      "type": "skill",
+      "description": "High-level site summary and agent entry points for Согласовано.",
+      "url": "https://soglasovano.online/llms.txt",
+      "sha256": "13d3788dcc279e2c2766b9f031a26be8bc58522752b5eeed4a30c5971097a50f"
+    }
+  ]
+}

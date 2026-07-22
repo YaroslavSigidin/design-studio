@@ -1,0 +1,18 @@
+# Согласовано (soglasovano.online)
+
+> Дизайн-студия полного цикла: UX/UI, сайты, брендинг и продуктовый дизайн.
+
+## Для людей
+- Сайт: https://soglasovano.online/
+- Кейсы: https://soglasovano.online/#cases
+- Контакты: Telegram @sigidingo · +7 961 971-05-15 · sigidingo@gmail.com
+
+## Для агентов
+- API catalog: https://soglasovano.online/.well-known/api-catalog
+- Lead API docs: https://soglasovano.online/docs/leads.md
+- OpenAPI: https://soglasovano.online/api/openapi.json
+- Auth model: https://soglasovano.online/auth.md
+- Health: https://soglasovano.online/api/leads.php?health=1
+
+## Как оставить заявку
+`POST https://soglasovano.online/api/leads.php` with JSON or multipart (see docs/leads.md). OAuth is not required.

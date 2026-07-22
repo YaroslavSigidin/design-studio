@@ -1,14 +1,31 @@
-# Timeweb shared hosting uses Apache. Custom 404 page for static site routes.
+# Timeweb shared hosting uses Apache (often behind nginx). Custom 404 page for static routes.
 ErrorDocument 404 /404.html
+DirectoryIndex index.php index.html
+
+<IfModule mod_headers.c>
+  # Agent discovery (RFC 8288 / RFC 9727) on the homepage HTML entrypoints.
+  SetEnvIf Request_URI "^/(index\.html)?$" IS_HOME
+  SetEnvIf Request_URI "^/index\.php$" IS_HOME
+  Header always set Link "</.well-known/api-catalog>; rel=\"api-catalog\", </llms.txt>; rel=\"describedby\", </sitemap.xml>; rel=\"describedby\", </auth.md>; rel=\"alternate\"; type=\"text/markdown\"" env=IS_HOME
+</IfModule>
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # Machine-readable catalog must not be served as raw extensionless bytes without type.
+  RewriteRule ^\.well-known/api-catalog$ .well-known/api-catalog.php [L]
+
+  # Never soft-fallback machine-readable agent paths to HTML.
+  RewriteRule ^\.well-known/ - [L]
+  RewriteRule ^.*\.(json|md|txt|xml)$ - [L]
+  RewriteRule ^api/ - [L]
+  RewriteRule ^docs/ - [L]
 
   # Serve existing files and directories as-is.
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # Optional: map unknown paths to the custom 404 page.
-  RewriteRule ^ 404.html [L]
+  # True 404 for unknown paths (ErrorDocument renders /404.html).
+  RewriteRule ^ - [R=404,L]
 </IfModule>

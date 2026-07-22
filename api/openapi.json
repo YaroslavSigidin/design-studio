@@ -1,0 +1,170 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Согласовано — Lead API",
+    "description": "Public endpoint for project brief submissions from soglasovano.online. Delivers leads to the studio Telegram channel. No OAuth is required.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://soglasovano.online"
+    }
+  ],
+  "paths": {
+    "/api/leads.php": {
+      "get": {
+        "summary": "Health probe",
+        "parameters": [
+          {
+            "name": "health",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["1"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Service status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "configured": { "type": "boolean" },
+                    "curl": { "type": "boolean" },
+                    "requestId": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Submit a project lead",
+        "description": "Accepts JSON or multipart/form-data. Attachments are forwarded to Telegram as photo/video/document.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Lead"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Lead"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "attachments[]": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "format": "binary"
+                        },
+                        "maxItems": 8
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lead accepted and delivered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation or attachment error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited"
+          },
+          "502": {
+            "description": "Upstream delivery failed"
+          },
+          "503": {
+            "description": "Server not configured"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Lead": {
+        "type": "object",
+        "required": ["name", "privacy"],
+        "properties": {
+          "name": { "type": "string", "maxLength": 120 },
+          "phone": { "type": "string", "maxLength": 64 },
+          "contact": { "type": "string", "maxLength": 255, "description": "Telegram / email / messenger" },
+          "service": { "type": "string", "maxLength": 160 },
+          "source": { "type": "string", "maxLength": 160 },
+          "budget": { "type": "string", "maxLength": 120 },
+          "deadline": { "type": "string", "maxLength": 120 },
+          "comment": { "type": "string", "maxLength": 4000 },
+          "page": { "type": "string", "maxLength": 500 },
+          "referer": { "type": "string", "maxLength": 500 },
+          "privacy": {
+            "oneOf": [
+              { "type": "boolean", "const": true },
+              { "type": "string", "enum": ["true", "1"] }
+            ]
+          },
+          "website": { "type": "string", "maxLength": 0, "description": "Honeypot — must be empty" },
+          "company_url": { "type": "string", "maxLength": 0, "description": "Honeypot — must be empty" }
+        },
+        "anyOf": [
+          { "required": ["phone"] },
+          { "required": ["contact"] }
+        ]
+      },
+      "LeadSuccess": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean", "const": true },
+          "mode": { "type": "string", "enum": ["telegram", "accepted"] },
+          "requestId": { "type": "string" },
+          "attachmentsSent": { "type": "integer" },
+          "attachmentsFailed": { "type": "integer" }
+        }
+      },
+      "LeadError": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean", "const": false },
+          "code": {
+            "type": "string",
+            "enum": ["VALIDATION_ERROR", "RATE_LIMITED", "DELIVERY_FAILED", "ATTACHMENT_REJECTED"]
+          },
+          "error": { "type": "string" },
+          "requestId": { "type": "string" }
+        }
+      }
+    }
+  }
+}

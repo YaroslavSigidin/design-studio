@@ -1,0 +1,13 @@
+Options -Indexes
+
+<IfModule mod_mime.c>
+  AddType application/linkset+json api-catalog
+  AddType application/json json
+</IfModule>
+
+<IfModule mod_headers.c>
+  <Files "api-catalog">
+    Header set Content-Type "application/linkset+json; charset=utf-8"
+    Header set Cache-Control "public, max-age=300"
+  </Files>
+</IfModule>

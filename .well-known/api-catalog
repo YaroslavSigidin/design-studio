@@ -1,0 +1,25 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://soglasovano.online/api/leads.php",
+      "service-desc": [
+        {
+          "href": "https://soglasovano.online/api/openapi.json",
+          "type": "application/vnd.oai.openapi+json;version=3.1"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://soglasovano.online/docs/leads.md",
+          "type": "text/markdown"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://soglasovano.online/api/leads.php?health=1",
+          "type": "application/json"
+        }
+      ]
+    }
+  ]
+}

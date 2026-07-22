@@ -33,7 +33,7 @@ window.__studioEscapeHtml = value =>
 window.STUDIO_CONFIG = {
   basePath: studioBasePath,
   assetBasePath: studioBasePath,
-  siteUrl: "https://yaroslavsigidin.github.io/design-studio",
+  siteUrl: "https://soglasovano.online",
   manifest: joinPath(studioBasePath, "data/cases.manifest.json") + "?v=20260718-roadmap-all",
   studioHome: studioBasePath,
   studioCases: `${studioBasePath}#cases`,
