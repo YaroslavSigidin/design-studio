@@ -133,12 +133,33 @@ function studio_telegram($token, $method, array $postFields)
     return $data;
 }
 
+function studio_mail_fallback($to, $requestId, $text)
+{
+    $to = trim((string) $to);
+    if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL) || !function_exists('mail')) {
+        return false;
+    }
+
+    $subjectText = 'Новая заявка с сайта Согласовано — ' . $requestId;
+    $subject = '=?UTF-8?B?' . base64_encode($subjectText) . '?=';
+    $headers = array(
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: 8bit',
+        'From: Soglasovano Website <no-reply@soglasovano.online>',
+        'X-Auto-Response-Suppress: All',
+    );
+
+    return @mail($to, $subject, (string) $text, implode("\r\n", $headers));
+}
+
 $requestId = studio_request_id();
 
 try {
     $config = studio_load_config();
     $token = trim((string) (isset($config['telegram_bot_token']) ? $config['telegram_bot_token'] : ''));
     $chatId = trim((string) (isset($config['telegram_chat_id']) ? $config['telegram_chat_id'] : ''));
+    $notificationEmail = trim((string) (isset($config['notification_email']) ? $config['notification_email'] : 'sigidingo@gmail.com'));
     $maxFiles = (int) (isset($config['max_files']) ? $config['max_files'] : 8);
     $maxFileBytes = (int) (isset($config['max_file_bytes']) ? $config['max_file_bytes'] : (20 * 1024 * 1024));
     $rateMax = (int) (isset($config['rate_limit_max']) ? $config['rate_limit_max'] : 12);
@@ -395,6 +416,15 @@ try {
     ));
 
     if (empty($message['ok'])) {
+        $emailSent = studio_mail_fallback($notificationEmail, $requestId, $text);
+        if ($emailSent) {
+            studio_send(200, array(
+                'ok' => true,
+                'mode' => 'email',
+                'fallbackFrom' => 'telegram',
+            ), $corsOrigin, $requestId);
+        }
+
         studio_send(502, array(
             'ok' => false,
             'code' => ERROR_DELIVERY,

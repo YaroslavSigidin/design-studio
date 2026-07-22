@@ -9,6 +9,8 @@ declare(strict_types=1);
 return [
     'telegram_bot_token' => 'PUT_YOUR_BOT_TOKEN_HERE',
     'telegram_chat_id' => '-5360826750',
+    // Used only when Telegram cannot accept the message.
+    'notification_email' => 'sigidingo@gmail.com',
     // Optional extras. Same-host Origin is always allowed automatically.
     'allowed_origins' => [
         'https://soglasovano.online',
