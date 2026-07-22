@@ -281,6 +281,7 @@ try {
     $deadline = studio_str(isset($fields['deadline']) ? $fields['deadline'] : '', 120);
     $comment = studio_str(isset($fields['comment']) ? $fields['comment'] : '', 4000);
     $page = studio_str(isset($fields['page']) ? $fields['page'] : '', 500);
+    $attribution = studio_str(isset($fields['attribution']) ? $fields['attribution'] : '', 500);
     $website = studio_str(isset($fields['website']) ? $fields['website'] : '', 200);
     $companyUrl = studio_str(isset($fields['company_url']) ? $fields['company_url'] : '', 200);
     $privacy = isset($fields['privacy']) ? $fields['privacy'] : false;
@@ -370,6 +371,7 @@ try {
         $deadline !== '' ? 'Срок: ' . $deadline : '',
         $comment !== '' ? 'Комментарий: ' . $comment : '',
         $page !== '' ? 'Страница: ' . $page : '',
+        $attribution !== '' ? 'Атрибуция: ' . $attribution : '',
     );
     if ($acceptedFiles) {
         $lines[] = '';

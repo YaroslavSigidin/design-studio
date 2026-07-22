@@ -69,6 +69,7 @@ const leadSchema = z
     comment: z.string().trim().max(4000).optional().default(""),
     page: z.string().trim().max(500).optional().default(""),
     referer: z.string().trim().max(500).optional().default(""),
+    attribution: z.string().trim().max(500).optional().default(""),
     submittedAt: z.string().trim().max(64).optional().default(""),
     privacy: z.union([z.literal(true), z.literal("true"), z.literal(1), z.literal("1")]).optional(),
     // Honeypot — must stay empty.
@@ -255,7 +256,8 @@ const buildNoteText = (payload, requestId) => {
     payload.budget ? `Бюджет: ${payload.budget}` : "",
     payload.deadline ? `Срок: ${payload.deadline}` : "",
     payload.comment ? `Комментарий: ${payload.comment}` : "",
-    payload.page ? `Страница: ${payload.page}` : ""
+    payload.page ? `Страница: ${payload.page}` : "",
+    payload.attribution ? `Атрибуция: ${payload.attribution}` : ""
   ].filter(Boolean);
 
   return lines.join("\n").slice(0, 3900);

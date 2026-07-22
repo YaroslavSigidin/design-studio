@@ -7,6 +7,45 @@ const initStudioContacts = () => {
   const ATTACHMENTS_ENABLED = true;
   const MAX_ATTACHMENTS = Number(cfg.crm?.maxAttachments || 8);
   const MAX_ATTACHMENT_BYTES = Number(cfg.crm?.maxAttachmentBytes || 20 * 1024 * 1024);
+  const ATTRIBUTION_KEY = "studio:first-touch-attribution";
+
+  const collectAttribution = () => {
+    const params = new URLSearchParams(window.location.search);
+    const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "yclid", "gclid"];
+    const current = {};
+    keys.forEach(key => {
+      const value = String(params.get(key) || "").trim();
+      if (value) current[key] = value.slice(0, 160);
+    });
+
+    const referrer = String(document.referrer || "").trim();
+    if (referrer) {
+      try {
+        const referrerUrl = new URL(referrer);
+        if (referrerUrl.origin !== window.location.origin) current.referrer = referrerUrl.hostname;
+      } catch (_) {}
+    }
+
+    let stored = {};
+    try {
+      stored = JSON.parse(window.localStorage.getItem(ATTRIBUTION_KEY) || "{}") || {};
+    } catch (_) {}
+
+    if (Object.keys(current).length) {
+      stored = { ...current, landing: window.location.pathname, capturedAt: new Date().toISOString() };
+      try {
+        window.localStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(stored));
+      } catch (_) {}
+    }
+
+    return Object.entries(stored)
+      .filter(([, value]) => value)
+      .map(([key, value]) => `${key}=${String(value).replace(/[;\n\r]/g, " ")}`)
+      .join("; ")
+      .slice(0, 500);
+  };
+
+  const attribution = collectAttribution();
 
   const formatPayload = payload => {
     const lines = [
@@ -19,7 +58,8 @@ const initStudioContacts = () => {
       payload.contact ? `Контакт: ${payload.contact}` : "",
       payload.budget ? `Бюджет: ${payload.budget}` : "",
       payload.deadline ? `Срок: ${payload.deadline}` : "",
-      payload.comment ? `Комментарий: ${payload.comment}` : ""
+      payload.comment ? `Комментарий: ${payload.comment}` : "",
+      attribution ? `Атрибуция: ${attribution}` : ""
     ].filter(Boolean);
 
     return lines.join("\n");
@@ -74,6 +114,7 @@ const initStudioContacts = () => {
       comment: String(fields.comment || "").trim(),
       page: window.location.href.slice(0, 500),
       referer: String(document.referrer || "").slice(0, 500),
+      attribution,
       submittedAt: new Date().toISOString(),
       privacy: true,
       // Honeypot fields — must remain empty.

@@ -44,6 +44,26 @@ const initStudioAnalytics = () => {
     });
   }
 
+  document.addEventListener("click", event => {
+    const target = event.target instanceof Element ? event.target.closest("a,button,[role='button']") : null;
+    if (!target) return;
+
+    if (target.matches("[data-open-brief-modal], [data-hero-submit], .case-brief")) {
+      track("cta_click", { label: String(target.textContent || target.getAttribute("aria-label") || "").trim().slice(0, 80) });
+      return;
+    }
+
+    const href = target instanceof HTMLAnchorElement ? String(target.getAttribute("href") || "") : "";
+    if (/^(tel:|mailto:|https:\/\/t\.me\/|https:\/\/vk\.com\/)/i.test(href)) {
+      track("contact_click", { channel: href.split(":")[0] || "social" });
+      return;
+    }
+
+    if (href.includes("case.html?slug=")) {
+      track("case_open", { slug: new URL(href, window.location.href).searchParams.get("slug") || "" });
+    }
+  });
+
   // Only confirmed backend delivery.
   window.addEventListener("studio:lead-sent", event => {
     const source = String(event.detail?.source || "").trim();
