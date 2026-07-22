@@ -2,11 +2,17 @@
 ErrorDocument 404 /404.html
 DirectoryIndex index.php index.html
 
+<IfModule mod_mime.c>
+  AddType text/markdown md
+  AddType text/plain txt
+  AddType application/json json
+</IfModule>
+
 <IfModule mod_headers.c>
   # Agent discovery (RFC 8288 / RFC 9727) on the homepage HTML entrypoints.
   SetEnvIf Request_URI "^/(index\.html)?$" IS_HOME
   SetEnvIf Request_URI "^/index\.php$" IS_HOME
-  Header always set Link "</.well-known/api-catalog>; rel=\"api-catalog\", </llms.txt>; rel=\"describedby\", </sitemap.xml>; rel=\"describedby\", </auth.md>; rel=\"alternate\"; type=\"text/markdown\"" env=IS_HOME
+  Header always set Link "</.well-known/api-catalog>; rel=\"api-catalog\", </llms.txt>; rel=\"describedby\", </sitemap.xml>; rel=\"describedby\", </auth.md>; rel=\"alternate\"; type=\"text/markdown\", </index.md>; rel=\"alternate\"; type=\"text/markdown\"" env=IS_HOME
 </IfModule>
 
 <IfModule mod_rewrite.c>
@@ -14,6 +20,11 @@ DirectoryIndex index.php index.html
 
   # Machine-readable catalog must not be served as raw extensionless bytes without type.
   RewriteRule ^\.well-known/api-catalog$ .well-known/api-catalog.php [L]
+
+  # Route HTML pages through PHP negotiators (Accept: text/markdown).
+  RewriteRule ^privacy\.html$ privacy.php [L]
+  RewriteRule ^terms\.html$ terms.php [L]
+  RewriteRule ^case\.html$ case.php [L]
 
   # Never soft-fallback machine-readable agent paths to HTML.
   RewriteRule ^\.well-known/ - [L]

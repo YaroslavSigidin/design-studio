@@ -24,6 +24,13 @@
       "description": "High-level site summary and agent entry points for Согласовано.",
       "url": "https://soglasovano.online/llms.txt",
       "sha256": "13d3788dcc279e2c2766b9f031a26be8bc58522752b5eeed4a30c5971097a50f"
+    },
+    {
+      "name": "homepage-markdown",
+      "type": "skill",
+      "description": "Markdown homepage mirror for agents requesting Accept: text/markdown.",
+      "url": "https://soglasovano.online/index.md",
+      "sha256": "ea554e957ff9064d5b529c2a2122c3436a3b97fc9e796fb6522dfd0508e9855b"
     }
   ]
 }

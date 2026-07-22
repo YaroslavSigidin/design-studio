@@ -16,3 +16,6 @@
 
 ## Как оставить заявку
 `POST https://soglasovano.online/api/leads.php` with JSON or multipart (see docs/leads.md). OAuth is not required.
+
+## Markdown
+Запросы с `Accept: text/markdown` на `/`, `/privacy.html`, `/terms.html`, `/case.html` возвращают markdown-зеркала (`index.md`, `privacy.md`, …) с `Content-Type: text/markdown`.
