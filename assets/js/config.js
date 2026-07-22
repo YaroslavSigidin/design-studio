@@ -75,7 +75,7 @@ window.STUDIO_CONFIG = {
   // analytics.metrikaId — ID счётчика Яндекс.Метрики. Пустая строка отключает счётчик и reachGoal().
   // Цели lead_sent* отправляются через событие studio:lead-sent после успешной заявки.
   analytics: {
-    metrikaId: ""
+    metrikaId: "110947439"
   },
   // Optional Cloudflare Turnstile site key. Leave empty until owner provides keys.
   turnstileSiteKey: "",
