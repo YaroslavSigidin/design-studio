@@ -83,7 +83,6 @@
       </div>
     `;
     document.body.appendChild(root);
-    document.documentElement.classList.add("studio-user-cursor-active");
 
     const labelEl = root.querySelector(".studio-user-cursor__label");
     const arrowEl = root.querySelector(".studio-user-cursor__arrow");
@@ -178,6 +177,10 @@
         arrowY.jump(y);
         labelX.jump(x);
         labelY.jump(y);
+        // Keep the native pointer until the custom cursor has a real position.
+        // This avoids a blank/jumping cursor during the first paint and when a
+        // user lands directly on an animated section such as Services.
+        document.documentElement.classList.add("studio-user-cursor-active");
         setVisible(true);
       } else {
         arrowX.set(x);
