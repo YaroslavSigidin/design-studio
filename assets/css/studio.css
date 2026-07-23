@@ -7721,13 +7721,32 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
 }
 
 .studio-footer__extras .promo-strip {
+  position: relative;
+  inset: auto;
   flex: 1 1 280px;
   max-width: 312px;
+  width: min(100%, 312px);
+  height: var(--hero-chrome-height);
+  min-height: var(--hero-chrome-height);
+  z-index: auto;
+  transform: none;
+  transform-origin: center;
+  opacity: 1;
+  visibility: visible;
+  will-change: auto;
 }
 
 .studio-footer__extras .top-contact-cluster {
+  position: relative;
+  inset: auto;
   flex: 0 0 auto;
   margin-left: auto;
+  z-index: auto;
+  transform: none;
+  transform-origin: center;
+  opacity: 1;
+  visibility: visible;
+  will-change: auto;
 }
 
 .studio-footer__social {
