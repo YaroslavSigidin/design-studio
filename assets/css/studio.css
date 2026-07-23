@@ -3735,6 +3735,14 @@ body::after {
   display: none;
 }
 
+/* On compact tablet and mobile widths, keep each case readable at a glance. */
+@media (max-width: 999px) {
+  .studio-cases .project-card .tag,
+  .studio-cases .project-card p {
+    display: none;
+  }
+}
+
 .studio-cases .project-card[hidden] {
   display: none;
 }
