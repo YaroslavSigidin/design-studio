@@ -61,7 +61,10 @@
       defaults.description ||
       "";
     const nextImage = absoluteUrl(image || defaults.image || "assets/images/brand/og-cover.png");
-    const nextUrl = absoluteUrl(pathname || window.location.pathname + window.location.search);
+    // Query parameters (UTM, A/B flags, cache busters) must not become part of
+    // the canonical URL. Explicit pathnames, such as case.html?slug=..., are
+    // still preserved by applyCaseSeo above.
+    const nextUrl = absoluteUrl(pathname || window.location.pathname);
 
     document.title = nextTitle;
     ensureMeta("name", "description", nextDescription);
