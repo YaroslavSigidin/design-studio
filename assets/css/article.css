@@ -57,6 +57,7 @@ button, input, textarea { font: inherit; }
 .article-lead { max-width: 800px; margin: 25px 0 0; color: var(--article-muted); font-size: clamp(19px, 2.1vw, 25px); line-height: 1.42; }
 .article-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 24px; color: var(--article-muted); font-size: 14px; }
 .article-layout { display: grid; grid-template-columns: minmax(180px, 0.35fr) minmax(0, 1fr); gap: 58px; align-items: start; padding: 52px 0 92px; border-top: 1px solid var(--article-line); }
+.article-layout--single { grid-template-columns: minmax(0, 1fr); }
 .article-toc { position: sticky; top: 24px; padding: 20px; border: 1px solid var(--article-line); border-radius: 20px; background: rgba(255,255,255,0.68); }
 .article-toc strong { display: block; margin-bottom: 12px; font-size: 14px; }
 .article-toc ol { margin: 0; padding-left: 20px; color: var(--article-muted); font-size: 14px; }

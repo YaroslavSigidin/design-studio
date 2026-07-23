@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="index,follow" />
+    <title>Дизайн‑хэнд‑офф без боли: как передавать макеты в разработку | Согласовано</title>
+    <meta name="description" content="Практическая система передачи дизайна: слои, спецификации, токены, сценарии и контроль качества, чтобы дизайн доезжал в прод." />
+    <link rel="canonical" href="https://soglasovano.online/blog/design-handoff/" /><link rel="icon" href="../../favicon.svg" />
+    <meta property="og:type" content="article" /><meta property="og:locale" content="ru_RU" /><meta property="og:site_name" content="Согласовано" /><meta property="og:title" content="Дизайн‑хэнд‑офф без боли: как передавать макеты в разработку" /><meta property="og:description" content="Практическая система передачи дизайна: слои, спецификации, токены, сценарии и контроль качества, чтобы дизайн доезжал в прод." /><meta property="og:url" content="https://soglasovano.online/blog/design-handoff/" /><meta property="og:image" content="https://soglasovano.online/assets/images/brand/og-cover.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BlogPosting","@id":"https://soglasovano.online/blog/design-handoff/#article","url":"https://soglasovano.online/blog/design-handoff/","headline":"Дизайн‑хэнд‑офф без боли: как передавать макеты в разработку","description":"Практическая система передачи дизайна: слои, спецификации, токены, сценарии и контроль качества, чтобы дизайн доезжал в прод.","image":["https://soglasovano.online/assets/images/brand/og-cover.png"],"datePublished":"2025-12-26","dateModified":"2025-12-26","inLanguage":"ru-RU","author":{"@type":"Person","name":"Ярослав Сигидин","url":"https://soglasovano.online/"},"publisher":{"@type":"Organization","name":"Согласовано","url":"https://soglasovano.online/"},"mainEntityOfPage":{"@id":"https://soglasovano.online/blog/design-handoff/#page"},"keywords":"Process, Design System, Product"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://soglasovano.online/"},{"@type":"ListItem","position":2,"name":"Архив статей","item":"https://soglasovano.online/blog.html"},{"@type":"ListItem","position":3,"name":"Дизайн‑хэнд‑офф без боли: как передавать макеты в разработку","item":"https://soglasovano.online/blog/design-handoff/"}]}]}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;750&display=swap" /><link rel="stylesheet" href="../../assets/css/article.css?v=20260723-imported-blog1" />
+  </head>
+  <body data-seo-page="imported-blog-article">
+    <header class="article-shell article-nav"><a class="article-logo" href="../../" aria-label="Согласовано">Согласовано</a><nav class="article-nav__links" aria-label="Навигация статьи"><a href="../../blog.html">Архив статей</a><a href="../../insights.html">Новый журнал</a><a class="article-button article-button--accent" href="#request">Обсудить задачу</a></nav></header>
+    <main><article><header class="article-shell article-hero"><p class="article-kicker">Архив блога · Process · Design System</p><h1>Дизайн‑хэнд‑офф без боли: как передавать макеты в разработку</h1><p class="article-lead">Практическая система передачи дизайна: слои, спецификации, токены, сценарии и контроль качества, чтобы дизайн доезжал в прод.</p><div class="article-meta"><span>26.12.2025</span><span>17 мин чтения</span><span>Практический материал</span></div></header><div class="article-shell article-layout article-layout--single"><div class="article-content"><h2 class="article-reveal">Почему хэнд‑офф ломает дизайн</h2>
+<p class="article-paragraph article-reveal">Большинство проблем в интерфейсах возникают не на стадии дизайна, а между дизайном и разработкой.</p>
+<p class="article-paragraph article-reveal">Когда макет «передали», но не договорились о правилах, интерфейс распадается на частные трактовки.</p>
+<p class="article-paragraph article-reveal">В итоге в проде появляются разные размеры отступов, непредсказуемые состояния и разъехавшаяся типографика.</p>
+<p class="article-paragraph article-reveal">Хэнд‑офф — это не про отправку ссылки на Figma. Это про согласованный способ превращать макет в продукт.</p>
+<div class="article-callout article-reveal"><div class="callout-head"><h4>Ключевая мысль</h4></div><p>Передача дизайна — это часть процесса, а не финальный шаг.</p></div>
+<div class="article-divider article-reveal"><span>Старт</span></div>
+<h3 class="article-reveal">Что должно быть готово до передачи</h3>
+<p class="article-paragraph article-reveal">Перед тем как отдавать макеты, важно подготовить систему: состояния, правила и точные спецификации.</p>
+<p class="article-paragraph article-reveal">Минимальный набор: сетка, отступы, типографика, цвета, состояния компонентов, правила поведения.</p>
+<p class="article-paragraph article-reveal">Если этих вещей нет, разработчик будет «додумывать» — и это всегда риск несоответствий.</p>
+<h3 class="article-reveal">1. Единые дизайн‑токены</h3>
+<p class="article-paragraph article-reveal">Токены — это не мода, а язык между дизайном и кодом.</p>
+<p class="article-paragraph article-reveal">Они фиксируют цвета, типографику, радиусы, тени и отступы как сущности, а не как случайные значения.</p>
+<p class="article-paragraph article-reveal">Если в продукте есть токены, все решения становятся воспроизводимыми и контролируемыми.</p>
+<div class="article-callout article-reveal"><div class="callout-head"><h4>Практика</h4></div><p>Описывай токены не только числом, но и смыслом: `surface/primary`, `text/muted`, `space/12`.</p></div>
+<h3 class="article-reveal">2. Компоненты и состояния</h3>
+<p class="article-paragraph article-reveal">Каждый компонент должен иметь полный набор состояний: default, hover, active, disabled, error.</p>
+<p class="article-paragraph article-reveal">Если состояние не описано, оно будет реализовано как «кажется, так логично».</p>
+<p class="article-paragraph article-reveal">Собери в отдельные страницы базовые элементы: кнопки, поля, чекбоксы, селекты, таблицы.</p>
+<h3 class="article-reveal">3. Сценарии и edge‑cases</h3>
+<p class="article-paragraph article-reveal">Покажи не только идеальные экраны, но и проблемные сценарии: ошибки, пустые состояния, загрузку.</p>
+<p class="article-paragraph article-reveal">Если экрана «данных нет» нет в макете, его сделают в коде, и результат будет случайным.</p>
+<div class="article-divider article-reveal"><span>Процесс</span></div>
+<h3 class="article-reveal">Как передавать макеты системно</h3>
+<p class="article-paragraph article-reveal">Лучший хэнд‑офф строится на ритуале: дизайн, уточнение, реализация, сверка.</p>
+<p class="article-paragraph article-reveal">Это похоже на pipeline: дизайнер готовит, разработчик уточняет, затем вместе проверяют.</p>
+<h3 class="article-reveal">Шаг 1. Подготовка файла</h3>
+<p class="article-paragraph article-reveal">Убери лишние дубли, переименуй ключевые фреймы, структурируй по страницам.</p>
+<p class="article-paragraph article-reveal">Сделай отдельную страницу с компонентами и правилами — она должна жить рядом с макетами.</p>
+<h3 class="article-reveal">Шаг 2. Синхронизация</h3>
+<p class="article-paragraph article-reveal">Проведи короткий разбор с разработкой: поясни сложные места, критичные сценарии и допущения.</p>
+<p class="article-paragraph article-reveal">Это экономит дни. Один созвон на 30 минут снимает десятки уточнений.</p>
+<h3 class="article-reveal">Шаг 3. Контроль реализации</h3>
+<p class="article-paragraph article-reveal">После реализации проведи дизайн‑ревью: сравни UI с макетом по ключевым сценариям.</p>
+<p class="article-paragraph article-reveal">Фиксируй отклонения не «по вкусу», а по принципам: токены, отступы, состояния.</p>
+<div class="article-callout article-reveal"><div class="callout-head"><h4>Эффект</h4></div><p>Регулярный дизайн‑ревью снижает визуальные отклонения и ускоряет согласование релизов.</p></div>
+<div class="article-divider article-reveal"><span>Ошибки</span></div>
+<h3 class="article-reveal">Типичные ошибки хэнд‑оффа</h3>
+<ul class="article-list article-reveal"><li>Передача «картинкой» без системы: нет токенов, правил и состояний.</li><li>Разрозненные файлы: нет единого источника правды.</li><li>Отсутствие edge‑cases: пустые состояния, ошибки, загрузка не учтены.</li><li>Ноль коммуникации: дизайнер и разработчик работают в изоляции.</li></ul>
+<div class="article-divider article-reveal"><span>Чек‑лист</span></div>
+<h3 class="article-reveal">Чек‑лист перед передачей</h3>
+<ul class="article-list article-reveal"><li>Компоненты собраны и имеют состояния.</li><li>Токены описаны и используются последовательно.</li><li>Важные сценарии продуманы: ошибки, пустые, загрузка.</li><li>Файл структурирован и легко читается.</li><li>Есть договоренность о проверке реализации.</li></ul>
+<div class="article-divider article-reveal"><span>Вывод</span></div>
+<h3 class="article-reveal">Вывод</h3>
+<p class="article-paragraph article-reveal">Хэнд‑офф — это не финал, а начало совместной работы.</p>
+<p class="article-paragraph article-reveal">Если есть система, дизайн доезжает в прод почти без потерь.</p>
+<p class="article-paragraph article-reveal">Если системы нет — продукт начинает «расползаться» сразу после первой разработки.</p><div class="article-cta"><p>Нужен взгляд со стороны на ваш сайт или продукт?</p><strong>Переведём наблюдения из статьи в конкретный план улучшений.</strong><a class="article-button article-button--accent" href="#request">Обсудить задачу</a></div></div></div></article><section class="article-request" id="request" aria-labelledby="request-title"><div class="article-shell article-request__grid"><div class="article-request__copy"><p class="article-kicker">Следующий шаг</p><h2 id="request-title">Применим методику к вашему продукту</h2><p>Пришлите ссылку и коротко опишите задачу. Вернёмся с первым приоритетом и форматом работ.</p></div><form class="article-form studio-discuss__form" data-lead-form data-lead-source="SEO — импортированная статья: Дизайн‑хэнд‑офф без боли: как передавать макеты в разработку" data-service="Экспресс-аудит сайта"><div class="article-form__row"><label><span>Имя</span><input name="name" autocomplete="name" required /></label><label><span>Telegram или email</span><input name="contact" autocomplete="email" required /></label></div><label><span>Ссылка и задача</span><textarea name="comment" placeholder="Что нужно проверить или улучшить"></textarea></label><label class="article-form__privacy"><input type="checkbox" name="privacy" value="1" checked required /><span>Согласен с <a href="../../privacy.html">политикой конфиденциальности</a></span></label><button class="article-button article-button--accent" type="submit">Обсудить задачу</button></form></div></section></main><footer class="article-footer"><div class="article-shell article-footer__inner"><span>© 2026 Согласовано · Архив статей</span><span><a href="../../blog.html">Все статьи</a> · <a href="https://t.me/sigidingo">Telegram</a> · <a href="../../">Главная</a></span></div></footer><script src="../../assets/js/config.js?v=20260722-leads7d" defer></script><script src="../../assets/js/a11y.js?v=20260718-a11y" defer></script><script src="../../assets/js/analytics.js?v=20260723-ab1" defer></script><script src="../../assets/js/contact.js?v=20260723-ab1" defer></script>
+  </body>
+</html>
