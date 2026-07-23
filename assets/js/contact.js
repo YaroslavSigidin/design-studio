@@ -424,12 +424,14 @@ const initStudioContacts = () => {
 
   const bindContactLink = (selector, value, { hideIfEmpty = false } = {}) => {
     document.querySelectorAll(selector).forEach(node => {
-      if (!value) {
+      const explicitValue = String(node.getAttribute("data-contact-url") || "").trim();
+      const boundValue = explicitValue || value;
+      if (!boundValue) {
         if (hideIfEmpty) node.hidden = true;
         return;
       }
       node.hidden = false;
-      node.setAttribute("href", value);
+      node.setAttribute("href", boundValue);
       decorateExternalLink(node);
     });
   };

@@ -1192,7 +1192,7 @@ body::after {
   flex-basis: 18px;
 }
 
-.top-mini-contact-btn--max .top-mini-contact-btn__icon {
+.top-mini-contact-btn--telegram .top-mini-contact-btn__icon {
   width: 19px;
   height: 19px;
   flex-basis: 19px;
@@ -1206,23 +1206,15 @@ body::after {
   background: linear-gradient(180deg, #2e83ff 0%, #1668de 100%);
 }
 
-.top-mini-contact-btn--max {
-  background: linear-gradient(180deg, #232833 0%, #0f1218 100%);
+.top-mini-contact-btn--telegram {
+  background: linear-gradient(180deg, #35aeea 0%, #168dcc 100%);
 }
 
 .top-mini-contact-btn--vk:hover {
   background: linear-gradient(180deg, #3b8dff 0%, #1f74ea 100%);
 }
 
-.top-mini-contact-btn--max:hover {
-  background: linear-gradient(180deg, #2f3642 0%, #171c24 100%);
-}
-
-.top-mini-contact-btn--max.is-telegram-fallback {
-  color: #fff;
-}
-
-.top-mini-contact-btn--max.is-telegram-fallback:hover {
+.top-mini-contact-btn--telegram:hover {
   background: linear-gradient(180deg, #3aa0e8 0%, #229ed9 100%);
 }
 
