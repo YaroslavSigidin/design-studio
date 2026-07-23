@@ -4149,6 +4149,7 @@ body::after {
   --service-card-width: min(332px, 78vw);
   --service-card-height: 478px;
   --services-gap: 14px;
+  --services-scene-duration: 520ms;
   position: relative;
   width: 100%;
   max-width: none;
@@ -4247,8 +4248,9 @@ body::after {
 }
 
 .studio-services-carousel.is-arc.is-arc-paint .studio-services-carousel__viewport::before {
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  /* A full-viewport blur makes card transitions hitch on Retina/low-power GPUs. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .studio-services-carousel.is-arc .studio-services-carousel__viewport::after {
@@ -4299,7 +4301,7 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
   animation: none !important;
   transition:
     opacity 0.7s var(--ease-out),
-    transform var(--dur-scene) var(--ease-out),
+    transform var(--services-scene-duration) var(--ease-out),
     box-shadow 0.55s var(--ease-out);
 }
 

@@ -156,7 +156,6 @@ const initServicesCarousel = () => {
     const count = cards.length;
     if (!count) return;
 
-    removeLoopClones();
     activeIndex = Math.max(0, Math.min(count - 1, activeIndex));
 
     const viewportWidth = Math.max(viewport.clientWidth, 320);
@@ -184,8 +183,11 @@ const initServicesCarousel = () => {
     const centerX = viewportWidth / 2;
     const centerY = stagePadTop + cardHeight + radius;
 
-    root.style.setProperty("--services-arc-height", `${arcHeight}px`);
-    track.style.height = `${arcHeight}px`;
+    const nextArcHeight = `${arcHeight}px`;
+    if (root.style.getPropertyValue("--services-arc-height") !== nextArcHeight) {
+      root.style.setProperty("--services-arc-height", nextArcHeight);
+    }
+    if (track.style.height !== nextArcHeight) track.style.height = nextArcHeight;
 
     cards.forEach((card, index) => {
       // Finite list: no wrap-around — ends of the catalog stay ends.
@@ -204,7 +206,7 @@ const initServicesCarousel = () => {
       const y = centerY - radius * Math.cos(angle);
 
       if (wrapped) {
-        card.style.transition = "opacity 0.55s ease, box-shadow 0.45s ease, transform 0.55s var(--ease-out, ease)";
+        card.style.transition = "opacity 0.42s ease, box-shadow 0.38s ease, transform 0.42s var(--ease-out, ease)";
       } else {
         card.style.removeProperty("transition");
       }
@@ -314,7 +316,7 @@ const initServicesCarousel = () => {
       return;
     }
     activeIndex = nextIndex;
-    layoutArc();
+    scheduleArcLayout();
   };
 
   const goToArcIndex = index => {
@@ -324,7 +326,7 @@ const initServicesCarousel = () => {
     const nextIndex = Math.max(0, Math.min(count - 1, index));
     if (nextIndex === activeIndex) return;
     activeIndex = nextIndex;
-    layoutArc();
+    scheduleArcLayout();
   };
 
   const scrollByStep = direction => {
