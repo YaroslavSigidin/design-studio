@@ -26,7 +26,10 @@ const resolveLeadEndpoint = () => {
     return "http://127.0.0.1:8787/api/leads";
   }
 
-  return joinPath(studioBasePath, "api/leads.php");
+  // The public site can also be opened from the GitHub Pages mirror. Always
+  // send leads to the configured PHP origin instead of a static /api path on
+  // the mirror, which otherwise returns 404 and looks like a server outage.
+  return "https://soglasovano.online/api/leads.php";
 };
 
 window.__studioEscapeHtml = value =>
@@ -66,7 +69,9 @@ window.STUDIO_CONFIG = {
   crm: {
     provider: "telegram",
     endpoint: resolveLeadEndpoint(),
-    timeoutMs: 15000,
+    // Telegram delivery can take longer than 15 seconds through the origin;
+    // keep the browser request alive long enough for the PHP handler to reply.
+    timeoutMs: 75000,
     uploadTimeoutMs: 90000,
     // Fallback открывает Telegram/mailto, но НЕ считается подтверждённой заявкой.
     allowFallback: true,
