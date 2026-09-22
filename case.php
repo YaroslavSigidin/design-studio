@@ -51,7 +51,7 @@ if ($descriptionLength > 160) {
 }
 $pageTitle = $title . ' — кейс UX/UI и дизайна | Согласовано';
 $canonical = $siteUrl . '/case.html?slug=' . rawurlencode($slug);
-$image = trim((string) ($project['image'] ?? '/assets/images/brand/og-cover.png'));
+$image = trim((string) ($project['image'] ?? '/assets/images/brand/og-cover-signature-2026.jpg'));
 if (!preg_match('#^https?://#i', $image)) {
     $image = $siteUrl . '/' . ltrim($image, '/');
 }

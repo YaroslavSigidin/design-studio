@@ -60,7 +60,7 @@
       document.querySelector('meta[name="description"]')?.getAttribute("content") ||
       defaults.description ||
       "";
-    const nextImage = absoluteUrl(image || defaults.image || "assets/images/brand/og-cover.png");
+    const nextImage = absoluteUrl(image || defaults.image || "assets/images/brand/og-cover-signature-2026.jpg");
     // Query parameters (UTM, A/B flags, cache busters) must not become part of
     // the canonical URL. Explicit pathnames, such as case.html?slug=..., are
     // still preserved by applyCaseSeo above.
@@ -123,7 +123,7 @@
             headline: caseTitle,
             description: caseDescription,
             url,
-            image: absoluteUrl(image || "assets/images/brand/og-cover.png"),
+            image: absoluteUrl(image || "assets/images/brand/og-cover-signature-2026.jpg"),
             inLanguage: "ru-RU",
             creator: { "@id": `${siteRoot}/#organization` },
             keywords: [...(Array.isArray(tags) ? tags : []), category].filter(Boolean)
