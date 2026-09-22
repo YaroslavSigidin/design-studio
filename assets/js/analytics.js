@@ -43,6 +43,19 @@ const initStudioAnalytics = () => {
       webvisor: true
     });
 
+    const pageType = String(document.body?.dataset?.seoPage || "page");
+    window.ym(Number(metrikaId), "params", {
+      page_type: pageType,
+      page_path: window.location.pathname
+    });
+
+    if (pageType === "profile") {
+      track("profile_view", {
+        page: "sigidingo",
+        path: window.location.pathname
+      });
+    }
+
     const experiment = window.STUDIO_EXPERIMENT;
     if (experiment?.active) {
       const experimentParams = {
