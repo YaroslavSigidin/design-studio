@@ -2,6 +2,12 @@
 const detectStudioBasePath = () => {
   const pathname = window.location.pathname || "/";
 
+  // The personal profile reuses the studio assets and data from the parent
+  // directory instead of maintaining a second copy of the site bundle.
+  if (pathname.endsWith("/sigidingo/")) {
+    return pathname.slice(0, -"sigidingo/".length);
+  }
+
   if (pathname.endsWith("/")) return pathname;
 
   const slashIndex = pathname.lastIndexOf("/");
