@@ -4,8 +4,13 @@ const detectStudioBasePath = () => {
 
   // The personal profile reuses the studio assets and data from the parent
   // directory instead of maintaining a second copy of the site bundle.
-  if (pathname.endsWith("/sigidingo/")) {
-    return pathname.slice(0, -"sigidingo/".length);
+  const profileDirectory = "/sigidingo/";
+  const profileIndex = pathname.lastIndexOf(profileDirectory);
+  if (
+    profileIndex >= 0 &&
+    (pathname.endsWith(profileDirectory) || pathname.endsWith(`${profileDirectory}index.html`))
+  ) {
+    return pathname.slice(0, profileIndex + 1);
   }
 
   if (pathname.endsWith("/")) return pathname;
