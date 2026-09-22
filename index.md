@@ -24,4 +24,4 @@
 - Политика: https://soglasovano.online/privacy.md
 - Условия: https://soglasovano.online/terms.md
 
-Оставить заявку: `POST https://soglasovano.online/api/leads.php` (OAuth не нужен).
+Оставить заявку: `POST https://soglasovano.online/api/leads` (OAuth не нужен).

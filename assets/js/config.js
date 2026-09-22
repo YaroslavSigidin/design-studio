@@ -31,10 +31,13 @@ const resolveLeadEndpoint = () => {
     return "http://127.0.0.1:8787/api/leads";
   }
 
-  // The public site can also be opened from the GitHub Pages mirror. Always
-  // send leads to the configured PHP origin instead of a static /api path on
-  // the mirror, which otherwise returns 404 and looks like a server outage.
-  return "https://soglasovano.online/api/leads.php";
+  // GitHub Pages is only a mirror and cannot run the server-side handler.
+  // The production site uses the same-origin Cloudflare Pages Function.
+  if (host === "yaroslavsigidin.github.io") {
+    return "https://soglasovano.online/api/leads";
+  }
+
+  return "/api/leads";
 };
 
 window.__studioEscapeHtml = value =>
