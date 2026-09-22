@@ -100,17 +100,98 @@
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Marck+Script&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Marck+Script&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
       />
     </noscript>
     <link rel="stylesheet" href="../assets/css/studio.css?v=20260723-cases-mobile1" />
     <link rel="stylesheet" href="../assets/css/user-cursor.css?v=20260718-user-cursor" />
+    <style>
+      .profile-hero-card {
+        position: relative;
+        width: 108px;
+        aspect-ratio: 0.78;
+        margin-bottom: -4px;
+        overflow: hidden;
+        border: 4px solid rgba(255, 255, 255, 0.9);
+        border-radius: 22px;
+        background: #dcecff;
+        box-shadow: 0 18px 42px rgba(35, 79, 124, 0.2);
+        transform: rotate(-2deg);
+      }
+
+      .profile-hero-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 52%, rgba(8, 14, 24, 0.82) 100%);
+        pointer-events: none;
+      }
+
+      .profile-hero-card__photo {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 22%;
+      }
+
+      .profile-hero-card__name {
+        position: absolute;
+        z-index: 1;
+        right: 8px;
+        bottom: 8px;
+        left: 8px;
+        color: #fff;
+        font: 600 11px/1.05 "Inter", sans-serif;
+        letter-spacing: -0.02em;
+        text-align: left;
+      }
+
+      .profile-hero-title__name,
+      .profile-hero-title__role {
+        display: block;
+      }
+
+      .profile-hero-title__role {
+        margin-top: -0.08em;
+        font-family: "Marck Script", "Comic Sans MS", cursive;
+        font-size: 1.08em;
+        font-weight: 400;
+        line-height: 0.94;
+        letter-spacing: -0.025em;
+      }
+
+      .profile-hero-header {
+        gap: 14px;
+      }
+
+      @media (max-width: 640px) {
+        .profile-hero-card {
+          width: 82px;
+          border-width: 3px;
+          border-radius: 17px;
+        }
+
+        .profile-hero-card__name {
+          right: 6px;
+          bottom: 6px;
+          left: 6px;
+          font-size: 9px;
+        }
+
+        .profile-hero-title__role {
+          margin-top: 0;
+          font-size: 1.02em;
+          line-height: 1;
+        }
+      }
+    </style>
   </head>
   <body data-seo-page="profile">
     <div class="hero-page">
@@ -173,9 +254,22 @@
 
         <main class="hero-main" id="main-content" tabindex="-1">
           <div class="hero-content">
-            <div class="hero-header">
+            <div class="hero-header profile-hero-header">
+              <figure class="profile-hero-card" aria-label="Ярослав Сигидин, UX/UI исследователь">
+                <img
+                  class="profile-hero-card__photo"
+                  src="../assets/images/team/sigidin-yaroslav.jpg"
+                  alt="Ярослав Сигидин"
+                  width="636"
+                  height="1024"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+                <figcaption class="profile-hero-card__name">Ярослав Сигидин</figcaption>
+              </figure>
               <h1 class="hero-title" data-hero-wordmark>
-                Ярослав Сигидин<br />UX/UI исследователь
+                <span class="profile-hero-title__name">Ярослав Сигидин</span>
+                <span class="profile-hero-title__role">UX/UI исследователь</span>
               </h1>
 
               <p class="hero-subtitle" data-hero-scroll-item>
