@@ -51,7 +51,7 @@ window.STUDIO_CONFIG = {
   basePath: studioBasePath,
   assetBasePath: studioBasePath,
   siteUrl: "https://soglasovano.online",
-  manifest: joinPath(studioBasePath, "data/cases.manifest.json") + "?v=20260718-roadmap-all",
+  manifest: joinPath(studioBasePath, "data/cases.manifest.json") + "?v=20261005-case-covers",
   studioHome: studioBasePath,
   studioCases: `${studioBasePath}#cases`,
   casePageBase: joinPath(studioBasePath, "case.html"),

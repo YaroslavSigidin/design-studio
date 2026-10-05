@@ -5,7 +5,7 @@ const loadJson = async (url, timeoutMs = 2500) => {
   const timeoutPromise = new Promise((_, reject) => {
     window.setTimeout(() => reject(new Error(`${url} → timeout (${timeoutMs}ms)`)), timeoutMs);
   });
-  const responsePromise = fetch(url, { cache: "force-cache" });
+  const responsePromise = fetch(url, { cache: "no-cache" });
   const res = await Promise.race([responsePromise, timeoutPromise]);
   if (!res.ok) throw new Error(`${url} → ${res.status}`);
   return res.json();

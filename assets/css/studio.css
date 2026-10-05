@@ -3891,6 +3891,11 @@ body::after {
   opacity: 1;
 }
 
+/* Keep the title visible when this taller cover is cropped to 16:9. */
+.media-skeleton img[src$="/vebocenschik/08.webp"] {
+  object-position: center 30%;
+}
+
 .media-skeleton.is-loaded .media-skeleton__shimmer,
 .media-skeleton.is-error .media-skeleton__shimmer {
   opacity: 0;
