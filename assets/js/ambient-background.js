@@ -106,8 +106,8 @@
   gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
   const resolution = gl.getUniformLocation(program, "u_resolution");
   gl.uniform3fv(gl.getUniformLocation(program, "u_colors"), new Float32Array([
-    0.5843, 0.8353, 0.6980, 1.0, 0.9529, 0.6902,
-    0.0314, 0.1098, 0.0824, 0.1765, 0.4157, 0.3098,
+    0.9725, 0.9725, 0.9725, 1.0, 1.0, 1.0,
+    0.8627, 0.8627, 0.8627, 0.9294, 0.9294, 0.9294,
   ]));
 
   let scheduled = 0;
