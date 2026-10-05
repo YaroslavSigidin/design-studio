@@ -512,7 +512,7 @@ body::after {
 
 /* Video background */
 .hero-video-wrap {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 0;
   overflow: hidden;
@@ -529,8 +529,7 @@ body::after {
   object-fit: cover;
   object-position: top center;
   opacity: 0;
-  filter: brightness(1.06) saturate(1.08);
-  will-change: opacity;
+  filter: brightness(1.12) saturate(1.06);
 }
 
 .hero-scrim {
@@ -538,16 +537,15 @@ body::after {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.16) 0%,
-    rgba(255, 255, 255, 0.1) 42%,
-    rgba(255, 255, 255, 0.34) 100%
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 42%,
+    rgba(255, 255, 255, 0.22) 100%
   );
 }
 
 .hero-page {
   position: relative;
   min-height: 100dvh;
-  overflow: hidden;
 }
 
 .hero-pong-layer {
