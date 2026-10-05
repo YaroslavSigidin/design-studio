@@ -165,6 +165,20 @@
   </head>
   <body data-seo-page="home">
     <div class="hero-page">
+      <div class="hero-video-wrap" aria-hidden="true">
+        <video
+          class="hero-video"
+          data-hero-video
+          autoplay
+          muted
+          playsinline
+          preload="metadata"
+          poster="./assets/images/brand/og-cover-signature-2026.jpg"
+        >
+          <source src="./assets/video/green-hills-hero.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-scrim"></div>
+      </div>
       <div class="hero-pong-layer" aria-hidden="true" data-hero-pong-layer>
         <div class="hero-paddle hero-paddle--player" data-pong-player></div>
         <div class="hero-paddle hero-paddle--ai" data-pong-ai></div>
@@ -1194,6 +1208,7 @@
     <script src="./assets/js/user-cursor.js?v=20260723-first-paint" defer></script>
     <script src="./assets/js/analytics.js?v=20260722-leads7d" defer></script>
     <script src="./assets/js/seo.js?v=20260723-canonical1" defer></script>
+    <script src="./assets/js/hero-video.js?v=20261005-green-hills" defer></script>
     <script src="./assets/js/contact.js?v=20260723-telegram-top" defer></script>
     <script src="./assets/js/webmcp.js?v=20260722-webmcp2" defer></script>
     <script src="./assets/js/video-orb.js?v=20260718-perf-profiles" defer></script>
