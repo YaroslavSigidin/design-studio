@@ -141,6 +141,10 @@
   aspect-ratio: 16 / 10;
 }
 
+.case-gallery-item .media-skeleton.is-loaded {
+  aspect-ratio: auto;
+}
+
 .case-related-card .media-skeleton {
   aspect-ratio: 16 / 10;
 }
