@@ -7103,8 +7103,13 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
   color: #fff;
 }
 
-.studio-about__card.is-bio-open .studio-about__more svg {
-  transform: rotate(45deg);
+.studio-about__more .studio-about__close,
+.studio-about__card.is-bio-open .studio-about__question {
+  display: none;
+}
+
+.studio-about__card.is-bio-open .studio-about__close {
+  display: block;
 }
 
 .studio-about__bio {
