@@ -5693,38 +5693,14 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
   opacity: 0.78;
 }
 
-.brief-form .form-status {
-  margin: 0;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: rgba(15, 23, 42, 0.055);
-  font-size: 13px;
-  text-align: center;
+.brief-modal__submit.is-success {
+  background: linear-gradient(180deg, #16845a 0%, #087348 100%);
+  opacity: 1;
+  cursor: default;
 }
 
-.brief-form .form-status.is-error {
-  background: rgba(180, 35, 24, 0.08);
-}
-
-.brief-form .form-status.is-success {
-  background: rgba(2, 122, 72, 0.08);
-}
-
-.brief-success {
-  padding: 18px 0 8px;
-  text-align: center;
-}
-
-.brief-success h3 {
-  margin: 0 0 6px;
-  font-family: "Fustat", sans-serif;
-  font-size: 26px;
-  letter-spacing: -0.04em;
-}
-
-.brief-success p {
-  margin: 0;
-  color: #505050;
+.brief-modal__submit.is-error {
+  background: linear-gradient(180deg, #b42318 0%, #8f1c14 100%);
 }
 
 /* Responsive */

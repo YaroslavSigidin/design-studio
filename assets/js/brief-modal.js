@@ -1,12 +1,11 @@
 const initBriefModal = () => {
   const modal = document.getElementById("briefModal");
   const form = document.getElementById("briefForm");
-  const success = document.getElementById("briefSuccess");
   const modalTitle = document.getElementById("briefModalTitle");
   const phoneInput = form?.querySelector('input[name="phone"]');
   const nameInput = form?.querySelector('input[name="name"]');
   const submitButton = form?.querySelector('button[type="submit"]');
-  if (!modal || !form || !success || !phoneInput || !nameInput || !submitButton) return;
+  if (!modal || !form || !phoneInput || !nameInput || !submitButton) return;
 
   const defaultModalTitle = modalTitle?.textContent?.trim() || "Заказать дизайн";
   const dialog = modal.querySelector(".brief-modal__dialog") || modal;
@@ -16,7 +15,6 @@ const initBriefModal = () => {
 
   const clearErrors = () => {
     form.querySelectorAll("[aria-invalid='true']").forEach(field => a11y()?.clearFieldError?.(field));
-    window.STUDIO_CONTACT?.setFormStatus?.(form, "");
   };
 
   const formatRuPhone = input => {
@@ -55,9 +53,8 @@ const initBriefModal = () => {
     form.reset();
     const privacy = form.querySelector('input[name="privacy"]');
     if (privacy instanceof HTMLInputElement) privacy.checked = true;
-    form.hidden = false;
-    success.hidden = true;
     submitButton.disabled = false;
+    submitButton.classList.remove("is-sending", "is-success", "is-error");
     submitButton.textContent = "Отправить заявку";
     delete form.dataset.leadSource;
     delete form.dataset.service;
@@ -157,8 +154,9 @@ const initBriefModal = () => {
     }
 
     submitButton.disabled = true;
+    submitButton.classList.remove("is-success", "is-error");
+    submitButton.classList.add("is-sending");
     submitButton.textContent = "Отправляем…";
-    window.STUDIO_CONTACT?.setFormStatus?.(form, "Отправляем заявку. Обычно это занимает несколько секунд.");
 
     const payload = {
       source: form.dataset.leadSource || "Быстрая форма",
@@ -170,18 +168,16 @@ const initBriefModal = () => {
     const result = await window.STUDIO_CONTACT?.submitLead(payload);
 
     if (result?.confirmed && result?.ok) {
-      form.hidden = true;
-      success.hidden = false;
-      success.querySelector("h3").textContent = "Заявка отправлена ✓";
-      success.querySelector("p").textContent = "Всё получилось. Мы получили ваш номер и скоро свяжемся с вами.";
+      submitButton.classList.remove("is-sending", "is-error");
+      submitButton.classList.add("is-success");
+      submitButton.textContent = "Заявка отправлена ✓";
       return;
     }
 
     submitButton.disabled = false;
-    submitButton.textContent = "Отправить ещё раз";
-    window.STUDIO_CONTACT?.showLeadRecovery?.(form, result, payload, {
-      onRetry: () => form.requestSubmit()
-    });
+    submitButton.classList.remove("is-sending", "is-success");
+    submitButton.classList.add("is-error");
+    submitButton.textContent = "Не отправилось — повторить";
   });
 };
 
