@@ -5172,7 +5172,7 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(520px, calc(100% - 24px));
+  width: min(460px, calc(100% - 24px));
   max-height: calc(100dvh - 24px);
   overflow: auto;
   overscroll-behavior: contain;
@@ -5224,7 +5224,7 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
 
 .brief-form {
   display: grid;
-  gap: 10px;
+  gap: 14px;
 }
 
 .brief-grid {
@@ -5684,6 +5684,30 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
   box-shadow:
     0 22px 38px rgba(5, 8, 14, 0.24),
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.brief-modal__submit:disabled {
+  cursor: wait;
+  transform: none;
+  filter: none;
+  opacity: 0.78;
+}
+
+.brief-form .form-status {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.055);
+  font-size: 13px;
+  text-align: center;
+}
+
+.brief-form .form-status.is-error {
+  background: rgba(180, 35, 24, 0.08);
+}
+
+.brief-form .form-status.is-success {
+  background: rgba(2, 122, 72, 0.08);
 }
 
 .brief-success {

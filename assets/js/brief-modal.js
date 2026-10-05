@@ -1,82 +1,22 @@
 const initBriefModal = () => {
   const modal = document.getElementById("briefModal");
   const form = document.getElementById("briefForm");
-  const serviceInput = document.getElementById("briefServiceValue");
-  const serviceSelect = modal?.querySelector("[data-brief-service-select]");
-  const serviceTrigger = modal?.querySelector("[data-brief-service-trigger]");
-  const serviceLabel = modal?.querySelector("[data-brief-service-label]");
-  const serviceMenu = modal?.querySelector("[data-brief-service-menu]");
   const success = document.getElementById("briefSuccess");
   const modalTitle = document.getElementById("briefModalTitle");
-  const commentField = form?.querySelector('textarea[name="comment"]');
-  const budgetRange = form?.querySelector("[data-brief-budget-range]");
-  const budgetLabel = form?.querySelector("[data-brief-budget-label]");
-  const deadlineRange = form?.querySelector("[data-brief-deadline-range]");
-  const deadlineLabel = form?.querySelector("[data-brief-deadline-label]");
   const phoneInput = form?.querySelector('input[name="phone"]');
-  if (!modal || !form || !serviceInput || !serviceSelect || !serviceTrigger || !serviceLabel || !serviceMenu || !success) {
-    return;
-  }
+  const nameInput = form?.querySelector('input[name="name"]');
+  const submitButton = form?.querySelector('button[type="submit"]');
+  if (!modal || !form || !success || !phoneInput || !nameInput || !submitButton) return;
 
   const defaultModalTitle = modalTitle?.textContent?.trim() || "Заказать дизайн";
-
-  const serviceNames = [...new Set((window.SERVICES || []).map(item => item.title))];
-  const services = [...serviceNames, "Другое"];
-  let currentService = "";
-  let isMenuOpen = false;
-  let lastFocusedElement = null;
-  let focusTrap = null;
   const dialog = modal.querySelector(".brief-modal__dialog") || modal;
   const a11y = () => window.STUDIO_A11Y;
+  let lastFocusedElement = null;
+  let focusTrap = null;
 
-  const lockScroll = locked => {
-    document.body.style.overflow = locked ? "hidden" : "";
-  };
-
-  const clearBriefFieldErrors = () => {
-    form.querySelectorAll("[aria-invalid='true']").forEach(field => {
-      a11y()?.clearFieldError?.(field);
-    });
-  };
-
-  const renderServiceMenu = () => {
-    serviceMenu.innerHTML = services
-      .map(
-        item => `
-          <button
-            class="brief-service-select__option${item === currentService ? " is-active" : ""}"
-            type="button"
-            data-brief-service-option
-            data-value="${String(item).replace(/"/g, "&quot;")}"
-          >
-            ${item}
-          </button>
-        `
-      )
-      .join("");
-  };
-
-  const syncServiceValue = value => {
-    currentService = value || "";
-    serviceInput.value = currentService;
-    serviceLabel.textContent = currentService || "Выберите услугу";
-    renderServiceMenu();
-  };
-
-  const openMenu = () => {
-    isMenuOpen = true;
-    serviceSelect.classList.add("is-open");
-    serviceMenu.hidden = false;
-    serviceMenu.setAttribute("aria-hidden", "false");
-    serviceTrigger.setAttribute("aria-expanded", "true");
-  };
-
-  const closeMenu = () => {
-    isMenuOpen = false;
-    serviceSelect.classList.remove("is-open");
-    serviceMenu.hidden = true;
-    serviceMenu.setAttribute("aria-hidden", "true");
-    serviceTrigger.setAttribute("aria-expanded", "false");
+  const clearErrors = () => {
+    form.querySelectorAll("[aria-invalid='true']").forEach(field => a11y()?.clearFieldError?.(field));
+    window.STUDIO_CONTACT?.setFormStatus?.(form, "");
   };
 
   const formatRuPhone = input => {
@@ -86,12 +26,10 @@ const initBriefModal = () => {
     if (digits[0] === "9") digits = `7${digits}`;
     if (digits[0] !== "7") digits = `7${digits}`;
     digits = digits.slice(0, 11);
-
     const code = digits.slice(1, 4);
     const part1 = digits.slice(4, 7);
     const part2 = digits.slice(7, 9);
     const part3 = digits.slice(9, 11);
-
     let formatted = "+7";
     if (code) formatted += ` (${code}`;
     if (code.length === 3) formatted += ")";
@@ -103,102 +41,53 @@ const initBriefModal = () => {
 
   const getPhoneDigits = value => String(value || "").replace(/\D/g, "");
 
-  if (phoneInput) {
-    phoneInput.addEventListener("focus", () => {
-      if (!phoneInput.value.trim()) phoneInput.value = "+7 ";
-    });
-    phoneInput.addEventListener("input", () => {
-      phoneInput.value = formatRuPhone(phoneInput.value);
-    });
-    phoneInput.addEventListener("blur", () => {
-      if (getPhoneDigits(phoneInput.value).length <= 1) phoneInput.value = "";
-    });
-  }
+  phoneInput.addEventListener("focus", () => {
+    if (!phoneInput.value.trim()) phoneInput.value = "+7 ";
+  });
+  phoneInput.addEventListener("input", () => {
+    phoneInput.value = formatRuPhone(phoneInput.value);
+  });
+  phoneInput.addEventListener("blur", () => {
+    if (getPhoneDigits(phoneInput.value).length <= 1) phoneInput.value = "";
+  });
 
-  const formatMoney = value => `${new Intl.NumberFormat("ru-RU").format(value * 1000)} ₽`;
-  const getDeclension = (value, [one, two, five]) => {
-    const mod10 = value % 10;
-    const mod100 = value % 100;
-    if (mod100 >= 11 && mod100 <= 14) return five;
-    if (mod10 === 1) return one;
-    if (mod10 >= 2 && mod10 <= 4) return two;
-    return five;
-  };
-
-  const formatDeadline = value => {
-    const days = Number(value);
-    if (days < 14) return `${days} ${getDeclension(days, ["день", "дня", "дней"])}`;
-    if (days < 60) {
-      const weeks = Math.round(days / 7);
-      return `${weeks} ${getDeclension(weeks, ["неделя", "недели", "недель"])}`;
-    }
-    const months = Math.round((days / 30) * 10) / 10;
-    return `${String(months).replace(".0", "")} мес`;
-  };
-
-  const setRangeProgress = input => {
-    if (!input) return;
-    const min = Number(input.min || 0);
-    const maxValue = Number(input.max || 100);
-    const value = Number(input.value || min);
-    const progress = ((value - min) * 100) / (maxValue - min || 1);
-    input.style.setProperty("--range-progress", `${Math.max(0, Math.min(progress, 100))}%`);
-  };
-
-  const updateRanges = () => {
-    if (budgetRange && budgetLabel) {
-      budgetLabel.textContent = formatMoney(Number(budgetRange.value));
-      setRangeProgress(budgetRange);
-    }
-    if (deadlineRange && deadlineLabel) {
-      deadlineLabel.textContent = formatDeadline(Number(deadlineRange.value));
-      setRangeProgress(deadlineRange);
-    }
+  const reset = () => {
+    form.reset();
+    const privacy = form.querySelector('input[name="privacy"]');
+    if (privacy instanceof HTMLInputElement) privacy.checked = true;
+    form.hidden = false;
+    success.hidden = true;
+    submitButton.disabled = false;
+    submitButton.textContent = "Отправить заявку";
+    delete form.dataset.leadSource;
+    delete form.dataset.service;
+    delete form.dataset.comment;
+    if (modalTitle) modalTitle.textContent = defaultModalTitle;
+    clearErrors();
   };
 
   const open = (options = {}) => {
-    const opts =
-      typeof options === "string"
-        ? { service: options }
-        : options && typeof options === "object"
-          ? options
-          : {};
-
+    const opts = typeof options === "string" ? { service: options } : options || {};
+    reset();
     lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    form.dataset.leadSource = String(opts.source || "Быстрая форма").trim() || "Быстрая форма";
+    form.dataset.service = String(opts.service || "").trim();
+    form.dataset.comment = String(opts.comment || "").trim();
+    if (modalTitle) modalTitle.textContent = String(opts.title || "").trim() || defaultModalTitle;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
     a11y()?.setBackgroundInert?.(modal, true);
     focusTrap?.activate?.();
-    lockScroll(true);
-
-    const preset = String(opts.service || "").trim();
-    const source = String(opts.source || "Модальное окно брифа").trim() || "Модальное окно брифа";
-    const comment = String(opts.comment || "");
-    const title = String(opts.title || "").trim();
-
-    form.dataset.leadSource = source;
-    if (modalTitle) modalTitle.textContent = title || defaultModalTitle;
-    if (commentField) commentField.value = comment;
-
-    syncServiceValue(services.includes(preset) ? preset : "");
-    closeMenu();
-    clearBriefFieldErrors();
-    success.hidden = true;
-    form.hidden = false;
-    updateRanges();
-    window.requestAnimationFrame(() => {
-      modal.querySelector('input[name="name"]')?.focus();
-    });
+    document.body.style.overflow = "hidden";
+    window.requestAnimationFrame(() => nameInput.focus());
   };
 
   const close = () => {
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
-    closeMenu();
-    clearBriefFieldErrors();
     focusTrap?.deactivate?.();
     a11y()?.setBackgroundInert?.(modal, false);
-    lockScroll(false);
+    document.body.style.overflow = "";
     if (lastFocusedElement instanceof HTMLElement) lastFocusedElement.focus();
     lastFocusedElement = null;
   };
@@ -207,99 +96,59 @@ const initBriefModal = () => {
     onEscape: event => {
       if (!modal.classList.contains("is-open")) return;
       event.preventDefault();
-      if (isMenuOpen) {
-        closeMenu();
-        serviceTrigger.focus();
-        return;
-      }
       close();
     }
   });
+
+  const openFromElement = opener =>
+    open({
+      service: opener.dataset.service || "",
+      source: opener.dataset.briefSource || "Быстрая форма",
+      comment: opener.dataset.briefComment || "",
+      title: opener.dataset.briefTitle || ""
+    });
 
   document.addEventListener("click", event => {
     if (event.target.closest("[data-promo-close]")) return;
     const opener = event.target.closest("[data-open-brief-modal]");
     if (!opener) return;
     event.preventDefault();
-    open({
-      service: opener.dataset.service || "",
-      source: opener.dataset.briefSource || "Модальное окно брифа",
-      comment: opener.dataset.briefComment || "",
-      title: opener.dataset.briefTitle || ""
-    });
+    openFromElement(opener);
   });
 
   document.addEventListener("keydown", event => {
     if (event.key !== "Enter" && event.key !== " ") return;
-    if (event.target.closest("[data-promo-close]")) return;
     const opener = event.target.closest("[data-open-brief-modal][role='button']");
     if (!opener || event.target !== opener) return;
     event.preventDefault();
-    open({
-      service: opener.dataset.service || "",
-      source: opener.dataset.briefSource || "Модальное окно брифа",
-      comment: opener.dataset.briefComment || "",
-      title: opener.dataset.briefTitle || ""
-    });
+    openFromElement(opener);
   });
 
   modal.addEventListener("click", event => {
-    if (event.target.closest("[data-close-brief-modal]")) {
-      event.preventDefault();
-      close();
-      return;
-    }
-
-    if (event.target.closest("[data-brief-service-trigger]")) {
-      event.preventDefault();
-      if (isMenuOpen) closeMenu();
-      else openMenu();
-      return;
-    }
-
-    const option = event.target.closest("[data-brief-service-option]");
-    if (option) {
-      syncServiceValue(option.dataset.value || services[0] || "Другое");
-      closeMenu();
-      return;
-    }
-
-    if (!event.target.closest("[data-brief-service-select]")) {
-      closeMenu();
-    }
+    if (!event.target.closest("[data-close-brief-modal]")) return;
+    event.preventDefault();
+    close();
   });
 
   form.addEventListener("focusin", event => {
-    if (isMenuOpen && !event.target.closest("[data-brief-service-select]")) {
-      closeMenu();
-    }
-    if (event.target instanceof HTMLElement) {
-      a11y()?.clearFieldError?.(event.target);
-    }
+    if (event.target instanceof HTMLElement) a11y()?.clearFieldError?.(event.target);
   });
 
   form.addEventListener("submit", async event => {
     event.preventDefault();
-    clearBriefFieldErrors();
+    clearErrors();
 
-    if (!serviceInput.value) {
-      a11y()?.setFieldError?.(serviceTrigger, "Выберите услугу.");
-      serviceTrigger.focus();
+    const name = nameInput.value.trim();
+    if (!name) {
+      a11y()?.setFieldError?.(nameInput, "Укажите имя.");
+      nameInput.focus();
       return;
     }
-
-    if (!phoneInput?.value.trim()) {
-      a11y()?.setFieldError?.(phoneInput, "Укажите телефон.");
-      phoneInput?.focus();
-      return;
-    }
-
     if (getPhoneDigits(phoneInput.value).length !== 11) {
       a11y()?.setFieldError?.(phoneInput, "Введите телефон полностью: +7 (___) ___-__-__.");
       phoneInput.focus();
       return;
     }
-
     const privacy = form.querySelector('input[name="privacy"]');
     if (privacy instanceof HTMLInputElement && !privacy.checked) {
       a11y()?.setFieldError?.(privacy, "Отметьте согласие с политикой конфиденциальности.");
@@ -307,76 +156,33 @@ const initBriefModal = () => {
       return;
     }
 
-    const submitButton = form.querySelector('button[type="submit"]');
-    if (submitButton) submitButton.disabled = true;
+    submitButton.disabled = true;
+    submitButton.textContent = "Отправляем…";
+    window.STUDIO_CONTACT?.setFormStatus?.(form, "Отправляем заявку. Обычно это занимает несколько секунд.");
 
-    const result = await window.STUDIO_CONTACT?.submitLead({
-      source: form.dataset.leadSource || "Модальное окно брифа",
-      service: serviceInput.value,
-      name: form.querySelector('input[name="name"]')?.value.trim() || "",
-      phone: phoneInput?.value.trim() || "",
-      budget: budgetLabel?.textContent || "",
-      deadline: deadlineLabel?.textContent || "",
-      comment: form.querySelector('textarea[name="comment"]')?.value.trim() || ""
-    });
-
-    if (submitButton) submitButton.disabled = false;
+    const payload = {
+      source: form.dataset.leadSource || "Быстрая форма",
+      service: form.dataset.service || "",
+      name,
+      phone: phoneInput.value.trim(),
+      comment: form.dataset.comment || ""
+    };
+    const result = await window.STUDIO_CONTACT?.submitLead(payload);
 
     if (result?.confirmed && result?.ok) {
       form.hidden = true;
       success.hidden = false;
-      success.querySelector("h3").textContent = "Заявка отправлена";
-      success.querySelector("p").textContent =
-        "Заявка отправлена. Мы изучим задачу и свяжемся с вами.";
-      window.setTimeout(() => {
-        close();
-        form.reset();
-        const privacyReset = form.querySelector('input[name="privacy"]');
-        if (privacyReset instanceof HTMLInputElement) privacyReset.checked = true;
-        delete form.dataset.leadSource;
-        if (modalTitle) modalTitle.textContent = defaultModalTitle;
-        if (budgetRange) budgetRange.value = "150";
-        if (deadlineRange) deadlineRange.value = "30";
-        syncServiceValue("");
-        updateRanges();
-        form.hidden = false;
-        success.hidden = true;
-      }, 1600);
+      success.querySelector("h3").textContent = "Заявка отправлена ✓";
+      success.querySelector("p").textContent = "Всё получилось. Мы получили ваш номер и скоро свяжемся с вами.";
       return;
     }
 
-    // Keep modal open and preserve field values on failure / fallback.
-    form.hidden = false;
-    success.hidden = true;
-    const payload = {
-      source: form.dataset.leadSource || "Модальное окно брифа",
-      service: serviceInput.value,
-      name: form.querySelector('input[name="name"]')?.value.trim() || "",
-      phone: phoneInput?.value.trim() || "",
-      budget: budgetLabel?.textContent || "",
-      deadline: deadlineLabel?.textContent || "",
-      comment: form.querySelector('textarea[name="comment"]')?.value.trim() || ""
-    };
-    if (window.STUDIO_CONTACT?.showLeadRecovery) {
-      window.STUDIO_CONTACT.showLeadRecovery(form, result, payload, {
-        onRetry: () => form.requestSubmit()
-      });
-    } else {
-      window.STUDIO_CONTACT?.setFormStatus?.(
-        form,
-        `${result?.error || "Не удалось отправить заявку."}${
-          result?.requestId ? ` Код обращения: ${result.requestId}.` : ""
-        }`,
-        "error"
-      );
-    }
+    submitButton.disabled = false;
+    submitButton.textContent = "Отправить ещё раз";
+    window.STUDIO_CONTACT?.showLeadRecovery?.(form, result, payload, {
+      onRetry: () => form.requestSubmit()
+    });
   });
-
-  budgetRange?.addEventListener("input", updateRanges);
-  deadlineRange?.addEventListener("input", updateRanges);
-
-  syncServiceValue("");
-  updateRanges();
 };
 
 if (document.readyState === "loading") {
