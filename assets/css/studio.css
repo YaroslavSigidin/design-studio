@@ -109,10 +109,15 @@ a.studio-result-card {
   object-position: center 44%;
 }
 
+.studio-result-card__media--plitka {
+  height: auto;
+  aspect-ratio: 1982 / 688;
+}
+
 .studio-result-card__media--plitka img {
-  object-position: center bottom;
-  transform: scale(1.18);
-  transform-origin: center bottom;
+  object-fit: contain;
+  object-position: center;
+  transform: none;
 }
 
 .studio-result-card__media--profi img {
@@ -161,6 +166,11 @@ a.studio-result-card {
 
   .studio-result-card__media--plitka img {
     transform: scale(1.45);
+  }
+
+  .studio-result-card__media--plitka {
+    height: clamp(230px, 72vw, 330px);
+    aspect-ratio: auto;
   }
 }
 
