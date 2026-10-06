@@ -514,4 +514,10 @@
     <changefreq>monthly</changefreq>
     <priority>0.65</priority>
   </url>
+  <url>
+    <loc>https://soglasovano.online/case.html?slug=plitka-service</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
 </urlset>
