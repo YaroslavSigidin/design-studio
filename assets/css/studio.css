@@ -10,7 +10,8 @@
 }
 
 .studio-results__inner {
-  width: min(calc(100% - 64px), 1280px);
+  width: min(1100px, calc(100% - 48px));
+  margin-inline: auto;
 }
 
 .studio-results__title {
