@@ -15,13 +15,7 @@
 }
 
 .studio-results__title {
-  margin: 0 0 clamp(52px, 6vw, 88px);
-  color: #2e3033;
-  font-size: clamp(28px, 2.1vw, 38px);
-  font-weight: 400;
-  line-height: 1.05;
   text-align: center;
-  letter-spacing: -0.04em;
 }
 
 .studio-results__list {
@@ -127,12 +121,6 @@ a.studio-result-card {
 @media (max-width: 720px) {
   .studio-results {
     padding: 68px 0 80px;
-  }
-
-  .studio-results__title {
-    margin-bottom: 30px;
-    font-size: clamp(24px, 6.8vw, 28px);
-    line-height: 1.12;
   }
 
   .studio-results__inner {
@@ -3391,7 +3379,8 @@ body::after {
 }
 
 .studio-cases .section-title,
-.studio-services .section-title {
+.studio-services .section-title,
+.studio-results .section-title {
   margin: 0 auto 28px;
   font-family: "Fustat", sans-serif;
   font-weight: 700;
