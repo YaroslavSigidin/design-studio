@@ -2,7 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /docs/
-Disallow: /case-template.html
 Disallow: /.well-known/
 Content-Signal: search=yes, ai-train=no, ai-input=yes
 
