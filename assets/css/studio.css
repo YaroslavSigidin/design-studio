@@ -6671,7 +6671,8 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
     scroll-behavior: smooth;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    padding: 18px max(16px, calc((100% - var(--service-card-width)) / 2)) 34px;
+    /* Keep enough room inside the horizontal scrollport for the focused card shadow. */
+    padding: 32px max(16px, calc((100% - var(--service-card-width)) / 2)) 68px;
     scroll-padding-inline: max(16px, calc((100% - var(--service-card-width)) / 2));
     height: auto;
     isolation: auto;
