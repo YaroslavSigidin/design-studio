@@ -60,7 +60,7 @@ window.STUDIO_CONFIG = {
     title: "Дизайн-студия сайтов и интерфейсов — Согласовано",
     description:
       "Разрабатываем сайты, UX/UI-интерфейсы, брендинг и дизайн цифровых продуктов. Кейсы с результатами, прозрачные этапы и стоимость до начала работ.",
-    image: "assets/images/brand/og-cover-signature-2026.jpg"
+    image: "assets/images/brand/og-cover-logo-20261006.jpg"
   },
   contacts: {
     name: "Ярослав Сигидин",
