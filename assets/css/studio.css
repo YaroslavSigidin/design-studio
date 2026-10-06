@@ -126,11 +126,13 @@ a.studio-result-card {
 
 @media (max-width: 720px) {
   .studio-results {
-    padding: 76px 0 88px;
+    padding: 68px 0 80px;
   }
 
   .studio-results__title {
-    margin-bottom: 36px;
+    margin-bottom: 30px;
+    font-size: clamp(24px, 6.8vw, 28px);
+    line-height: 1.12;
   }
 
   .studio-results__inner {
@@ -138,26 +140,30 @@ a.studio-result-card {
   }
 
   .studio-results__list {
-    gap: 18px;
+    gap: 16px;
   }
 
   .studio-result-card {
-    border-radius: 22px;
+    border-radius: 20px;
   }
 
   .studio-result-card__content {
     min-height: 0;
-    padding: 26px 22px 30px;
+    padding: 24px 20px 27px;
   }
 
   .studio-result-card__meta {
-    margin-bottom: 15px;
-    font-size: 14px;
+    gap: 0.38em;
+    margin-bottom: 14px;
+    font-size: 13px;
+    line-height: 1.3;
   }
 
   .studio-result-card h3 {
-    font-size: clamp(28px, 8.7vw, 38px);
-    line-height: 1.01;
+    font-size: clamp(24px, 7vw, 30px);
+    line-height: 1.06;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
   }
 
   .studio-result-card__media {
