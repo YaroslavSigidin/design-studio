@@ -45,7 +45,7 @@ export async function onRequestGet({ request, env }) {
     const requestUrl = new URL(request.url);
     const slug = clean(requestUrl.searchParams.get("slug"), 160);
     const [template, manifestText] = await Promise.all([
-      getStaticText(env, request, "/case.html"),
+      getStaticText(env, request, "/case-template.html"),
       getStaticText(env, request, "/data/cases.manifest.json")
     ]);
     const manifest = JSON.parse(manifestText);
@@ -73,7 +73,9 @@ export async function onRequestGet({ request, env }) {
     const canonical = `${SITE_URL}/case.html?slug=${encodeURIComponent(slug)}`;
     const image = absoluteUrl(project.image || "assets/images/brand/og-cover-logo-20261006.jpg");
 
-    let html = template.replace(/<title>.*?<\/title>/is, `<title>${escapeHtml(pageTitle)}</title>`);
+    let html = template
+      .replace('<meta name="robots" content="noindex,nofollow" />', '<meta name="robots" content="index,follow" />')
+      .replace(/<title>.*?<\/title>/is, `<title>${escapeHtml(pageTitle)}</title>`);
     html = replaceMeta(html, "name", "description", description);
     html = html.replace(
       /<link\s+rel=["']canonical["']\s+href=["'][^"']*["']\s*\/?>/i,
