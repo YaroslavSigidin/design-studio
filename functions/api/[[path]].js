@@ -3,6 +3,7 @@ const MAX_FILE_BYTES = 20 * 1024 * 1024;
 const TELEGRAM_TEXT_LIMIT = 3900;
 
 const ALLOWED_ORIGINS = new Set([
+  "null", // local file:// preview used for design review
   "https://soglasovano.online",
   "https://www.soglasovano.online",
   "https://yaroslavsigidin.github.io",

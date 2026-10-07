@@ -26,6 +26,12 @@ const studioBasePath = detectStudioBasePath();
 const resolveLeadEndpoint = () => {
   const host = window.location.hostname;
 
+  // A file:// preview has no same-origin backend. Route it through the live
+  // Cloudflare Function so the form behaves exactly like production.
+  if (window.location.protocol === "file:") {
+    return "https://soglasovano.online/api/leads";
+  }
+
   // Local Node proxy (optional). Production / Timeweb uses same-origin PHP.
   if (host === "localhost" || host === "127.0.0.1") {
     return "http://127.0.0.1:8787/api/leads";
