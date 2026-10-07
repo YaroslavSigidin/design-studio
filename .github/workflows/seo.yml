@@ -1,0 +1,20 @@
+name: Check SEO pages
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: node scripts/build-seo.mjs
+      - run: git diff --exit-code
+      - run: python3 scripts/check-seo.py
+      - run: node scripts/check-case-route.mjs
