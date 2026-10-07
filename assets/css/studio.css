@@ -7714,12 +7714,11 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
 
 /* Footer */
 .contact-prefooter {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  width: min(1100px, calc(100% - 48px));
-  margin: 36px auto 12px;
+  display: none !important;
+}
+
+.studio-footer__extras .top-contact-cluster {
+  display: none !important;
 }
 
 .contact-prefooter .top-contact-cluster {
