@@ -386,14 +386,6 @@ const dismissCaseLoading = loading =>
 const revealCaseMain = root => {
   if (!root) return;
 
-  // Generated pages already contain the complete case. Enhance them without
-  // replacing their content or depending on a second manifest request.
-  if (root.dataset.prerendered === "true") {
-    mountCaseFooter();
-    window.STUDIO_MEDIA?.initImageSkeletons(root);
-    window.dispatchEvent(new CustomEvent("studio:case-rendered"));
-    return;
-  }
   root.classList.remove("is-revealed");
   requestAnimationFrame(() => root.classList.add("is-revealed"));
 };
@@ -405,6 +397,15 @@ const initCasePage = async () => {
   const slug = getSlug();
 
   if (!root) return;
+
+  // Generated pages already contain the complete case. Enhance them without
+  // replacing their content or depending on a second manifest request.
+  if (root.dataset.prerendered === "true") {
+    mountCaseFooter();
+    window.STUDIO_MEDIA?.initImageSkeletons(root);
+    window.dispatchEvent(new CustomEvent("studio:case-rendered"));
+    return;
+  }
 
   if (!slug) {
     await dismissCaseLoading(loading);
