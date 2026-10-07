@@ -104,7 +104,7 @@
     applySeo({
       title: caseTitle,
       description: caseDescription,
-      pathname: slug ? `case.html?slug=${encodeURIComponent(slug)}` : "case.html",
+      pathname: slug ? `case-${encodeURIComponent(slug)}.html` : "case.html",
       image,
       robots: "index,follow",
       type: "article"
@@ -112,7 +112,7 @@
 
     if (slug) {
       const siteRoot = absoluteUrl("").replace(/\/$/, "");
-      const url = absoluteUrl(`case.html?slug=${encodeURIComponent(slug)}`);
+      const url = absoluteUrl(`case-${encodeURIComponent(slug)}.html`);
       ensureJsonLd("case-structured-data", {
         "@context": "https://schema.org",
         "@graph": [
@@ -149,7 +149,7 @@
       applySeo({
         title: cfg().seo?.title,
         description: cfg().seo?.description,
-        pathname: "",
+        pathname: "/",
         image: cfg().seo?.image
       });
     } else if (page === "legal") {
