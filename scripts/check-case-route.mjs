@@ -62,6 +62,7 @@ for (const [url, expected] of [
   assert.equal(response.headers.get("location"), expected);
 }
 for (const request of [new Request("https://soglasovano.online/case-visiflow"),
+  new Request("https://soglasovano.online/googled9559338551cfbd2.html"),
   new Request("https://preview.pages.dev/home.html"), new Request("https://www.soglasovano.online/api/leads", { method: "POST" })]) {
   const response = await canonicalize({ request, next: () => new Response("unchanged") });
   assert.equal(await response.text(), "unchanged");

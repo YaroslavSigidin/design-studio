@@ -14,7 +14,8 @@ export async function onRequest({ request, next }) {
   if (
     url.pathname.endsWith(".html") &&
     url.pathname !== "/case.html" &&
-    !url.pathname.startsWith("/yandex_")
+    !url.pathname.startsWith("/yandex_") &&
+    !url.pathname.startsWith("/google")
   ) {
     url.pathname = url.pathname.slice(0, -5);
     redirect = true;
