@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import vm from "node:vm";
 import { readFile } from "node:fs/promises";
 
 const source = await readFile(new URL("../functions/case.html.js", import.meta.url), "utf8");
@@ -26,3 +27,25 @@ for (const query of ["", "?slug=missing", "?slug=%3Cscript%3E", "?slug="]) {
 const failure = await onRequest({ request: new Request('https://soglasovano.online/case.html?slug=visiflow'), env: { ASSETS: { fetch: async () => new Response('', { status: 500 }) } } });
 assert.equal(failure.status, 503);
 console.log(`PASS: ${manifest.projects.length} legacy case redirects, unknown cases, and asset failure.`);
+
+// Static cases must retain their HTML even if the manifest cannot be fetched.
+const staticRoot = { dataset: { prerendered: "true" } };
+Object.defineProperty(staticRoot, "innerHTML", { set() { throw new Error("Static case content was replaced"); } });
+let enhanced = false;
+let notified = false;
+const browserContext = vm.createContext({
+  document: {
+    readyState: "loading", addEventListener() {},
+    body: { dataset: { caseSlug: "visiflow" } },
+    getElementById: id => id === "case-main" ? staticRoot : null,
+    querySelector: () => null
+  },
+  window: { STUDIO_MEDIA: { initImageSkeletons: root => { assert.equal(root, staticRoot); enhanced = true; } },
+    dispatchEvent: () => { notified = true; } },
+  CustomEvent: class {},
+  fetch: () => { throw new Error("Static case requested the manifest"); }
+});
+vm.runInContext(await readFile(new URL("../assets/js/case-page.js", import.meta.url), "utf8"), browserContext);
+await vm.runInContext("initCasePage()", browserContext);
+assert.ok(enhanced && notified, "Static page must initialize interactive enhancements");
+console.log("PASS: static case retains HTML and initializes without a manifest request.");
