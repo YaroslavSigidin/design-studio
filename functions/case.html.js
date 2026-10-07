@@ -11,5 +11,5 @@ export async function onRequest({ request, env }) {
     const page = await env.ASSETS.fetch(new URL("/404.html", url));
     return new Response(page.body, { status: 404, headers: { "Content-Type": "text/html; charset=utf-8", "X-Robots-Tag": "noindex, nofollow" } });
   }
-  return Response.redirect(`https://soglasovano.online/case-${encodeURIComponent(project.id)}.html`, 301);
+  return Response.redirect(`https://soglasovano.online/case-${encodeURIComponent(project.id)}`, 301);
 }

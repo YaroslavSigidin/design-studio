@@ -30,3 +30,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Configure canonical `www` redirect.
 - Create focused landing pages for validated buyer-intent clusters using the existing visual language.
 
+## 2026-10-08 — canonical consolidation and commercial-page depth
+
+- Bottleneck: Cloudflare resolves root HTML documents to clean paths, while sitemap, canonical, Open Graph and structured-data URLs still used redirecting `.html` aliases. The three main commercial pages also had limited crawler-visible detail about scope and deliverables.
+- Hypothesis: consolidating every indexable page on one final URL and adding specific service content will reduce duplicate/canonical ambiguity and improve relevance for the first buyer-intent cluster: `создание лендинга под ключ`, `редизайн сайта / UX-аудит`, `UX/UI-дизайн SaaS и личного кабинета`.
+- Changes: switched root-page canonicals, sitemap entries, case URLs and schema references to clean paths; added permanent `.html` redirects; replaced legacy case-query links; expanded the three commercial pages in their existing visual system; added organic-search referrer classification to confirmed lead attribution. The homepage layout, visible copy and interactions were not changed.
+- Verification: local SEO audit passes for 92 sitemap pages; titles, descriptions, canonical URLs, H1, schema, image alt text and local links are valid. Legacy case redirects, static case rendering, clean-host middleware and JavaScript syntax checks pass.
+- Publication: pending commit/deployment at the time of this entry.
+- Watch after publication: indexing/canonical selection for the three commercial pages; non-branded impressions and clicks by page/query; confirmed `organic_search` lead deliveries. Earliest useful technical recheck: 2026-10-15. Content visibility should be evaluated after enough impressions accumulate, not from a fixed ranking promise.
+- External measurement still required: add the domain property and sitemap in Google Search Console; link Metrika counter `110947439` in Yandex Webmaster.

@@ -109,8 +109,10 @@ const initStudioAnalytics = () => {
       return;
     }
 
-    if (href.includes("case.html?slug=")) {
-      track("case_open", { slug: new URL(href, window.location.href).searchParams.get("slug") || "" });
+    const caseUrl = new URL(href || window.location.href, window.location.href);
+    const cleanCaseMatch = caseUrl.pathname.match(/\/case-([a-z0-9-]+)\/?$/i);
+    if (cleanCaseMatch || href.includes("case.html?slug=")) {
+      track("case_open", { slug: cleanCaseMatch?.[1] || caseUrl.searchParams.get("slug") || "" });
     }
   });
 

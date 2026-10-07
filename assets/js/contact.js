@@ -32,7 +32,21 @@ const initStudioContacts = () => {
     if (referrer) {
       try {
         const referrerUrl = new URL(referrer);
-        if (referrerUrl.origin !== window.location.origin) current.referrer = referrerUrl.hostname;
+        if (referrerUrl.origin !== window.location.origin) {
+          current.referrer = referrerUrl.hostname;
+          const searchHosts = [
+            /(^|\.)google\./i,
+            /(^|\.)yandex\./i,
+            /(^|\.)ya\.ru$/i,
+            /(^|\.)bing\.com$/i,
+            /(^|\.)search\.mail\.ru$/i,
+            /(^|\.)duckduckgo\.com$/i
+          ];
+          if (searchHosts.some(pattern => pattern.test(referrerUrl.hostname))) {
+            current.traffic_channel = "organic_search";
+            current.search_engine = referrerUrl.hostname;
+          }
+        }
       } catch (_) {}
     }
 

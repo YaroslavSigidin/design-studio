@@ -34,8 +34,10 @@ assert len(urls) == len(set(urls)), "Duplicate sitemap URLs"
 titles = set()
 for url in urls:
     assert url.startswith(ORIGIN + "/"), url
-    file = ROOT / unquote(urlsplit(url).path.lstrip("/"))
-    if file.is_dir(): file /= "index.html"
+    public_path = unquote(urlsplit(url).path.lstrip("/"))
+    file = ROOT / public_path
+    if file.suffix == "" and file.with_suffix(".html").exists(): file = file.with_suffix(".html")
+    elif file.is_dir(): file /= "index.html"
     page = Page()
     page.feed(file.read_text())
     assert page.title and page.title not in titles, f"Missing/duplicate title: {file}"
@@ -56,5 +58,6 @@ for url in urls:
         if parsed.netloc and parsed.netloc != "soglasovano.online": continue
         path = unquote(parsed.path)
         target = ROOT / path.lstrip("/") if path.startswith("/") or parsed.netloc else file.parent / path
+        if not target.exists() and target.suffix == "": target = target.with_suffix(".html")
         assert target.exists(), f"Broken local link: {file}: {value}"
 print(f"PASS: {len(urls)} sitemap pages; unique titles, descriptions, canonicals, H1, schema, image alt and local links.")

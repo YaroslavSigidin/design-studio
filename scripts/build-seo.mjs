@@ -9,7 +9,7 @@ const escape = value => String(value ?? "").replace(/[&<>\"]/g, c => ({ "&": "&a
 const manifest = JSON.parse(await read("data/cases.manifest.json"));
 for (const project of manifest.projects) {
   if (!/^[a-z0-9-]+$/.test(project.id)) throw new Error(`Invalid case id: ${project.id}`);
-  project.studioCaseUrl = `./case-${project.id}.html`;
+  project.studioCaseUrl = `./case-${project.id}`;
 }
 await write("data/cases.manifest.json", JSON.stringify(manifest, null, 2) + "\n");
 
@@ -24,7 +24,7 @@ vm.runInContext(await read("assets/js/case-page.js"), context);
 const template = await read("case.html");
 const cfg = { basePath: "/", assetBasePath: "/", studioCases: "./#cases", studioHome: "./" };
 for (const [index, project] of manifest.projects.entries()) {
-  const url = `${origin}/case-${project.id}.html`;
+  const url = `${origin}/case-${project.id}`;
   const title = `${project.title} — кейс UX/UI и дизайна | Согласовано`;
   const description = String(project.description || project.subtitle || `Кейс ${project.title} дизайн-студии Согласовано.`).replace(/\s+/g, " ").trim();
   const summary = description.length > 160 ? description.slice(0, 157) + "…" : description;
@@ -59,7 +59,7 @@ for (const [index, project] of manifest.projects.entries()) {
 }
 
 let sitemap = await read("sitemap.xml");
-sitemap = sitemap.replace(/case\.html\?slug=([a-z0-9-]+)/g, "case-$1.html");
+sitemap = sitemap.replace(/case\.html\?slug=([a-z0-9-]+)/g, "case-$1");
 await write("sitemap.xml", sitemap);
 
 const cardContext = vm.createContext({
@@ -74,7 +74,7 @@ for (const path of ["index.html", "home.html"]) {
   let home = await read(path);
   home = home.replace(/<div class="projects-grid[^\"]*" id="projects-grid"[^>]*>[\s\S]*?<\/div>\s*(?=<div class="studio-cases-more__veil")/,
     () => `<div class="projects-grid" id="projects-grid" data-prerendered="true">${cards}</div>\n`);
-  home = home.replace(/case\.html\?slug=([a-z0-9-]+)/g, "case-$1.html");
+  home = home.replace(/case\.html\?slug=([a-z0-9-]+)/g, "case-$1");
   await write(path, home);
 }
 console.log(`Generated ${manifest.projects.length} complete static case pages.`);

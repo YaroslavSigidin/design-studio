@@ -9,6 +9,16 @@ export async function onRequest({ request, next }) {
     url.pathname = "/";
     redirect = true;
   }
+  // Keep one public URL format. Cloudflare Pages serves these files at clean
+  // paths, so explicit redirects must agree with canonicals and the sitemap.
+  if (
+    url.pathname.endsWith(".html") &&
+    url.pathname !== "/case.html" &&
+    !url.pathname.startsWith("/yandex_")
+  ) {
+    url.pathname = url.pathname.slice(0, -5);
+    redirect = true;
+  }
   if (!redirect) return next();
   url.protocol = "https:";
   url.hostname = "soglasovano.online";

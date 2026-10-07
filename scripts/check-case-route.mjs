@@ -16,7 +16,7 @@ for (const project of manifest.projects) {
   for (const slug of new Set([project.id, project.caseKey])) {
     const response = await onRequest({ request: new Request(`https://soglasovano.online/case.html?slug=${slug}&utm_source=test`), env });
     assert.equal(response.status, 301);
-    assert.equal(response.headers.get("location"), `https://soglasovano.online/case-${project.id}.html`);
+    assert.equal(response.headers.get("location"), `https://soglasovano.online/case-${project.id}`);
   }
 }
 for (const query of ["", "?slug=missing", "?slug=%3Cscript%3E", "?slug="]) {
@@ -53,7 +53,7 @@ console.log("PASS: static case retains HTML and initializes without a manifest r
 const middlewareSource = await readFile(new URL("../functions/_middleware.js", import.meta.url), "utf8");
 const { onRequest: canonicalize } = await import(`data:text/javascript;base64,${Buffer.from(middlewareSource).toString("base64")}`);
 for (const [url, expected] of [
-  ["https://www.soglasovano.online/case-visiflow.html?utm_source=test", "https://soglasovano.online/case-visiflow.html?utm_source=test"],
+  ["https://www.soglasovano.online/case-visiflow.html?utm_source=test", "https://soglasovano.online/case-visiflow?utm_source=test"],
   ["https://soglasovano.online/home.html?utm_source=test", "https://soglasovano.online/?utm_source=test"],
   ["https://www.soglasovano.online/index.html", "https://soglasovano.online/"]
 ]) {
@@ -61,7 +61,7 @@ for (const [url, expected] of [
   assert.equal(response.status, 301);
   assert.equal(response.headers.get("location"), expected);
 }
-for (const request of [new Request("https://soglasovano.online/case-visiflow.html"),
+for (const request of [new Request("https://soglasovano.online/case-visiflow"),
   new Request("https://preview.pages.dev/home.html"), new Request("https://www.soglasovano.online/api/leads", { method: "POST" })]) {
   const response = await canonicalize({ request, next: () => new Response("unchanged") });
   assert.equal(await response.text(), "unchanged");
