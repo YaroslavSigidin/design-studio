@@ -49,3 +49,21 @@ vm.runInContext(await readFile(new URL("../assets/js/case-page.js", import.meta.
 await vm.runInContext("initCasePage()", browserContext);
 assert.ok(enhanced && notified, "Static page must initialize interactive enhancements");
 console.log("PASS: static case retains HTML and initializes without a manifest request.");
+
+const middlewareSource = await readFile(new URL("../functions/_middleware.js", import.meta.url), "utf8");
+const { onRequest: canonicalize } = await import(`data:text/javascript;base64,${Buffer.from(middlewareSource).toString("base64")}`);
+for (const [url, expected] of [
+  ["https://www.soglasovano.online/case-visiflow.html?utm_source=test", "https://soglasovano.online/case-visiflow.html?utm_source=test"],
+  ["https://soglasovano.online/home.html?utm_source=test", "https://soglasovano.online/?utm_source=test"],
+  ["https://www.soglasovano.online/index.html", "https://soglasovano.online/"]
+]) {
+  const response = await canonicalize({ request: new Request(url), next: () => { throw new Error("Redirect was skipped"); } });
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.get("location"), expected);
+}
+for (const request of [new Request("https://soglasovano.online/case-visiflow.html"),
+  new Request("https://preview.pages.dev/home.html"), new Request("https://www.soglasovano.online/api/leads", { method: "POST" })]) {
+  const response = await canonicalize({ request, next: () => new Response("unchanged") });
+  assert.equal(await response.text(), "unchanged");
+}
+console.log("PASS: canonical host, homepage aliases, query preservation, preview and POST passthrough.");
