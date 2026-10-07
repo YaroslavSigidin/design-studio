@@ -676,6 +676,16 @@ const initCases = async () => {
   if (grid.dataset.initDone === "true") return;
 
   grid.dataset.initInProgress = "true";
+  if (grid.dataset.prerendered === "true") {
+    bindCardNavigation(grid);
+    window.STUDIO_MEDIA?.initImageSkeletons(grid);
+    initCasesFilter(grid, tabsRoot);
+    grid.dataset.initDone = "true";
+    grid.dataset.initInProgress = "false";
+    if (statusEl) statusEl.hidden = true;
+    window.dispatchEvent(new CustomEvent("studio:cases-rendered"));
+    return;
+  }
   renderCasesSkeleton(grid);
 
   try {

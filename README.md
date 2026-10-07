@@ -22,6 +22,27 @@ open http://127.0.0.1:8766/
 
 ## Деплой
 
+## Проверка SEO и обновление кейсов
+
+После изменений `data/cases.manifest.json`, шаблона `case.html` или рендереров:
+
+```bash
+node scripts/build-seo.mjs
+python3 scripts/check-seo.py
+node scripts/check-case-route.mjs
+```
+
+Генератор сохраняет полные статические страницы `case-<id>.html` и карточки
+главной в репозитории. Cloudflare публикует их без отдельной сборки.
+Старые адреса `case.html?slug=...` перенаправляются с HTTP 301; неизвестные
+кейсы возвращают HTTP 404. Проверки не отправляют заявки.
+
+После публикации: `node scripts/verify-production.mjs`.
+Сайт и sitemap нужно добавить в Google Search Console и Яндекс Вебмастер;
+файл подтверждения Google должен быть получен из аккаунта владельца.
+
+## Публикация
+
 Основной сайт публикуется в Cloudflare Pages из ветки `main`. GitHub Pages остаётся зеркалом и обновляется workflow-файлом:
 
 ```text

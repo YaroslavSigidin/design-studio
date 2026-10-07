@@ -23,7 +23,7 @@
         "/assets/images/платформы/visiflow/slide-3.webp",
         "/assets/images/платформы/visiflow/slide-9.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=visiflow",
+      "studioCaseUrl": "./case-visiflow.html",
       "legacyCaseUrl": "/case-visiflow",
       "hasCaseStudy": true,
       "study": {
@@ -133,7 +133,7 @@
         "/case-octoclick/image 12.webp",
         "/case-octoclick/image 15.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=octoclick",
+      "studioCaseUrl": "./case-octoclick.html",
       "legacyCaseUrl": "/case-octoclick",
       "hasCaseStudy": true,
       "study": {
@@ -224,7 +224,7 @@
         "/assets/images/платформы/MIROX 1/81.webp",
         "/assets/images/платформы/MIROX 1/82.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=mirox",
+      "studioCaseUrl": "./case-mirox.html",
       "legacyCaseUrl": "/case-mirox",
       "hasCaseStudy": true,
       "study": {
@@ -306,7 +306,7 @@
         "/assets/images/платформы/AI/3.webp",
         "/assets/images/платформы/AI/4.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=ai",
+      "studioCaseUrl": "./case-ai.html",
       "legacyCaseUrl": "/case-ai",
       "hasCaseStudy": true,
       "study": {
@@ -392,7 +392,7 @@
         "/assets/images/сайты/PAZL KOD Platform/П6 1.webp",
         "/assets/images/сайты/PAZL KOD Platform/П7 1.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=pazl-kod-platform",
+      "studioCaseUrl": "./case-pazl-kod-platform.html",
       "legacyCaseUrl": "/case-pazl-kod-platform",
       "hasCaseStudy": true,
       "study": {
@@ -479,7 +479,7 @@
         "/assets/images/сайты/IN IT/Frame 2147223723.webp",
         "/assets/images/сайты/IN IT/Frame 2147223724.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=in-it",
+      "studioCaseUrl": "./case-in-it.html",
       "legacyCaseUrl": "/case-in-it",
       "hasCaseStudy": true,
       "study": {
@@ -560,7 +560,7 @@
         "/assets/images/платформы/MIROX APP/Frame 2147224058.webp",
         "/assets/images/платформы/MIROX APP/Frame 2147224059.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=mirox-app",
+      "studioCaseUrl": "./case-mirox-app.html",
       "legacyCaseUrl": "/case-mirox-app",
       "hasCaseStudy": true,
       "study": {
@@ -640,7 +640,7 @@
         "/assets/images/платформы/WINGLISH/Frame 2087325784.webp",
         "/assets/images/платформы/WINGLISH/Frame 2087325785.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=winglish",
+      "studioCaseUrl": "./case-winglish.html",
       "legacyCaseUrl": "/case-winglish",
       "hasCaseStudy": true,
       "study": {
@@ -721,7 +721,7 @@
         "/assets/images/сайты/SPACE CAMP/HERO.webp",
         "/assets/images/сайты/SPACE CAMP/Frame 2147223664.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=space-camp",
+      "studioCaseUrl": "./case-space-camp.html",
       "legacyCaseUrl": "/case-space-camp",
       "hasCaseStudy": true,
       "study": {
@@ -803,7 +803,7 @@
         "/assets/images/сайты/PROFI/Frame 2147223668.webp",
         "/assets/images/сайты/PROFI/Frame 2147223669.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=profi",
+      "studioCaseUrl": "./case-profi.html",
       "legacyCaseUrl": "/case-profi",
       "hasCaseStudy": true,
       "study": {
@@ -881,7 +881,7 @@
         "/assets/images/сайты/SOLOMADOM/Frame 2147223649.webp",
         "/assets/images/сайты/SOLOMADOM/Frame 2147223650.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=solomadom",
+      "studioCaseUrl": "./case-solomadom.html",
       "legacyCaseUrl": "/case-solomadom",
       "hasCaseStudy": true,
       "study": {
@@ -963,7 +963,7 @@
         "/assets/images/сайты/AMAZON/HERO.webp",
         "/assets/images/сайты/AMAZON/Frame 2147223644.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=amazon",
+      "studioCaseUrl": "./case-amazon.html",
       "legacyCaseUrl": "/case-amazon",
       "hasCaseStudy": true,
       "study": {
@@ -1046,7 +1046,7 @@
         "/assets/images/сайты/CASTLE MUSIC/Frame 2147223640.webp",
         "/assets/images/сайты/CASTLE MUSIC/Frame 2147223642.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=castle-music",
+      "studioCaseUrl": "./case-castle-music.html",
       "legacyCaseUrl": "/case-castle-music",
       "hasCaseStudy": true,
       "study": {
@@ -1128,7 +1128,7 @@
         "/assets/images/сайты/KVATRO/К3 1.webp",
         "/assets/images/сайты/KVATRO/К4 1.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=kvatro",
+      "studioCaseUrl": "./case-kvatro.html",
       "legacyCaseUrl": "/case-kvatro",
       "hasCaseStudy": true,
       "study": {
@@ -1223,7 +1223,7 @@
         "/assets/images/сайты/LEKI TRAVEL/Л5 1.webp",
         "/assets/images/сайты/LEKI TRAVEL/Л6 1.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=leki-travel",
+      "studioCaseUrl": "./case-leki-travel.html",
       "legacyCaseUrl": "/case-leki-travel",
       "hasCaseStudy": true,
       "study": {
@@ -1308,7 +1308,7 @@
         "/assets/images/сайты/VIHLOP EXPERT/В2 1.webp",
         "/assets/images/сайты/VIHLOP EXPERT/В3 1.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=vihlop-expert",
+      "studioCaseUrl": "./case-vihlop-expert.html",
       "legacyCaseUrl": "/case-vihlop-expert",
       "hasCaseStudy": true,
       "study": {
@@ -1385,7 +1385,7 @@
         "/assets/images/платформы/WEINTEK PANEL/Frame 2147223729.webp",
         "/assets/images/платформы/WEINTEK PANEL/Frame 2147223730.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=weintek-panel",
+      "studioCaseUrl": "./case-weintek-panel.html",
       "legacyCaseUrl": "/case-weintek-panel",
       "hasCaseStudy": true,
       "study": {
@@ -1474,7 +1474,7 @@
         "/case-ermitage/Frame 18.webp",
         "/case-ermitage/Frame 19.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=ermitage",
+      "studioCaseUrl": "./case-ermitage.html",
       "legacyCaseUrl": "/case-ermitage",
       "hasCaseStudy": true,
       "study": {
@@ -1550,7 +1550,7 @@
         "/assets/images/платформы/VOLT PAY/Frame 2147223990.webp",
         "/assets/images/платформы/VOLT PAY/Frame 2147223991.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=volt-pay",
+      "studioCaseUrl": "./case-volt-pay.html",
       "legacyCaseUrl": "/case-volt-pay",
       "hasCaseStudy": true,
       "study": {
@@ -1629,7 +1629,7 @@
         "/assets/images/cases/potok/detail-1.webp",
         "/assets/images/cases/potok/preview.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=potok",
+      "studioCaseUrl": "./case-potok.html",
       "legacyCaseUrl": "/case-potok",
       "hasCaseStudy": true,
       "study": {
@@ -1699,7 +1699,7 @@
         "/case-logo-IT school/236.webp",
         "/case-logo-IT school/5.6.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=logo-it-school",
+      "studioCaseUrl": "./case-logo-it-school.html",
       "legacyCaseUrl": "/case-logo-it-school",
       "hasCaseStudy": true,
       "study": {
@@ -1767,7 +1767,7 @@
         "/case-logo-PAZL KOD/Brand guidelines - 5.webp",
         "/case-logo-PAZL KOD/Brand guidelines - 6.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=logo-pazl-kod",
+      "studioCaseUrl": "./case-logo-pazl-kod.html",
       "legacyCaseUrl": "/case-logo-pazl-kod",
       "hasCaseStudy": true,
       "study": {
@@ -1837,7 +1837,7 @@
         "/assets/images/cases/zaozernaya/detail-1.webp",
         "/assets/images/cases/zaozernaya/preview.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=zaozernaya",
+      "studioCaseUrl": "./case-zaozernaya.html",
       "legacyCaseUrl": "/case-zaozernaya",
       "hasCaseStudy": true,
       "study": {
@@ -1912,7 +1912,7 @@
         "/assets/images/paradam/08.webp",
         "/assets/images/paradam/09.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=paradam",
+      "studioCaseUrl": "./case-paradam.html",
       "legacyCaseUrl": "/case-paradam",
       "hasCaseStudy": true,
       "study": {
@@ -1993,7 +1993,7 @@
         "/assets/images/vebocenschik/07.webp",
         "/assets/images/vebocenschik/08.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=vebocenschik",
+      "studioCaseUrl": "./case-vebocenschik.html",
       "legacyCaseUrl": "/case-vebocenschik",
       "hasCaseStudy": true,
       "study": {
@@ -2081,7 +2081,7 @@
         "/assets/images/сайты/BOXSTAR/2035.webp",
         "/assets/images/сайты/BOXSTAR/2041.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=boxstar",
+      "studioCaseUrl": "./case-boxstar.html",
       "legacyCaseUrl": "/case-boxstar",
       "hasCaseStudy": true,
       "study": {
@@ -2185,7 +2185,7 @@
         "/assets/images/сайты/KRIJE/2043.webp",
         "/assets/images/сайты/KRIJE/2047.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=krije",
+      "studioCaseUrl": "./case-krije.html",
       "legacyCaseUrl": "/case-krije",
       "hasCaseStudy": true,
       "study": {
@@ -2285,7 +2285,7 @@
         "/assets/images/сайты/DIPLOMAT/2073.webp",
         "/assets/images/сайты/DIPLOMAT/2074.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=diplomat-hotel",
+      "studioCaseUrl": "./case-diplomat-hotel.html",
       "legacyCaseUrl": "/case-diplomat-hotel",
       "hasCaseStudy": true,
       "study": {
@@ -2390,7 +2390,7 @@
         "/assets/images/ggm-pro/07.webp",
         "/assets/images/ggm-pro/08.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=ggm-pro",
+      "studioCaseUrl": "./case-ggm-pro.html",
       "legacyCaseUrl": "/case-ggm-pro",
       "hasCaseStudy": true,
       "study": {
@@ -2483,7 +2483,7 @@
         "/assets/images/сайты/PIFAGOR-I-SYNOVYA/2052.webp",
         "/assets/images/сайты/PIFAGOR-I-SYNOVYA/2054.webp"
       ],
-      "studioCaseUrl": "./case.html?slug=pifagor-i-synovya",
+      "studioCaseUrl": "./case-pifagor-i-synovya.html",
       "legacyCaseUrl": "/case-pifagor-i-synovya",
       "hasCaseStudy": true,
       "study": {
@@ -2555,7 +2555,7 @@
       "gallery": [
         "/assets/images/results/plitka-service.png"
       ],
-      "studioCaseUrl": "./case.html?slug=plitka-service",
+      "studioCaseUrl": "./case-plitka-service.html",
       "legacyCaseUrl": "/case-plitka-service",
       "hasCaseStudy": true,
       "study": {

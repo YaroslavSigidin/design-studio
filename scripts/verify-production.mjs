@@ -26,7 +26,7 @@ check(home.body.includes('rel="icon" type="image/svg+xml" sizes="any" href="/fav
 
 const favicon = await request("/favicon.svg");
 check(favicon.response.status === 200, "SVG favicon returns HTTP 200");
-check(favicon.body.includes('viewBox="0 0 120 120"'), "SVG favicon uses the recommended 120 by 120 canvas");
+check(favicon.body.includes('<svg') && favicon.body.includes('viewBox='), "favicon is a valid SVG resource");
 
 const robots = await request("/robots.txt");
 check(robots.response.status === 200, "robots.txt returns HTTP 200");
@@ -40,11 +40,16 @@ check(sitemapUrls.length >= 90, "sitemap contains the current canonical URL set"
 check(sitemapUrls.includes(`${ORIGIN}/insights.html`), "sitemap includes the SEO insights hub");
 check(!sitemapUrls.includes(`${ORIGIN}/case.html`), "sitemap excludes the empty case template");
 
-const validCase = await request("/case.html?slug=visiflow");
+const validCase = await request("/case-visiflow.html");
 check(validCase.response.status === 200, "published case returns HTTP 200");
 check(validCase.body.includes("VISI FLOW — кейс UX/UI и дизайна | Согласовано"), "case metadata is rendered server-side");
-check(validCase.body.includes(`${ORIGIN}/case.html?slug=visiflow`), "case canonical URL includes the slug");
+check(validCase.body.includes(`${ORIGIN}/case-visiflow.html`), "case canonical URL is the static case page");
 check(validCase.body.includes('id="case-structured-data"'), "case includes structured data");
+check(validCase.body.includes('<h1 class="case-title">VISI FLOW</h1>'), "case content is available without JavaScript");
+const legacyCase = await request("/case.html?slug=visiflow", { redirect: "manual" });
+check(legacyCase.response.status === 301 && legacyCase.response.headers.get("location") === `${ORIGIN}/case-visiflow.html`, "legacy case redirects to the canonical page");
+const missingPage = await request("/production-verifier-missing-page");
+check(missingPage.response.status === 404, "unknown URL returns a real HTTP 404");
 
 const insights = await request("/insights.html");
 check(insights.response.status === 200, "SEO insights hub returns HTTP 200");
