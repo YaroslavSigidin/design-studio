@@ -38,6 +38,10 @@ if (!is_array($project)) {
     studio_send_html_content($html, $link, 404);
 }
 
+// Match Cloudflare's legacy URL redirect on PHP hosts.
+header('Location: https://soglasovano.online/case-' . rawurlencode((string) $project['id']) . '.html', true, 301);
+exit;
+
 $siteUrl = 'https://soglasovano.online';
 $title = trim((string) ($project['title'] ?? 'Кейс'));
 $description = trim((string) ($project['description'] ?? ''));

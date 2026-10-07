@@ -20,6 +20,10 @@ ErrorDocument 404 /404.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Redirect explicit homepage aliases without redirecting DirectoryIndex.
+  RewriteCond %{THE_REQUEST} \s/+(index\.(html|php)|home\.html)([?\s]) [NC]
+  RewriteRule ^ https://soglasovano.online/ [R=301,L]
+
   # Keep one indexable origin: HTTPS without www.
   RewriteCond %{HTTP_HOST} ^www\.soglasovano\.online$ [NC]
   RewriteRule ^ https://soglasovano.online%{REQUEST_URI} [R=301,L]
