@@ -91,5 +91,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: replacing the mismatched proof card and using accurate industry labels will make the B2B offer easier to validate without adding unsupported claims.
 - Change: replaced `ggm.pro` with the relevant `ВебОценщик` case and corrected all three proof labels to financial B2B consulting, a business digital service, and an industrial B2B system. The homepage and case content were not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; all three clean case links resolve locally and the existing editorial card structure is unchanged.
-- Publication: ready for commit and production deployment from the isolated clean worktree.
+- Publication: deployed in commit `7e3865c`; production returns HTTP 200 and exposes the three corrected proof labels, and the full production verifier passed.
 - Metric: transitions from `/b2b-corporate-website` to the three proof cases, subsequent request-form engagement, and confirmed leads with source `SEO — корпоративный B2B-сайт`. First evaluation: 2026-10-15.
