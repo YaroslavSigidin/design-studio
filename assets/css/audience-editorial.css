@@ -1,0 +1,234 @@
+.audience-editorial {
+  background: #f6f6f4;
+  font-size: 18px;
+  line-height: 1.66;
+}
+
+.audience-editorial .offer-shell {
+  width: min(920px, calc(100% - 48px));
+}
+
+.audience-editorial .offer-nav {
+  min-height: 92px;
+  border-bottom: 1px solid var(--offer-line);
+}
+
+.audience-editorial .offer-hero {
+  min-height: 0;
+  display: block;
+  padding: 108px 0 96px;
+}
+
+.audience-editorial .offer-hero > div,
+.audience-editorial .offer-summary,
+.audience-editorial .offer-section__head,
+.audience-editorial .offer-grid,
+.audience-editorial .offer-cases,
+.audience-editorial .offer-form-wrap,
+.audience-editorial .offer-faq {
+  max-width: 760px;
+}
+
+.audience-editorial .offer-hero h1 {
+  max-width: 760px;
+  font-size: clamp(50px, 7vw, 78px);
+  line-height: 1;
+}
+
+.audience-editorial .offer-hero__lead {
+  max-width: 700px;
+  font-size: clamp(20px, 2.2vw, 25px);
+}
+
+.audience-editorial .offer-summary {
+  margin-top: 66px;
+  padding: 28px 0;
+  border: 0;
+  border-top: 1px solid var(--offer-line);
+  border-bottom: 1px solid var(--offer-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.audience-editorial .offer-summary__price {
+  max-width: 620px;
+  margin: 6px 0 22px;
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.05;
+}
+
+.audience-editorial .offer-summary li {
+  padding: 10px 0;
+}
+
+.audience-editorial .offer-section {
+  padding: 96px 0;
+}
+
+.audience-editorial .offer-section__head {
+  display: block;
+  margin-bottom: 46px;
+}
+
+.audience-editorial .offer-section__head .offer-kicker {
+  margin-bottom: 18px;
+}
+
+.audience-editorial .offer-section h2 {
+  max-width: 760px;
+  font-size: clamp(38px, 5.2vw, 58px);
+  line-height: 1.04;
+}
+
+.audience-editorial .offer-section__intro {
+  max-width: 700px;
+  margin-top: 20px;
+  font-size: 19px;
+}
+
+.audience-editorial .offer-grid {
+  display: block;
+}
+
+.audience-editorial .offer-card {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 54px 220px minmax(0, 1fr);
+  gap: 22px;
+  align-items: baseline;
+  padding: 25px 0;
+  border: 0;
+  border-top: 1px solid var(--offer-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.audience-editorial .offer-card:last-child {
+  border-bottom: 1px solid var(--offer-line);
+}
+
+.audience-editorial .offer-section--dark .offer-card {
+  border-color: rgba(255, 255, 255, 0.17);
+  background: transparent;
+}
+
+.audience-editorial .offer-card h3 {
+  margin: 0;
+  font-size: 23px;
+}
+
+.audience-editorial .offer-card p {
+  margin: 0;
+}
+
+.audience-editorial .offer-grid + .offer-section__intro {
+  margin-top: 34px;
+}
+
+.audience-editorial .offer-cases {
+  display: block;
+}
+
+.audience-editorial .offer-case {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 0;
+  border-top: 1px solid var(--offer-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.audience-editorial .offer-case:last-child {
+  border-bottom: 1px solid var(--offer-line);
+}
+
+.audience-editorial .offer-case strong {
+  margin: 0;
+  font-size: 24px;
+}
+
+.audience-editorial .offer-form-wrap {
+  display: block;
+}
+
+.audience-editorial .offer-form-copy {
+  max-width: 680px;
+}
+
+.audience-editorial .offer-form {
+  max-width: 700px;
+  margin-top: 38px;
+  padding: 28px;
+  border-radius: 20px;
+}
+
+.audience-editorial .offer-form label > span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.audience-editorial .offer-form__privacy > span {
+  margin-bottom: 0;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.audience-editorial .offer-faq details {
+  padding: 20px 0;
+}
+
+@media (max-width: 760px) {
+  .audience-editorial .offer-shell {
+    width: min(100% - 28px, 920px);
+  }
+
+  .audience-editorial .offer-hero {
+    padding: 72px 0 68px;
+  }
+
+  .audience-editorial .offer-section {
+    padding: 70px 0;
+  }
+
+  .audience-editorial .offer-card {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 10px 14px;
+  }
+
+  .audience-editorial .offer-card p {
+    grid-column: 2;
+  }
+
+  .audience-editorial .offer-case {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .audience-editorial .offer-case strong {
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .audience-editorial {
+    font-size: 16px;
+  }
+
+  .audience-editorial .offer-hero h1 {
+    font-size: clamp(41px, 12.5vw, 58px);
+  }
+
+  .audience-editorial .offer-summary {
+    margin-top: 48px;
+  }
+
+  .audience-editorial .offer-form {
+    padding: 20px;
+  }
+}
