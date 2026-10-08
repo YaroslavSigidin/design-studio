@@ -66,3 +66,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; desktop rendering and the complete semantic/form structure were reviewed locally. The page reuses the already verified responsive `offer-page.css` system.
 - Publication: deployed to production in commit `2f4d3de`; the page returns HTTP 200 with the intended title, canonical and H1. The full production verifier passed. The primary checkout and its uncommitted owner changes remained untouched.
 - Metric: non-branded impressions/clicks for hotel-website queries and confirmed leads with source `SEO — сайт для отеля`. First indexing check: 2026-10-15; first performance review after sufficient impressions.
+
+## 2026-10-08 — WEINTEK proof-to-service path
+
+- Barrier: `/case-weintek-panel` is the strongest proof for the industrial-interface offer, but its snippet title was generic and its final action returned visitors to a general brief instead of the matching service page.
+- Hypothesis: a query-specific case title plus direct contextual and final links to `/industrial-interface-design` will strengthen industrial relevance and reduce the gap between proof and the attributed lead form.
+- Change: refined the WEINTEK case title for HMI/operator-panel intent, added an in-context service link and changed the final CTA to the industrial-interface request section. The homepage and other cases were not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both service links resolve locally.
+- Publication: ready for commit and production deployment from the isolated clean worktree.
+- Metric: impressions/clicks for HMI and operator-panel queries, click-through from the WEINTEK case to `/industrial-interface-design`, and confirmed leads with source `SEO — промышленные интерфейсы`. First evaluation: 2026-10-15.
