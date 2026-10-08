@@ -73,5 +73,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a query-specific case title plus direct contextual and final links to `/industrial-interface-design` will strengthen industrial relevance and reduce the gap between proof and the attributed lead form.
 - Change: refined the WEINTEK case title for HMI/operator-panel intent, added an in-context service link and changed the final CTA to the industrial-interface request section. The homepage and other cases were not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both service links resolve locally.
-- Publication: ready for commit and production deployment from the isolated clean worktree.
+- Publication: deployed in commit `219b3cb`; production returns HTTP 200 with the new title and both industrial-service links, and the full production verifier passed.
 - Metric: impressions/clicks for HMI and operator-panel queries, click-through from the WEINTEK case to `/industrial-interface-design`, and confirmed leads with source `SEO — промышленные интерфейсы`. First evaluation: 2026-10-15.
