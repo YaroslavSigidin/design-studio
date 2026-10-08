@@ -39,3 +39,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Publication: pending commit/deployment at the time of this entry.
 - Watch after publication: indexing/canonical selection for the three commercial pages; non-branded impressions and clicks by page/query; confirmed `organic_search` lead deliveries. Earliest useful technical recheck: 2026-10-15. Content visibility should be evaluated after enough impressions accumulate, not from a fixed ranking promise.
 - External measurement still required: add the domain property and sitemap in Google Search Console; link Metrika counter `110947439` in Yandex Webmaster.
+
+## 2026-10-08 — B2B corporate website landing page
+
+- Barrier: the portfolio contains credible B2B work, but no commercial landing page directly answers the buyer intent `создание корпоративного сайта для B2B-компании`.
+- Hypothesis: a dedicated page that explains long-cycle B2B requirements, links relevant cases and attributes its form separately will create a clearer query-to-proof-to-lead path than the generic landing-page offer.
+- Change: added `/b2b-corporate-website` using the existing offer-page visual system, with unique copy, Service and FAQ schema, three relevant cases, a source-specific lead form, one contextual internal link and a sitemap entry. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; desktop rendering and the complete semantic/form structure were reviewed locally. The page reuses the already verified responsive `offer-page.css` system.
+- Publication: ready for isolated commit and production deployment; the primary checkout and its uncommitted owner changes remain untouched.
+- Metric: non-branded impressions/clicks for B2B corporate-site queries and confirmed leads with source `SEO — корпоративный B2B-сайт`. First indexing check: 2026-10-15; first performance review after sufficient impressions.
