@@ -100,5 +100,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a corporate-site-specific title plus contextual and final links to `/b2b-corporate-website` will strengthen commercial relevance and shorten the path from proof to a measurable lead.
 - Change: refined the Pifagor case title for corporate B2B-site intent, added an in-context service link and changed the final CTA to the B2B request section. The homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both B2B-service links resolve locally.
-- Publication: ready for commit and production deployment from the isolated clean worktree.
+- Publication: deployed in commit `194e7cd`; production exposes the new title and both B2B-service links, and the full production verifier passed.
 - Metric: impressions/clicks for corporate B2B-site queries, transitions from the case to `/b2b-corporate-website`, and confirmed leads with source `SEO — корпоративный B2B-сайт`. First evaluation: 2026-10-15.
