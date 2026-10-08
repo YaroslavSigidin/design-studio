@@ -84,3 +84,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both hotel-service links resolve locally.
 - Publication: deployed in commit `cf32a1e`; production returns HTTP 200 with the new title and both hotel-service links, and the full production verifier passed.
 - Metric: impressions/clicks for hotel and boutique-hotel website queries, transitions from the case to `/hotel-website-development`, and confirmed leads with source `SEO — сайт для отеля`. First evaluation: 2026-10-15.
+
+## 2026-10-08 — truthful B2B proof selection
+
+- Barrier: the B2B landing page labelled the Amazon-services project `ggm.pro` as financial consulting and labelled the financial-consulting project `Пифагор и сыновья` as engineering work. This weakened proof relevance and could reduce trust before the CTA.
+- Hypothesis: replacing the mismatched proof card and using accurate industry labels will make the B2B offer easier to validate without adding unsupported claims.
+- Change: replaced `ggm.pro` with the relevant `ВебОценщик` case and corrected all three proof labels to financial B2B consulting, a business digital service, and an industrial B2B system. The homepage and case content were not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; all three clean case links resolve locally and the existing editorial card structure is unchanged.
+- Publication: ready for commit and production deployment from the isolated clean worktree.
+- Metric: transitions from `/b2b-corporate-website` to the three proof cases, subsequent request-form engagement, and confirmed leads with source `SEO — корпоративный B2B-сайт`. First evaluation: 2026-10-15.
