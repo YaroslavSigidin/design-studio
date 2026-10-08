@@ -48,3 +48,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; desktop rendering and the complete semantic/form structure were reviewed locally. The page reuses the already verified responsive `offer-page.css` system.
 - Publication: deployed to production in commit `1ac9a8c`; the page returns HTTP 200 with the intended title, canonical and H1. The full production verifier passed. The primary checkout and its uncommitted owner changes remained untouched.
 - Metric: non-branded impressions/clicks for B2B corporate-site queries and confirmed leads with source `SEO — корпоративный B2B-сайт`. First indexing check: 2026-10-15; first performance review after sufficient impressions.
+
+## 2026-10-08 — industrial interface design landing page
+
+- Barrier: the portfolio includes an operator-panel case, but no commercial page answers the distinct buyer intent `дизайн интерфейса для промышленного оборудования` or explains safety-critical states and implementation handoff.
+- Hypothesis: a dedicated page for industrial UX/UI will give engineering and product teams a closer query-to-proof path than the broad UX/UI offer and will make those leads separately measurable.
+- Change: added `/industrial-interface-design` in the existing offer-page visual system, with unique industrial-process copy, Service and FAQ schema, relevant cases, a source-specific lead form, one contextual editorial link and a sitemap entry. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; desktop rendering and the full semantic/form structure were reviewed locally. The page reuses the already verified responsive `offer-page.css` system.
+- Publication: ready for isolated commit and production deployment; the primary checkout and its uncommitted owner changes remain untouched.
+- Metric: non-branded impressions/clicks for industrial-interface queries and confirmed leads with source `SEO — промышленные интерфейсы`. First indexing check: 2026-10-15; first performance review after sufficient impressions.
