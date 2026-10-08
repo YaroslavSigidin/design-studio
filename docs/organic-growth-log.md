@@ -93,3 +93,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; all three clean case links resolve locally and the existing editorial card structure is unchanged.
 - Publication: deployed in commit `7e3865c`; production returns HTTP 200 and exposes the three corrected proof labels, and the full production verifier passed.
 - Metric: transitions from `/b2b-corporate-website` to the three proof cases, subsequent request-form engagement, and confirmed leads with source `SEO — корпоративный B2B-сайт`. First evaluation: 2026-10-15.
+
+## 2026-10-08 — Pifagor B2B proof-to-service path
+
+- Barrier: `/case-pifagor-i-synovya` is the clearest corporate B2B-site proof, but its snippet title was generic and its final action opened a general brief rather than the attributed B2B request form.
+- Hypothesis: a corporate-site-specific title plus contextual and final links to `/b2b-corporate-website` will strengthen commercial relevance and shorten the path from proof to a measurable lead.
+- Change: refined the Pifagor case title for corporate B2B-site intent, added an in-context service link and changed the final CTA to the B2B request section. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both B2B-service links resolve locally.
+- Publication: ready for commit and production deployment from the isolated clean worktree.
+- Metric: impressions/clicks for corporate B2B-site queries, transitions from the case to `/b2b-corporate-website`, and confirmed leads with source `SEO — корпоративный B2B-сайт`. First evaluation: 2026-10-15.
