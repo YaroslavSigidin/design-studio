@@ -75,3 +75,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both service links resolve locally.
 - Publication: deployed in commit `219b3cb`; production returns HTTP 200 with the new title and both industrial-service links, and the full production verifier passed.
 - Metric: impressions/clicks for HMI and operator-panel queries, click-through from the WEINTEK case to `/industrial-interface-design`, and confirmed leads with source `SEO — промышленные интерфейсы`. First evaluation: 2026-10-15.
+
+## 2026-10-08 — Diplomat Hotel proof-to-service path
+
+- Barrier: `/case-diplomat-hotel` is the strongest proof for the hotel-site offer, but its snippet title was generic and the final CTA opened a general brief instead of continuing to the matching attributed form.
+- Hypothesis: a hospitality-specific case title and direct final CTA to `/hotel-website-development#request` will strengthen relevance for hotel-site queries and shorten the proof-to-lead path.
+- Change: refined the Diplomat Hotel case title for boutique-hotel website intent and changed the final CTA to the hotel landing page request section. The existing contextual service link remains in the case. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both hotel-service links resolve locally.
+- Publication: ready for commit and production deployment from the isolated clean worktree.
+- Metric: impressions/clicks for hotel and boutique-hotel website queries, transitions from the case to `/hotel-website-development`, and confirmed leads with source `SEO — сайт для отеля`. First evaluation: 2026-10-15.
