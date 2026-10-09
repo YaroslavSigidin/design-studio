@@ -129,3 +129,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the new page has unique metadata, canonical, H1, Service and FAQ schema, and its contextual case links resolve locally. It reuses the previously verified responsive editorial offer-page system.
 - Publication: deployed in commit `cef76f0`; production returns HTTP 200 with the intended title, canonical, H1, LEKI TRAVEL proof and attributed form, and the full production verifier passed.
 - Metric: non-branded impressions/clicks for travel-company and tour-operator website queries, transitions between the landing page and LEKI TRAVEL case, and confirmed leads with source `SEO — сайт для туристической компании`. First evaluation: 2026-10-16.
+
+## 2026-10-09 — fintech interface design landing page
+
+- Barrier: the portfolio contains a focused VOLT PAY payment-product case, but no commercial page answers the buyer intent `дизайн финтех-приложения / платёжного интерфейса` or explains transaction states, KYC and implementation handoff.
+- Hypothesis: a dedicated fintech page connected to truthful proof and a separately attributed form will create a more relevant query-to-proof-to-lead path than the broad UX/UI offer.
+- Change: added `/fintech-interface-design` in the existing editorial offer-page visual system, with unique fintech-specific copy, Service and FAQ schema, the VOLT PAY proof, a source-specific lead form, a contextual link from the case and a sitemap entry. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the page has unique metadata, canonical, H1, Service and FAQ schema, and both directions of the VOLT PAY proof path resolve locally. It reuses the verified responsive editorial offer-page system.
+- Publication: pending.
+- Metric: non-branded impressions/clicks for fintech-app and payment-interface queries, transitions between the landing page and VOLT PAY case, and confirmed leads with source `SEO — дизайн финтех-интерфейса`. First evaluation: 2026-10-16.
