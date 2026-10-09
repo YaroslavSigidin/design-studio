@@ -147,3 +147,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the page has unique metadata, canonical, H1, Service and FAQ schema, and both directions of the MIROX APP proof path resolve locally. It reuses the verified responsive editorial offer-page system.
 - Publication: deployed in commit `bb2b329`; production returns HTTP 200 with the intended title, canonical, H1, MIROX APP proof and attributed form, the linked case exposes both mobile-service links, and the full production verifier passed.
 - Metric: non-branded impressions/clicks for mobile-app design queries, transitions between the landing page and MIROX APP case, and confirmed leads with source `SEO — дизайн мобильного приложения`. First evaluation: 2026-10-16.
+
+## 2026-10-09 — Mobile-first article to mobile-app service path
+
+- Barrier: `/blog/mobile-first/` answers a closely related informational query but ended in a generic audit request and did not link to the new commercial mobile-app offer.
+- Hypothesis: a contextual editorial link and a specific end-of-article action to `/mobile-app-design` will strengthen topical internal linking and move relevant readers toward the matching proof and attributed form.
+- Change: linked the article conclusion to the mobile-app service, replaced its generic final content CTA with the specific mobile-app next step, updated the truthful `dateModified` and sitemap last-modified date. The article's existing generic audit form remains available below, and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; both editorial links resolve locally, the article retains valid BlogPosting schema, and the sitemap modification date matches the update.
+- Publication: pending.
+- Metric: transitions from `/blog/mobile-first/` to `/mobile-app-design`, subsequent MIROX APP views and confirmed leads with source `SEO — дизайн мобильного приложения`. First evaluation: 2026-10-16.
