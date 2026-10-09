@@ -145,5 +145,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a dedicated mobile-app page connected to truthful proof and a separately attributed form will create a clearer query-to-proof-to-lead path than the broad UX/UI offer.
 - Change: added `/mobile-app-design` in the existing editorial offer-page visual system, with unique mobile-product copy, Service and FAQ schema, the MIROX APP proof, a source-specific lead form, a contextual link from the case and a sitemap entry. The homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the page has unique metadata, canonical, H1, Service and FAQ schema, and both directions of the MIROX APP proof path resolve locally. It reuses the verified responsive editorial offer-page system.
-- Publication: pending.
+- Publication: deployed in commit `bb2b329`; production returns HTTP 200 with the intended title, canonical, H1, MIROX APP proof and attributed form, the linked case exposes both mobile-service links, and the full production verifier passed.
 - Metric: non-branded impressions/clicks for mobile-app design queries, transitions between the landing page and MIROX APP case, and confirmed leads with source `SEO — дизайн мобильного приложения`. First evaluation: 2026-10-16.
