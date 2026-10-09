@@ -80,7 +80,6 @@ const renderChapters = chapters =>
         .map(
           chapter => `
         <article class="case-chapter">
-          <p class="case-chapter-label">${window.__studioEscapeHtml(chapter.label)}</p>
           <h3 class="case-chapter-title">${window.__studioEscapeHtml(chapter.title)}</h3>
           <p class="case-chapter-text">${window.__studioEscapeHtml(chapter.text)}</p>
         </article>`
@@ -93,7 +92,6 @@ const renderMediaSkeleton = attrs => window.STUDIO_MEDIA?.renderSkeletonImage(at
 const renderGallery = images =>
   images.length
     ? `<section class="case-block case-block--gallery">
-        <p class="case-eyebrow">Галерея</p>
         <h2 class="case-block-title">Визуальные материалы</h2>
         <div class="case-gallery">${images
           .map(
@@ -198,7 +196,6 @@ const renderRelatedCases = (projects, currentProject, cfg) => {
 
   return `
     <section class="case-related">
-      <p class="case-eyebrow">Другие проекты</p>
       <h2 class="case-block-title">Смотрите другие кейсы</h2>
       <div class="case-related-grid">
         ${related
@@ -252,30 +249,26 @@ const renderCase = (project, projects, currentIndex, cfg) => {
     : "";
   const introBlock = study.task
     ? `<section class="case-block">
-        <p class="case-eyebrow">Задача</p>
         <h2 class="case-block-title">Цель проекта</h2>
         <p class="case-text">${window.__studioEscapeHtml(study.task)}${serviceContext}</p>
       </section>`
     : project.description
       ? `<section class="case-block">
-          <p class="case-eyebrow">О проекте</p>
-          <h2 class="case-block-title">Контекст</h2>
+          <h2 class="case-block-title">О проекте</h2>
           <p class="case-text">${window.__studioEscapeHtml(project.description)}</p>
         </section>`
       : "";
 
   const solutionBlock = whatDone.length
     ? `<section class="case-block">
-        <p class="case-eyebrow">Что сделано</p>
-        <h2 class="case-block-title">Решение</h2>
+        <h2 class="case-block-title">Что сделали</h2>
         ${renderList(whatDone)}
       </section>`
     : "";
 
   const metricsBlock = metrics.length
     ? `<section class="case-block">
-        <p class="case-eyebrow">Результаты</p>
-        <h2 class="case-block-title">Метрики</h2>
+        <h2 class="case-block-title">Результаты проекта</h2>
         <div class="case-metrics">${metrics
           .map(metric => `<div class="case-metric">${window.__studioEscapeHtml(metric)}</div>`)
           .join("")}</div>
@@ -284,8 +277,7 @@ const renderCase = (project, projects, currentIndex, cfg) => {
 
   const processBlock = chapters.length
     ? `<section class="case-block">
-        <p class="case-eyebrow">Процесс</p>
-        <h2 class="case-block-title">Как работали над проектом</h2>
+        <h2 class="case-block-title">История проекта</h2>
         ${renderChapters(chapters)}
       </section>`
     : "";

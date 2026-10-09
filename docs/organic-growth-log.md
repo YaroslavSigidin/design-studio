@@ -200,3 +200,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; all 99 sitemap URLs have unique metadata, canonical, H1 and valid local links. The page rendered locally without console errors and exposed all nine service links in the DOM.
 - Publication: deployed from an isolated clean worktree; the owner's unrelated changes in the primary checkout were not included.
 - Metric: formation of service quick links in Yandex Webmaster under Search appearance → Quick links, plus branded-result impressions and clicks. First evaluation after recrawl: 2026-10-24.
+## 2026-10-10 — case-story editorial cleanup
+
+- Barrier: case narratives were visually fragmented by generic utility labels such as “Контекст”, “Исследование” and “Решения”; several passages also mixed Russian and English jargon, changed authorial voice or read as disconnected process notes instead of a coherent story.
+- Hypothesis: removing redundant labels and editing every case into a consistent sequence of meaningful chapter headings and substantive paragraphs will make proof easier to read and increase trust before the service CTA.
+- Change: removed utility labels from the shared case renderer and all 31 generated case pages, renamed the narrative section to “История проекта”, aligned block headings, corrected inconsistent first-person wording and jargon, rewrote the weakest passages, and expanded the incomplete Diplomat Hotel story into four connected chapters. No homepage copy or visual styling changed.
+- Verification: the static generator rebuilt all 31 cases; `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. An additional content audit checked 119 chapters for sequence length, distinct meaningful headings and substantive text; rendered VISI FLOW has zero utility labels and no console errors.
+- Publication: not deployed pending owner approval.
+- Metric: scroll depth through “История проекта”, transitions from case pages to matching service pages, and attributed request submissions. First evaluation after publication: 2026-10-24.
