@@ -171,6 +171,6 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Barrier: `/case-visiflow` is featured as relevant proof on the UX/UI service page, but its snippet title was generic and its final action opened a general brief rather than the attributed UX/UI form.
 - Hypothesis: a B2B AI-platform-specific title plus contextual and final links to `/ux-ui-design` will strengthen product-design relevance and shorten the path from proof to a measurable request.
 - Change: refined the VISI FLOW title for B2B AI-platform UX/UI intent, added an in-context service link, changed the final CTA to the UX/UI request section and refreshed the sitemap modification date. The homepage was not changed.
-- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both links to the canonical UX/UI service resolve locally.
-- Publication: pending.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs`, `git diff --check` and the production verifier passed; the static case retains server-rendered metadata and both links to the canonical UX/UI service resolve. The verifier's VISI FLOW title assertion was updated to match the intentional new metadata.
+- Publication: deployed in commit `4fbee09`; production returns HTTP 200 with the B2B AI-platform title and both UX/UI service links, while the target page also returns HTTP 200.
 - Metric: impressions/clicks for B2B AI-platform UX/UI queries, transitions from VISI FLOW to `/ux-ui-design`, and confirmed leads with source `SEO — UX/UI`. First evaluation: 2026-10-16.

@@ -43,7 +43,7 @@ check(!sitemapUrls.includes(`${ORIGIN}/case.html`), "sitemap excludes the empty 
 
 const validCase = await request("/case-visiflow");
 check(validCase.response.status === 200, "published case returns HTTP 200");
-check(validCase.body.includes("VISI FLOW — кейс UX/UI и дизайна | Согласовано"), "case metadata is rendered server-side");
+check(validCase.body.includes("UX/UI-дизайн B2B AI-платформы — кейс VISI FLOW | Согласовано"), "case metadata is rendered server-side");
 check(validCase.body.includes(`${ORIGIN}/case-visiflow`), "case canonical URL is the clean static case page");
 check(validCase.body.includes('id="case-structured-data"'), "case includes structured data");
 check(validCase.body.includes('<h1 class="case-title">VISI FLOW</h1>'), "case content is available without JavaScript");
