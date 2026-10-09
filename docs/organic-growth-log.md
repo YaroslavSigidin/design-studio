@@ -120,3 +120,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; both retained clean case links resolve locally and the editorial case-list structure remains valid with two items.
 - Publication: deployed in commit `ea25127`; production returns HTTP 200, contains only Diplomat Hotel and LEKI TRAVEL in the proof block, and the full production verifier passed.
 - Metric: transitions from `/hotel-website-development` to the two proof cases, request-form engagement, and confirmed leads with source `SEO — сайт для отеля`. First evaluation: 2026-10-16.
+
+## 2026-10-09 — travel company website landing page
+
+- Barrier: the portfolio contains a relevant LEKI TRAVEL case, but no commercial page directly answers the distinct buyer intent `создание сайта для туристической компании / туроператора` or explains catalogue, tour-card and enquiry requirements.
+- Hypothesis: a dedicated travel page connected to the relevant case and a separately attributed form will create a clearer query-to-proof-to-lead path than the hotel or generic landing-page offers.
+- Change: added `/travel-company-website` in the existing editorial offer-page visual system, with unique travel-specific copy, Service and FAQ schema, the LEKI TRAVEL proof, a source-specific lead form, a contextual link from the case and a sitemap entry. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the new page has unique metadata, canonical, H1, Service and FAQ schema, and its contextual case links resolve locally. It reuses the previously verified responsive editorial offer-page system.
+- Publication: pending.
+- Metric: non-branded impressions/clicks for travel-company and tour-operator website queries, transitions between the landing page and LEKI TRAVEL case, and confirmed leads with source `SEO — сайт для туристической компании`. First evaluation: 2026-10-16.
