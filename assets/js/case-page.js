@@ -244,11 +244,17 @@ const renderCase = (project, projects, currentIndex, cfg) => {
   const title = study.title || project.title;
   const subtitle = study.subtitle || project.subtitle || project.description || "";
   const slug = project.id || project.caseKey || "";
+  const serviceLink = project.serviceLink || null;
+  const serviceHref = serviceLink?.href || "";
+  const servicePageHref = serviceHref.replace(/#.*$/, "");
+  const serviceContext = serviceLink?.contextLabel
+    ? ` Подход к таким проектам описан на странице <a href="${window.__studioEscapeHtml(servicePageHref)}">${window.__studioEscapeHtml(serviceLink.contextLabel)}</a>.`
+    : "";
   const introBlock = study.task
     ? `<section class="case-block">
         <p class="case-eyebrow">Задача</p>
         <h2 class="case-block-title">Цель проекта</h2>
-        <p class="case-text">${window.__studioEscapeHtml(study.task)}</p>
+        <p class="case-text">${window.__studioEscapeHtml(study.task)}${serviceContext}</p>
       </section>`
     : project.description
       ? `<section class="case-block">
@@ -341,7 +347,9 @@ const renderCase = (project, projects, currentIndex, cfg) => {
 
       <footer class="case-footer">
         <a class="case-back" href="${window.__studioEscapeHtml(cfg.studioCases || "./#cases")}">← Все кейсы</a>
-        <a class="case-brief" href="#contacts" data-open-brief-modal>Оставить бриф</a>
+        ${serviceLink
+          ? `<a class="case-brief" href="${window.__studioEscapeHtml(serviceHref)}">${window.__studioEscapeHtml(serviceLink.label || "Обсудить проект")}</a>`
+          : '<a class="case-brief" href="#contacts" data-open-brief-modal>Оставить бриф</a>'}
       </footer>
     </article>
 

@@ -60,4 +60,17 @@ for url in urls:
         target = ROOT / path.lstrip("/") if path.startswith("/") or parsed.netloc else file.parent / path
         if not target.exists() and target.suffix == "": target = target.with_suffix(".html")
         assert target.exists(), f"Broken local link: {file}: {value}"
+
+manifest = json.loads((ROOT / "data/cases.manifest.json").read_text())
+for project in manifest.get("projects", []):
+    seo_title = project.get("seoTitle")
+    service_link = project.get("serviceLink")
+    if not seo_title and not service_link: continue
+    case_file = ROOT / f"case-{project['id']}.html"
+    case_html = case_file.read_text()
+    if seo_title:
+        assert f"<title>{seo_title}</title>" in case_html, f"Generated SEO title drift: {case_file}"
+    if service_link:
+        assert f'href="{service_link["href"]}"' in case_html, f"Generated CTA drift: {case_file}"
+        assert service_link["contextLabel"] in case_html, f"Generated context link drift: {case_file}"
 print(f"PASS: {len(urls)} sitemap pages; unique titles, descriptions, canonicals, H1, schema, image alt and local links.")

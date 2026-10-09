@@ -25,7 +25,7 @@ const template = await read("case.html");
 const cfg = { basePath: "/", assetBasePath: "/", studioCases: "./#cases", studioHome: "./" };
 for (const [index, project] of manifest.projects.entries()) {
   const url = `${origin}/case-${project.id}`;
-  const title = `${project.title} — кейс UX/UI и дизайна | Согласовано`;
+  const title = project.seoTitle || `${project.title} — кейс UX/UI и дизайна | Согласовано`;
   const description = String(project.description || project.subtitle || `Кейс ${project.title} дизайн-студии Согласовано.`).replace(/\s+/g, " ").trim();
   const summary = description.length > 160 ? description.slice(0, 157) + "…" : description;
   const image = new URL(project.image || "/assets/images/brand/og-cover-logo-20261006.jpg", origin).href;

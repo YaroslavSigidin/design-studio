@@ -25,6 +25,12 @@
       ],
       "studioCaseUrl": "./case-visiflow",
       "legacyCaseUrl": "/case-visiflow",
+      "seoTitle": "UX/UI-дизайн B2B AI-платформы — кейс VISI FLOW | Согласовано",
+      "serviceLink": {
+        "href": "./ux-ui-design#request",
+        "label": "Обсудить UX/UI продукта",
+        "contextLabel": "UX/UI-дизайна сложных цифровых продуктов"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "VISI FLOW",
@@ -135,6 +141,12 @@
       ],
       "studioCaseUrl": "./case-octoclick",
       "legacyCaseUrl": "/case-octoclick",
+      "seoTitle": "UX/UI-редизайн AdTech-платформы — кейс Octoclick | Согласовано",
+      "serviceLink": {
+        "href": "./ux-ui-design#request",
+        "label": "Обсудить UX/UI продукта",
+        "contextLabel": "UX/UI-дизайна сложных цифровых продуктов"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "Octoclick",
@@ -226,6 +238,12 @@
       ],
       "studioCaseUrl": "./case-mirox",
       "legacyCaseUrl": "/case-mirox",
+      "seoTitle": "UX/UI-дизайн SaaS-платформы — кейс MIROX | Согласовано",
+      "serviceLink": {
+        "href": "./ux-ui-design#request",
+        "label": "Обсудить UX/UI продукта",
+        "contextLabel": "UX/UI-дизайна сложных цифровых продуктов"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "MIROX",
@@ -562,6 +580,12 @@
       ],
       "studioCaseUrl": "./case-mirox-app",
       "legacyCaseUrl": "/case-mirox-app",
+      "seoTitle": "Дизайн мобильного приложения — кейс MIROX APP | Согласовано",
+      "serviceLink": {
+        "href": "./mobile-app-design#request",
+        "label": "Обсудить мобильное приложение",
+        "contextLabel": "дизайна мобильных приложений"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "MIROX APP",
@@ -1225,6 +1249,12 @@
       ],
       "studioCaseUrl": "./case-leki-travel",
       "legacyCaseUrl": "/case-leki-travel",
+      "seoTitle": "Сайт туристической компании — кейс LEKI TRAVEL | Согласовано",
+      "serviceLink": {
+        "href": "./travel-company-website#request",
+        "label": "Обсудить туристический сайт",
+        "contextLabel": "создания сайта для туристической компании"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "LEKI TRAVEL",
@@ -1387,6 +1417,12 @@
       ],
       "studioCaseUrl": "./case-weintek-panel",
       "legacyCaseUrl": "/case-weintek-panel",
+      "seoTitle": "Дизайн HMI и панели оператора — кейс WEINTEK | Согласовано",
+      "serviceLink": {
+        "href": "./industrial-interface-design#request",
+        "label": "Обсудить промышленный интерфейс",
+        "contextLabel": "дизайна интерфейсов для промышленного оборудования"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "WEINTEK PANEL",
@@ -1552,6 +1588,12 @@
       ],
       "studioCaseUrl": "./case-volt-pay",
       "legacyCaseUrl": "/case-volt-pay",
+      "seoTitle": "Дизайн финтех-приложения — кейс VOLT PAY | Согласовано",
+      "serviceLink": {
+        "href": "./fintech-interface-design#request",
+        "label": "Обсудить финтех-интерфейс",
+        "contextLabel": "дизайна финтех-приложений"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "VOLT PAY",
@@ -1995,6 +2037,12 @@
       ],
       "studioCaseUrl": "./case-vebocenschik",
       "legacyCaseUrl": "/case-vebocenschik",
+      "seoTitle": "Сайт для B2B-сервиса — кейс ВебОценщик | Согласовано",
+      "serviceLink": {
+        "href": "./b2b-corporate-website#request",
+        "label": "Обсудить корпоративный B2B-сайт",
+        "contextLabel": "создания корпоративных сайтов для B2B"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "ВебОценщик",
@@ -2287,6 +2335,12 @@
       ],
       "studioCaseUrl": "./case-diplomat-hotel",
       "legacyCaseUrl": "/case-diplomat-hotel",
+      "seoTitle": "Сайт бутик-отеля — кейс Diplomat Hotel | Согласовано",
+      "serviceLink": {
+        "href": "./hotel-website-development#request",
+        "label": "Обсудить сайт отеля",
+        "contextLabel": "создания сайта для отеля"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "Diplomat Hotel",
@@ -2485,6 +2539,12 @@
       ],
       "studioCaseUrl": "./case-pifagor-i-synovya",
       "legacyCaseUrl": "/case-pifagor-i-synovya",
+      "seoTitle": "Корпоративный сайт B2B-компании — кейс Пифагор и Сыновья | Согласовано",
+      "serviceLink": {
+        "href": "./b2b-corporate-website#request",
+        "label": "Обсудить корпоративный B2B-сайт",
+        "contextLabel": "создания корпоративных сайтов для B2B"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "Пифагор и Сыновья",
