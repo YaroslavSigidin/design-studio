@@ -179,7 +179,10 @@ const initHeroSearch = () => {
 
     const syncComposerState = () => {
       const hasAttachments = attachmentState.photos.length + attachmentState.files.length > 0;
+      const hasContent = Boolean(editor.value.trim()) || hasAttachments;
       inputWrap?.classList.toggle("has-attachments", hasAttachments);
+      submitButton.classList.toggle("is-empty", !hasContent);
+      submitButton.setAttribute("aria-disabled", hasContent ? "false" : "true");
     };
 
     const buildAttachmentItems = () => [
@@ -343,7 +346,7 @@ const initHeroSearch = () => {
       window.setTimeout(
         () => {
           submitButton.classList.remove("is-sending");
-          openFinalModal(text || "Заявка с вложениями");
+          openFinalModal(text);
         },
         mobileLite ? 120 : 980
       );
@@ -386,7 +389,10 @@ const initHeroSearch = () => {
 
     budgetRange?.addEventListener("input", update);
     deadlineRange?.addEventListener("input", update);
-    editor.addEventListener("input", syncRangesVisibility);
+    editor.addEventListener("input", () => {
+      syncRangesVisibility();
+      syncComposerState();
+    });
     submitButton.addEventListener("click", handleSend);
 
     update();

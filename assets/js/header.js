@@ -1,10 +1,15 @@
 const initHeaderScroll = header => {
-  const threshold = 32;
+  const compactAt = 44;
+  const expandAt = 18;
   let lastScrolled = null;
 
   const update = ({ y } = {}) => {
     const scrollY = typeof y === "number" ? y : window.scrollY;
-    const scrolled = scrollY > threshold;
+    const scrolled = lastScrolled === null
+      ? scrollY > compactAt
+      : lastScrolled
+        ? scrollY > expandAt
+        : scrollY > compactAt;
     if (scrolled === lastScrolled) return;
     lastScrolled = scrolled;
     header.classList.toggle("is-scrolled", scrolled);

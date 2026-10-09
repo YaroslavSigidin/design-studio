@@ -52,7 +52,7 @@ for (const [index, project] of manifest.projects.entries()) {
   markup = markup.replace(/<img\s+([^>]*?)alt=""/g, (_, attrs) => `<img ${attrs}alt="${escape(project.title)} — экран проекта ${++galleryIndex}"`);
   // Skeleton styling is only for client-side loading. Static content stays visible
   // even when scripts are disabled or fail to download.
-  markup = markup.replace(/class="media-skeleton/g, 'class="media-skeleton is-loaded');
+  markup = markup.replace(/class="media-skeleton(?=[\s"])/g, 'class="media-skeleton is-loaded');
   html = html.replace(/<main class="case-main" id="case-main">[\s\S]*?<\/main>/, () => `<main class="case-main" id="case-main" data-prerendered="true">${markup}</main>`)
     .replace("</head>", `<script id="case-structured-data" type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>\n</head>`);
   await write(`case-${project.id}.html`, html);
@@ -69,7 +69,7 @@ const cardContext = vm.createContext({
 vm.runInContext(await read("assets/js/cases.js"), cardContext);
 cardContext.projects = manifest.projects; cardContext.cfg = cfg;
 const cards = vm.runInContext("projects.map((project, i) => renderProjectCard(project, cfg, i)).join('')", cardContext)
-  .replace(/class="media-skeleton/g, 'class="media-skeleton is-loaded');
+  .replace(/class="media-skeleton(?=[\s"])/g, 'class="media-skeleton is-loaded');
 for (const path of ["index.html", "home.html"]) {
   let home = await read(path);
   home = home.replace(/<div class="projects-grid[^\"]*" id="projects-grid"[^>]*>[\s\S]*?<\/div>\s*(?=<div class="studio-cases-more__veil")/,

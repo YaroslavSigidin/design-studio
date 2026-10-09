@@ -19,6 +19,25 @@ const initSiteMotion = () => {
     { sel: ".studio-cases-more", variant: "fade-up", delayStep: 0 },
     { sel: ".studio-services-ai__subtitle", variant: "fade-up", delayStep: 60 },
     { sel: ".studio-services-ai__chat", variant: "fade-up", delayStep: 0 },
+    {
+      sel: ".studio-reasons__card:nth-of-type(odd) > img",
+      variant: "reasons-left",
+      delayStep: 110,
+      desktopOnly: true
+    },
+    {
+      sel: ".studio-reasons__card:nth-of-type(even) > img",
+      variant: "reasons-right",
+      delayStep: 110,
+      desktopOnly: true
+    },
+    {
+      sel: ".studio-reasons__path",
+      variant: "reasons-path",
+      delayStep: 0,
+      delayStart: 140,
+      desktopOnly: true
+    },
     { sel: ".studio-faq__item", variant: "slide-up", delayStep: 55 },
     { sel: ".studio-footer__card", variant: "fade-up", delayStep: 0 },
     { sel: ".studio-footer__bottom", variant: "fade-up", delayStep: 0 },
@@ -72,6 +91,7 @@ const initSiteMotion = () => {
 
   const scan = () => {
     RULES.forEach(rule => {
+      if (rule.desktopOnly && window.matchMedia("(max-width: 900px), (pointer: coarse)").matches) return;
       let localIndex = 0;
       document.querySelectorAll(rule.sel).forEach(node => {
         if (node.closest(".hero-page")) return;
@@ -80,7 +100,7 @@ const initSiteMotion = () => {
           // Do not force-show overflow cards — collapse owns those
           return;
         }
-        const delay = Math.min(localIndex * rule.delayStep, 360);
+        const delay = Math.min((rule.delayStart || 0) + localIndex * rule.delayStep, 420);
         registerElement(node, rule.variant, delay);
         localIndex += 1;
       });
