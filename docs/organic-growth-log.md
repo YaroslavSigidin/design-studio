@@ -181,5 +181,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: an AdTech-platform-specific title plus contextual and final links to `/ux-ui-design` will strengthen product-redesign relevance and shorten the path from proof to a measurable request.
 - Change: refined the Octoclick title for AdTech UX/UI redesign intent, added an in-context service link, changed the final CTA to the UX/UI request section and refreshed the sitemap modification date. The homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both links to the canonical UX/UI service resolve locally.
-- Publication: pending.
+- Publication: deployed in commit `18470bf`; production returns HTTP 200 with the AdTech redesign title and both UX/UI service links, the target page also returns HTTP 200, and the production verifier passed.
 - Metric: impressions/clicks for AdTech and product-redesign UX/UI queries, transitions from Octoclick to `/ux-ui-design`, and confirmed leads with source `SEO — UX/UI`. First evaluation: 2026-10-17.
