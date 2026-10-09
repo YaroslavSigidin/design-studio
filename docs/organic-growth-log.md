@@ -111,3 +111,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both B2B-service links resolve locally.
 - Publication: deployed in commit `5ae3fdd`; production returns HTTP 200 with the new title and both B2B-service links, and the full production verifier passed.
 - Metric: impressions/clicks for B2B service-site queries, transitions from the case to `/b2b-corporate-website`, and confirmed leads with source `SEO — корпоративный B2B-сайт`. First evaluation: 2026-10-16.
+
+## 2026-10-09 — truthful hospitality proof selection
+
+- Barrier: the hotel landing page labelled the ERMITAGE visual-style website as a hospitality project, although the case itself contains no supported hotel context. This could weaken trust before the request form.
+- Hypothesis: showing only verifiably relevant hospitality and travel work will produce a smaller but stronger proof set and avoid an unsupported sector claim.
+- Change: removed ERMITAGE from `/hotel-website-development`, retained Diplomat Hotel and LEKI TRAVEL, and renamed the proof heading to accurately describe the available hotel and travel experience. The homepage and case pages were not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; both retained clean case links resolve locally and the editorial case-list structure remains valid with two items.
+- Publication: ready for commit and production deployment from the isolated clean worktree.
+- Metric: transitions from `/hotel-website-development` to the two proof cases, request-form engagement, and confirmed leads with source `SEO — сайт для отеля`. First evaluation: 2026-10-16.
