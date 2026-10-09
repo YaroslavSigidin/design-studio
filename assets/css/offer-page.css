@@ -173,6 +173,7 @@ textarea { font: inherit; }
   border: 1px solid var(--offer-line);
   border-radius: var(--offer-radius);
   background: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
 }
 
 .offer-section--dark .offer-card { border-color: rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.05); }

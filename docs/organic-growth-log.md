@@ -192,3 +192,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: a clean `node scripts/build-seo.mjs` regeneration followed by `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs`, `node --check assets/js/case-page.js` and `git diff --check` passed. The new regression assertions verify every configured title, contextual service link and final CTA in generated HTML.
 - Publication: deployed in commit `cc40f2f`; the full production verifier passed and all ten configured case pages returned the expected direct service CTA. The generated-case checks now protect future builds.
 - Metric: zero generated-case SEO regressions on future builds; stable case-to-service transitions and confirmed attributed leads across the connected commercial pages. First regression review: 2026-10-17.
+## 2026-10-10 — service hierarchy for Yandex quick links
+
+- Barrier: the site has distinct commercial service pages, but the homepage navigation linked only to an on-page `#services` anchor, so Yandex did not have a clear internal hierarchy from the main page to a services section and its subsections.
+- Hypothesis: a crawlable `/services` hub linked from the existing navigation, with short descriptive anchors to the principal commercial pages, will give Yandex the internal-link structure it requires to form quick links for the branded result.
+- Change: added `/services` in the existing editorial visual system, linked nine established service pages with concise names, added CollectionPage/ItemList schema, pointed the unchanged “Услуги” navigation label on the homepage to the hub, and added the hub to the sitemap. No homepage copy or visual styling changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; all 99 sitemap URLs have unique metadata, canonical, H1 and valid local links. The page rendered locally without console errors and exposed all nine service links in the DOM.
+- Publication: deployed from an isolated clean worktree; the owner's unrelated changes in the primary checkout were not included.
+- Metric: formation of service quick links in Yandex Webmaster under Search appearance → Quick links, plus branded-result impressions and clicks. First evaluation after recrawl: 2026-10-24.
