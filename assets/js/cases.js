@@ -258,7 +258,7 @@ const updateMoreButtonState = (moreButton, moreWrap, expanded, hasExtra) => {
   if (!moreWrap || !moreButton) return;
   moreWrap.hidden = !hasExtra;
   const label = moreButton.querySelector("[data-cases-more-label]");
-  if (label) label.textContent = expanded ? "Скрыть кейсы" : "Все кейсы";
+  if (label) label.textContent = expanded ? "Закрыть кейсы" : "Все кейсы";
   moreButton.classList.toggle("is-expanded", expanded);
   moreButton.setAttribute("aria-expanded", expanded ? "true" : "false");
 };

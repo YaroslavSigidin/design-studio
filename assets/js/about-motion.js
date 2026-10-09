@@ -124,7 +124,9 @@ const initAboutMotion = () => {
 
     applyLayout(nextIndex);
 
-    const useSmooth = smooth && !reducedMotion() && !flatLayout();
+    // The flat mobile layout does not make native smooth scrolling expensive.
+    // Keeping it enabled prevents nav/card taps from snapping abruptly on touch.
+    const useSmooth = smooth && !reducedMotion() && !window.STUDIO_PERF?.isLite;
     scrollingProgrammatically = useSmooth;
     section.classList.toggle("is-nav-animating", useSmooth);
     grid.style.scrollSnapType = "none";

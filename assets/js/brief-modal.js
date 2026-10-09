@@ -5,6 +5,8 @@ const initBriefModal = () => {
   const phoneInput = form?.querySelector('input[name="phone"]');
   const nameInput = form?.querySelector('input[name="name"]');
   const submitButton = form?.querySelector('button[type="submit"]');
+  const successPanel = modal?.querySelector("[data-brief-success]");
+  const successAction = successPanel?.querySelector("[data-brief-success-action]");
   if (!modal || !form || !phoneInput || !nameInput || !submitButton) return;
 
   const defaultModalTitle = modalTitle?.textContent?.trim() || "Заказать дизайн";
@@ -50,6 +52,9 @@ const initBriefModal = () => {
   });
 
   const reset = () => {
+    modal.classList.remove("is-success");
+    form.hidden = false;
+    if (successPanel) successPanel.hidden = true;
     form.reset();
     const privacy = form.querySelector('input[name="privacy"]');
     if (privacy instanceof HTMLInputElement) privacy.checked = true;
@@ -171,6 +176,11 @@ const initBriefModal = () => {
       submitButton.classList.remove("is-sending", "is-error");
       submitButton.classList.add("is-success");
       submitButton.textContent = "Заявка отправлена ✓";
+      modal.classList.add("is-success");
+      form.hidden = true;
+      if (successPanel) successPanel.hidden = false;
+      if (modalTitle) modalTitle.textContent = "Заявка отправлена";
+      window.requestAnimationFrame(() => successAction?.focus());
       return;
     }
 

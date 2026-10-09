@@ -2,6 +2,7 @@ const SERVICES = [
   {
     title: "UX/UI дизайн",
     url: "./ux-ui-design.html",
+    artwork: "./assets/images/services/ui.svg",
     price: 95000,
     bullets: [
       "Понятные пользовательские сценарии",
@@ -13,6 +14,7 @@ const SERVICES = [
   },
   {
     title: "Многостраничный сайт",
+    artwork: "./assets/images/services/multipage.svg",
     price: 70000,
     bullets: [
       "Логичная карта разделов",
@@ -25,6 +27,7 @@ const SERVICES = [
   {
     title: "Одностраничный сайт",
     url: "./landing-page.html",
+    artwork: "./assets/images/services/landing.svg",
     price: 40000,
     bullets: [
       "Сильный первый экран",
@@ -36,6 +39,7 @@ const SERVICES = [
   },
   {
     title: "Брендинг и айдентика",
+    artwork: "./assets/images/services/branding.svg?v=20261008-2",
     price: 48000,
     bullets: [
       "Узнаваемый логотип бренда",
@@ -48,6 +52,7 @@ const SERVICES = [
   {
     title: "Редизайн сайта",
     url: "./site-redesign.html",
+    artwork: "./assets/images/services/redesign.svg",
     price: 60000,
     bullets: [
       "Аудит текущих проблем",
@@ -100,7 +105,6 @@ const getBullets = service => {
 };
 
 const serviceCardTemplate = service => {
-  const pricingDetail = getPricingDetail(service.title);
   const isFree = Number(service.price) === 0;
   const priceMarkup = isFree
     ? "Бесплатно"
@@ -115,6 +119,9 @@ const serviceCardTemplate = service => {
   return `
     <article class="${cardClassName}" data-service-card>
       <div class="studio-service-card__body">
+        <div class="studio-service-artwork" aria-hidden="true">
+          <img src="${window.__studioEscapeHtml(service.artwork)}" alt="" loading="eager" decoding="async" />
+        </div>
         <h3 class="studio-service-title">${
           service.url
             ? `<a href="${window.__studioEscapeHtml(service.url)}">${window.__studioEscapeHtml(service.title)}</a>`
@@ -123,7 +130,6 @@ const serviceCardTemplate = service => {
         <div class="studio-service-prices">
           <p class="studio-service-price">${priceMarkup}</p>
         </div>
-        <p class="studio-service-installment">${window.__studioEscapeHtml(pricingDetail)}</p>
         ${bulletMarkup}
       </div>
       <button
@@ -132,7 +138,8 @@ const serviceCardTemplate = service => {
         data-open-brief-modal
         data-service="${window.__studioEscapeHtml(service.title)}"
       >
-        ${window.__studioEscapeHtml(service.ctaLabel || "Заказать")}
+        <span>${window.__studioEscapeHtml(service.ctaLabel || "Заказать")}</span>
+        <img class="studio-service-order__arrow" src="./assets/images/services/order-arrow.svg" alt="" aria-hidden="true" />
       </button>
     </article>
   `;

@@ -109,11 +109,14 @@ const initServicesCarousel = () => {
     return card.offsetWidth + gap;
   };
 
-  const centerCard = card => {
+  const centerCard = (card, { smooth = false } = {}) => {
     if (!card) return;
     const viewportWidth = viewport.clientWidth;
     const targetLeft = card.offsetLeft - (viewportWidth - card.offsetWidth) / 2;
-    track.scrollLeft = Math.max(0, targetLeft);
+    track.scrollTo({
+      left: Math.max(0, targetLeft),
+      behavior: smooth && !window.STUDIO_PERF?.prefersReducedMotion ? "smooth" : "auto"
+    });
   };
 
   const updateLinearFocus = () => {
@@ -351,8 +354,8 @@ const initServicesCarousel = () => {
       return;
     }
 
-    centerCard(card);
-    updateLinearFocus();
+    centerCard(card, { smooth: true });
+    scheduleLinearFocus();
   };
 
   prevButton.addEventListener("click", () => scrollByStep(-1));

@@ -1,8 +1,5 @@
 (() => {
-  const SIZE = 31;
-  const NAME = "Вы";
-  const COLOR = "#FFFFFF";
-  const TEXT_COLOR = "#000000";
+  const ASSET_BASE = new URL("../images/ui/", document.currentScript?.src || window.location.href).href;
   const PRESS_SCALE = 0.92;
   const LABEL_TILT_STRENGTH = 25;
   const ARROW_SPRING = { stiffness: 380, damping: 32, mass: 0.6 };
@@ -59,7 +56,7 @@
     if (shouldSkip()) return;
     if (document.getElementById("studioUserCursor")) return;
 
-    const labelOffset = { x: SIZE * 0.9, y: SIZE * 0.2 + 6 };
+    const labelOffset = { x: 25, y: 12 };
     const root = document.createElement("div");
     root.id = "studioUserCursor";
     root.className = "studio-user-cursor";
@@ -67,18 +64,10 @@
     root.innerHTML = `
       <div class="studio-user-cursor__layer">
         <div class="studio-user-cursor__label">
-          <span class="studio-user-cursor__label-text">${NAME}</span>
+          <img src="${ASSET_BASE}cursor-you.svg" alt="" />
         </div>
         <div class="studio-user-cursor__arrow">
-          <svg width="${SIZE}" height="${SIZE}" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path
-              d="M5 3 L23 14 L14 16 L11 24 Z"
-              fill="${COLOR}"
-              stroke="rgba(0,0,0,0.18)"
-              stroke-width="0.6"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <img src="${ASSET_BASE}cursor-arrow.svg" alt="" />
         </div>
       </div>
     `;
@@ -86,12 +75,6 @@
 
     const labelEl = root.querySelector(".studio-user-cursor__label");
     const arrowEl = root.querySelector(".studio-user-cursor__arrow");
-    const labelText = root.querySelector(".studio-user-cursor__label-text");
-
-    labelEl.style.background = COLOR;
-    labelEl.style.padding = `${SIZE * 0.18}px ${SIZE * 0.36}px`;
-    labelText.style.color = TEXT_COLOR;
-    labelText.style.fontSize = `${Math.max(7, SIZE * 0.43)}px`;
 
     const arrowX = createSpring(ARROW_SPRING, -9999);
     const arrowY = createSpring(ARROW_SPRING, -9999);

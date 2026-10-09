@@ -17,10 +17,10 @@ const initHeroPong = () => {
   const BASE_SPEED = 7.4;
 
   const state = {
-    paddleHeight: 118,
-    paddleWidth: 12,
-    paddleMargin: 14,
-    ballRadius: 7,
+    paddleHeight: 124,
+    paddleWidth: 24,
+    paddleMargin: 10,
+    ballRadius: 22,
     playerY: window.innerHeight * 0.5,
     aiY: window.innerHeight * 0.5,
     ballX: window.innerWidth * 0.5,
@@ -67,11 +67,11 @@ const initHeroPong = () => {
     }
   };
 
-  const resetBall = direction => {
+  const resetBall = () => {
     const arena = state.arena;
-    state.ballX = arena.left + arena.width / 2;
-    state.ballY = arena.top + arena.height / 2;
-    state.vx = BASE_SPEED * direction;
+    state.ballX = arena.left + state.paddleMargin + state.paddleWidth + state.ballRadius + 10;
+    state.ballY = arena.top + arena.height * 0.5;
+    state.vx = Math.abs(BASE_SPEED);
     state.vy = Math.random() * 5.2 - 2.6 || 2.2;
     state.stuckFrames = 0;
     enforceSpeed();
@@ -213,15 +213,15 @@ const initHeroPong = () => {
 
     if (hitBlocker) {
       state.stuckFrames += 1;
-      if (state.stuckFrames > 18) resetBall(state.vx >= 0 ? 1 : -1);
+      if (state.stuckFrames > 18) resetBall();
     } else {
       state.stuckFrames = 0;
     }
 
     enforceSpeed();
 
-    if (state.ballX < arena.left - 40) resetBall(1);
-    if (state.ballX > arena.right + 40) resetBall(-1);
+    if (state.ballX < arena.left - 40) resetBall();
+    if (state.ballX > arena.right + 40) resetBall();
 
     renderBall();
     state.frame = window.requestAnimationFrame(tick);
@@ -276,7 +276,7 @@ const initHeroPong = () => {
 
   refreshGeometry();
   updatePaddles();
-  resetBall(Math.random() > 0.5 ? 1 : -1);
+  resetBall();
   renderBall();
 
   perf.pauseWhenHidden({ start, stop });

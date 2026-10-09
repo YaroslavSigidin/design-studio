@@ -160,8 +160,8 @@
         href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;700&family=Inter:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
       />
     </noscript>
-    <link rel="stylesheet" href="./assets/css/studio.css?v=20261005-team-question" />
-    <link rel="stylesheet" href="./assets/css/user-cursor.css?v=20260718-user-cursor" />
+    <link rel="stylesheet" href="./assets/css/studio.css?v=20261009-mobile-cases-layout" />
+    <link rel="stylesheet" href="./assets/css/user-cursor.css?v=20261008-new-cursor" />
   </head>
   <body data-seo-page="home">
     <canvas class="mesh-shader-background" data-mesh-shader aria-hidden="true"></canvas>
@@ -174,7 +174,7 @@
       <div class="hero-layout">
         <header class="hero-nav" data-floating-header>
           <div class="hero-nav-inner">
-            <a class="hero-logo" href="./" aria-label="Согласовано">
+            <a class="hero-logo" href="./index.html" aria-label="Согласовано">
               <img
                 class="brand-wordmark"
                 src="./assets/images/brand/soglasovano-wordmark.svg"
@@ -1144,12 +1144,9 @@
           </div>
         <div class="studio-cases-more" id="studioCasesMore" hidden>
           <button class="studio-cases-more__button" id="studioCasesMoreButton" type="button" aria-expanded="false">
-            <span data-cases-more-label>Все кейсы</span>
-            <span class="list-more-button__icon" aria-hidden="true">
-              <svg viewBox="0 0 20 20" fill="none">
-                <path d="M5 7.5 10 12.5l5-5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
+            <span class="studio-cases-more__label" data-cases-more-label>Все кейсы</span>
+            <img class="studio-cases-more__art studio-cases-more__art--open" src="./assets/images/ui/cases-show-all.svg" alt="" aria-hidden="true" />
+            <img class="studio-cases-more__art studio-cases-more__art--close" src="./assets/images/ui/cases-close.svg" alt="" aria-hidden="true" />
           </button>
         </div>
         </div>
@@ -1620,6 +1617,10 @@
       </div>
     </section>
 
+    <div class="studio-after-faq-art" aria-hidden="true">
+      <img src="./assets/images/ui/after-faq-character.svg" alt="" loading="lazy" decoding="async" />
+    </div>
+
     <aside class="contact-prefooter" aria-label="Быстрые контакты">
       <div class="top-contact-cluster">
         <div class="top-phone-group">
@@ -1689,7 +1690,7 @@
         </div>
 
         <div class="studio-footer__signature">
-          <a class="studio-footer__wordmark" href="./" aria-label="Согласовано">
+          <a class="studio-footer__wordmark" href="./index.html" aria-label="Согласовано">
             <img
               class="brand-wordmark brand-wordmark--footer-signature"
               src="./assets/images/brand/soglasovano-wordmark.svg"
@@ -1730,6 +1731,9 @@
         </header>
 
         <form class="brief-form" id="briefForm">
+          <div class="brief-modal__artwork" aria-hidden="true">
+            <img src="./assets/images/brief/envelope.svg" alt="" decoding="async" />
+          </div>
           <div class="brief-grid brief-grid--stack">
             <label class="brief-field brief-field--bare">
               <input type="text" name="name" placeholder="Как к вам обращаться" autocomplete="name" required />
@@ -1752,6 +1756,17 @@
             <button class="brief-modal__submit" type="submit">Отправить заявку</button>
           </div>
         </form>
+
+        <div class="brief-success" data-brief-success hidden>
+          <img class="brief-success__artwork" src="./assets/images/brief/heart.svg" alt="" aria-hidden="true" decoding="async" />
+          <a
+            class="brief-success__close"
+            href="https://t.me/sigidingo"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-brief-success-action
+          >Написать в ТГ</a>
+        </div>
 
       </section>
     </div>
@@ -1833,7 +1848,7 @@
     <script src="./assets/js/studio-perf.js?v=20260718-perf-profiles" defer></script>
     <script src="./assets/js/studio-scroll.js?v=20260718-perf-profiles" defer></script>
     <script src="./assets/js/studio-motion-qa.js?v=20260718-motion-qa" defer></script>
-    <script src="./assets/js/user-cursor.js?v=20260723-first-paint" defer></script>
+    <script src="./assets/js/user-cursor.js?v=20261008-new-cursor" defer></script>
     <script src="./assets/js/ambient-background.js?v=20261005-white-mesh" defer></script>
     <script src="./assets/js/analytics.js?v=20260722-leads7d" defer></script>
     <script src="./assets/js/seo.js?v=20260723-canonical1" defer></script>
@@ -1843,16 +1858,16 @@
     <script src="./assets/js/promo-strip.js?v=20260718-perf-ideal" defer></script>
     <script src="./assets/js/header-widgets.js?v=20260718-perf-profiles" defer></script>
     <script src="./assets/js/site-motion.js?v=20260719-cases-9" defer></script>
-    <script src="./assets/js/about-motion.js?v=20260719-about-deal" defer></script>
+    <script src="./assets/js/about-motion.js?v=20261008-mobile-motion" defer></script>
     <script src="./assets/js/header.js?v=20260718-perf-profiles" defer></script>
     <script src="./assets/js/hero-request.js?v=20260713-hero-request-collapse" defer></script>
     <script src="./assets/js/hero.js?v=20260719-leads-php" defer></script>
     <script src="./assets/js/hero-scroll.js?v=20260718-perf-profiles" defer></script>
-    <script src="./assets/js/hero-pong.js?v=20260718-motion-qa" defer></script>
+    <script src="./assets/js/hero-pong.js?v=20261008-paddle-svg" defer></script>
     <script src="./assets/js/heading-reveal.js?v=20260719-scroll-fx" defer></script>
-    <script src="./assets/js/services.js?v=20260719-price-from" defer></script>
-    <script src="./assets/js/services-carousel.js?v=20260723-services-smooth" defer></script>
-    <script src="./assets/js/brief-modal.js?v=20261005-button-status" defer></script>
+    <script src="./assets/js/services.js?v=20261008-branding-artwork" defer></script>
+    <script src="./assets/js/services-carousel.js?v=20261008-mobile-motion" defer></script>
+    <script src="./assets/js/brief-modal.js?v=20261008-success-telegram" defer></script>
     <script src="./assets/js/image-skeleton.js?v=20260717-cases-perf" defer></script>
     <script src="./assets/js/cases.js?v=20261005-case-covers" defer></script>
     <script src="./assets/js/faq.js?v=20260716-faq-button-accordion" defer></script>
@@ -2063,7 +2078,7 @@
                 if (moreWrap) moreWrap.hidden = !shouldShowMore;
                 if (moreButton) {
                   const label = moreButton.querySelector("[data-cases-more-label]");
-                  if (label) label.textContent = expanded ? "Скрыть кейсы" : "Все кейсы";
+                  if (label) label.textContent = expanded ? "Закрыть кейсы" : "Все кейсы";
                   moreButton.classList.toggle("is-expanded", expanded);
                   moreButton.setAttribute("aria-expanded", expanded ? "true" : "false");
                 }
