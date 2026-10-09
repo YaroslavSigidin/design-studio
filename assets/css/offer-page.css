@@ -248,10 +248,87 @@ textarea { font: inherit; }
 .offer-form .form-status[data-state="success"] { color: #247400; }
 .offer-form .form-status[data-state="error"] { color: #b42318; }
 
-.offer-faq { border-top: 1px solid var(--offer-line); }
-.offer-faq details { padding: 22px 0; border-bottom: 1px solid var(--offer-line); }
-.offer-faq summary { cursor: pointer; font-weight: 700; }
-.offer-faq p { max-width: 780px; color: var(--offer-muted); }
+.offer-faq {
+  display: grid;
+  gap: 12px;
+}
+
+.offer-faq details {
+  overflow: clip;
+  border: 1px solid rgba(18, 23, 34, 0.1);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 14px 40px rgba(29, 42, 62, 0.055);
+  transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.offer-faq details:hover {
+  border-color: rgba(18, 23, 34, 0.18);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.offer-faq details[open] {
+  border-color: rgba(18, 23, 34, 0.16);
+  background: #fff;
+  box-shadow: 0 20px 52px rgba(29, 42, 62, 0.09);
+}
+
+.offer-faq summary {
+  position: relative;
+  display: flex;
+  min-height: 82px;
+  align-items: center;
+  padding: 22px 86px 22px 26px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.025em;
+}
+
+.offer-faq summary::-webkit-details-marker { display: none; }
+
+.offer-faq summary::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--offer-line);
+  border-radius: 50%;
+  background: #f4f6fb;
+  color: var(--offer-ink);
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1;
+  transform: translateY(-50%);
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.offer-faq details[open] summary::after {
+  background: var(--offer-dark);
+  color: #fff;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.offer-faq summary:focus-visible {
+  outline: 3px solid rgba(143, 255, 0, 0.75);
+  outline-offset: -3px;
+  border-radius: inherit;
+}
+
+.offer-faq p {
+  max-width: 880px;
+  margin: -4px 86px 0 26px;
+  padding: 0 0 28px;
+  color: var(--offer-muted);
+  font-size: 16px;
+  line-height: 1.65;
+}
 
 .offer-footer { padding: 34px 0; color: var(--offer-muted); font-size: 14px; }
 .offer-footer__inner { display: flex; justify-content: space-between; gap: 20px; }
@@ -276,6 +353,24 @@ textarea { font: inherit; }
   .offer-hero__actions .offer-button { width: 100%; }
   .offer-section { padding: 68px 0; }
   .offer-form__row { grid-template-columns: 1fr; }
+  .offer-faq { gap: 8px; }
+  .offer-faq details { border-radius: 18px; }
+  .offer-faq summary {
+    min-height: 72px;
+    padding: 18px 68px 18px 18px;
+    font-size: 16px;
+  }
+  .offer-faq summary::after {
+    right: 16px;
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+  }
+  .offer-faq p {
+    margin: -2px 18px 0;
+    padding-bottom: 22px;
+    font-size: 15px;
+  }
   .offer-footer__inner { flex-direction: column; }
 }
 
