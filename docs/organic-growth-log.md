@@ -154,5 +154,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a contextual editorial link and a specific end-of-article action to `/mobile-app-design` will strengthen topical internal linking and move relevant readers toward the matching proof and attributed form.
 - Change: linked the article conclusion to the mobile-app service, replaced its generic final content CTA with the specific mobile-app next step, updated the truthful `dateModified` and sitemap last-modified date. The article's existing generic audit form remains available below, and the homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; both editorial links resolve locally, the article retains valid BlogPosting schema, and the sitemap modification date matches the update.
-- Publication: pending.
+- Publication: deployed in commit `884ea43`; production returns HTTP 200, exposes the updated BlogPosting date and both links to `/mobile-app-design`, while the target page also returns HTTP 200 and the full production verifier passed.
 - Metric: transitions from `/blog/mobile-first/` to `/mobile-app-design`, subsequent MIROX APP views and confirmed leads with source `SEO — дизайн мобильного приложения`. First evaluation: 2026-10-16.
