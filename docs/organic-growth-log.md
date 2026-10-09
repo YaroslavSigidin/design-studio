@@ -118,5 +118,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: showing only verifiably relevant hospitality and travel work will produce a smaller but stronger proof set and avoid an unsupported sector claim.
 - Change: removed ERMITAGE from `/hotel-website-development`, retained Diplomat Hotel and LEKI TRAVEL, and renamed the proof heading to accurately describe the available hotel and travel experience. The homepage and case pages were not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; both retained clean case links resolve locally and the editorial case-list structure remains valid with two items.
-- Publication: ready for commit and production deployment from the isolated clean worktree.
+- Publication: deployed in commit `ea25127`; production returns HTTP 200, contains only Diplomat Hotel and LEKI TRAVEL in the proof block, and the full production verifier passed.
 - Metric: transitions from `/hotel-website-development` to the two proof cases, request-form engagement, and confirmed leads with source `SEO — сайт для отеля`. First evaluation: 2026-10-16.
