@@ -20,22 +20,17 @@ const initSiteMotion = () => {
     { sel: ".studio-services-ai__subtitle", variant: "fade-up", delayStep: 60 },
     { sel: ".studio-services-ai__chat", variant: "fade-up", delayStep: 0 },
     {
-      sel: ".studio-reasons__card:nth-of-type(odd) > img",
-      variant: "reasons-left",
-      delayStep: 110,
-      desktopOnly: true
-    },
-    {
-      sel: ".studio-reasons__card:nth-of-type(even) > img",
-      variant: "reasons-right",
-      delayStep: 110,
+      sel: ".studio-reasons__card > img",
+      variant: "reasons-card",
+      delayStart: 180,
+      delayStep: 90,
       desktopOnly: true
     },
     {
       sel: ".studio-reasons__path",
       variant: "reasons-path",
       delayStep: 0,
-      delayStart: 140,
+      delayStart: 0,
       desktopOnly: true
     },
     { sel: ".studio-faq__item", variant: "slide-up", delayStep: 55 },

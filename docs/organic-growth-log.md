@@ -183,7 +183,6 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both links to the canonical UX/UI service resolve locally.
 - Publication: deployed in commit `18470bf`; production returns HTTP 200 with the AdTech redesign title and both UX/UI service links, the target page also returns HTTP 200, and the production verifier passed.
 - Metric: impressions/clicks for AdTech and product-redesign UX/UI queries, transitions from Octoclick to `/ux-ui-design`, and confirmed leads with source `SEO — UX/UI`. First evaluation: 2026-10-17.
-
 ## 2026-10-10 — durable generated case SEO paths
 
 - Barrier: the static case generator rebuilt pages from `data/cases.manifest.json` with one generic title and one generic brief CTA, so a routine content regeneration had already erased four previously deployed query-specific titles and proof-to-service links.
@@ -192,6 +191,7 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: a clean `node scripts/build-seo.mjs` regeneration followed by `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs`, `node --check assets/js/case-page.js` and `git diff --check` passed. The new regression assertions verify every configured title, contextual service link and final CTA in generated HTML.
 - Publication: deployed in commit `cc40f2f`; the full production verifier passed and all ten configured case pages returned the expected direct service CTA. The generated-case checks now protect future builds.
 - Metric: zero generated-case SEO regressions on future builds; stable case-to-service transitions and confirmed attributed leads across the connected commercial pages. First regression review: 2026-10-17.
+
 ## 2026-10-10 — service hierarchy for Yandex quick links
 
 - Barrier: the site has distinct commercial service pages, but the homepage navigation linked only to an on-page `#services` anchor, so Yandex did not have a clear internal hierarchy from the main page to a services section and its subsections.
