@@ -156,3 +156,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; both editorial links resolve locally, the article retains valid BlogPosting schema, and the sitemap modification date matches the update.
 - Publication: deployed in commit `884ea43`; production returns HTTP 200, exposes the updated BlogPosting date and both links to `/mobile-app-design`, while the target page also returns HTTP 200 and the full production verifier passed.
 - Metric: transitions from `/blog/mobile-first/` to `/mobile-app-design`, subsequent MIROX APP views and confirmed leads with source `SEO — дизайн мобильного приложения`. First evaluation: 2026-10-16.
+
+## 2026-10-09 — MIROX SaaS proof-to-service path
+
+- Barrier: `/case-mirox` is a detailed SaaS product-design proof, but its snippet title was generic and the final action opened a general brief instead of the attributed UX/UI service form.
+- Hypothesis: a SaaS-specific title plus contextual and final links to `/ux-ui-design` will strengthen commercial relevance and shorten the path from proof to a measurable request.
+- Change: refined the MIROX case title for SaaS UX/UI intent, added an in-context service link, changed the final CTA to the UX/UI request section and refreshed the sitemap modification date. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the static case retains server-rendered metadata and both links to the canonical UX/UI service resolve locally.
+- Publication: pending.
+- Metric: impressions/clicks for SaaS UX/UI queries, transitions from the MIROX case to `/ux-ui-design`, and confirmed leads with source `SEO — UX/UI`. First evaluation: 2026-10-16.
