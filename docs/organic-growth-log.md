@@ -241,5 +241,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a dedicated `/ux-audit` offer with explicit scope, deliverables, relevant product proof and its own form source will bridge informational demand and a lower-friction commercial first step.
 - Change: added `/ux-audit` in the established editorial offer-page visual system, with unique audit-specific copy, Service and FAQ schema, three relevant product cases, a source-specific lead form, a services-hub link and a sitemap entry. The homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local desktop and 390 px browser checks found one H1, three proof links, one initialized attributed form, no horizontal overflow and no console errors.
-- Publication: pending.
+- Publication: deployed in commit `98f5b47`; production returns HTTP 200 with the intended title, canonical, Service/FAQ schema, three proof links and attributed form, and the full production verifier passed.
 - Metric: non-branded impressions and clicks for UX-audit queries, transitions from `/ux-audit` to the three product cases, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-24.
