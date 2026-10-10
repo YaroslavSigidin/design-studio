@@ -234,3 +234,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `node scripts/build-seo.mjs`, `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs`, `node --check assets/js/case-page.js` and `git diff --check` passed; local desktop and 390 px browser checks found one H1, one initialized attributed form, no horizontal overflow and no console errors.
 - Publication: deployed in commit `cec6204`; production returns HTTP 200 with the intended title, canonical, Service/FAQ schema, Paradam proof and attributed form. The case exposes both the contextual service link and direct request CTA, and the full production verifier passed.
 - Metric: non-branded impressions and clicks for internet-store development queries, transitions between the landing page and Paradam case, and confirmed delivered leads with source `SEO — интернет-магазин` and `traffic_channel=organic_search`. First evaluation: 2026-10-24.
+
+## 2026-10-10 — UX audit landing page
+
+- Barrier: two detailed articles answer informational UX-audit questions and the portfolio proves complex product work, but no commercial page explains the audit deliverable or provides a separately attributed path for buyers searching for a UX audit service.
+- Hypothesis: a dedicated `/ux-audit` offer with explicit scope, deliverables, relevant product proof and its own form source will bridge informational demand and a lower-friction commercial first step.
+- Change: added `/ux-audit` in the established editorial offer-page visual system, with unique audit-specific copy, Service and FAQ schema, three relevant product cases, a source-specific lead form, a services-hub link and a sitemap entry. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local desktop and 390 px browser checks found one H1, three proof links, one initialized attributed form, no horizontal overflow and no console errors.
+- Publication: pending.
+- Metric: non-branded impressions and clicks for UX-audit queries, transitions from `/ux-audit` to the three product cases, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-24.
