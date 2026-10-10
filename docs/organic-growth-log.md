@@ -208,3 +208,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: the static generator rebuilt all 31 cases; `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. An additional content audit checked 119 chapters for sequence length, distinct meaningful headings and substantive text; rendered VISI FLOW has zero utility labels and no console errors.
 - Publication: not deployed pending owner approval.
 - Metric: scroll depth through “История проекта”, transitions from case pages to matching service pages, and attributed request submissions. First evaluation after publication: 2026-10-24.
+## 2026-10-10 — direct attributed form on the services hub
+
+- Barrier: `/services` collects commercial visitors and exposes nine service routes, but its only conversion action sent undecided users back to the homepage, adding an avoidable page transition before they could describe the project.
+- Hypothesis: placing the existing verified lead form directly on the services hub will shorten the service-discovery-to-request path and preserve a distinct source for confirmed organic attribution.
+- Change: replaced the homepage-link CTA on `/services` with the shared accessible lead form, source `SEO — каталог услуг`, service `Подбор услуги`, privacy consent and the existing confirmed-delivery scripts. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local browser verification found one initialized attributed form, both honeypot fields and no console errors. No test lead was sent.
+- Publication: pending commit and deploy.
+- Metric: confirmed delivered leads with source `SEO — каталог услуг`, separated by `traffic_channel=organic_search`; supporting indicator is form engagement on `/services`. First evaluation: 2026-10-24.

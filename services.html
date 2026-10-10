@@ -78,12 +78,21 @@
 
       <section class="offer-section offer-section--dark">
         <div class="offer-shell offer-form-wrap">
-          <div><p class="offer-kicker">Следующий шаг</p><h2>Обсудить задачу</h2><p class="offer-form-copy">Если подходящего раздела нет, расскажите о проекте на главной странице — предложим формат и план работ.</p></div>
-          <div><a class="offer-button offer-button--accent" href="./index.html#contacts">Перейти к заявке</a></div>
+          <div><p class="offer-kicker">Следующий шаг</p><h2>Обсудить задачу</h2><p class="offer-form-copy">Опишите проект в двух словах. Предложим подходящий формат, состав работ и следующий шаг без обязательств и навязчивых звонков.</p></div>
+          <form class="offer-form studio-discuss__form" data-lead-form data-lead-source="SEO — каталог услуг" data-service="Подбор услуги">
+            <div class="offer-form__row"><label><span>Имя</span><input name="name" autocomplete="name" required /></label><label><span>Телефон или мессенджер</span><input name="contact" autocomplete="email" required /></label></div>
+            <label><span>Коротко о задаче</span><textarea name="comment" placeholder="Что нужно сделать и когда планируете начать"></textarea></label>
+            <label class="offer-form__privacy"><input type="checkbox" name="privacy" value="1" checked required /><span>Согласен с <a href="./privacy">политикой конфиденциальности</a></span></label>
+            <button class="offer-button offer-button--accent" type="submit">Получить рекомендацию</button>
+          </form>
         </div>
       </section>
     </main>
 
     <footer class="offer-footer"><div class="offer-shell offer-footer__inner"><span>© 2026 Согласовано</span><span><a href="./insights">Журнал</a> · <a href="./privacy">Конфиденциальность</a></span></div></footer>
+    <script src="./assets/js/config.js?v=20260722-leads7d" defer></script>
+    <script src="./assets/js/a11y.js?v=20260718-a11y" defer></script>
+    <script src="./assets/js/analytics.js?v=20260723-ab1" defer></script>
+    <script src="./assets/js/contact.js?v=20260723-ab1" defer></script>
   </body>
 </html>
