@@ -216,3 +216,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local browser verification found one initialized attributed form, both honeypot fields and no console errors. No test lead was sent.
 - Publication: deployed in commit `b675cc3`; production exposes the attributed form and delivery scripts on `/services`, and the full production verifier passed.
 - Metric: confirmed delivered leads with source `SEO — каталог услуг`, separated by `traffic_channel=organic_search`; supporting indicator is form engagement on `/services`. First evaluation: 2026-10-24.
+
+## 2026-10-10 — branding and identity landing page
+
+- Barrier: the studio offers branding and has three relevant identity cases, but no commercial page answers the distinct buyer intent `разработка фирменного стиля / создание айдентики` or connects that intent to proof and an attributed request form.
+- Hypothesis: a focused branding page with clear deliverables, an honest process, relevant cases and a separate lead source will create a shorter query-to-proof-to-request path than the generic services catalogue.
+- Change: added `/branding-design` in the established editorial offer-page visual system, with unique commercial copy, Service and FAQ schema, PAZL KOD, IT SCHOOL and ЗАОЗЕРНАЯ proof, a source-specific lead form, a services-hub link and a sitemap entry. The homepage was not changed.
+- Verification: pending local checks and production publication.
+- Publication: pending.
+- Metric: non-branded impressions and clicks for branding and identity queries, transitions from `/branding-design` to the three proof cases, and confirmed delivered leads with source `SEO — брендинг и айдентика` and `traffic_channel=organic_search`. First evaluation: 2026-10-24.
