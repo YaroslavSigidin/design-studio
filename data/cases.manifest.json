@@ -1957,6 +1957,12 @@
       "studioCaseUrl": "./case-paradam",
       "legacyCaseUrl": "/case-paradam",
       "hasCaseStudy": true,
+      "seoTitle": "Интернет-магазин бренда — кейс Paradam | Согласовано",
+      "serviceLink": {
+        "href": "./ecommerce-website-development#request",
+        "label": "Обсудить интернет-магазин",
+        "contextLabel": "создания интернет-магазинов"
+      },
       "study": {
         "title": "Paradam",
         "subtitle": "E-commerce проект",

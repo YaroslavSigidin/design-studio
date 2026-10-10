@@ -225,3 +225,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local desktop and 390 px browser checks found one H1, one initialized attributed form, no horizontal overflow and no console errors. The production verifier also passed.
 - Publication: deployed in commit `fbcde0f`; production returns HTTP 200 with the intended title, canonical, Service/FAQ schema, three proof links and attributed form.
 - Metric: non-branded impressions and clicks for branding and identity queries, transitions from `/branding-design` to the three proof cases, and confirmed delivered leads with source `SEO — брендинг и айдентика` and `traffic_channel=organic_search`. First evaluation: 2026-10-24.
+
+## 2026-10-10 — e-commerce website landing page
+
+- Barrier: the portfolio contains a complete Paradam e-commerce case, but no commercial page answers the buyer intent `создание интернет-магазина под ключ` or connects catalogue, checkout and integration requirements to proof and a separately attributed request.
+- Hypothesis: a dedicated e-commerce page connected in both directions with the Paradam case will create a clearer query-to-proof-to-request path than the generic landing-page offer.
+- Change: added `/ecommerce-website-development` in the established editorial offer-page visual system, with unique e-commerce copy, Service and FAQ schema, Paradam proof, a source-specific lead form, a services-hub link, a durable case-to-service path and a sitemap entry. The homepage was not changed.
+- Verification: `node scripts/build-seo.mjs`, `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs`, `node --check assets/js/case-page.js` and `git diff --check` passed; local desktop and 390 px browser checks found one H1, one initialized attributed form, no horizontal overflow and no console errors.
+- Publication: pending.
+- Metric: non-branded impressions and clicks for internet-store development queries, transitions between the landing page and Paradam case, and confirmed delivered leads with source `SEO — интернет-магазин` and `traffic_channel=organic_search`. First evaluation: 2026-10-24.
