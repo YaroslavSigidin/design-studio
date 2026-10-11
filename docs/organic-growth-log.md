@@ -243,3 +243,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local desktop and 390 px browser checks found one H1, three proof links, one initialized attributed form, no horizontal overflow and no console errors.
 - Publication: deployed in commit `98f5b47`; production returns HTTP 200 with the intended title, canonical, Service/FAQ schema, three proof links and attributed form, and the full production verifier passed.
 - Metric: non-branded impressions and clicks for UX-audit queries, transitions from `/ux-audit` to the three product cases, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-24.
+
+## 2026-10-11 — design system development landing page
+
+- Barrier: the site has two detailed design-system articles and several product cases with component-system work, but no commercial page answers the buyer intent `разработка дизайн-системы` or explains scope, handoff and a measurable request path.
+- Hypothesis: a dedicated design-system offer with clear deliverables, truthful product proof and its own form source will connect existing topical authority to a high-intent B2B service.
+- Change: added `/design-system-development` in the established editorial offer-page visual system, with unique service copy, Service and FAQ schema, Octoclick, VISI FLOW and MIROX proof, a source-specific lead form, a services-hub link and a sitemap entry. The homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local desktop and 390 px browser checks found one H1, three proof links, one initialized attributed form, no horizontal overflow and no console errors.
+- Publication: pending.
+- Metric: non-branded impressions and clicks for design-system development queries, transitions from `/design-system-development` to the three product cases, and confirmed delivered leads with source `SEO — дизайн-система` and `traffic_channel=organic_search`. First evaluation: 2026-10-25.
