@@ -8534,11 +8534,16 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
     background-image: url("../images/ui/mobile-composer-panel-attached.svg");
   }
 
+  .hero-page .hero-search-input-wrap,
+  .hero-page .hero-search-input-wrap.has-attachments,
   .hero-page .hero-search-input-wrap:focus-within {
-    border-color: rgba(92, 109, 132, 0.22);
+    border: 0;
     outline: 0;
-    background: #fff;
     box-shadow: none;
+  }
+
+  .hero-page .hero-search-input-wrap:focus-within {
+    background: #fff;
   }
 
   .hero-page .hero-search-submit {
