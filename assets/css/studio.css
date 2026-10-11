@@ -7172,13 +7172,13 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
     padding: 9px 11px 8px;
     border: 0;
     border-radius: 0;
-    background: url("../images/ui/mobile-composer-panel.svg") center / 100% 100% no-repeat;
+    background: url("../images/ui/mobile-composer-panel.svg?v=20261011-transparent") center / 100% 100% no-repeat;
     box-shadow: none;
   }
 
   .hero-page .hero-search:has(.hero-search-input-wrap.has-attachments) {
     min-height: 168px;
-    background-image: url("../images/ui/mobile-composer-panel-attached.svg");
+    background-image: url("../images/ui/mobile-composer-panel-attached.svg?v=20261011-transparent");
   }
 
   .hero-page .hero-search-input-wrap,
@@ -8525,13 +8525,13 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
     padding: 9px 11px 8px;
     border: 0;
     border-radius: 0;
-    background: url("../images/ui/mobile-composer-panel.svg") center / 100% 100% no-repeat;
+    background: url("../images/ui/mobile-composer-panel.svg?v=20261011-transparent") center / 100% 100% no-repeat;
     box-shadow: none;
   }
 
   .hero-page .hero-search:has(.hero-search-input-wrap.has-attachments) {
     min-height: 168px;
-    background-image: url("../images/ui/mobile-composer-panel-attached.svg");
+    background-image: url("../images/ui/mobile-composer-panel-attached.svg?v=20261011-transparent");
   }
 
   .hero-page .hero-search-input-wrap,
