@@ -7198,11 +7198,12 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
   }
 
   .hero-page .hero-search-submit {
-    width: 41px;
-    min-width: 41px;
-    height: 41px;
-    min-height: 41px;
-    background: url("../images/ui/mobile-send-button.svg") center / contain no-repeat;
+    width: 58px;
+    min-width: 58px;
+    height: 59px;
+    min-height: 59px;
+    align-self: flex-start;
+    background: url("../images/ui/mobile-send-cursor.svg?v=20261011-kurs2") center / contain no-repeat;
   }
 
   .hero-page .hero-search-submit.is-empty {
@@ -8543,14 +8544,19 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
     box-shadow: none;
   }
 
+  .hero-page .hero-search-input-row {
+    align-items: flex-start;
+  }
+
   .hero-page .hero-search-submit {
-    width: 41px;
-    min-width: 41px;
-    height: 41px;
-    min-height: 41px;
+    width: 58px;
+    min-width: 58px;
+    height: 59px;
+    min-height: 59px;
+    align-self: flex-start;
     border: 0;
     border-radius: 0;
-    background: url("../images/ui/mobile-send-button.svg") center / contain no-repeat;
+    background: url("../images/ui/mobile-send-cursor.svg?v=20261011-kurs2") center / contain no-repeat;
   }
 
   .hero-page .hero-search-submit.is-empty {
