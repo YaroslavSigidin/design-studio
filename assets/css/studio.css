@@ -8539,11 +8539,8 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
   .hero-page .hero-search-input-wrap:focus-within {
     border: 0;
     outline: 0;
+    background: transparent;
     box-shadow: none;
-  }
-
-  .hero-page .hero-search-input-wrap:focus-within {
-    background: #fff;
   }
 
   .hero-page .hero-search-submit {
