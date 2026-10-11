@@ -26,13 +26,6 @@ const initSiteMotion = () => {
       delayStep: 90,
       desktopOnly: true
     },
-    {
-      sel: ".studio-reasons__path",
-      variant: "reasons-path",
-      delayStep: 0,
-      delayStart: 0,
-      desktopOnly: true
-    },
     { sel: ".studio-faq__item", variant: "slide-up", delayStep: 55 },
     { sel: ".studio-footer__card", variant: "fade-up", delayStep: 0 },
     { sel: ".studio-footer__bottom", variant: "fade-up", delayStep: 0 },

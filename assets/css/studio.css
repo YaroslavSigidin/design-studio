@@ -8731,11 +8731,14 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
 .studio-reasons__path {
   position: absolute;
   inset: 20px 24px 0;
-  z-index: -1;
+  z-index: 0;
   display: block;
   width: calc(100% - 48px);
   height: calc(100% - 20px);
   object-fit: fill;
+  opacity: 1;
+  transform: none;
+  clip-path: none;
   pointer-events: none;
   user-select: none;
 }
