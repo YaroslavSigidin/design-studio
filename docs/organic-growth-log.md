@@ -304,5 +304,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a contextual service link and a design-system-specific CTA will move teams that need rules, documentation and rollout support toward relevant proof and the separately attributed request form.
 - Change: connected the article conclusion to `/design-system-development`, replaced the generic final CTA with a service-specific next step, and updated the truthful `dateModified` and sitemap modification date. The original article form remains available below, and the homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the article retains valid BlogPosting schema, exposes both design-system links in rendered content and the sitemap modification date matches the update.
-- Publication: pending.
+- Publication: deployed in commit `a4f6f1e`; production returns HTTP 200 with the updated BlogPosting date and both links to `/design-system-development`, the target page remains available, and the full production verifier passed.
 - Metric: transitions from `/blog/figma-design-system-from-zero/` to `/design-system-development`, subsequent case views, and confirmed delivered leads with source `SEO — дизайн-система` and `traffic_channel=organic_search`. First evaluation: 2026-10-27.
