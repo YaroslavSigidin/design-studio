@@ -279,3 +279,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local browser checks found both e-commerce service links, the updated BlogPosting date, visible mobile links and no console errors.
 - Publication: deployed in commit `a95bef9`; production returns HTTP 200 with the updated BlogPosting date and both links to `/ecommerce-website-development`, the target page also returns HTTP 200, and the full production verifier passed.
 - Metric: transitions from `/blog/cjm-ecommerce-guide/` to `/ecommerce-website-development`, subsequent Paradam case views, and confirmed delivered leads with source `SEO — интернет-магазин` and `traffic_channel=organic_search`. First evaluation: 2026-10-26.
+
+## 2026-10-12 — UI-kit article to design-system service path
+
+- Barrier: `/blog/ui-kit-vs-design-system-small-product/` helps product teams choose between a UI-kit and a design system, but its only next step was a generic audit request and it did not link to the matching commercial design-system offer.
+- Hypothesis: a contextual service link and a specific CTA to `/design-system-development` will move readers whose UI-kit has outgrown ad hoc rules toward relevant proof and the separately attributed service form.
+- Change: linked the practical recommendation to the design-system service, replaced the generic final CTA with a design-system-specific next step, and updated the truthful `dateModified` and sitemap modification date. The original article form remains available below, and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the article retains valid BlogPosting schema, exposes both design-system links in rendered content and the sitemap modification date matches the update.
+- Publication: pending.
+- Metric: transitions from `/blog/ui-kit-vs-design-system-small-product/` to `/design-system-development`, subsequent case views, and confirmed delivered leads with source `SEO — дизайн-система` and `traffic_channel=organic_search`. First evaluation: 2026-10-26.
