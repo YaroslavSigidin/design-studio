@@ -252,3 +252,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local desktop and 390 px browser checks found one H1, three proof links, one initialized attributed form, no horizontal overflow and no console errors.
 - Publication: deployed in commit `5774b1b`; production returns HTTP 200 with the intended title, canonical, Service/FAQ schema, three proof links and attributed form. The full production verifier passed after one transient timeout on the `www` redirect check.
 - Metric: non-branded impressions and clicks for design-system development queries, transitions from `/design-system-development` to the three product cases, and confirmed delivered leads with source `SEO — дизайн-система` and `traffic_channel=organic_search`. First evaluation: 2026-10-25.
+
+## 2026-10-12 — design-system article to commercial service path
+
+- Barrier: `/blog/design-system-scale/` is the site's deepest informational resource on design systems, but it ended in a generic audit request and did not link to the matching commercial design-system offer.
+- Hypothesis: a contextual editorial link and a specific end-of-article action to `/design-system-development` will transfer topical relevance and move qualified readers toward proof and the attributed service form.
+- Change: linked the article conclusion to the design-system service, replaced its generic final CTA with the specific commercial next step, updated the truthful `dateModified` and sitemap modification date. The article's original general request form remains available below, and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local browser checks found both service links, the updated BlogPosting date, a visible mobile CTA and no console errors.
+- Publication: pending.
+- Metric: transitions from `/blog/design-system-scale/` to `/design-system-development`, subsequent case views, and confirmed delivered leads with source `SEO — дизайн-система` and `traffic_channel=organic_search`. First evaluation: 2026-10-26.
