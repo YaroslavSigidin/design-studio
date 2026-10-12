@@ -277,5 +277,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a contextual service link and a specific CTA to `/ecommerce-website-development` will move commercially relevant readers from journey planning to the Paradam proof and attributed store-development form.
 - Change: linked the CJM article conclusion to the e-commerce service, replaced its generic final CTA with a store-specific next step, updated the truthful `dateModified` and sitemap modification date. The original article form remains available below, and the homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local browser checks found both e-commerce service links, the updated BlogPosting date, visible mobile links and no console errors.
-- Publication: pending.
+- Publication: deployed in commit `a95bef9`; production returns HTTP 200 with the updated BlogPosting date and both links to `/ecommerce-website-development`, the target page also returns HTTP 200, and the full production verifier passed.
 - Metric: transitions from `/blog/cjm-ecommerce-guide/` to `/ecommerce-website-development`, subsequent Paradam case views, and confirmed delivered leads with source `SEO — интернет-магазин` and `traffic_channel=organic_search`. First evaluation: 2026-10-26.
