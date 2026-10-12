@@ -295,5 +295,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a contextual link and an audit-specific CTA to `/ux-audit` will move readers with active conversion-risk concerns toward relevant proof and the separately attributed request form.
 - Change: connected the article conclusion to the UX-audit service, replaced the generic final CTA with an audit-specific next step, and updated the truthful `dateModified` and sitemap modification date. The original article form remains available below, and the homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the article retains valid BlogPosting schema, exposes both UX-audit links in rendered content and the sitemap modification date matches the update.
-- Publication: pending.
+- Publication: deployed in commit `17312e8`; production returns HTTP 200 with the updated BlogPosting date and both links to `/ux-audit`, the target page remains available, and the full production verifier passed.
 - Metric: transitions from `/blog/nielsen-heuristics-landing-audit/` to `/ux-audit`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-26.
