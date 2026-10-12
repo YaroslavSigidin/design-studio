@@ -261,3 +261,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local browser checks found both service links, the updated BlogPosting date, a visible mobile CTA and no console errors.
 - Publication: deployed in commit `93a98b7`; production returns HTTP 200 with the updated BlogPosting date and both links to `/design-system-development`, the target page also returns HTTP 200, and the full production verifier passed.
 - Metric: transitions from `/blog/design-system-scale/` to `/design-system-development`, subsequent case views, and confirmed delivered leads with source `SEO — дизайн-система` and `traffic_channel=organic_search`. First evaluation: 2026-10-26.
+
+## 2026-10-12 — UX-audit checklist to commercial service path
+
+- Barrier: `/blog/ux-audit-checklist-60/` directly answers the informational query around self-service UX audits, but its conclusion offered only a generic task discussion and did not link to the matching commercial UX-audit page.
+- Hypothesis: a contextual service link and a specific CTA to `/ux-audit` will move readers who have outgrown the checklist toward relevant proof and the separately attributed audit form.
+- Change: linked the checklist conclusion to the UX-audit service, replaced its generic final CTA with the specific audit next step, updated the truthful `dateModified` and sitemap modification date. The original article form remains available below, and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local browser checks found both UX-audit links, the updated BlogPosting date, visible mobile links and no console errors.
+- Publication: pending.
+- Metric: transitions from `/blog/ux-audit-checklist-60/` to `/ux-audit`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-26.
