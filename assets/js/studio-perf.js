@@ -13,10 +13,16 @@
 
   const resolveProfile = () => {
     const cores = readCores();
-    if (mq.reduced.matches || readSaveData() || (cores !== null && cores <= 2)) {
+    if (
+      mq.reduced.matches ||
+      readSaveData() ||
+      mq.coarse.matches ||
+      mq.narrow.matches ||
+      (cores !== null && cores <= 2)
+    ) {
       return "lite";
     }
-    if (mq.coarse.matches || mq.narrow.matches || (cores !== null && cores <= 4)) {
+    if (cores !== null && cores <= 4) {
       return "balanced";
     }
     return "full";

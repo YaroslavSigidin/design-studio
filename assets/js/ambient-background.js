@@ -1,4 +1,6 @@
 (() => {
+  if (window.matchMedia("(max-width: 1100px), (pointer: coarse)").matches) return;
+
   const canvas = document.querySelector("[data-mesh-shader]");
   if (!(canvas instanceof HTMLCanvasElement)) return;
   const gl = canvas.getContext("webgl", {

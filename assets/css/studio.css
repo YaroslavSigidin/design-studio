@@ -6151,6 +6151,29 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
 }
 
 @media (max-width: 1100px) {
+  .mesh-shader-background {
+    display: none;
+  }
+
+  .studio-reasons,
+  .studio-services,
+  .studio-services-ai {
+    content-visibility: auto;
+    contain: layout style paint;
+  }
+
+  .studio-reasons {
+    contain-intrinsic-size: 1px 3600px;
+  }
+
+  .studio-services {
+    contain-intrinsic-size: 1px 720px;
+  }
+
+  .studio-services-ai {
+    contain-intrinsic-size: 1px 520px;
+  }
+
   .hero-layout {
     padding: 76px clamp(24px, 5vw, 48px) 0;
   }
