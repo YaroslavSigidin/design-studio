@@ -331,5 +331,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: durable case-specific titles plus contextual and final links back to `/landing-page#request` will strengthen landing-development relevance and shorten the proof-to-request path.
 - Change: added truthful landing-specific SEO titles and durable service links for all three proof cases in the case source manifest, then refreshed their sitemap modification dates. The homepage was not changed.
 - Verification: a clean `node scripts/build-seo.mjs` regeneration followed by `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs`, `node --check assets/js/case-page.js` and `git diff --check` passed. All three static cases expose the contextual service link and final CTA; rendered Бокстар confirms both links and the landing-specific title.
-- Publication: pending.
+- Publication: deployed in commit `5ae1dce`; all three production cases return HTTP 200 with the contextual `/landing-page` link and final `/landing-page#request` CTA, and the full production verifier passed.
 - Metric: transitions from the three proof cases to `/landing-page#request` and confirmed delivered leads with source `SEO — лендинг` and `traffic_channel=organic_search`. First evaluation: 2026-10-27.
