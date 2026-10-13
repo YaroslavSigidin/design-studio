@@ -10,7 +10,7 @@
 }
 
 .studio-results__inner {
-  width: min(1000px, calc(100% - 48px));
+  width: calc(100% - 48px);
   margin-inline: auto;
 }
 
