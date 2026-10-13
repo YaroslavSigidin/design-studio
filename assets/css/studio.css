@@ -2625,35 +2625,6 @@ body::after {
   white-space: nowrap;
 }
 
-@media (min-width: 641px) {
-  .hero-search-submit {
-    width: auto;
-    min-width: 226px;
-    padding-inline: 22px;
-    border: 1px solid #111;
-    border-radius: 14px;
-    background: #111;
-    background-image: none !important;
-  }
-
-  .hero-search-submit.is-empty,
-  html[data-theme="dark"] .hero-search-submit.is-empty,
-  .theme-dark .hero-search-submit.is-empty {
-    background: #fff;
-    background-image: none !important;
-    color: #111;
-  }
-
-  .hero-search-submit__label {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    clip: auto;
-  }
-}
-
 html[data-theme="dark"] .hero-search-submit,
 .theme-dark .hero-search-submit,
 .hero-search-submit.hero-search-submit--light {
