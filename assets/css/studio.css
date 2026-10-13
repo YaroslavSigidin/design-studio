@@ -81,6 +81,16 @@ a.studio-result-card {
   letter-spacing: -0.055em;
 }
 
+.studio-result-card__task {
+  max-width: 720px;
+  margin: 0 0 14px;
+  color: #4f5358;
+  font-size: clamp(15px, 1.35vw, 19px);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
 .studio-result-card__evidence {
   margin: 18px 0 0;
   color: #777b80;
@@ -159,6 +169,11 @@ a.studio-result-card {
     line-height: 1.06;
     letter-spacing: -0.045em;
     text-wrap: balance;
+  }
+
+  .studio-result-card__task {
+    margin-bottom: 10px;
+    font-size: 14px;
   }
 
   .studio-result-card__media {
@@ -2608,6 +2623,35 @@ body::after {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+}
+
+@media (min-width: 641px) {
+  .hero-search-submit {
+    width: auto;
+    min-width: 226px;
+    padding-inline: 22px;
+    border: 1px solid #111;
+    border-radius: 14px;
+    background: #111;
+    background-image: none !important;
+  }
+
+  .hero-search-submit.is-empty,
+  html[data-theme="dark"] .hero-search-submit.is-empty,
+  .theme-dark .hero-search-submit.is-empty {
+    background: #fff;
+    background-image: none !important;
+    color: #111;
+  }
+
+  .hero-search-submit__label {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+  }
 }
 
 html[data-theme="dark"] .hero-search-submit,

@@ -134,7 +134,7 @@ const serviceCardTemplate = service => {
         data-open-brief-modal
         data-service="${window.__studioEscapeHtml(service.title)}"
       >
-        <span>${window.__studioEscapeHtml(service.ctaLabel || "Заказать")}</span>
+        <span>${window.__studioEscapeHtml(service.ctaLabel || "Обсудить проект")}</span>
         <img class="studio-service-order__arrow" src="./assets/images/services/order-arrow.svg" alt="" aria-hidden="true" />
       </button>
     </article>
