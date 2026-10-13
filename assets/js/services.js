@@ -122,11 +122,7 @@ const serviceCardTemplate = service => {
         <div class="studio-service-artwork" aria-hidden="true">
           <img src="${window.__studioEscapeHtml(service.artwork)}" alt="" loading="eager" decoding="async" />
         </div>
-        <h3 class="studio-service-title">${
-          service.url
-            ? `<a href="${window.__studioEscapeHtml(service.url)}">${window.__studioEscapeHtml(service.title)}</a>`
-            : window.__studioEscapeHtml(service.title)
-        }</h3>
+        <h3 class="studio-service-title">${window.__studioEscapeHtml(service.title)}</h3>
         <div class="studio-service-prices">
           <p class="studio-service-price">${priceMarkup}</p>
         </div>
