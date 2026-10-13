@@ -2288,6 +2288,12 @@ body::after {
   transform: translateY(-1px);
 }
 
+.hero-partners__item--logo img {
+  display: block;
+  width: auto;
+  height: 18px;
+}
+
 .studio-stats {
   position: relative;
   z-index: 1;
@@ -6653,6 +6659,10 @@ html.studio-perf-lite .studio-services-carousel.is-arc .studio-services-carousel
 
   .hero-partners__list {
     gap: 14px 28px;
+  }
+
+  .hero-partners__item--logo img {
+    height: 16px;
   }
 
   .studio-stats {
