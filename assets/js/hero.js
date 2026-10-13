@@ -450,12 +450,12 @@ const initHeroSearch = () => {
       window.setTimeout(() => {
         finalForm.reset();
         const privacyReset = finalForm.querySelector('input[name="privacy"]');
-        if (privacyReset instanceof HTMLInputElement) privacyReset.checked = true;
+        if (privacyReset instanceof HTMLInputElement) privacyReset.checked = false;
         closeFinalModal();
         activeComposer.resetForm();
         activeComposer = null;
         if (finalSubmitButton) {
-          finalSubmitButton.textContent = "Отправить";
+          finalSubmitButton.textContent = "Получить оценку проекта";
           finalSubmitButton.disabled = false;
         }
       }, 1200);
@@ -463,7 +463,7 @@ const initHeroSearch = () => {
     }
 
     if (finalSubmitButton) {
-      finalSubmitButton.textContent = "Отправить";
+      finalSubmitButton.textContent = "Получить оценку проекта";
       finalSubmitButton.disabled = false;
     }
     const recoveryPayload = {

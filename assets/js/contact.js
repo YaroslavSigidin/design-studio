@@ -716,10 +716,10 @@ const initStudioContacts = () => {
       if (result.confirmed && result.ok) {
         form.reset();
         const privacyReset = form.querySelector('input[name="privacy"]');
-        if (privacyReset instanceof HTMLInputElement) privacyReset.checked = true;
+        if (privacyReset instanceof HTMLInputElement) privacyReset.checked = false;
         setFormStatus(
           form,
-          "Заявка отправлена. Мы изучим задачу и свяжемся с вами.",
+          "Заявка пришла. Ответим в течение рабочего дня и предложим следующий шаг.",
           "success"
         );
         if (submitButton instanceof HTMLButtonElement) submitButton.textContent = "Отправлено";

@@ -3,7 +3,9 @@ const initBriefModal = () => {
   const form = document.getElementById("briefForm");
   const modalTitle = document.getElementById("briefModalTitle");
   const phoneInput = form?.querySelector('input[name="phone"]');
+  const contactInput = form?.querySelector('input[name="contact"]');
   const nameInput = form?.querySelector('input[name="name"]');
+  const commentInput = form?.querySelector('textarea[name="comment"]');
   const submitButton = form?.querySelector('button[type="submit"]');
   const successPanel = modal?.querySelector("[data-brief-success]");
   const successAction = successPanel?.querySelector("[data-brief-success-action]");
@@ -57,10 +59,10 @@ const initBriefModal = () => {
     if (successPanel) successPanel.hidden = true;
     form.reset();
     const privacy = form.querySelector('input[name="privacy"]');
-    if (privacy instanceof HTMLInputElement) privacy.checked = true;
+    if (privacy instanceof HTMLInputElement) privacy.checked = false;
     submitButton.disabled = false;
     submitButton.classList.remove("is-sending", "is-success", "is-error");
-    submitButton.textContent = "Отправить заявку";
+    submitButton.textContent = "Получить оценку проекта";
     delete form.dataset.leadSource;
     delete form.dataset.service;
     delete form.dataset.comment;
@@ -146,7 +148,15 @@ const initBriefModal = () => {
       nameInput.focus();
       return;
     }
-    if (getPhoneDigits(phoneInput.value).length !== 11) {
+    const phoneDigits = getPhoneDigits(phoneInput.value);
+    const contact = contactInput?.value.trim() || "";
+    if (!phoneDigits && !contact) {
+      const target = contactInput || phoneInput;
+      a11y()?.setFieldError?.(target, "Укажите телефон, Telegram или email.");
+      target?.focus();
+      return;
+    }
+    if (phoneDigits && phoneDigits.length !== 11) {
       a11y()?.setFieldError?.(phoneInput, "Введите телефон полностью: +7 (___) ___-__-__.");
       phoneInput.focus();
       return;
@@ -168,7 +178,8 @@ const initBriefModal = () => {
       service: form.dataset.service || "",
       name,
       phone: phoneInput.value.trim(),
-      comment: form.dataset.comment || ""
+      contact,
+      comment: commentInput?.value.trim() || form.dataset.comment || ""
     };
     const result = await window.STUDIO_CONTACT?.submitLead(payload);
 
@@ -179,7 +190,7 @@ const initBriefModal = () => {
       modal.classList.add("is-success");
       form.hidden = true;
       if (successPanel) successPanel.hidden = false;
-      if (modalTitle) modalTitle.textContent = "Заявка отправлена";
+      if (modalTitle) modalTitle.textContent = "Заявка пришла";
       window.requestAnimationFrame(() => successAction?.focus());
       return;
     }
