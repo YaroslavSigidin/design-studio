@@ -342,3 +342,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: a clean `node scripts/build-seo.mjs` regeneration followed by `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs`, `node --check assets/js/case-page.js` and `git diff --check` passed. All three static cases expose the contextual service link and final CTA; rendered PAZL KOD confirms both links and the branding-specific title.
 - Publication: deployed in commit `2a31453`; all three production cases return HTTP 200 with the contextual `/branding-design` link and final `/branding-design#request` CTA, and the full production verifier passed.
 - Metric: transitions from the three proof cases to `/branding-design#request` and confirmed delivered leads with source `SEO — брендинг и айдентика` and `traffic_channel=organic_search`. First evaluation: 2026-10-27.
+
+## 2026-10-13 — pricing UX article quality and audit path
+
+- Barrier: `/blog/pricing-ux/` ended with more than thirty near-identical generic paragraphs, which diluted the useful answer and separated readers with an active pricing-conversion problem from the matching UX-audit service.
+- Hypothesis: replacing the duplicated conclusion with a concise validation sequence and a specific path to `/ux-audit#request` will improve content usefulness and move commercially relevant readers toward an attributed audit request.
+- Change: removed the repeated conclusion, added a concrete baseline-and-testing sequence, linked it to the UX-audit service, replaced the generic CTA with a pricing-specific audit next step, and updated the truthful `dateModified` and sitemap modification date. The article form remains available and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the duplicated tail is gone, the concise conclusion is readable, both UX-audit links resolve correctly, and the original attributed article form remains available.
+- Publication: pending.
+- Metric: transitions from `/blog/pricing-ux/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-27.
