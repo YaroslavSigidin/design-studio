@@ -1682,7 +1682,8 @@ body::after {
 }
 
 .hero-title[data-hero-wordmark] {
-  max-width: min(100%, 860px);
+  max-width: min(100%, 1120px);
+  font-size: clamp(48px, 5.1vw, 72px);
   transform-origin: center center;
   will-change: transform, opacity;
 }
