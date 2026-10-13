@@ -322,5 +322,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a contextual audit link and a form-specific CTA will move readers with active completion problems toward relevant proof and the separately attributed UX-audit request form.
 - Change: connected the article conclusion to `/ux-audit`, replaced the generic final CTA with a form-specific audit next step, and updated the truthful `dateModified` and sitemap modification date. The original article form remains available below, and the homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local rendering exposes both UX-audit links, retains valid BlogPosting schema and matches the updated sitemap date.
-- Publication: pending.
+- Publication: deployed in commit `153af35`; production returns HTTP 200 with the updated BlogPosting date and both links to `/ux-audit`, the target page remains available, and the full production verifier passed.
 - Metric: transitions from `/blog/pain-free-forms-design/` to `/ux-audit`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-27.
