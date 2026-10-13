@@ -1,14 +1,16 @@
+@import url("./internal-tokens.css");
+
 :root {
   color-scheme: light;
-  --offer-bg: #f4f6fb;
-  --offer-ink: #121722;
-  --offer-muted: #5d6677;
-  --offer-line: rgba(18, 23, 34, 0.12);
-  --offer-accent: #8fff00;
-  --offer-dark: #121722;
+  --offer-bg: var(--ds-color-bg);
+  --offer-ink: var(--ds-color-ink);
+  --offer-muted: var(--ds-color-muted);
+  --offer-line: var(--ds-color-line);
+  --offer-accent: var(--ds-color-accent);
+  --offer-dark: var(--ds-color-dark);
   --offer-card: rgba(255, 255, 255, 0.84);
-  --offer-radius: 28px;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --offer-radius: var(--ds-radius-card);
+  font-family: var(--ds-font-sans);
 }
 
 * { box-sizing: border-box; }
@@ -30,7 +32,7 @@ input,
 textarea { font: inherit; }
 
 .offer-shell {
-  width: min(1480px, calc(100% - 64px));
+  width: min(var(--ds-container-wide), calc(100% - 40px));
   margin: 0 auto;
 }
 
@@ -60,19 +62,19 @@ textarea { font: inherit; }
 .offer-nav__links a { text-decoration: none; }
 
 .offer-button {
-  min-height: 50px;
+  min-height: var(--ds-control-height);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 12px 21px;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: var(--ds-radius-control);
   background: var(--offer-dark);
   color: #fff;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition: transform var(--ds-transition), box-shadow var(--ds-transition);
 }
 
 .offer-button:hover {
