@@ -907,6 +907,12 @@
       ],
       "studioCaseUrl": "./case-solomadom",
       "legacyCaseUrl": "/case-solomadom",
+      "seoTitle": "Лендинг строительной компании — кейс SOLOMADOM | Согласовано",
+      "serviceLink": {
+        "href": "./landing-page#request",
+        "label": "Обсудить создание лендинга",
+        "contextLabel": "создания лендинга под ключ"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "SOLOMADOM",
@@ -2137,6 +2143,12 @@
       ],
       "studioCaseUrl": "./case-boxstar",
       "legacyCaseUrl": "/case-boxstar",
+      "seoTitle": "Лендинг self-storage сервиса — кейс Бокстар | Согласовано",
+      "serviceLink": {
+        "href": "./landing-page#request",
+        "label": "Обсудить создание лендинга",
+        "contextLabel": "создания лендинга под ключ"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "Бокстар",
@@ -2452,6 +2464,12 @@
       ],
       "studioCaseUrl": "./case-ggm-pro",
       "legacyCaseUrl": "/case-ggm-pro",
+      "seoTitle": "Лендинг агентства для маркетплейсов — кейс ggm.pro | Согласовано",
+      "serviceLink": {
+        "href": "./landing-page#request",
+        "label": "Обсудить создание лендинга",
+        "contextLabel": "создания лендинга под ключ"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "ggm.pro",
