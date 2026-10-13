@@ -1749,6 +1749,12 @@
       ],
       "studioCaseUrl": "./case-logo-it-school",
       "legacyCaseUrl": "/case-logo-it-school",
+      "seoTitle": "Логотип и айдентика IT-школы — кейс IT SCHOOL | Согласовано",
+      "serviceLink": {
+        "href": "./branding-design#request",
+        "label": "Обсудить брендинг и айдентику",
+        "contextLabel": "разработки брендинга и айдентики"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "IT SCHOOL",
@@ -1817,6 +1823,12 @@
       ],
       "studioCaseUrl": "./case-logo-pazl-kod",
       "legacyCaseUrl": "/case-logo-pazl-kod",
+      "seoTitle": "Логотип и бренд-гайд образовательного проекта — кейс PAZL KOD | Согласовано",
+      "serviceLink": {
+        "href": "./branding-design#request",
+        "label": "Обсудить брендинг и айдентику",
+        "contextLabel": "разработки брендинга и айдентики"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "PAZL KOD",
@@ -1887,6 +1899,12 @@
       ],
       "studioCaseUrl": "./case-zaozernaya",
       "legacyCaseUrl": "/case-zaozernaya",
+      "seoTitle": "Логотип видеопродакшена — кейс ЗАОЗЕРНАЯ | Согласовано",
+      "serviceLink": {
+        "href": "./branding-design#request",
+        "label": "Обсудить брендинг и айдентику",
+        "contextLabel": "разработки брендинга и айдентики"
+      },
       "hasCaseStudy": true,
       "study": {
         "title": "ЗАОЗЕРНАЯ",

@@ -333,3 +333,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: a clean `node scripts/build-seo.mjs` regeneration followed by `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs`, `node --check assets/js/case-page.js` and `git diff --check` passed. All three static cases expose the contextual service link and final CTA; rendered Бокстар confirms both links and the landing-specific title.
 - Publication: deployed in commit `5ae1dce`; all three production cases return HTTP 200 with the contextual `/landing-page` link and final `/landing-page#request` CTA, and the full production verifier passed.
 - Metric: transitions from the three proof cases to `/landing-page#request` and confirmed delivered leads with source `SEO — лендинг` and `traffic_channel=organic_search`. First evaluation: 2026-10-27.
+
+## 2026-10-13 — branding proof to service path
+
+- Barrier: `/branding-design` presents IT SCHOOL, PAZL KOD and ЗАОЗЕРНАЯ as relevant identity proof, but all three case pages ended with a generic brief and did not return readers to the attributed branding service form.
+- Hypothesis: durable case-specific titles plus contextual and final links back to `/branding-design#request` will strengthen branding relevance and shorten the proof-to-request path.
+- Change: added truthful branding-specific SEO titles and durable service links for all three proof cases in the case source manifest, then refreshed their sitemap modification dates. The homepage was not changed.
+- Verification: a clean `node scripts/build-seo.mjs` regeneration followed by `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs`, `node --check assets/js/case-page.js` and `git diff --check` passed. All three static cases expose the contextual service link and final CTA; rendered PAZL KOD confirms both links and the branding-specific title.
+- Publication: pending.
+- Metric: transitions from the three proof cases to `/branding-design#request` and confirmed delivered leads with source `SEO — брендинг и айдентика` and `traffic_channel=organic_search`. First evaluation: 2026-10-27.
