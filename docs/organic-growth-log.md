@@ -315,3 +315,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; the article retains valid BlogPosting schema, exposes both UX-audit links in rendered content and the sitemap modification date matches the update.
 - Publication: deployed in commit `4235c83`; production returns HTTP 200 with the updated BlogPosting date and both links to `/ux-audit`, the target page remains available, and the full production verifier passed.
 - Metric: transitions from `/blog/ux-audit/` to `/ux-audit`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-27.
+
+## 2026-10-13 — form-UX article to commercial audit path
+
+- Barrier: `/blog/pain-free-forms-design/` addresses form abandonment and validation problems, but its only next step was a generic discussion form and it did not connect readers to the UX-audit service that diagnoses conversion barriers.
+- Hypothesis: a contextual audit link and a form-specific CTA will move readers with active completion problems toward relevant proof and the separately attributed UX-audit request form.
+- Change: connected the article conclusion to `/ux-audit`, replaced the generic final CTA with a form-specific audit next step, and updated the truthful `dateModified` and sitemap modification date. The original article form remains available below, and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed; local rendering exposes both UX-audit links, retains valid BlogPosting schema and matches the updated sitemap date.
+- Publication: pending.
+- Metric: transitions from `/blog/pain-free-forms-design/` to `/ux-audit`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-27.
