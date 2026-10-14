@@ -376,5 +376,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a contextual audit link and activation-specific CTA to `/ux-audit#request` will move readers with an active funnel problem toward relevant proof and the separately attributed audit form.
 - Change: connected the article conclusion to the UX-audit service, replaced the generic CTA with an activation-specific next step, and updated the truthful `dateModified` and sitemap modification date. The original article form remains available and the homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms both UX-audit links resolve correctly, the activation-specific CTA is readable, and the original attributed article form remains available.
-- Publication: pending.
+- Publication: deployed in commit `92da2cf`; production returns HTTP 200 with both UX-audit links and the updated BlogPosting date, and the full production verifier passed.
 - Metric: transitions from `/blog/activation-metrics/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-28.
