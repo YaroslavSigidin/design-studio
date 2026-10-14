@@ -360,3 +360,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the duplicated tail is gone, the end-to-end checklist is readable, both UX-audit links resolve correctly, and the original attributed article form remains available.
 - Publication: deployed in commit `3012865`; production returns HTTP 200 with the concise accessibility conclusion, both UX-audit links, updated BlogPosting date and no repeated generic paragraph, and the full production verifier passed.
 - Metric: transitions from `/blog/accessibility-checklist/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-28.
+
+## 2026-10-14 — onboarding article quality and audit path
+
+- Barrier: `/blog/ux-onboarding/` ended with more than twenty repeated generic paragraphs, diluting its answer and leaving product teams with activation drop-off without a direct path to the relevant UX-audit service.
+- Hypothesis: replacing the duplicated tail with a measurable activation sequence and a specific CTA to `/ux-audit#request` will improve usefulness and move commercially relevant readers toward an attributed audit request.
+- Change: removed the repeated conclusion, added a practical baseline-and-experiment sequence for onboarding, linked it to the UX-audit service, replaced the generic CTA with an activation-specific audit next step, and updated the truthful `dateModified` and sitemap modification date. The article form remains available and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the duplicated tail is gone, the activation sequence is readable, both UX-audit links resolve correctly, and the original attributed article form remains available.
+- Publication: pending.
+- Metric: transitions from `/blog/ux-onboarding/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-28.
