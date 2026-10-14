@@ -369,3 +369,12 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the duplicated tail is gone, the activation sequence is readable, both UX-audit links resolve correctly, and the original attributed article form remains available.
 - Publication: deployed in commit `10d6937`; production returns HTTP 200 with the concise onboarding conclusion, both UX-audit links, updated BlogPosting date and no repeated generic paragraph, and the full production verifier passed.
 - Metric: transitions from `/blog/ux-onboarding/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-28.
+
+## 2026-10-14 — activation metrics to UX-audit path
+
+- Barrier: `/blog/activation-metrics/` gives product teams a detailed activation framework, but its conclusion offered only a generic discussion form and did not connect readers with measurable drop-off to the matching UX-audit service.
+- Hypothesis: a contextual audit link and activation-specific CTA to `/ux-audit#request` will move readers with an active funnel problem toward relevant proof and the separately attributed audit form.
+- Change: connected the article conclusion to the UX-audit service, replaced the generic CTA with an activation-specific next step, and updated the truthful `dateModified` and sitemap modification date. The original article form remains available and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms both UX-audit links resolve correctly, the activation-specific CTA is readable, and the original attributed article form remains available.
+- Publication: pending.
+- Metric: transitions from `/blog/activation-metrics/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-28.
