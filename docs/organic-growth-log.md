@@ -395,3 +395,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the contextual link and final CTA resolve to the UX-audit page, the BlogPosting date is current, and the original attributed article form remains available.
 - Publication: deployed in commit `b59a16b`; production returns HTTP 200 with the updated BlogPosting date and both links to `/ux-audit`, the target page remains available, and the full production verifier passed.
 - Metric: transitions from `/blog/product-metrics/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-29.
+## 2026-10-16 — analytics article to UX-audit path
+
+- Barrier: `/blog/analytics-for-designers/` explains how conversion, drop-off and success rate reveal product friction, but did not connect a diagnosed funnel problem to the relevant UX-audit service.
+- Hypothesis: a contextual audit link will move readers with an active conversion problem toward the separately attributed UX-audit request form.
+- Change: added a funnel-specific transition from the article conclusion to `/ux-audit#request`, then updated the truthful `dateModified` and sitemap modification date. The original article form remains available, and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the funnel-specific link resolves to the UX-audit request, the article remains readable, and the original attributed form remains available.
+- Publication: pending.
+- Metric: transitions from `/blog/analytics-for-designers/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-30.
