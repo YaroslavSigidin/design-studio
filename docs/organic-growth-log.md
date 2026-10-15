@@ -393,5 +393,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a contextual audit link and a metric-specific CTA will move readers with an active product-conversion problem toward relevant proof and the separately attributed UX-audit request form.
 - Change: connected the article conclusion to `/ux-audit`, replaced the generic final CTA with a metric-specific audit next step, and updated the truthful `dateModified` and sitemap modification date. The original article form remains available below, and the homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the contextual link and final CTA resolve to the UX-audit page, the BlogPosting date is current, and the original attributed article form remains available.
-- Publication: pending.
+- Publication: deployed in commit `b59a16b`; production returns HTTP 200 with the updated BlogPosting date and both links to `/ux-audit`, the target page remains available, and the full production verifier passed.
 - Metric: transitions from `/blog/product-metrics/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-29.
