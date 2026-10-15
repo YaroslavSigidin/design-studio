@@ -387,3 +387,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms both UX-audit links resolve correctly, the business-metric-specific CTA is readable, and the original attributed article form remains available.
 - Publication: deployed in commit `c6eb470`; production returns HTTP 200 with both UX-audit links and the updated BlogPosting date, and the full production verifier passed.
 - Metric: transitions from `/blog/ux-metrics-business-impact/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-28.
+## 2026-10-15 — product metrics article to UX-audit path
+
+- Barrier: `/blog/product-metrics/` explains how to detect product friction with metrics, but ended with a generic discussion form and did not connect an unexplained metric change to the relevant UX-audit service.
+- Hypothesis: a contextual audit link and a metric-specific CTA will move readers with an active product-conversion problem toward relevant proof and the separately attributed UX-audit request form.
+- Change: connected the article conclusion to `/ux-audit`, replaced the generic final CTA with a metric-specific audit next step, and updated the truthful `dateModified` and sitemap modification date. The original article form remains available below, and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the contextual link and final CTA resolve to the UX-audit page, the BlogPosting date is current, and the original attributed article form remains available.
+- Publication: pending.
+- Metric: transitions from `/blog/product-metrics/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-29.
