@@ -401,5 +401,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a contextual audit link will move readers with an active conversion problem toward the separately attributed UX-audit request form.
 - Change: added a funnel-specific transition from the article conclusion to `/ux-audit#request`, then updated the truthful `dateModified` and sitemap modification date. The original article form remains available, and the homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the funnel-specific link resolves to the UX-audit request, the article remains readable, and the original attributed form remains available.
-- Publication: pending.
+- Publication: deployed in commit `71a593d`; production returns HTTP 200 with the contextual `/ux-audit#request` link and updated BlogPosting date, and the full production verifier passed.
 - Metric: transitions from `/blog/analytics-for-designers/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-10-30.
