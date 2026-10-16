@@ -409,5 +409,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Hypothesis: a contextual transition to `/landing-page#request` will move readers who have selected an audience and offer toward the separately attributed landing-page request form.
 - Change: added a contextual next step from the article's offer examples to the landing-page service, then updated the truthful `dateModified` and sitemap modification date. The original article form remains available, and the homepage was not changed.
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the contextual link resolves to the landing-page request, the article remains readable, and the original attributed form remains available.
-- Publication: pending.
+- Publication: deployed in commit `7baad5d`; production returns HTTP 200 with the contextual `/landing-page#request` link and updated BlogPosting date, and the full production verifier passed.
 - Metric: transitions from `/blog/target-audience-designer-services/` to `/landing-page#request` and confirmed delivered leads with source `SEO — лендинг` and `traffic_channel=organic_search`. First evaluation: 2026-10-30.
