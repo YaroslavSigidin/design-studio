@@ -449,5 +449,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - **Гипотеза:** CTA, связанный с переходом от разрозненных стилей к токенам, компонентам и правилам, направит читателей с активной задачей в отдельно атрибутированную форму `/design-system-development#request`.
 - **Изменение:** общий финальный CTA заменён на следующий шаг к разработке дизайн‑системы; обновлены достоверные `dateModified` и дата страницы в sitemap. Исходная форма статьи сохранена, главная страница не менялась.
 - **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил единственный CTA на `/design-system-development#request` и сохранённую исходную форму статьи.
-- **Публикация:** ожидает выполнения.
+- **Публикация:** коммит `3b50f50` отправлен в `main`; production отвечает `200`, содержит новый CTA и `dateModified=2026-10-19`; полный `node scripts/verify-production.mjs` прошёл.
 - **Метрика:** переходы из `/blog/design-tokens-explained/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-02.
