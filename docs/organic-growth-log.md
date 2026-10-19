@@ -465,5 +465,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - **Гипотеза:** handoff‑специфичный CTA к общей библиотеке компонентов, состояний и правил направит команды с регулярными потерями при передаче в отдельно атрибутированную форму `/design-system-development#request`.
 - **Изменение:** общий финальный CTA заменён на следующий шаг к разработке дизайн‑системы; обновлены достоверные `dateModified` и дата страницы в sitemap. Исходная форма статьи сохранена, главная страница не менялась.
 - **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/design-system-development#request`, читаемый checklist и сохранённую исходную форму статьи.
-- **Публикация:** ожидает выполнения.
+- **Публикация:** коммит `eb82272` отправлен в `main`; production отвечает `200`, содержит новый CTA и `dateModified=2026-10-19`; полный `node scripts/verify-production.mjs` прошёл.
 - **Метрика:** переходы из `/blog/developer-handoff-spec-redlines-checklist/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-02.
