@@ -473,5 +473,5 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - **Гипотеза:** CTA от найденных проблем доступности к проверке ключевых сценариев направит команды с активным риском в отдельно атрибутированную форму `/ux-audit#request`.
 - **Изменение:** общий финальный CTA заменён на следующий шаг к UX‑аудиту; обновлены достоверные `dateModified` и дата страницы в sitemap. Исходная форма статьи сохранена, главная страница не менялась.
 - **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/ux-audit#request`, читаемый checklist и сохранённую исходную форму статьи.
-- **Публикация:** ожидает выполнения.
+- **Публикация:** коммит `2e1dea3` отправлен в `main`; production отвечает `200`, содержит новый CTA и `dateModified=2026-10-20`; полный `node scripts/verify-production.mjs` прошёл.
 - **Метрика:** переходы из `/blog/accessible-ui-checklist/` к `/ux-audit#request` и подтверждённые доставленные лиды с источником `SEO — UX-аудит` и органической атрибуцией. Первая оценка — 2026-11-03.
