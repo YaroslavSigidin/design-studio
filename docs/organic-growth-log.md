@@ -475,3 +475,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/ux-audit#request`, читаемый checklist и сохранённую исходную форму статьи.
 - **Публикация:** коммит `2e1dea3` отправлен в `main`; production отвечает `200`, содержит новый CTA и `dateModified=2026-10-20`; полный `node scripts/verify-production.mjs` прошёл.
 - **Метрика:** переходы из `/blog/accessible-ui-checklist/` к `/ux-audit#request` и подтверждённые доставленные лиды с источником `SEO — UX-аудит` и органической атрибуцией. Первая оценка — 2026-11-03.
+# 2026-10-20 — ошибки Auto Layout → услуга дизайн‑системы
+
+- **Барьер:** `/blog/figma-auto-layout-10-mistakes/` помогала исправлять отдельные контейнеры, но завершалась общей заявкой и не связывала повторение ошибок по библиотеке с отсутствием единых правил компоновки.
+- **Гипотеза:** CTA от повторяющихся Auto Layout‑ошибок к общей системе компонентов и ограничений направит команды с масштабной проблемой в отдельно атрибутированную форму `/design-system-development#request`.
+- **Изменение:** общий финальный CTA заменён на следующий шаг к разработке дизайн‑системы; обновлены достоверные `dateModified` и дата страницы в sitemap. Исходная форма статьи сохранена, главная страница не менялась.
+- **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/design-system-development#request`, читаемый материал и сохранённую исходную форму статьи.
+- **Публикация:** ожидает выполнения.
+- **Метрика:** переходы из `/blog/figma-auto-layout-10-mistakes/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-03.
