@@ -435,3 +435,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the research-specific link resolves to the UX-audit request, the article remains readable, and the original attributed form remains available.
 - Publication: deployed in commit `a1c1895`; production returns HTTP 200 with the contextual `/ux-audit#request` link and updated BlogPosting date, and the full production verifier passed.
 - Metric: transitions from `/blog/customer-interview-ux-25-questions/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-11-02.
+# 2026-10-19 — статья о хэнд‑оффе → услуга дизайн‑системы
+
+- **Барьер:** статья `/blog/design-handoff/` давала чек‑лист передачи макетов, но не связывала повторяющиеся расхождения компонентов, состояний и токенов с услугой, которая устраняет причину проблемы.
+- **Гипотеза:** контекстный переход на `/design-system-development#request` приведёт команды, теряющие качество между дизайном и кодом, к отдельно атрибутированной форме заявки на дизайн‑систему.
+- **Изменение:** после чек‑листа добавлен один релевантный следующий шаг к услуге разработки дизайн‑системы; обновлены достоверные `dateModified` и дата страницы в sitemap. Главная страница не менялась.
+- **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы), `node scripts/check-case-route.mjs` и браузерная проверка статьи, перехода и целевой формы прошли локально.
+- **Публикация:** ожидает выполнения.
+- **Метрика:** переходы из `/blog/design-handoff/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-02.
