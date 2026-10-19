@@ -427,3 +427,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the review-specific link resolves to the UX-audit request, the checklist remains readable, and the original attributed form remains available.
 - Publication: deployed in commit `afffa9f`; production returns HTTP 200 with the contextual `/ux-audit#request` link and updated BlogPosting date, and the full production verifier passed.
 - Metric: transitions from `/blog/design-critique/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-11-02.
+## 2026-10-19 — customer-interview article to UX-audit path
+
+- Barrier: `/blog/customer-interview-ux-25-questions/` gives teams a practical research script, but did not connect repeated interview findings to verification of the affected product scenario.
+- Hypothesis: a contextual transition to `/ux-audit#request` will move teams with validated user pain toward the separately attributed audit request form.
+- Change: added a research-specific next step from interview findings to a UX audit, then updated the truthful `dateModified` and sitemap modification date. The original article form remains available, and the homepage was not changed.
+- Verification: `python3 scripts/check-seo.py`, `node scripts/check-case-route.mjs` and `git diff --check` passed. Local rendering confirms the research-specific link resolves to the UX-audit request, the article remains readable, and the original attributed form remains available.
+- Publication: pending.
+- Metric: transitions from `/blog/customer-interview-ux-25-questions/` to `/ux-audit#request`, subsequent case views, and confirmed delivered leads with source `SEO — UX-аудит` and `traffic_channel=organic_search`. First evaluation: 2026-11-02.
