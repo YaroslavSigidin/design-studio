@@ -483,3 +483,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/design-system-development#request`, читаемый материал и сохранённую исходную форму статьи.
 - **Публикация:** коммит `c89b583` отправлен в `main`; production отвечает `200`, содержит новый CTA и `dateModified=2026-10-20`; полный `node scripts/verify-production.mjs` прошёл.
 - **Метрика:** переходы из `/blog/figma-auto-layout-10-mistakes/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-03.
+# 2026-10-20 — Figma Dev Mode → услуга дизайн‑системы
+
+- **Барьер:** `/blog/figma-dev-mode-workflow/` объясняла инструменты inspect, code и export, но завершалась общей заявкой и не давала системного пути командам, которые продолжают по‑разному трактовать стили и компоненты.
+- **Гипотеза:** CTA от несогласованного Dev Mode‑handoff к общим токенам, компонентам и правилам направит команды с повторяющимися потерями в отдельно атрибутированную форму `/design-system-development#request`.
+- **Изменение:** общий финальный CTA заменён на следующий шаг к разработке дизайн‑системы; обновлены достоверные `dateModified` и дата страницы в sitemap. Исходная форма статьи сохранена, главная страница не менялась.
+- **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/design-system-development#request`, читаемый материал и сохранённую исходную форму статьи.
+- **Публикация:** ожидает выполнения.
+- **Метрика:** переходы из `/blog/figma-dev-mode-workflow/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-03.
