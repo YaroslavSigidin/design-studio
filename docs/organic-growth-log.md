@@ -531,3 +531,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/design-system-development#request`, читаемый материал и сохранённую исходную форму статьи.
 - **Публикация:** коммит `811da81` отправлен в `main`; production отвечает `200`, содержит новый CTA и `dateModified=2026-10-20`; полный `node scripts/verify-production.mjs` прошёл.
 - **Метрика:** переходы из `/blog/interface-fonts-selection/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-03.
+# 2026-10-20 — подготовка иконок → услуга дизайн‑системы
+
+- **Барьер:** `/blog/icon-preparation-for-development/` объясняла размеры, SVG‑экспорт и нейминг иконок, но завершалась общей заявкой и не давала системного следующего шага при повторяющихся расхождениях между макетами и кодом.
+- **Гипотеза:** CTA от ручной подготовки иконок к единым правилам, состояниям и библиотеке направит команды с повторяющейся проблемой в отдельно атрибутированную форму `/design-system-development#request`.
+- **Изменение:** общий финальный CTA заменён на следующий шаг к разработке дизайн‑системы; обновлены достоверные `dateModified` и дата страницы в sitemap. Исходная форма статьи сохранена, главная страница не менялась.
+- **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/design-system-development#request`, читаемый материал и сохранённую исходную форму статьи.
+- **Публикация:** ожидает выполнения.
+- **Метрика:** переходы из `/blog/icon-preparation-for-development/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-03.
