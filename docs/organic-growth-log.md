@@ -499,3 +499,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/design-system-development#request`, читаемый материал и сохранённую исходную форму статьи.
 - **Публикация:** коммит `26156d9` отправлен в `main`; production отвечает `200`, содержит новый CTA и `dateModified=2026-10-20`; полный `node scripts/verify-production.mjs` прошёл.
 - **Метрика:** переходы из `/blog/figma-style-organization/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-03.
+# 2026-10-20 — информационная архитектура → UX‑аудит
+
+- **Барьер:** `/blog/information-architecture-card-sorting-tree-testing/` объясняла card sorting и tree testing, но не давала профильного следующего шага, когда пользователи всё ещё не находят нужные разделы.
+- **Гипотеза:** контекстный переход от неуспешных навигационных маршрутов к проверке ключевых сценариев направит команды с активной проблемой в отдельно атрибутированную форму `/ux-audit#request`.
+- **Изменение:** после методики добавлен один релевантный переход к UX‑аудиту; обновлены достоверные `dateModified` и дата страницы в sitemap. Исходная форма статьи сохранена, главная страница не менялась.
+- **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил переход на `/ux-audit#request`, читаемый материал и сохранённую исходную форму статьи.
+- **Публикация:** ожидает выполнения.
+- **Метрика:** переходы из `/blog/information-architecture-card-sorting-tree-testing/` к `/ux-audit#request` и подтверждённые доставленные лиды с источником `SEO — UX-аудит` и органической атрибуцией. Первая оценка — 2026-11-03.
