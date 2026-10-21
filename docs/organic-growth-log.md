@@ -547,3 +547,11 @@ This log records aggregate SEO and conversion experiments. Do not store personal
 - **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/design-system-development#request`, читаемый материал и сохранённую исходную форму статьи.
 - **Публикация:** коммит `49b6b6a` отправлен в `main`; production отвечает `200`, содержит новый CTA и `dateModified=2026-10-21`; полный `node scripts/verify-production.mjs` прошёл.
 - **Метрика:** переходы из `/blog/adaptive-layouts-breakpoints-grids/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-04.
+# 2026-10-21 — перевод дизайна в CSS → услуга дизайн‑системы
+
+- **Барьер:** `/blog/design-to-css-practical-mapping/` объясняла шкалы отступов, типографику и сетки, но завершалась общей заявкой и не давала системного следующего шага при повторяющихся расхождениях значений между Figma и CSS.
+- **Гипотеза:** CTA от ручного сопоставления значений к общим токенам и компонентам направит команды с техническим дизайн‑долгом в отдельно атрибутированную форму `/design-system-development#request`.
+- **Изменение:** общий финальный CTA заменён на следующий шаг к разработке дизайн‑системы; обновлены достоверные `dateModified` и дата страницы в sitemap. Исходная форма статьи сохранена, главная страница не менялась.
+- **Проверки:** `git diff --check`, `python3 scripts/check-seo.py` (103 страницы) и `node scripts/check-case-route.mjs` прошли; локальный браузер подтвердил CTA на `/design-system-development#request`, читаемый материал и сохранённую исходную форму статьи.
+- **Публикация:** ожидает выполнения.
+- **Метрика:** переходы из `/blog/design-to-css-practical-mapping/` к `/design-system-development#request` и подтверждённые доставленные лиды с источником `SEO — дизайн-система` и органической атрибуцией. Первая оценка — 2026-11-04.
