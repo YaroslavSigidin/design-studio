@@ -63,7 +63,7 @@ window.STUDIO_CONFIG = {
   casePageBase: joinPath(studioBasePath, "case.html"),
   seo: {
     siteName: "Согласовано",
-    title: "Ярослав Сигидин",
+    title: "Дизайн-студия сайтов и интерфейсов — Согласовано",
     description:
       "Разрабатываем сайты, UX/UI-интерфейсы, брендинг и дизайн цифровых продуктов. Кейсы с результатами, прозрачные этапы и стоимость до начала работ.",
     image: "assets/images/brand/og-cover-logo-20261006.jpg"
