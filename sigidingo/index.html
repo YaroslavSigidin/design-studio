@@ -606,7 +606,7 @@
       <div class="container studio-services-ai__inner">
         <h2 class="studio-services-ai__title" data-reveal-heading>Согласуем все</h2>
         <p class="studio-services-ai__subtitle">
-          Опишите вашу задачу — и менеджер отправит вам коммерческое предложение
+          Опишите вашу задачу — я подготовлю и отправлю вам коммерческое предложение
         </p>
         <div class="hero-search-wrap studio-services-ai__chat" data-ai-brief>
           <div class="hero-search">
@@ -1139,6 +1139,13 @@
       </button>
     </aside>
 
+    <script>
+      (() => {
+        const feedbackSection = document.querySelector(".studio-services-ai");
+        const footer = document.querySelector(".studio-footer");
+        if (feedbackSection && footer) footer.before(feedbackSection);
+      })();
+    </script>
     <script src="../assets/js/config.js?v=20260722-leads7d" defer></script>
     <script src="../assets/js/a11y.js?v=20260718-a11y" defer></script>
     <script src="../assets/js/studio-perf.js?v=20261012-mobile-performance" defer></script>
