@@ -64,6 +64,15 @@ const normalizeStudioUrl = (url, cfg) => {
   if (!raw) return "";
   if (isAbsoluteUrl(raw)) return raw;
 
+  // The personal page lives in /sigidingo/, while every case page lives at
+  // the site root. Resolve its relative case URLs against the root even when
+  // an older cached config is missing or still points at /sigidingo/.
+  if (/^\/sigidingo\/(?:index\.html)?$/i.test(window.location.pathname)) {
+    if (/^\.?\.\/case(?:-|\.html)/i.test(raw)) {
+      return new URL(raw.replace(/^\.?\.\//, "/"), window.location.origin).toString();
+    }
+  }
+
   const basePath = cfg?.basePath || "/";
   if (raw.startsWith("/local/studio/")) {
     return resolveWithinBase(raw.slice("/local/studio/".length), basePath);
