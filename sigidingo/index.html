@@ -114,7 +114,7 @@
     <style>
       .profile-hero-card {
         position: relative;
-        width: 108px;
+        width: clamp(180px, 16vw, 240px);
         aspect-ratio: 0.78;
         margin-bottom: -4px;
         overflow: hidden;
@@ -193,7 +193,7 @@
 
       @media (max-width: 640px) {
         .profile-hero-card {
-          width: 82px;
+          width: min(52vw, 190px);
           border-width: 3px;
           border-radius: 17px;
         }
